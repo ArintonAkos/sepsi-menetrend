@@ -1,0 +1,157 @@
+{
+  "line": "7",
+  "direction": "depart",
+  "circular": false,
+  "closes_loop_at_start": false,
+  "headsign": {
+    "ro": "Cap Linie Simeria → Gara CFR",
+    "hu": "Szemerja Végállomás → Vasútállomás"
+  },
+  "source": {
+    "ro": "https://multitrans.ro/jarat-7.html",
+    "hu": "https://multitrans.ro/jarat-7-hu.html"
+  },
+  "stop_count": 14,
+  "stops": [
+    {
+      "stop_sequence": 1,
+      "name": {
+        "ro": "Cap Linie Simeria",
+        "hu": "Szemerja Végállomás"
+      },
+      "stop_lat": 45.868,
+      "stop_lon": 25.7792,
+      "distance_to_next_m": 470
+    },
+    {
+      "stop_sequence": 2,
+      "name": {
+        "ro": "Spitalul Județean",
+        "hu": "Megyei Kórház"
+      },
+      "stop_lat": 45.8639,
+      "stop_lon": 25.778,
+      "distance_to_next_m": 605
+    },
+    {
+      "stop_sequence": 3,
+      "name": {
+        "ro": "Str. Dealului",
+        "hu": "Domb utca"
+      },
+      "stop_lat": 45.8594,
+      "stop_lon": 25.776,
+      "distance_to_next_m": 804
+    },
+    {
+      "stop_sequence": 4,
+      "name": {
+        "ro": "Str. Țigaretei 1",
+        "hu": "Cigaretta utca 1"
+      },
+      "stop_lat": 45.8566,
+      "stop_lon": 25.7821,
+      "distance_to_next_m": 312
+    },
+    {
+      "stop_sequence": 5,
+      "name": {
+        "ro": "Str. Țigaretei 2",
+        "hu": "Cigaretta utca 2"
+      },
+      "stop_lat": 45.8551,
+      "stop_lon": 25.7851,
+      "distance_to_next_m": 411
+    },
+    {
+      "stop_sequence": 6,
+      "name": {
+        "ro": "Str. Țigaretei 3",
+        "hu": "Cigaretta utca 3"
+      },
+      "stop_lat": 45.8543,
+      "stop_lon": 25.7903,
+      "distance_to_next_m": 261
+    },
+    {
+      "stop_sequence": 7,
+      "name": {
+        "ro": "Comfort Residence",
+        "hu": "Comfort Residence"
+      },
+      "stop_lat": 45.8548,
+      "stop_lon": 25.7931,
+      "distance_to_next_m": 138
+    },
+    {
+      "stop_sequence": 8,
+      "name": {
+        "ro": "Str. Fabricii 1",
+        "hu": "Gyár utca 1"
+      },
+      "stop_lat": 45.8557,
+      "stop_lon": 25.7932,
+      "distance_to_next_m": 963
+    },
+    {
+      "stop_sequence": 9,
+      "name": {
+        "ro": "B-dul Nicolae Iorga 2",
+        "hu": "N. Iorga sugárút 2"
+      },
+      "stop_lat": 45.8595,
+      "stop_lon": 25.7919,
+      "distance_to_next_m": 264
+    },
+    {
+      "stop_sequence": 10,
+      "name": {
+        "ro": "B-dul Nicolae Iorga 1",
+        "hu": "N. Iorga sugárút 1"
+      },
+      "stop_lat": 45.8579,
+      "stop_lon": 25.7944,
+      "distance_to_next_m": 239
+    },
+    {
+      "stop_sequence": 11,
+      "name": {
+        "ro": "B-dul Grigore Bălan 2",
+        "hu": "G. Bálán sugárút 2"
+      },
+      "stop_lat": 45.858,
+      "stop_lon": 25.7964,
+      "distance_to_next_m": 503
+    },
+    {
+      "stop_sequence": 12,
+      "name": {
+        "ro": "B-dul Grigore Bălan 1",
+        "hu": "G. Bálán sugárút 1"
+      },
+      "stop_lat": 45.8622,
+      "stop_lon": 25.7962,
+      "distance_to_next_m": 382
+    },
+    {
+      "stop_sequence": 13,
+      "name": {
+        "ro": "Str. Sporturilor",
+        "hu": "Sport utca"
+      },
+      "stop_lat": 45.8641,
+      "stop_lon": 25.7986,
+      "distance_to_next_m": 961
+    },
+    {
+      "stop_sequence": 14,
+      "name": {
+        "ro": "Gara CFR",
+        "hu": "Vasútállomás"
+      },
+      "stop_lat": 45.8631,
+      "stop_lon": 25.8101,
+      "distance_to_next_m": null
+    }
+  ]
+}

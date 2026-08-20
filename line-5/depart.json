@@ -1,0 +1,307 @@
+{
+  "line": "5",
+  "direction": "depart",
+  "circular": true,
+  "closes_loop_at_start": true,
+  "headsign": {
+    "ro": "Str. József Attila – traseu circular",
+    "hu": "József Attila utca – körjárat"
+  },
+  "source": {
+    "ro": "https://multitrans.ro/jarat-5.html",
+    "hu": "https://multitrans.ro/jarat-5-hu.html"
+  },
+  "stop_count": 29,
+  "stops": [
+    {
+      "stop_sequence": 1,
+      "name": {
+        "ro": "Str. József Attila 2",
+        "hu": "József Attila u. 2"
+      },
+      "stop_lat": 45.8541,
+      "stop_lon": 25.7722,
+      "distance_to_next_m": 399
+    },
+    {
+      "stop_sequence": 2,
+      "name": {
+        "ro": "Str. József Attila 1",
+        "hu": "József Attila u. 1"
+      },
+      "stop_lat": 45.8544,
+      "stop_lon": 25.7771,
+      "distance_to_next_m": 274
+    },
+    {
+      "stop_sequence": 3,
+      "name": {
+        "ro": "Str. Kós Károly",
+        "hu": "Kós Károly utca"
+      },
+      "stop_lat": 45.8559,
+      "stop_lon": 25.779,
+      "distance_to_next_m": 400
+    },
+    {
+      "stop_sequence": 4,
+      "name": {
+        "ro": "Fabrica de Țigarete",
+        "hu": "Cigarettagyár"
+      },
+      "stop_lat": 45.8584,
+      "stop_lon": 25.7822,
+      "distance_to_next_m": 396
+    },
+    {
+      "stop_sequence": 5,
+      "name": {
+        "ro": "Col. Mihai Viteazul",
+        "hu": "Vitéz Mihály Líceum"
+      },
+      "stop_lat": 45.861,
+      "stop_lon": 25.7855,
+      "distance_to_next_m": 295
+    },
+    {
+      "stop_sequence": 6,
+      "name": {
+        "ro": "Casa cu Arcade",
+        "hu": "Lábasház"
+      },
+      "stop_lat": 45.8636,
+      "stop_lon": 25.7866,
+      "distance_to_next_m": 79
+    },
+    {
+      "stop_sequence": 7,
+      "name": {
+        "ro": "Parcul Elisabeta",
+        "hu": "Erzsébet Park"
+      },
+      "stop_lat": 45.8643,
+      "stop_lon": 25.7866,
+      "distance_to_next_m": 470
+    },
+    {
+      "stop_sequence": 8,
+      "name": {
+        "ro": "Biserica Reformată",
+        "hu": "Református Templom"
+      },
+      "stop_lat": 45.8643,
+      "stop_lon": 25.7919,
+      "distance_to_next_m": 550
+    },
+    {
+      "stop_sequence": 9,
+      "name": {
+        "ro": "B-dul Grigore Bălan 1",
+        "hu": "G. Bálán sugárút 1"
+      },
+      "stop_lat": 45.8622,
+      "stop_lon": 25.7962,
+      "distance_to_next_m": 469
+    },
+    {
+      "stop_sequence": 10,
+      "name": {
+        "ro": "B-dul Grigore Bălan 2",
+        "hu": "G. Bálán sugárút 2"
+      },
+      "stop_lat": 45.858,
+      "stop_lon": 25.7964,
+      "distance_to_next_m": 270
+    },
+    {
+      "stop_sequence": 11,
+      "name": {
+        "ro": "Str. Lăcrămioarei 2",
+        "hu": "Gyöngyvirág utca 2"
+      },
+      "stop_lat": 45.858,
+      "stop_lon": 25.7981,
+      "distance_to_next_m": 240
+    },
+    {
+      "stop_sequence": 12,
+      "name": {
+        "ro": "Str. Lăcrămioarei 1",
+        "hu": "Gyöngyvirág utca 1"
+      },
+      "stop_lat": 45.8598,
+      "stop_lon": 25.7995,
+      "distance_to_next_m": 1068
+    },
+    {
+      "stop_sequence": 13,
+      "name": {
+        "ro": "Gara CFR",
+        "hu": "Vasútállomás"
+      },
+      "stop_lat": 45.8631,
+      "stop_lon": 25.8101,
+      "distance_to_next_m": 1241
+    },
+    {
+      "stop_sequence": 14,
+      "name": {
+        "ro": "Centru Comercial",
+        "hu": "Bevásárlóközpont"
+      },
+      "stop_lat": 45.8693,
+      "stop_lon": 25.801,
+      "distance_to_next_m": 638
+    },
+    {
+      "stop_sequence": 15,
+      "name": {
+        "ro": "Fabrica de Lapte",
+        "hu": "Tejgyár"
+      },
+      "stop_lat": 45.8751,
+      "stop_lon": 25.8007,
+      "distance_to_next_m": 1128
+    },
+    {
+      "stop_sequence": 16,
+      "name": {
+        "ro": "Arena Sepsi",
+        "hu": "Sepsi Aréna"
+      },
+      "stop_lat": 45.8822,
+      "stop_lon": 25.8071,
+      "distance_to_next_m": 1170
+    },
+    {
+      "stop_sequence": 17,
+      "name": {
+        "ro": "Fabrica de Lapte",
+        "hu": "Tejgyár"
+      },
+      "stop_lat": 45.8751,
+      "stop_lon": 25.8007,
+      "distance_to_next_m": 590
+    },
+    {
+      "stop_sequence": 18,
+      "name": {
+        "ro": "Centru Comercial",
+        "hu": "Bevásárlóközpont"
+      },
+      "stop_lat": 45.8698,
+      "stop_lon": 25.8006,
+      "distance_to_next_m": 1640
+    },
+    {
+      "stop_sequence": 19,
+      "name": {
+        "ro": "Gara CFR",
+        "hu": "Vasútállomás"
+      },
+      "stop_lat": 45.8631,
+      "stop_lon": 25.8101,
+      "distance_to_next_m": 1378
+    },
+    {
+      "stop_sequence": 20,
+      "name": {
+        "ro": "Str. Lăcrămioarei 1",
+        "hu": "Gyöngyvirág utca 1"
+      },
+      "stop_lat": 45.8605,
+      "stop_lon": 25.8001,
+      "distance_to_next_m": 328
+    },
+    {
+      "stop_sequence": 21,
+      "name": {
+        "ro": "Str. Lăcrămioarei 2",
+        "hu": "Gyöngyvirág utca 2"
+      },
+      "stop_lat": 45.858,
+      "stop_lon": 25.7981,
+      "distance_to_next_m": 327
+    },
+    {
+      "stop_sequence": 22,
+      "name": {
+        "ro": "B-dul Nicolae Iorga 1",
+        "hu": "N. Iorga sugárút 1"
+      },
+      "stop_lat": 45.858,
+      "stop_lon": 25.7948,
+      "distance_to_next_m": 264
+    },
+    {
+      "stop_sequence": 23,
+      "name": {
+        "ro": "B-dul Nicolae Iorga 2",
+        "hu": "N. Iorga sugárút 2"
+      },
+      "stop_lat": 45.8591,
+      "stop_lon": 25.792,
+      "distance_to_next_m": 693
+    },
+    {
+      "stop_sequence": 24,
+      "name": {
+        "ro": "Tribunal",
+        "hu": "Törvényszék"
+      },
+      "stop_lat": 45.8624,
+      "stop_lon": 25.7879,
+      "distance_to_next_m": 747
+    },
+    {
+      "stop_sequence": 25,
+      "name": {
+        "ro": "Institutul de Proiectări",
+        "hu": "Tervező Intézet"
+      },
+      "stop_lat": 45.8617,
+      "stop_lon": 25.7819,
+      "distance_to_next_m": 566
+    },
+    {
+      "stop_sequence": 26,
+      "name": {
+        "ro": "Str. Dealului",
+        "hu": "Domb utca"
+      },
+      "stop_lat": 45.8589,
+      "stop_lon": 25.7768,
+      "distance_to_next_m": 820
+    },
+    {
+      "stop_sequence": 27,
+      "name": {
+        "ro": "Str. Dózsa György",
+        "hu": "Dózsa György utca"
+      },
+      "stop_lat": 45.8568,
+      "stop_lon": 25.7733,
+      "distance_to_next_m": 579
+    },
+    {
+      "stop_sequence": 28,
+      "name": {
+        "ro": "Izvorul Sulfuros",
+        "hu": "Büdöskút"
+      },
+      "stop_lat": 45.8555,
+      "stop_lon": 25.7672,
+      "distance_to_next_m": 452
+    },
+    {
+      "stop_sequence": 29,
+      "name": {
+        "ro": "Str. József Attila 2",
+        "hu": "József Attila u. 2"
+      },
+      "stop_lat": 45.8541,
+      "stop_lon": 25.7722,
+      "distance_to_next_m": null
+    }
+  ]
+}

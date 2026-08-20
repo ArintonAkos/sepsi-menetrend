@@ -1,0 +1,218 @@
+[
+  {
+    "stop_id": 1,
+    "stop_name_ro": "Str. Bartók Béla",
+    "stop_lat": 45.8609,
+    "stop_lon": 25.7715,
+    "direction": "Bartók Béla – traseu circular",
+    "distance_to_next": "479 m"
+  },
+  {
+    "stop_id": 2,
+    "stop_name_ro": "Str. Dealului",
+    "stop_lat": 45.8589,
+    "stop_lon": 25.7768,
+    "direction": "Bartók Béla – traseu circular",
+    "distance_to_next": "657 m"
+  },
+  {
+    "stop_id": 3,
+    "stop_name_ro": "Institutul de Proiectări",
+    "stop_lat": 45.8616,
+    "stop_lon": 25.7822,
+    "direction": "Bartók Béla – traseu circular",
+    "distance_to_next": "618 m"
+  },
+  {
+    "stop_id": 4,
+    "stop_name_ro": "Casa cu Arcade",
+    "stop_lat": 45.8636,
+    "stop_lon": 25.7866,
+    "direction": "Bartók Béla – traseu circular",
+    "distance_to_next": "1061 m"
+  },
+  {
+    "stop_id": 5,
+    "stop_name_ro": "Liceul de Artă Plugor Sándor",
+    "stop_lat": 45.8681,
+    "stop_lon": 25.7874,
+    "direction": "Bartók Béla – traseu circular",
+    "distance_to_next": "410 m"
+  },
+  {
+    "stop_id": 6,
+    "stop_name_ro": "Piața Kálvin",
+    "stop_lat": 45.8709,
+    "stop_lon": 25.7887,
+    "direction": "Bartók Béla – traseu circular",
+    "distance_to_next": "481 m"
+  },
+  {
+    "stop_id": 7,
+    "stop_name_ro": "Cartierul Ciucului",
+    "stop_lat": 45.8739,
+    "stop_lon": 25.792,
+    "direction": "Bartók Béla – traseu circular",
+    "distance_to_next": "493 m"
+  },
+  {
+    "stop_id": 8,
+    "stop_name_ro": "Str. Ciucului 2",
+    "stop_lat": 45.8714,
+    "stop_lon": 25.7951,
+    "direction": "Bartók Béla – traseu circular",
+    "distance_to_next": "280 m"
+  },
+  {
+    "stop_id": 9,
+    "stop_name_ro": "Str. Ciucului 1",
+    "stop_lat": 45.8693,
+    "stop_lon": 25.7931,
+    "direction": "Bartók Béla – traseu circular",
+    "distance_to_next": "417 m"
+  },
+  {
+    "stop_id": 10,
+    "stop_name_ro": "Debren",
+    "stop_lat": 45.8671,
+    "stop_lon": 25.7958,
+    "direction": "Bartók Béla – traseu circular",
+    "distance_to_next": "514 m"
+  },
+  {
+    "stop_id": 11,
+    "stop_name_ro": "Str. Sporturilor",
+    "stop_lat": 45.864,
+    "stop_lon": 25.7983,
+    "direction": "Bartók Béla – traseu circular",
+    "distance_to_next": "961 m"
+  },
+  {
+    "stop_id": 12,
+    "stop_name_ro": "Gara CFR",
+    "stop_lat": 45.8631,
+    "stop_lon": 25.8101,
+    "direction": "Bartók Béla – traseu circular",
+    "distance_to_next": "928 m"
+  },
+  {
+    "stop_id": 13,
+    "stop_name_ro": "Str. Sporturilor",
+    "stop_lat": 45.8641,
+    "stop_lon": 25.7986,
+    "direction": "Bartók Béla – traseu circular",
+    "distance_to_next": "491 m"
+  },
+  {
+    "stop_id": 14,
+    "stop_name_ro": "Debren",
+    "stop_lat": 45.8672,
+    "stop_lon": 25.7961,
+    "direction": "Bartók Béla – traseu circular",
+    "distance_to_next": "406 m"
+  },
+  {
+    "stop_id": 15,
+    "stop_name_ro": "Str. Ciucului 1",
+    "stop_lat": 45.8692,
+    "stop_lon": 25.7932,
+    "direction": "Bartók Béla – traseu circular",
+    "distance_to_next": "377 m"
+  },
+  {
+    "stop_id": 16,
+    "stop_name_ro": "Str. Ciucului 2",
+    "stop_lat": 45.872,
+    "stop_lon": 25.7957,
+    "direction": "Bartók Béla – traseu circular",
+    "distance_to_next": "352 m"
+  },
+  {
+    "stop_id": 17,
+    "stop_name_ro": "Cartierul Ciucului",
+    "stop_lat": 45.8739,
+    "stop_lon": 25.7926,
+    "direction": "Bartók Béla – traseu circular",
+    "distance_to_next": "577 m"
+  },
+  {
+    "stop_id": 18,
+    "stop_name_ro": "Piața Kálvin",
+    "stop_lat": 45.8709,
+    "stop_lon": 25.7885,
+    "direction": "Bartók Béla – traseu circular",
+    "distance_to_next": "279 m"
+  },
+  {
+    "stop_id": 19,
+    "stop_name_ro": "Liceul de Artă Plugor Sándor",
+    "stop_lat": 45.8689,
+    "stop_lon": 25.7868,
+    "direction": "Bartók Béla – traseu circular",
+    "distance_to_next": "582 m"
+  },
+  {
+    "stop_id": 20,
+    "stop_name_ro": "Str. Gábor Áron",
+    "stop_lat": 45.8648,
+    "stop_lon": 25.7851,
+    "direction": "Bartók Béla – traseu circular",
+    "distance_to_next": "471 m"
+  },
+  {
+    "stop_id": 21,
+    "stop_name_ro": "Institutul de Proiectări",
+    "stop_lat": 45.8617,
+    "stop_lon": 25.7819,
+    "direction": "Bartók Béla – traseu circular",
+    "distance_to_next": "643 m"
+  },
+  {
+    "stop_id": 22,
+    "stop_name_ro": "Str. Dealului",
+    "stop_lat": 45.8594,
+    "stop_lon": 25.776,
+    "direction": "Bartók Béla – traseu circular",
+    "distance_to_next": "506 m"
+  },
+  {
+    "stop_id": 23,
+    "stop_name_ro": "Spitalul Județean",
+    "stop_lat": 45.863,
+    "stop_lon": 25.7778,
+    "direction": "Bartók Béla – traseu circular",
+    "distance_to_next": "368 m"
+  },
+  {
+    "stop_id": 24,
+    "stop_name_ro": "Str. Vânătorilor 1",
+    "stop_lat": 45.8645,
+    "stop_lon": 25.7756,
+    "direction": "Bartók Béla – traseu circular",
+    "distance_to_next": "243 m"
+  },
+  {
+    "stop_id": 25,
+    "stop_name_ro": "Str. Vânătorilor 2",
+    "stop_lat": 45.8648,
+    "stop_lon": 25.7725,
+    "direction": "Bartók Béla – traseu circular",
+    "distance_to_next": "363 m"
+  },
+  {
+    "stop_id": 26,
+    "stop_name_ro": "Str. Ghioceilor",
+    "stop_lat": 45.8633,
+    "stop_lon": 25.7699,
+    "direction": "Bartók Béla – traseu circular",
+    "distance_to_next": "354 m până la închiderea buclei"
+  },
+  {
+    "stop_id": 27,
+    "stop_name_ro": "Str. Bartók Béla",
+    "stop_lat": 45.8609,
+    "stop_lon": 25.7715,
+    "direction": "Bartók Béla – traseu circular",
+    "distance_to_next": "0 m"
+  }
+]

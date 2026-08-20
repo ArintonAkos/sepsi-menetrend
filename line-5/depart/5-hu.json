@@ -1,0 +1,234 @@
+[
+  {
+    "stop_id": 1,
+    "stop_name_ro": "József Attila u. 2",
+    "stop_lat": 45.8541,
+    "stop_lon": 25.7722,
+    "direction": "József Attila utca – körjárat",
+    "distance_to_next": "399 m"
+  },
+  {
+    "stop_id": 2,
+    "stop_name_ro": "József Attila u. 1",
+    "stop_lat": 45.8544,
+    "stop_lon": 25.7771,
+    "direction": "József Attila utca – körjárat",
+    "distance_to_next": "274 m"
+  },
+  {
+    "stop_id": 3,
+    "stop_name_ro": "Kós Károly utca",
+    "stop_lat": 45.8559,
+    "stop_lon": 25.779,
+    "direction": "József Attila utca – körjárat",
+    "distance_to_next": "400 m"
+  },
+  {
+    "stop_id": 4,
+    "stop_name_ro": "Cigarettagyár",
+    "stop_lat": 45.8584,
+    "stop_lon": 25.7822,
+    "direction": "József Attila utca – körjárat",
+    "distance_to_next": "396 m"
+  },
+  {
+    "stop_id": 5,
+    "stop_name_ro": "Vitéz Mihály Líceum",
+    "stop_lat": 45.861,
+    "stop_lon": 25.7855,
+    "direction": "József Attila utca – körjárat",
+    "distance_to_next": "295 m"
+  },
+  {
+    "stop_id": 6,
+    "stop_name_ro": "Lábasház",
+    "stop_lat": 45.8636,
+    "stop_lon": 25.7866,
+    "direction": "József Attila utca – körjárat",
+    "distance_to_next": "79 m"
+  },
+  {
+    "stop_id": 7,
+    "stop_name_ro": "Erzsébet Park",
+    "stop_lat": 45.8643,
+    "stop_lon": 25.7866,
+    "direction": "József Attila utca – körjárat",
+    "distance_to_next": "470 m"
+  },
+  {
+    "stop_id": 8,
+    "stop_name_ro": "Református Templom",
+    "stop_lat": 45.8643,
+    "stop_lon": 25.7919,
+    "direction": "József Attila utca – körjárat",
+    "distance_to_next": "550 m"
+  },
+  {
+    "stop_id": 9,
+    "stop_name_ro": "G. Bálán sugárút 1",
+    "stop_lat": 45.8622,
+    "stop_lon": 25.7962,
+    "direction": "József Attila utca – körjárat",
+    "distance_to_next": "469 m"
+  },
+  {
+    "stop_id": 10,
+    "stop_name_ro": "G. Bálán sugárút 2",
+    "stop_lat": 45.858,
+    "stop_lon": 25.7964,
+    "direction": "József Attila utca – körjárat",
+    "distance_to_next": "270 m"
+  },
+  {
+    "stop_id": 11,
+    "stop_name_ro": "Gyöngyvirág utca 2",
+    "stop_lat": 45.858,
+    "stop_lon": 25.7981,
+    "direction": "József Attila utca – körjárat",
+    "distance_to_next": "240 m"
+  },
+  {
+    "stop_id": 12,
+    "stop_name_ro": "Gyöngyvirág utca 1",
+    "stop_lat": 45.8598,
+    "stop_lon": 25.7995,
+    "direction": "József Attila utca – körjárat",
+    "distance_to_next": "1068 m"
+  },
+  {
+    "stop_id": 13,
+    "stop_name_ro": "Vasútállomás",
+    "stop_lat": 45.8631,
+    "stop_lon": 25.8101,
+    "direction": "József Attila utca – körjárat",
+    "distance_to_next": "1241 m"
+  },
+  {
+    "stop_id": 14,
+    "stop_name_ro": "Bevásárlóközpont",
+    "stop_lat": 45.8693,
+    "stop_lon": 25.801,
+    "direction": "József Attila utca – körjárat",
+    "distance_to_next": "638 m"
+  },
+  {
+    "stop_id": 15,
+    "stop_name_ro": "Tejgyár",
+    "stop_lat": 45.8751,
+    "stop_lon": 25.8007,
+    "direction": "József Attila utca – körjárat",
+    "distance_to_next": "1128 m"
+  },
+  {
+    "stop_id": 16,
+    "stop_name_ro": "Sepsi Aréna",
+    "stop_lat": 45.8822,
+    "stop_lon": 25.8071,
+    "direction": "József Attila utca – körjárat",
+    "distance_to_next": "1170 m"
+  },
+  {
+    "stop_id": 17,
+    "stop_name_ro": "Tejgyár",
+    "stop_lat": 45.8751,
+    "stop_lon": 25.8007,
+    "direction": "József Attila utca – körjárat",
+    "distance_to_next": "590 m"
+  },
+  {
+    "stop_id": 18,
+    "stop_name_ro": "Bevásárlóközpont",
+    "stop_lat": 45.8698,
+    "stop_lon": 25.8006,
+    "direction": "József Attila utca – körjárat",
+    "distance_to_next": "1640 m"
+  },
+  {
+    "stop_id": 19,
+    "stop_name_ro": "Vasútállomás",
+    "stop_lat": 45.8631,
+    "stop_lon": 25.8101,
+    "direction": "József Attila utca – körjárat",
+    "distance_to_next": "1378 m"
+  },
+  {
+    "stop_id": 20,
+    "stop_name_ro": "Gyöngyvirág utca 1",
+    "stop_lat": 45.8605,
+    "stop_lon": 25.8001,
+    "direction": "József Attila utca – körjárat",
+    "distance_to_next": "328 m"
+  },
+  {
+    "stop_id": 21,
+    "stop_name_ro": "Gyöngyvirág utca 2",
+    "stop_lat": 45.858,
+    "stop_lon": 25.7981,
+    "direction": "József Attila utca – körjárat",
+    "distance_to_next": "327 m"
+  },
+  {
+    "stop_id": 22,
+    "stop_name_ro": "N. Iorga sugárút 1",
+    "stop_lat": 45.858,
+    "stop_lon": 25.7948,
+    "direction": "József Attila utca – körjárat",
+    "distance_to_next": "264 m"
+  },
+  {
+    "stop_id": 23,
+    "stop_name_ro": "N. Iorga sugárút 2",
+    "stop_lat": 45.8591,
+    "stop_lon": 25.792,
+    "direction": "József Attila utca – körjárat",
+    "distance_to_next": "693 m"
+  },
+  {
+    "stop_id": 24,
+    "stop_name_ro": "Törvényszék",
+    "stop_lat": 45.8624,
+    "stop_lon": 25.7879,
+    "direction": "József Attila utca – körjárat",
+    "distance_to_next": "747 m"
+  },
+  {
+    "stop_id": 25,
+    "stop_name_ro": "Tervező Intézet",
+    "stop_lat": 45.8617,
+    "stop_lon": 25.7819,
+    "direction": "József Attila utca – körjárat",
+    "distance_to_next": "566 m"
+  },
+  {
+    "stop_id": 26,
+    "stop_name_ro": "Domb utca",
+    "stop_lat": 45.8589,
+    "stop_lon": 25.7768,
+    "direction": "József Attila utca – körjárat",
+    "distance_to_next": "820 m"
+  },
+  {
+    "stop_id": 27,
+    "stop_name_ro": "Dózsa György utca",
+    "stop_lat": 45.8568,
+    "stop_lon": 25.7733,
+    "direction": "József Attila utca – körjárat",
+    "distance_to_next": "579 m"
+  },
+  {
+    "stop_id": 28,
+    "stop_name_ro": "Büdöskút",
+    "stop_lat": 45.8555,
+    "stop_lon": 25.7672,
+    "direction": "József Attila utca – körjárat",
+    "distance_to_next": "452 m a kör zárásáig"
+  },
+  {
+    "stop_id": 29,
+    "stop_name_ro": "József Attila u. 2",
+    "stop_lat": 45.8541,
+    "stop_lon": 25.7722,
+    "direction": "József Attila utca – körjárat",
+    "distance_to_next": "0 m"
+  }
+]

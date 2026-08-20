@@ -1,0 +1,62 @@
+{
+  "shape_id": "5D-return",
+  "line": "5D",
+  "direction": "return",
+  "profile": "mapbox/driving",
+  "note": "running time only; contains no waiting or timetable information",
+  "total_seconds": 1545,
+  "legs": [
+    {
+      "seconds": 165,
+      "metres": 420
+    },
+    {
+      "seconds": 213,
+      "metres": 2145
+    },
+    {
+      "seconds": 134,
+      "metres": 747
+    },
+    {
+      "seconds": 189,
+      "metres": 1337
+    },
+    {
+      "seconds": 70,
+      "metres": 330
+    },
+    {
+      "seconds": 72,
+      "metres": 315
+    },
+    {
+      "seconds": 56,
+      "metres": 250
+    },
+    {
+      "seconds": 124,
+      "metres": 677
+    },
+    {
+      "seconds": 144,
+      "metres": 713
+    },
+    {
+      "seconds": 99,
+      "metres": 555
+    },
+    {
+      "seconds": 94,
+      "metres": 532
+    },
+    {
+      "seconds": 129,
+      "metres": 587
+    },
+    {
+      "seconds": 56,
+      "metres": 437
+    }
+  ]
+}

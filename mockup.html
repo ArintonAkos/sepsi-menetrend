@@ -1,0 +1,579 @@
+<title>Sepsi Menetrend</title>
+<style>
+:root{
+  --paper:#FBFAF7; --surface:#F2F1EC; --sunk:#EAE8DF;
+  --ink:#232E10; --ink-2:#3F4A2A; --panel:#2E3D14; --panel-2:#3C5019;
+  --signal:#EFC913; --signal-ink:#232E10;
+  --muted:#6A6A5C; --border:#E1DFD4; --hair:#D8D5C8;
+  --map-bg:#F0EEE6; --map-net:#C6C3B2; --map-halo:#FBFAF7; --map-case:#FBFAF7;
+  --shadow:0 1px 2px rgba(35,46,16,.06),0 8px 24px -12px rgba(35,46,16,.18);
+  --field-label:#2E3D14;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#14180D; --surface:#1C2113; --sunk:#242A18;
+    --ink:#EEEDE3; --ink-2:#C3C6B2; --panel:#31411A; --panel-2:#3F5322;
+    --signal:#EFC913; --signal-ink:#1A1F0E;
+    --muted:#9B9C88; --border:#2B3220; --hair:#333B26;
+    --map-bg:#101408; --map-net:#39412A; --map-halo:#101408; --map-case:#AFB79B;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px -12px rgba(0,0,0,.7);
+    --field-label:#EEEDE3;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#14180D; --surface:#1C2113; --sunk:#242A18;
+  --ink:#EEEDE3; --ink-2:#C3C6B2; --panel:#31411A; --panel-2:#3F5322;
+  --signal:#EFC913; --signal-ink:#1A1F0E;
+  --muted:#9B9C88; --border:#2B3220; --hair:#333B26;
+  --map-bg:#101408; --map-net:#39412A; --map-halo:#101408; --map-case:#AFB79B;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px -12px rgba(0,0,0,.7);
+  --field-label:#EEEDE3;
+}
+*{box-sizing:border-box}
+body{
+  margin:0; background:var(--paper); color:var(--ink);
+  font:15px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif;
+  -webkit-font-smoothing:antialiased;
+}
+.rounded{font-family:ui-rounded,"SF Pro Rounded","Varela Round","Trebuchet MS",system-ui,sans-serif}
+button,input{font:inherit;color:inherit}
+button{background:none;border:0;cursor:pointer}
+:focus-visible{outline:3px solid var(--signal);outline-offset:2px;border-radius:6px}
+
+.app{display:grid;grid-template-columns:min(420px,38vw) 1fr;height:100vh;height:100dvh}
+.rail{display:flex;flex-direction:column;min-height:0;background:var(--paper);
+  border-right:1px solid var(--border);position:relative;z-index:2}
+
+/* ---- brand ---- */
+.brand{display:flex;align-items:center;gap:10px;padding:14px 18px 12px}
+.wordmark{font-family:ui-rounded,"SF Pro Rounded","Varela Round",system-ui,sans-serif;
+  font-weight:700;font-size:19px;letter-spacing:-.02em;color:var(--ink);display:flex;align-items:baseline;gap:2px}
+.wordmark i{font-style:normal;color:var(--panel)}
+:root[data-theme="dark"] .wordmark i{color:var(--signal)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .wordmark i{color:var(--signal)}}
+.unofficial{font-size:10px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);
+  border:1px solid var(--hair);border-radius:999px;padding:2px 7px;white-space:nowrap}
+.brand-sp{flex:1}
+.lang{display:flex;background:var(--sunk);border-radius:999px;padding:2px}
+.lang button{font-size:12px;font-weight:600;padding:4px 10px;border-radius:999px;color:var(--muted)}
+.lang button[aria-pressed="true"]{background:var(--paper);color:var(--ink);box-shadow:var(--shadow)}
+
+/* ---- search panel ---- */
+.panel{background:var(--panel);padding:14px 18px 16px;position:relative}
+.panel-q{margin:0 0 10px;color:#fff;font-weight:700;font-size:15px;
+  font-family:ui-rounded,"SF Pro Rounded","Varela Round",system-ui,sans-serif}
+.fields{display:flex;flex-direction:column;gap:6px;position:relative}
+.field{display:flex;align-items:center;gap:10px;background:var(--paper);
+  border-radius:999px;padding:11px 16px;border:2px solid transparent}
+.field:focus-within{border-color:var(--signal)}
+.field span{font-weight:700;font-size:13px;color:var(--field-label);flex:0 0 auto;min-width:52px}
+.field input{flex:1;min-width:0;border:0;background:none;outline:none;font-size:14px}
+.field input::placeholder{color:var(--muted)}
+.swap{position:absolute;right:-6px;top:50%;transform:translateY(-50%);
+  width:34px;height:34px;border-radius:50%;background:var(--panel-2);color:#fff;
+  display:grid;place-items:center;border:2px solid var(--panel);font-size:13px;z-index:3}
+.swap:hover{background:var(--signal);color:var(--signal-ink)}
+.locate{display:flex;align-items:center;gap:8px;margin-top:11px;color:var(--signal);
+  font-weight:600;font-size:13px}
+.locate svg{width:15px;height:15px}
+
+/* ---- controls ---- */
+.controls{padding:12px 18px 10px;border-bottom:1px solid var(--border);display:flex;
+  flex-direction:column;gap:11px;background:var(--paper)}
+.chips{display:flex;gap:7px;overflow-x:auto;scrollbar-width:none;margin:0 -18px;padding:0 18px}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:0 0 auto;border:1px solid var(--hair);border-radius:999px;padding:6px 13px;
+  font-size:13px;font-weight:600;color:var(--ink);background:var(--surface);white-space:nowrap}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.chip small{font-weight:400;opacity:.7}
+.pref{display:flex;flex-direction:column;gap:5px}
+.pref-row{display:flex;justify-content:space-between;font-size:11px;font-weight:600;
+  letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:5px;border-radius:99px;
+  background:linear-gradient(90deg,var(--signal),var(--hair));outline:none}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:19px;height:19px;border-radius:50%;
+  background:var(--paper);border:3px solid var(--panel);cursor:grab;box-shadow:var(--shadow)}
+input[type=range]::-moz-range-thumb{width:19px;height:19px;border-radius:50%;
+  background:var(--paper);border:3px solid var(--panel);cursor:grab}
+
+/* ---- results ---- */
+.scroll{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain}
+.result{display:block;width:100%;text-align:left;padding:13px 18px 13px 15px;
+  border-bottom:1px solid var(--border);border-left:3px solid transparent;position:relative}
+.result:hover{background:var(--surface)}
+.result[aria-current="true"]{border-left-color:var(--signal);background:var(--surface)}
+.r-top{display:flex;align-items:flex-start;gap:12px}
+.r-modes{display:flex;align-items:center;gap:5px;flex-wrap:wrap;flex:1;min-width:0}
+.r-dur{text-align:right;flex:0 0 auto;font-family:ui-rounded,"SF Pro Rounded","Varela Round",system-ui,sans-serif}
+.r-dur b{font-size:22px;font-weight:700;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.r-dur span{font-size:12px;color:var(--muted);margin-left:2px}
+.r-bot{display:flex;align-items:center;gap:10px;margin-top:7px;font-size:13px;color:var(--muted);
+  font-variant-numeric:tabular-nums}
+.r-bot b{color:var(--ink);font-weight:600}
+.r-tags{display:flex;gap:5px;margin-top:8px;flex-wrap:wrap}
+.tag{font-size:11px;font-weight:700;letter-spacing:.02em;padding:3px 8px;border-radius:999px;
+  background:var(--sunk);color:var(--ink-2)}
+.tag.hi{background:var(--signal);color:var(--signal-ink)}
+.dot{width:3px;height:3px;border-radius:50%;background:currentColor;opacity:.5;flex:0 0 auto}
+
+/* line chips + walk */
+.line{display:inline-flex;align-items:center;justify-content:center;min-width:26px;height:24px;
+  padding:0 7px;border-radius:7px;font-weight:800;font-size:13px;letter-spacing:-.01em;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.18);
+  font-family:ui-rounded,"SF Pro Rounded","Varela Round",system-ui,sans-serif}
+.line.sm{min-width:22px;height:20px;font-size:12px;border-radius:6px}
+.walkicon{display:inline-flex;align-items:center;gap:1px;color:var(--ink-2);font-size:12px;font-weight:700}
+.walkicon svg{width:15px;height:17px}
+
+/* ---- detail ---- */
+.dhead{display:flex;align-items:center;gap:10px;background:var(--surface);color:var(--ink);
+  padding:11px 16px;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:4}
+.dhead b{font-family:ui-rounded,"SF Pro Rounded","Varela Round",system-ui,sans-serif;font-size:16px}
+.dsum{display:flex;align-items:center;gap:12px;padding:12px 18px;background:var(--surface);
+  border-bottom:1px solid var(--border)}
+.dsum .r-dur b{font-size:24px}
+.tl{padding:6px 18px 18px}
+.node{display:grid;grid-template-columns:26px 1fr auto;gap:0 12px;align-items:stretch;position:relative}
+.rail-c{position:relative;display:flex;justify-content:center;align-items:flex-start;padding-top:4px}
+.rail-c::before{content:"";position:absolute;top:0;bottom:0;width:4px;border-radius:2px;
+  background:var(--bar,transparent)}
+.node.walk .rail-c::before{background:none;
+  background-image:linear-gradient(var(--ink-2) 55%,transparent 0);
+  background-size:4px 10px;background-repeat:repeat-y;opacity:.5;width:4px}
+.pip{width:13px;height:13px;border-radius:50%;background:var(--paper);
+  border:3.5px solid var(--pip,var(--ink));position:relative;z-index:2;margin-top:3px}
+.pip.flag{background:var(--ink);border-color:var(--ink)}
+.n-body{padding-bottom:16px;min-width:0}
+.n-name{font-weight:700;font-size:15px;letter-spacing:-.01em}
+.n-sub{font-size:13px;color:var(--muted);margin-top:2px}
+.n-time{font-variant-numeric:tabular-nums;font-weight:600;font-size:14px;padding-top:1px;
+  align-self:start}
+.n-time.soft{color:var(--muted);font-weight:400}
+.ride-head{display:flex;align-items:center;gap:8px;margin:2px 0 4px}
+.between{margin-top:8px;border:1px solid var(--border);border-radius:11px;overflow:hidden;background:var(--surface)}
+.between summary{cursor:pointer;list-style:none;padding:8px 12px;font-size:13px;font-weight:600;color:var(--ink-2)}
+.between summary::-webkit-details-marker{display:none}
+.between ol{margin:0;padding:2px 12px 10px 28px;font-size:13px;color:var(--muted);
+  display:flex;flex-direction:column;gap:5px}
+.between li::marker{color:var(--hair)}
+.between b{color:var(--ink);font-weight:500;font-variant-numeric:tabular-nums}
+.interp{font-size:11px;color:var(--muted);opacity:.8}
+.walkbox{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--ink-2);font-weight:600}
+.walkbox svg{width:17px;height:19px;flex:0 0 auto}
+.fare{margin:4px 18px 18px;padding:14px 16px;border:1px solid var(--border);border-radius:14px;
+  background:var(--surface);display:flex;flex-direction:column;gap:8px}
+.fare-row{display:flex;justify-content:space-between;align-items:baseline}
+.fare-row b{font-size:19px;font-family:ui-rounded,"SF Pro Rounded","Varela Round",system-ui,sans-serif}
+.fare small{color:var(--muted);font-size:12px;line-height:1.45}
+.cta{display:block;width:100%;background:var(--signal);color:var(--signal-ink);font-weight:800;
+  padding:13px;border-radius:999px;text-align:center;font-size:15px;
+  font-family:ui-rounded,"SF Pro Rounded","Varela Round",system-ui,sans-serif}
+
+.disclaim{padding:11px 18px;border-top:1px solid var(--border);font-size:11px;line-height:1.5;
+  color:var(--muted);background:var(--surface)}
+
+/* ---- map ---- */
+.map{position:relative;background:var(--map-bg);min-height:0}
+.map svg{position:absolute;inset:0;width:100%;height:100%}
+.mapnote{position:absolute;left:14px;bottom:12px;font-size:11px;color:var(--muted);
+  background:color-mix(in srgb,var(--paper) 88%,transparent);padding:5px 10px;border-radius:8px;
+  border:1px solid var(--border);max-width:min(320px,60%);line-height:1.45}
+.zoom{position:absolute;right:14px;bottom:14px;display:flex;flex-direction:column;
+  border-radius:11px;overflow:hidden;box-shadow:var(--shadow);border:1px solid var(--border)}
+.zoom button{width:36px;height:36px;background:var(--paper);font-size:17px;font-weight:600;color:var(--ink)}
+.zoom button+button{border-top:1px solid var(--border)}
+.theme{position:absolute;right:14px;top:14px;background:var(--paper);border:1px solid var(--border);
+  border-radius:999px;padding:7px 13px;font-size:12px;font-weight:600;box-shadow:var(--shadow)}
+#net path{fill:none;stroke:var(--map-net);stroke-linecap:round;stroke-linejoin:round}
+#trip path{fill:none;stroke-linecap:round;stroke-linejoin:round}
+.stopdot{fill:var(--map-halo);stroke:var(--map-net)}
+
+/* ---- suggestions ---- */
+.sugg{position:absolute;left:0;right:0;top:calc(100% + 8px);background:var(--paper);
+  border-radius:16px;box-shadow:var(--shadow);border:1px solid var(--border);overflow:hidden;z-index:9}
+.sugg button{display:flex;width:100%;gap:11px;align-items:center;padding:10px 15px;text-align:left}
+.sugg button:hover{background:var(--surface)}
+.sugg button+button{border-top:1px solid var(--border)}
+.sg-ic{width:26px;height:26px;border-radius:8px;display:grid;place-items:center;flex:0 0 auto;
+  background:var(--sunk);font-size:13px}
+.sg-t{flex:1;min-width:0}
+.sg-n{font-weight:600;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sg-s{font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sg-alias{font-size:11px;font-weight:700;color:var(--panel);background:var(--signal);
+  border-radius:5px;padding:1px 5px;flex:0 0 auto}
+
+@media (max-width:860px){
+  .app{grid-template-columns:1fr;grid-template-rows:36vh 1fr}
+  .map{order:-1;border-bottom:1px solid var(--border)}
+  .rail{border-right:0;border-radius:18px 18px 0 0;margin-top:-18px;box-shadow:0 -6px 24px -10px rgba(35,46,16,.28)}
+  .brand{padding-top:10px}
+  .mapnote{display:none}
+  .theme{top:10px;right:10px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+
+<div class="app">
+  <aside class="rail">
+    <header class="brand">
+      <div class="wordmark rounded">sepsi<i>menetrend</i></div>
+      <div class="brand-sp"></div>
+      <span class="unofficial" id="unoff">nem hivatalos</span>
+      <div class="lang">
+        <button id="hu" aria-pressed="true">HU</button>
+        <button id="ro" aria-pressed="false">RO</button>
+      </div>
+    </header>
+
+    <div class="panel">
+      <p class="panel-q" id="q">Hová mész?</p>
+      <div class="fields">
+        <label class="field"><span id="l-from">Honnan</span><input id="i-from" autocomplete="off"></label>
+        <label class="field"><span id="l-to">Hová</span><input id="i-to" autocomplete="off"></label>
+        <button class="swap" id="swap" title="csere">⇅</button>
+        <div class="sugg" id="sugg" hidden></div>
+      </div>
+      <button class="locate" id="loc">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+          <circle cx="12" cy="12" r="3.4"/><path d="M12 2v3.2M12 18.8V22M2 12h3.2M18.8 12H22" stroke-linecap="round"/>
+        </svg>
+        <span id="l-loc">A helyzetem</span>
+      </button>
+    </div>
+
+    <div class="controls" id="controls">
+      <div class="chips">
+        <button class="chip" aria-pressed="true" id="c-when">Indulás <small>08:30</small></button>
+        <button class="chip" id="c-day">Ma, szerda</button>
+        <button class="chip" id="c-lines">Vonalak</button>
+      </div>
+      <div class="pref">
+        <div class="pref-row"><span id="p-a">Gyorsabb</span><span id="p-b">Kevesebb gyaloglás</span></div>
+        <input type="range" id="pref" min="0" max="100" value="35" aria-label="preferencia">
+      </div>
+    </div>
+
+    <div class="scroll" id="scroll">
+      <div id="list"></div>
+      <div id="detail" hidden></div>
+    </div>
+
+    <footer class="disclaim" id="disc"></footer>
+  </aside>
+
+  <main class="map">
+    <svg id="svg" preserveAspectRatio="xMidYMid meet" aria-label="hálózati térkép">
+      <g id="net"></g><g id="stopdots"></g><g id="trip"></g><g id="marks"></g>
+    </svg>
+    <button class="theme" id="th">Sötét</button>
+    <div class="mapnote" id="note"></div>
+    <div class="zoom"><button id="zin">+</button><button id="zout">−</button></div>
+  </main>
+</div>
+
+<script id="data" type="application/json">{"w":10418,"h":10063,"net":{"1-depart":[[5589,3930],[5527,4353],[5279,4865],[5465,4965],[5535,4954],[5767,4720],[5845,4609],[5814,4631],[5977,4520],[5984,4497],[5938,4464],[5946,4419],[6147,4464],[6186,4264],[6349,4308],[6511,4319],[6705,4408],[6767,4408],[6984,4341],[7356,4431],[7659,4442],[7697,4464],[7752,4442],[7977,4464]],"1-return":[[7977,4464],[7356,4431],[6984,4341],[6767,4408],[6705,4408],[6457,4297],[6426,4319],[6186,4264],[6147,4464],[5946,4419],[5938,4464],[5969,4520],[5806,4642],[5767,4720],[5535,4954],[5465,4965],[5279,4865],[5527,4353],[5573,4030]],"1D-depart":[[5589,3930],[5527,4353],[5279,4865],[5465,4965],[5535,4954],[5767,4720],[5845,4609],[5814,4631],[5977,4520],[5984,4497],[5938,4464],[5946,4419],[6147,4464],[6186,4264],[6349,4308],[6511,4319],[6705,4408],[6767,4408],[6984,4341],[7356,4431],[7659,4442],[7697,4464],[7752,4442],[7922,4453],[7977,4475],[7992,4141],[8597,4208],[9550,4408],[9682,4442],[9705,4475],[9783,4464],[10294,4564],[10318,4586],[10310,4609],[10356,4620],[10364,4598],[10418,4609],[10364,4909],[10217,4887]],"1D-return":[[10217,4887],[10263,4898],[10310,4609],[10418,4609],[10418,4586],[9837,4475],[9759,4453],[9736,4419],[9628,4431],[8597,4208],[7992,4141],[7984,4364],[7961,4453],[7977,4475],[7977,4453],[7356,4431],[6984,4341],[6767,4408],[6705,4408],[6457,4297],[6426,4319],[6186,4264],[6147,4464],[5946,4419],[5938,4464],[5969,4520],[5806,4642],[5767,4720],[5535,4954],[5465,4965],[5279,4865],[5527,4353],[5573,4030]],"2-depart":[[4992,4720],[5434,4954],[5511,4965],[5705,4787],[5845,4609],[5814,4631],[5977,4520],[5984,4497],[5938,4464],[5946,4419],[6147,4464],[6186,4264],[6349,4308],[6511,4319],[6449,4297],[6395,4175],[6271,4119],[6240,4074],[6201,3852],[6163,3785],[6380,3551],[6558,3239],[6868,3440],[6845,3529],[6643,3829],[6876,3941],[6899,4364],[6984,4341],[7356,4431],[7659,4442],[7697,4464],[7759,4442],[7977,4475],[7977,4453],[7356,4431],[6922,4330],[6899,4308],[6876,3941],[6643,3829],[6845,3529],[6868,3440],[6558,3239],[6380,3551],[6349,3551],[6318,3618],[6163,3785],[6225,3963],[6147,3952],[6000,4475],[5806,4642],[5767,4720],[5535,4954],[5465,4965],[5279,4865],[5527,4341],[4899,4264],[4860,4631],[4876,4664],[4992,4720]],"2D-depart":[[4992,4720],[5434,4954],[5511,4965],[5705,4787],[5845,4609],[5814,4631],[5977,4520],[5984,4497],[5938,4464],[5946,4419],[6147,4464],[6186,4264],[6349,4308],[6511,4319],[6449,4297],[6395,4175],[6271,4119],[6240,4074],[6201,3852],[6163,3785],[6380,3551],[6558,3239],[6868,3440],[6845,3529],[6643,3829],[6876,3941],[6899,4364],[6984,4341],[7356,4431],[7659,4442],[7697,4464],[7752,4442],[7922,4453],[7977,4475],[7992,4141],[8597,4208],[9550,4408],[9682,4442],[9705,4475],[9783,4464],[10294,4564],[10318,4586],[10310,4609],[10356,4620],[10364,4598],[10418,4609],[10364,4909],[10217,4887]],"2D-return":[[10217,4887],[10263,4898],[10310,4609],[10418,4609],[10418,4586],[9837,4475],[9759,4453],[9736,4419],[9628,4431],[8597,4208],[7992,4141],[7984,4364],[7961,4453],[7977,4475],[7977,4453],[7356,4431],[6922,4330],[6899,4308],[6876,3941],[6643,3829],[6845,3529],[6868,3440],[6558,3239],[6380,3551],[6349,3551],[6318,3618],[6163,3785],[6225,3963],[6147,3952],[6000,4475],[5806,4642],[5767,4720],[5535,4954],[5465,4965],[5279,4865],[5527,4341],[4899,4264],[4860,4631],[4876,4664],[4992,4720]],"3-depart":[[5814,5188],[5915,5332],[6573,5477],[6721,5354],[6248,5021],[6008,4787],[6124,4609],[6186,4264],[6349,4308],[6511,4319],[6705,4408],[6767,4408],[6984,4341],[7356,4431],[7659,4442],[7697,4464],[7752,4442],[7922,4453],[7961,4475],[7977,4453],[7697,4442],[7790,4620],[7767,5032],[7759,5098],[7705,5154],[7713,5188],[7744,5199],[7744,5232],[7597,6234],[7496,6635],[7457,6913],[7519,7403],[7504,7425],[7535,7514],[7550,7804],[7201,8839],[7101,9640],[7147,10063],[7101,9640],[7186,8928],[7217,8772],[7550,7804],[7535,7514],[7457,6913],[7496,6635],[7597,6234],[7767,5032],[7790,4620],[7736,4508],[7736,4464],[7759,4442],[7977,4475],[7977,4453],[7356,4431],[6984,4341],[6767,4408],[6705,4408],[6457,4297],[6426,4319],[6186,4264],[6124,4609],[6077,4698],[5860,4954],[5713,5076],[5814,5188]],"4-depart":[[5814,5188],[5915,5332],[6573,5477],[6721,5354],[6248,5021],[6008,4787],[6124,4609],[6186,4264],[6349,4308],[6511,4319],[6705,4408],[6767,4408],[6984,4341],[7356,4431],[7659,4442],[7697,4464],[7752,4442],[7922,4453],[7961,4475],[7977,4453],[7697,4442],[7790,4620],[7759,5098],[7705,5176],[7744,5199],[7744,5232],[7938,5265],[8488,5299],[8566,5277],[8612,5032],[8690,4230],[9550,4408],[9682,4442],[9705,4475],[9783,4464],[10294,4564],[10318,4586],[10310,4609],[10356,4620],[10364,4598],[10418,4609],[10364,4909],[10263,4898],[10217,4887],[10263,4898],[10310,4609],[10418,4609],[10418,4586],[9837,4475],[9759,4453],[9736,4419],[9628,4431],[8690,4230],[8612,5032],[8566,5277],[8488,5299],[7938,5265],[7790,5243],[7744,5210],[7790,4620],[7736,4508],[7736,4464],[7759,4442],[7977,4475],[7977,4453],[7356,4431],[6984,4341],[6767,4408],[6705,4408],[6457,4297],[6426,4319],[6186,4264],[6124,4609],[6077,4698],[5860,4954],[5713,5076],[5814,5188]],"5-depart":[[5046,5477],[5147,5499],[5294,5488],[5488,5410],[5535,5410],[5573,5332],[5581,5199],[5604,5154],[5845,4965],[6077,4698],[6124,4609],[6186,4264],[6349,4308],[6511,4319],[6705,4408],[6891,4397],[6930,4809],[6938,5043],[6922,5098],[7031,5098],[7085,4909],[7403,4564],[7426,4575],[7511,4442],[7659,4442],[7697,4464],[7752,4442],[7922,4453],[7977,4475],[7977,4453],[7511,4431],[7457,4286],[7318,4108],[7256,3729],[7271,2905],[7294,2750],[7566,2338],[7666,2393],[7752,2349],[7666,2393],[7550,2315],[7511,2438],[7325,2694],[7279,2794],[7256,3818],[7318,4108],[7457,4297],[7449,4497],[7403,4564],[7426,4575],[7511,4442],[7659,4442],[7697,4464],[7752,4442],[7922,4453],[7977,4475],[7977,4453],[7387,4431],[7364,4375],[7403,4319],[7434,4319],[7449,4353],[7449,4497],[7411,4564],[7077,4920],[7031,5098],[6783,5054],[6542,4876],[6480,4787],[6473,4709],[6511,4687],[6480,4531],[6333,4586],[6132,4531],[6147,4464],[5946,4419],[5938,4464],[5969,4520],[5806,4642],[5767,4720],[5535,4954],[5434,4954],[5132,4787],[5093,4787],[5077,4854],[5139,4920],[5186,5032],[5147,5176],[4860,5188],[4760,5165],[4721,5210],[4667,5332],[4752,5410],[4822,5455],[5046,5477]],"5D-depart":[[5046,5477],[5147,5499],[5294,5488],[5488,5410],[5535,5410],[5573,5332],[5581,5199],[5604,5154],[5845,4965],[6077,4698],[6124,4609],[6186,4264],[6349,4308],[6511,4319],[6705,4408],[6891,4397],[6930,4809],[6938,5043],[6922,5098],[7031,5098],[7085,4909],[7403,4564],[7426,4575],[7511,4442],[7659,4442],[7697,4464],[7752,4442],[7922,4453],[7977,4475],[7992,4141],[8597,4208],[9550,4408],[9682,4442],[9705,4475],[9783,4464],[10294,4564],[10318,4586],[10310,4609],[10356,4620],[10364,4598],[10418,4609],[10364,4909],[10217,4887]],"5D-return":[[10217,4887],[10263,4898],[10310,4609],[10418,4609],[10418,4586],[9837,4475],[9759,4453],[9736,4419],[9628,4431],[8597,4208],[7992,4141],[7984,4364],[7961,4453],[7977,4475],[7977,4453],[7387,4431],[7364,4408],[7387,4330],[7434,4319],[7449,4353],[7449,4497],[7411,4564],[7077,4920],[7031,5098],[6783,5054],[6542,4876],[6480,4787],[6473,4709],[6511,4687],[6480,4531],[6333,4586],[6132,4531],[6147,4464],[5953,4419],[5938,4464],[5969,4520],[5806,4642],[5767,4720],[5511,4965],[5434,4954],[5132,4787],[5093,4787],[5077,4854],[5139,4920],[5186,5032],[5147,5176],[4860,5188],[4760,5165],[4667,5332],[4822,5455],[5046,5477]],"6-depart":[[4992,4720],[5434,4954],[5511,4965],[5705,4787],[5845,4609],[5814,4631],[5977,4520],[5984,4497],[5938,4464],[5946,4419],[6147,4464],[6186,4264],[6349,4308],[6511,4319],[6449,4297],[6395,4175],[6271,4119],[6240,4074],[6201,3852],[6163,3785],[6380,3551],[6558,3239],[6868,3440],[6845,3529],[6643,3829],[6876,3941],[6899,4364],[6984,4341],[7325,4419],[7349,4442],[7364,4520],[7426,4575],[7457,4442],[7457,4297],[7318,4108],[7256,3729],[7279,2794],[7325,2694],[7566,2338],[7666,2393],[7752,2349],[7666,2393],[7550,2315],[7511,2438],[7325,2694],[7279,2794],[7256,3818],[7318,4108],[7449,4275],[7442,4319],[7387,4319],[7349,4397],[7302,4419],[6953,4341],[6899,4308],[6876,3941],[6643,3829],[6845,3529],[6868,3440],[6558,3239],[6380,3551],[6349,3551],[6318,3618],[6163,3785],[6225,3963],[6147,3952],[6000,4475],[5806,4642],[5767,4720],[5535,4954],[5465,4965],[5279,4865],[5527,4341],[4899,4264],[4860,4631],[4876,4664],[4992,4720]],"7-depart":[[5589,3930],[5527,4353],[5279,4865],[5465,4965],[5535,4954],[5620,4865],[5775,5021],[5713,5076],[5915,5332],[6046,5366],[6581,5477],[6721,5354],[6271,5032],[6480,4776],[6542,4876],[6767,5043],[6938,5098],[6899,4364],[6984,4341],[7356,4431],[7659,4442],[7697,4464],[7752,4442],[7977,4464]],"7-return":[[7977,4464],[7356,4431],[6984,4341],[6899,4364],[6938,5009],[6915,5087],[6783,5054],[6542,4876],[6480,4787],[6473,4709],[6511,4687],[6480,4531],[6356,4586],[6132,4531],[6124,4609],[6077,4698],[5860,4954],[5775,5021],[5620,4865],[5511,4965],[5434,4954],[5279,4865],[5527,4353],[5573,4030]],"9-depart":[[7977,4464],[7356,4431],[6953,4341],[6767,4408],[6705,4408],[6604,4364],[6511,4520],[6356,4586],[6132,4531],[6186,4264],[6349,4308],[6511,4319],[6449,4297],[6395,4175],[6271,4119],[6240,4074],[6201,3852],[6163,3785],[6364,3573],[6364,3551],[6209,3495],[6062,3495],[5868,3451],[5620,3251],[4240,3095],[4039,3195],[3535,3161],[3263,3251],[3124,3262],[2884,3328],[2713,3451],[2620,3451],[2504,3418],[2481,3362],[2380,3273],[2295,3117],[2186,3028],[2201,2828],[2132,2816],[2031,2905],[1969,2894],[1915,2839],[1860,2616],[1891,2482],[1946,2405],[1961,2304],[1961,2193],[1915,2026],[1783,1959],[1729,1959],[1643,2015],[1403,1815],[1108,1492],[1031,1436],[1015,1392],[961,1369],[814,1213],[806,1169],[860,1102],[845,1080],[628,968],[535,1035],[341,991],[372,924],[372,835],[318,735],[248,690],[0,724]],"9-return":[[0,724],[248,690],[318,735],[372,835],[372,924],[341,991],[535,1035],[628,968],[845,1080],[860,1102],[806,1169],[814,1213],[961,1369],[1015,1392],[1031,1436],[1108,1492],[1403,1815],[1643,2015],[1729,1959],[1783,1959],[1915,2026],[1961,2193],[1961,2304],[1946,2405],[1891,2482],[1860,2616],[1915,2839],[1969,2894],[2031,2905],[2132,2816],[2201,2828],[2186,3028],[2295,3117],[2380,3273],[2481,3362],[2504,3418],[2620,3451],[2713,3451],[2884,3328],[3124,3262],[3263,3251],[3535,3161],[4039,3195],[4240,3095],[5620,3251],[5868,3451],[6062,3495],[6209,3495],[6349,3551],[6318,3618],[6163,3785],[6225,3963],[6147,3952],[6015,4431],[5977,4497],[5938,4464],[5946,4419],[6147,4464],[6186,4264],[6349,4308],[6511,4319],[6705,4408],[6767,4408],[6984,4341],[7356,4431],[7659,4442],[7697,4464],[7752,4442],[7977,4464]],"10-depart":[[6155,4419],[6186,4264],[6349,4308],[6511,4319],[6705,4408],[6899,4364],[6876,3941],[6643,3818],[6845,3529],[6922,3251],[7101,2950],[6969,2816],[6977,2661],[7054,2471],[7194,2260],[7217,2082],[7116,1815],[6938,1558],[6922,1380],[6798,1013],[6659,902],[6581,802],[6411,690],[6108,579],[6031,523],[5884,523],[5573,412],[5147,33]],"10-return":[[5147,33],[5085,0],[5046,212],[5070,267],[5356,367],[5643,423],[5713,468],[5884,523],[6031,523],[6108,579],[6178,590],[6449,712],[6465,690],[6659,902],[6798,1013],[6922,1380],[6938,1558],[7116,1815],[7217,2082],[7194,2260],[7054,2471],[6977,2661],[6969,2816],[7062,2917],[7085,2972],[6922,3251],[6845,3529],[6643,3829],[6504,3685],[6372,3585],[6364,3551],[6170,3774],[6225,3963],[6147,3952],[6000,4475],[5977,4497],[5938,4464],[5946,4419],[6132,4464],[6155,4419]]},"stops":[{"n":"Arena Sepsi","h":"Sepsi Aréna","x":7752,"y":2349,"z":"city"},{"n":"Autoliv","h":"Autoliv","x":8387,"y":4175,"z":"city"},{"n":"B-dul Grigore Bălan 1","h":"G. Bálán sugárút 1","x":6907,"y":4575,"z":"city"},{"n":"B-dul Grigore Bălan 2","h":"G. Bálán sugárút 2","x":6922,"y":5043,"z":"city"},{"n":"B-dul Nicolae Iorga 1","h":"N. Iorga sugárút 1","x":6798,"y":5043,"z":"city"},{"n":"B-dul Nicolae Iorga 1","h":"N. Iorga sugárút 1","x":6767,"y":5054,"z":"city"},{"n":"B-dul Nicolae Iorga 2","h":"N. Iorga sugárút 2","x":6581,"y":4920,"z":"city"},{"n":"B-dul Nicolae Iorga 2","h":"N. Iorga sugárút 2","x":6573,"y":4876,"z":"city"},{"n":"Biserica Reformată","h":"Református Templom","x":6666,"y":4397,"z":"city"},{"n":"Biserica Reformată","h":"Református Templom","x":6573,"y":4341,"z":"city"},{"n":"Biserica Reformată Arcuș","h":"Árkosi Református Templom","x":5070,"y":267,"z":"arcus"},{"n":"Calea Brașovului 1","h":"Brassói út 1","x":7759,"y":5143,"z":"city"},{"n":"Calea Brașovului 1","h":"Brassói út 1","x":7736,"y":5154,"z":"city"},{"n":"Calea Brașovului 2","h":"Brassói út 2","x":7651,"y":5733,"z":"city"},{"n":"Calea Brașovului 2","h":"Brassói út 2","x":7666,"y":5755,"z":"city"},{"n":"Calea Brașovului 3","h":"Brassói út 3","x":7604,"y":6089,"z":"city"},{"n":"Calea Brașovului 3","h":"Brassói út 3","x":7620,"y":6089,"z":"city"},{"n":"Cap Linie Simeria","h":"Szemerja Végállomás","x":5589,"y":3930,"z":"city"},{"n":"Cap Linie Simeria","h":"Szemerja Végállomás","x":5581,"y":4030,"z":"city"},{"n":"Cart. Kossuth Lajos","h":"Kossuth Lajos negyed","x":7225,"y":2148,"z":"city"},{"n":"Cart. Kossuth Lajos","h":"Kossuth Lajos negyed","x":7209,"y":2148,"z":"city"},{"n":"Cartierul Ciucului","h":"Csíki negyed","x":6581,"y":3273,"z":"city"},{"n":"Cartierul Ciucului","h":"Csíki negyed","x":6628,"y":3273,"z":"city"},{"n":"Casa cu Arcade","h":"Lábasház","x":6163,"y":4419,"z":"city"},{"n":"Castelul Szentkereszty","h":"Szentkereszty kastély","x":6263,"y":623,"z":"arcus"},{"n":"Castelul Szentkereszty","h":"Szentkereszty kastély","x":6132,"y":590,"z":"arcus"},{"n":"Centru Arcuș","h":"Árkos központ","x":5147,"y":22,"z":"arcus"},{"n":"Centru Comercial","h":"Bevásárlóközpont","x":7279,"y":3785,"z":"city"},{"n":"Centru Comercial","h":"Bevásárlóközpont","x":7248,"y":3729,"z":"city"},{"n":"Chilieni","h":"Kilyén","x":7519,"y":7447,"z":"city"},{"n":"Chilieni","h":"Kilyén","x":7527,"y":7414,"z":"city"},{"n":"Col. Mihai Viteazul","h":"Vitéz Mihály Líceum","x":6077,"y":4709,"z":"city"},{"n":"Col. Mihai Viteazul","h":"Vitéz Mihály Líceum","x":5977,"y":4809,"z":"city"},{"n":"Comfort Residence","h":"Comfort Residence","x":6666,"y":5399,"z":"city"},{"n":"Coșeni 1","h":"Szotyor 1","x":7116,"y":9841,"z":"city"},{"n":"Coșeni 2","h":"Szotyor 2","x":7147,"y":10063,"z":"city"},{"n":"Câmpul Frumos","h":"Szépmező","x":10380,"y":4609,"z":"city"},{"n":"Debren","h":"Debren","x":6876,"y":4030,"z":"city"},{"n":"Debren","h":"Debren","x":6899,"y":4019,"z":"city"},{"n":"Fabrica de Lapte","h":"Tejgyár","x":7256,"y":3139,"z":"city"},{"n":"Fabrica de Țigarete","h":"Cigarettagyár","x":5853,"y":4943,"z":"city"},{"n":"Fabrica de Țigarete","h":"Cigarettagyár","x":5822,"y":4998,"z":"city"},{"n":"Fântâna Honvéd","h":"Honvéd kút","x":2628,"y":3440,"z":"city"},{"n":"Fântâna Honvéd","h":"Honvéd kút","x":2643,"y":3451,"z":"city"},{"n":"Gara CFR","h":"Vasútállomás","x":7984,"y":4475,"z":"city"},{"n":"Grădinărie","h":"Kertészet","x":6977,"y":2716,"z":"city"},{"n":"Grădinărie","h":"Kertészet","x":6969,"y":2705,"z":"city"},{"n":"Institutul de Proiectări","h":"Tervező Intézet","x":5822,"y":4642,"z":"city"},{"n":"Institutul de Proiectări","h":"Tervező Intézet","x":5798,"y":4631,"z":"city"},{"n":"Izvorul Sulfuros","h":"Büdöskút","x":4659,"y":5321,"z":"city"},{"n":"Lic. Plugor Sándor","h":"Plugor Sándor Líceum","x":6225,"y":3918,"z":"city"},{"n":"Lic. Plugor Sándor","h":"Plugor Sándor Líceum","x":6178,"y":3829,"z":"city"},{"n":"Motel Calypso","h":"Motel Calypso","x":7201,"y":8839,"z":"city"},{"n":"Motel Calypso","h":"Motel Calypso","x":7232,"y":8750,"z":"city"},{"n":"Multi-Trans","h":"Multi-Trans","x":10217,"y":4898,"z":"city"},{"n":"Parcul Elisabeta","h":"Erzsébet Park","x":6163,"y":4341,"z":"city"},{"n":"Piața Kálvin","h":"Kálvin tér","x":6325,"y":3607,"z":"city"},{"n":"Piața Kálvin","h":"Kálvin tér","x":6310,"y":3607,"z":"city"},{"n":"Primăria Arcuș","h":"Árkosi Polgármesteri Hivatal","x":5558,"y":401,"z":"arcus"},{"n":"Primăria Arcuș","h":"Árkosi Polgármesteri Hivatal","x":5535,"y":412,"z":"arcus"},{"n":"Spitalul Județean","h":"Megyei Kórház","x":5496,"y":4386,"z":"city"},{"n":"Spitalul Județean","h":"Megyei Kórház","x":5480,"y":4486,"z":"city"},{"n":"Str. Bartók Béla","h":"Bartók Béla utca","x":4992,"y":4720,"z":"city"},{"n":"Str. Borviz","h":"Borvíz utca","x":5287,"y":3206,"z":"city"},{"n":"Str. Borviz","h":"Borvíz utca","x":5287,"y":3217,"z":"city"},{"n":"Str. Ciucului 1","h":"Csíki utca 1","x":6666,"y":3785,"z":"city"},{"n":"Str. Ciucului 1","h":"Csíki utca 1","x":6674,"y":3796,"z":"city"},{"n":"Str. Ciucului 2","h":"Csíki utca 2","x":6822,"y":3551,"z":"city"},{"n":"Str. Ciucului 2","h":"Csíki utca 2","x":6868,"y":3484,"z":"city"},{"n":"Str. Constructorilor 1","h":"Építők útja 1","x":7860,"y":5265,"z":"city"},{"n":"Str. Constructorilor 1","h":"Építők útja 1","x":7845,"y":5243,"z":"city"},{"n":"Str. Constructorilor 2","h":"Építők útja 2","x":8341,"y":5299,"z":"city"},{"n":"Str. Constructorilor 2","h":"Építők útja 2","x":8349,"y":5277,"z":"city"},{"n":"Str. Constructorilor 3","h":"Építők útja 3","x":8620,"y":4987,"z":"city"},{"n":"Str. Dealului","h":"Domb utca","x":5403,"y":4943,"z":"city"},{"n":"Str. Dealului","h":"Domb utca","x":5341,"y":4887,"z":"city"},{"n":"Str. Dózsa György","h":"Dózsa György utca","x":5132,"y":5176,"z":"city"},{"n":"Str. Fabricii 1","h":"Gyár utca 1","x":6674,"y":5299,"z":"city"},{"n":"Str. Fabricii 2","h":"Gyár utca 2","x":6101,"y":4865,"z":"city"},{"n":"Str. Ghioceilor","h":"Hóvirág utca","x":4868,"y":4453,"z":"city"},{"n":"Str. Gábor Áron","h":"Gábor Áron utca","x":6046,"y":4286,"z":"city"},{"n":"Str. József Attila 1","h":"József Attila u. 1","x":5426,"y":5444,"z":"city"},{"n":"Str. József Attila 2","h":"József Attila u. 2","x":5046,"y":5477,"z":"city"},{"n":"Str. Kós Károly","h":"Kós Károly utca","x":5573,"y":5277,"z":"city"},{"n":"Str. Lăcrămioarei 1","h":"Gyöngyvirág utca 1","x":7163,"y":4842,"z":"city"},{"n":"Str. Lăcrămioarei 1","h":"Gyöngyvirág utca 1","x":7209,"y":4764,"z":"city"},{"n":"Str. Lăcrămioarei 2","h":"Gyöngyvirág utca 2","x":7054,"y":5043,"z":"city"},{"n":"Str. Sporturilor","h":"Sport utca","x":7070,"y":4375,"z":"city"},{"n":"Str. Sporturilor","h":"Sport utca","x":7093,"y":4364,"z":"city"},{"n":"Str. Vânătorilor 1","h":"Vadász utca 1","x":5310,"y":4319,"z":"city"},{"n":"Str. Vânătorilor 2","h":"Vadász utca 2","x":5070,"y":4286,"z":"city"},{"n":"Str. Țigaretei 1","h":"Cigaretta utca 1","x":5814,"y":5199,"z":"city"},{"n":"Str. Țigaretei 2","h":"Cigaretta utca 2","x":6046,"y":5366,"z":"city"},{"n":"Str. Țigaretei 3","h":"Cigaretta utca 3","x":6449,"y":5455,"z":"city"},{"n":"Terminal","h":"Terminál","x":7713,"y":5176,"z":"city"},{"n":"Tribunal","h":"Törvényszék","x":6263,"y":4553,"z":"city"},{"n":"Șugaș Băi","h":"Sugásfürdő","x":0,"y":735,"z":"city"}],"journeys":[{"dep":"07:30","arr":"07:53","total":23,"walkMin":1,"wait":4,"tickets":1,"zone":"arcus","price":4.0,"legs":[{"k":"ride","line":"10","color":"#000000","head":{"ro":"Centru Arcuș → Casa cu Arcade","hu":"Árkos központ → Lábasház"},"stops":[{"t":"07:30","n":"Centru Arcuș","h":"Árkos központ","tp":true,"x":5147,"y":22},{"t":"07:31","n":"Biserica Reformată Arcuș","h":"Árkosi Református Templom","tp":true,"x":5070,"y":267},{"t":"07:33","n":"Primăria Arcuș","h":"Árkosi Polgármesteri Hivatal","tp":true,"x":5535,"y":412},{"t":"07:34","n":"Castelul Szentkereszty","h":"Szentkereszty kastély","tp":true,"x":6132,"y":590},{"t":"07:38","n":"Cart. Kossuth Lajos","h":"Kossuth Lajos negyed","tp":true,"x":7209,"y":2148},{"t":"07:40","n":"Grădinărie","h":"Kertészet","tp":true,"x":6969,"y":2705},{"t":"07:42","n":"Str. Ciucului 2","h":"Csíki utca 2","tp":false,"x":6822,"y":3551},{"t":"07:43","n":"Str. Ciucului 1","h":"Csíki utca 1","tp":false,"x":6666,"y":3785},{"t":"07:46","n":"Piața Kálvin","h":"Kálvin tér","tp":false,"x":6310,"y":3607}],"path":[[5147,33],[5085,0],[5077,111],[5046,212],[5070,267],[5356,367],[5465,378],[5550,412],[5643,423],[5713,468],[5884,523],[5953,512],[6031,523],[6108,579],[6178,590],[6449,712],[6465,690],[6511,746],[6581,802],[6659,902],[6798,1013],[6822,1046],[6868,1236],[6922,1380],[6938,1558],[7116,1815],[7209,2048],[7217,2182],[7194,2260],[7054,2471],[6977,2661],[6969,2816],[7062,2917],[7085,2950],[7085,2972],[6992,3106],[6922,3251],[6845,3529],[6643,3829],[6566,3763],[6504,3685],[6372,3585],[6364,3551],[6349,3551],[6349,3573],[6310,3618]]},{"k":"walk","m":0,"min":1,"from":{"ro":"Piața Kálvin","hu":"Kálvin tér"},"to":{"ro":"Piața Kálvin","hu":"Kálvin tér"},"path":[[6310,3607],[6310,3607]]},{"k":"ride","line":"6","color":"#6EA500","head":{"ro":"Str. Bartók Béla – traseu circular","hu":"Bartók Béla utca – körjárat"},"stops":[{"t":"07:51","n":"Piața Kálvin","h":"Kálvin tér","tp":false,"x":6310,"y":3607},{"t":"07:53","n":"Cartierul Ciucului","h":"Csíki negyed","tp":true,"x":6581,"y":3273}],"path":[[6310,3618],[6380,3551],[6558,3239],[6581,3262]]}]},{"dep":"07:30","arr":"07:55","total":25,"walkMin":1,"wait":7,"tickets":1,"zone":"arcus","price":4.0,"legs":[{"k":"ride","line":"10","color":"#000000","head":{"ro":"Centru Arcuș → Casa cu Arcade","hu":"Árkos központ → Lábasház"},"stops":[{"t":"07:30","n":"Centru Arcuș","h":"Árkos központ","tp":true,"x":5147,"y":22},{"t":"07:31","n":"Biserica Reformată Arcuș","h":"Árkosi Református Templom","tp":true,"x":5070,"y":267},{"t":"07:33","n":"Primăria Arcuș","h":"Árkosi Polgármesteri Hivatal","tp":true,"x":5535,"y":412},{"t":"07:34","n":"Castelul Szentkereszty","h":"Szentkereszty kastély","tp":true,"x":6132,"y":590},{"t":"07:38","n":"Cart. Kossuth Lajos","h":"Kossuth Lajos negyed","tp":true,"x":7209,"y":2148},{"t":"07:40","n":"Grădinărie","h":"Kertészet","tp":true,"x":6969,"y":2705},{"t":"07:42","n":"Str. Ciucului 2","h":"Csíki utca 2","tp":false,"x":6822,"y":3551},{"t":"07:43","n":"Str. Ciucului 1","h":"Csíki utca 1","tp":false,"x":6666,"y":3785}],"path":[[5147,33],[5085,0],[5077,111],[5046,212],[5070,267],[5356,367],[5465,378],[5550,412],[5643,423],[5713,468],[5884,523],[5953,512],[6031,523],[6108,579],[6178,590],[6449,712],[6465,690],[6511,746],[6581,802],[6659,902],[6798,1013],[6822,1046],[6868,1236],[6922,1380],[6938,1558],[7116,1815],[7209,2048],[7217,2182],[7194,2260],[7054,2471],[6977,2661],[6969,2816],[7062,2917],[7085,2950],[7085,2972],[6992,3106],[6922,3251],[6845,3529],[6666,3785]]},{"k":"walk","m":0,"min":1,"from":{"ro":"Str. Ciucului 1","hu":"Csíki utca 1"},"to":{"ro":"Str. Ciucului 1","hu":"Csíki utca 1"},"path":[[6666,3785],[6666,3785]]},{"k":"ride","line":"6","color":"#6EA500","head":{"ro":"Str. Bartók Béla – traseu circular","hu":"Bartók Béla utca – körjárat"},"stops":[{"t":"07:52","n":"Str. Ciucului 1","h":"Csíki utca 1","tp":true,"x":6666,"y":3785},{"t":"07:53","n":"Str. Ciucului 2","h":"Csíki utca 2","tp":true,"x":6822,"y":3551},{"t":"07:55","n":"Cartierul Ciucului","h":"Csíki negyed","tp":false,"x":6628,"y":3273}],"path":[[6666,3796],[6845,3529],[6868,3440],[6628,3284]]}]},{"dep":"08:30","arr":"08:55","total":25,"walkMin":1,"wait":10,"tickets":1,"zone":"arcus","price":4.0,"legs":[{"k":"ride","line":"10","color":"#000000","head":{"ro":"Centru Arcuș → Casa cu Arcade","hu":"Árkos központ → Lábasház"},"stops":[{"t":"08:30","n":"Centru Arcuș","h":"Árkos központ","tp":true,"x":5147,"y":22},{"t":"08:31","n":"Biserica Reformată Arcuș","h":"Árkosi Református Templom","tp":true,"x":5070,"y":267},{"t":"08:33","n":"Primăria Arcuș","h":"Árkosi Polgármesteri Hivatal","tp":true,"x":5535,"y":412},{"t":"08:34","n":"Castelul Szentkereszty","h":"Szentkereszty kastély","tp":true,"x":6132,"y":590},{"t":"08:38","n":"Cart. Kossuth Lajos","h":"Kossuth Lajos negyed","tp":true,"x":7209,"y":2148},{"t":"08:40","n":"Grădinărie","h":"Kertészet","tp":true,"x":6969,"y":2705},{"t":"08:42","n":"Str. Ciucului 2","h":"Csíki utca 2","tp":false,"x":6822,"y":3551}],"path":[[5147,33],[5085,0],[5077,111],[5046,212],[5070,267],[5356,367],[5465,378],[5550,412],[5643,423],[5713,468],[5884,523],[5953,512],[6031,523],[6108,579],[6178,590],[6449,712],[6465,690],[6511,746],[6581,802],[6659,902],[6798,1013],[6822,1046],[6868,1236],[6922,1380],[6938,1558],[7116,1815],[7217,2082],[7217,2182],[7194,2260],[7054,2471],[6977,2661],[6969,2816],[7062,2917],[7085,2950],[7085,2972],[6992,3106],[6922,3251],[6860,3495],[6822,3551]]},{"k":"walk","m":0,"min":1,"from":{"ro":"Str. Ciucului 2","hu":"Csíki utca 2"},"to":{"ro":"Str. Ciucului 2","hu":"Csíki utca 2"},"path":[[6822,3551],[6822,3551]]},{"k":"ride","line":"6","color":"#6EA500","head":{"ro":"Str. Bartók Béla – traseu circular","hu":"Bartók Béla utca – körjárat"},"stops":[{"t":"08:53","n":"Str. Ciucului 2","h":"Csíki utca 2","tp":true,"x":6822,"y":3551},{"t":"08:55","n":"Cartierul Ciucului","h":"Csíki negyed","tp":false,"x":6628,"y":3273}],"path":[[6829,3551],[6860,3495],[6868,3440],[6628,3284]]}]},{"dep":"08:30","arr":"09:04","total":34,"walkMin":1,"wait":2,"tickets":1,"zone":"arcus","price":4.0,"legs":[{"k":"ride","line":"10","color":"#000000","head":{"ro":"Centru Arcuș → Casa cu Arcade","hu":"Árkos központ → Lábasház"},"stops":[{"t":"08:30","n":"Centru Arcuș","h":"Árkos központ","tp":true,"x":5147,"y":22},{"t":"08:31","n":"Biserica Reformată Arcuș","h":"Árkosi Református Templom","tp":true,"x":5070,"y":267},{"t":"08:33","n":"Primăria Arcuș","h":"Árkosi Polgármesteri Hivatal","tp":true,"x":5535,"y":412},{"t":"08:34","n":"Castelul Szentkereszty","h":"Szentkereszty kastély","tp":true,"x":6132,"y":590},{"t":"08:38","n":"Cart. Kossuth Lajos","h":"Kossuth Lajos negyed","tp":true,"x":7209,"y":2148},{"t":"08:40","n":"Grădinărie","h":"Kertészet","tp":true,"x":6969,"y":2705},{"t":"08:42","n":"Str. Ciucului 2","h":"Csíki utca 2","tp":false,"x":6822,"y":3551},{"t":"08:43","n":"Str. Ciucului 1","h":"Csíki utca 1","tp":false,"x":6666,"y":3785},{"t":"08:46","n":"Piața Kálvin","h":"Kálvin tér","tp":false,"x":6310,"y":3607},{"t":"08:47","n":"Lic. Plugor Sándor","h":"Plugor Sándor Líceum","tp":false,"x":6178,"y":3829},{"t":"08:49","n":"Str. Gábor Áron","h":"Gábor Áron utca","tp":true,"x":6046,"y":4286},{"t":"08:52","n":"Casa cu Arcade","h":"Lábasház","tp":false,"x":6163,"y":4419}],"path":[[5147,33],[5085,0],[5077,111],[5046,212],[5070,267],[5356,367],[5465,378],[5550,412],[5643,423],[5713,468],[5884,523],[5953,512],[6031,523],[6108,579],[6178,590],[6449,712],[6465,690],[6511,746],[6581,802],[6659,902],[6798,1013],[6822,1046],[6868,1236],[6922,1380],[6938,1558],[7116,1815],[7217,2082],[7217,2182],[7194,2260],[7054,2471],[6977,2661],[6969,2816],[7062,2917],[7085,2950],[7085,2972],[6992,3106],[6922,3251],[6845,3529],[6643,3829],[6566,3763],[6504,3685],[6372,3585],[6364,3551],[6349,3551],[6349,3573],[6263,3685],[6170,3774],[6163,3785],[6201,3852],[6225,3963],[6147,3952],[6116,4030],[6000,4475],[5977,4497],[5938,4464],[5946,4419],[6132,4464],[6147,4464],[6155,4419]]},{"k":"walk","m":0,"min":1,"from":{"ro":"Casa cu Arcade","hu":"Lábasház"},"to":{"ro":"Casa cu Arcade","hu":"Lábasház"},"path":[[6163,4419],[6163,4419]]},{"k":"ride","line":"2","color":"#DB4436","head":{"ro":"Bartók Béla – traseu circular","hu":"Bartók Béla utca – körjárat"},"stops":[{"t":"08:55","n":"Casa cu Arcade","h":"Lábasház","tp":false,"x":6163,"y":4419},{"t":"09:00","n":"Lic. Plugor Sándor","h":"Plugor Sándor Líceum","tp":false,"x":6225,"y":3918},{"t":"09:02","n":"Piața Kálvin","h":"Kálvin tér","tp":false,"x":6325,"y":3607},{"t":"09:04","n":"Cartierul Ciucului","h":"Csíki negyed","tp":false,"x":6581,"y":3273}],"path":[[6155,4419],[6186,4264],[6349,4308],[6511,4319],[6449,4297],[6395,4175],[6271,4119],[6240,4074],[6201,3852],[6163,3785],[6380,3551],[6558,3239],[6581,3262]]}]},{"dep":"07:30","arr":"08:09","total":39,"walkMin":1,"wait":7,"tickets":1,"zone":"arcus","price":4.0,"legs":[{"k":"ride","line":"10","color":"#000000","head":{"ro":"Centru Arcuș → Casa cu Arcade","hu":"Árkos központ → Lábasház"},"stops":[{"t":"07:30","n":"Centru Arcuș","h":"Árkos központ","tp":true,"x":5147,"y":22},{"t":"07:31","n":"Biserica Reformată Arcuș","h":"Árkosi Református Templom","tp":true,"x":5070,"y":267},{"t":"07:33","n":"Primăria Arcuș","h":"Árkosi Polgármesteri Hivatal","tp":true,"x":5535,"y":412},{"t":"07:34","n":"Castelul Szentkereszty","h":"Szentkereszty kastély","tp":true,"x":6132,"y":590},{"t":"07:38","n":"Cart. Kossuth Lajos","h":"Kossuth Lajos negyed","tp":true,"x":7209,"y":2148},{"t":"07:40","n":"Grădinărie","h":"Kertészet","tp":true,"x":6969,"y":2705},{"t":"07:42","n":"Str. Ciucului 2","h":"Csíki utca 2","tp":false,"x":6822,"y":3551}],"path":[[5147,33],[5085,0],[5077,111],[5046,212],[5070,267],[5356,367],[5465,378],[5550,412],[5643,423],[5713,468],[5884,523],[5953,512],[6031,523],[6108,579],[6178,590],[6449,712],[6465,690],[6511,746],[6581,802],[6659,902],[6798,1013],[6822,1046],[6868,1236],[6922,1380],[6938,1558],[7116,1815],[7217,2082],[7217,2182],[7194,2260],[7054,2471],[6977,2661],[6969,2816],[7062,2917],[7085,2950],[7085,2972],[6992,3106],[6922,3251],[6860,3495],[6822,3551]]},{"k":"walk","m":0,"min":1,"from":{"ro":"Str. Ciucului 2","hu":"Csíki utca 2"},"to":{"ro":"Str. Ciucului 2","hu":"Csíki utca 2"},"path":[[6822,3551],[6822,3551]]},{"k":"ride","line":"2","color":"#DB4436","head":{"ro":"Bartók Béla – traseu circular","hu":"Bartók Béla utca – körjárat"},"stops":[{"t":"07:51","n":"Str. Ciucului 2","h":"Csíki utca 2","tp":false,"x":6822,"y":3551},{"t":"07:52","n":"Str. Ciucului 1","h":"Csíki utca 1","tp":false,"x":6666,"y":3785},{"t":"07:54","n":"Debren","h":"Debren","tp":false,"x":6876,"y":4030},{"t":"07:56","n":"Str. Sporturilor","h":"Sport utca","tp":false,"x":7070,"y":4375},{"t":"07:59","n":"Gara CFR","h":"Vasútállomás","tp":true,"x":7984,"y":4475},{"t":"08:02","n":"Str. Sporturilor","h":"Sport utca","tp":true,"x":7093,"y":4364},{"t":"08:04","n":"Debren","h":"Debren","tp":true,"x":6899,"y":4019},{"t":"08:06","n":"Str. Ciucului 1","h":"Csíki utca 1","tp":true,"x":6674,"y":3796},{"t":"08:08","n":"Str. Ciucului 2","h":"Csíki utca 2","tp":true,"x":6868,"y":3484},{"t":"08:09","n":"Cartierul Ciucului","h":"Csíki negyed","tp":true,"x":6628,"y":3273}],"path":[[6822,3551],[6643,3829],[6876,3941],[6891,4030],[6899,4364],[6953,4341],[6984,4341],[7139,4375],[7147,4386],[7341,4419],[7356,4431],[7659,4442],[7697,4453],[7697,4464],[7752,4442],[7767,4453],[7922,4453],[7977,4475],[7977,4453],[7953,4464],[7922,4453],[7767,4453],[7759,4442],[7356,4431],[7341,4419],[7302,4419],[6922,4330],[6899,4308],[6891,4052],[6876,3941],[6643,3829],[6845,3529],[6868,3440],[6628,3284]]}]},{"dep":"08:30","arr":"09:24","total":54,"walkMin":5,"wait":20,"tickets":1,"zone":"arcus","price":4.0,"legs":[{"k":"ride","line":"10","color":"#000000","head":{"ro":"Centru Arcuș → Casa cu Arcade","hu":"Árkos központ → Lábasház"},"stops":[{"t":"08:30","n":"Centru Arcuș","h":"Árkos központ","tp":true,"x":5147,"y":22},{"t":"08:31","n":"Biserica Reformată Arcuș","h":"Árkosi Református Templom","tp":true,"x":5070,"y":267},{"t":"08:33","n":"Primăria Arcuș","h":"Árkosi Polgármesteri Hivatal","tp":true,"x":5535,"y":412},{"t":"08:34","n":"Castelul Szentkereszty","h":"Szentkereszty kastély","tp":true,"x":6132,"y":590},{"t":"08:38","n":"Cart. Kossuth Lajos","h":"Kossuth Lajos negyed","tp":true,"x":7209,"y":2148},{"t":"08:40","n":"Grădinărie","h":"Kertészet","tp":true,"x":6969,"y":2705},{"t":"08:42","n":"Str. Ciucului 2","h":"Csíki utca 2","tp":false,"x":6822,"y":3551},{"t":"08:43","n":"Str. Ciucului 1","h":"Csíki utca 1","tp":false,"x":6666,"y":3785}],"path":[[5147,33],[5085,0],[5077,111],[5046,212],[5070,267],[5356,367],[5465,378],[5550,412],[5643,423],[5713,468],[5884,523],[5953,512],[6031,523],[6108,579],[6178,590],[6449,712],[6465,690],[6511,746],[6581,802],[6659,902],[6798,1013],[6822,1046],[6868,1236],[6922,1380],[6938,1558],[7116,1815],[7209,2048],[7217,2182],[7194,2260],[7054,2471],[6977,2661],[6969,2816],[7062,2917],[7085,2950],[7085,2972],[6992,3106],[6922,3251],[6845,3529],[6666,3785]]},{"k":"walk","m":322,"min":5,"from":{"ro":"Str. Ciucului 1","hu":"Csíki utca 1"},"to":{"ro":"Debren","hu":"Debren"},"path":[[6666,3785],[6876,4030]]},{"k":"ride","line":"2","color":"#DB4436","head":{"ro":"Bartók Béla – traseu circular","hu":"Bartók Béla utca – körjárat"},"stops":[{"t":"09:09","n":"Debren","h":"Debren","tp":false,"x":6876,"y":4030},{"t":"09:11","n":"Str. Sporturilor","h":"Sport utca","tp":false,"x":7070,"y":4375},{"t":"09:14","n":"Gara CFR","h":"Vasútállomás","tp":true,"x":7984,"y":4475},{"t":"09:17","n":"Str. Sporturilor","h":"Sport utca","tp":true,"x":7093,"y":4364},{"t":"09:19","n":"Debren","h":"Debren","tp":true,"x":6899,"y":4019},{"t":"09:21","n":"Str. Ciucului 1","h":"Csíki utca 1","tp":true,"x":6674,"y":3796},{"t":"09:23","n":"Str. Ciucului 2","h":"Csíki utca 2","tp":true,"x":6868,"y":3484},{"t":"09:24","n":"Cartierul Ciucului","h":"Csíki negyed","tp":true,"x":6628,"y":3273}],"path":[[6891,4030],[6899,4364],[6953,4341],[6984,4341],[7139,4375],[7147,4386],[7341,4419],[7356,4431],[7659,4442],[7697,4453],[7697,4464],[7752,4442],[7767,4453],[7922,4453],[7977,4475],[7977,4453],[7953,4464],[7922,4453],[7767,4453],[7759,4442],[7356,4431],[7341,4419],[7302,4419],[6922,4330],[6899,4308],[6891,4052],[6876,3941],[6643,3829],[6845,3529],[6868,3440],[6628,3284]]}]}],"from":{"ro":"Centru Arcuș","hu":"Árkos központ"},"to":{"ro":"Cartierul Ciucului","hu":"Csíki negyed"},"colors":{"1":"#136F29","1D":"#7DB089","2":"#DB4436","2D":"#EB9890","3":"#00B0F0","4":"#F4B400","5":"#7C3592","5D":"#B790C3","6":"#6EA500","7":"#FF3EFF","9":"#B27E62","10":"#000000"}}</script>
+<script>
+const D = JSON.parse(document.getElementById("data").textContent);
+let L = "hu", pref = 0.35, chosen = 0, view = null;
+
+const T = {
+  hu:{q:"Hová mész?",from:"Honnan",to:"Hová",loc:"A helyzetem",fast:"Gyorsabb",
+      walk:"Kevesebb gyaloglás",when:"Indulás",day:"Ma, szerda",lines:"Vonalak",
+      min:"perc",change:"átszállás",direct:"közvetlen",wait:"várakozás",
+      trip:"Az utad",stops:"megálló",back:"Vissza",walkm:"gyaloglás",
+      fastest:"leggyorsabb",least:"legkevesebb gyaloglás",ticket:"Jegy",
+      fare:"24pay jegy, 60 percig érvényes · árkosi viszonylat",
+      buy:"Megnyitás a 24pay-ben",interp:"becsült idő",
+      unoff:"nem hivatalos",dark:"Sötét",light:"Világos",
+      note:"A 12 vonal valódi nyomvonala a GTFS shapes.txt-ből. Az útvonal a menetrendből számolva.",
+      disc:"Tervezet · Nem a Multi-Trans SA hivatalos oldala. Az adatok a multitrans.ro-n közzétett menetrendből származnak. A csillaggal jelölt időpontok interpoláltak, nem hivatalosak.",
+      dep:"indulás",arr:"érkezés",samestop:"Átszállás ugyanitt"},
+  ro:{q:"Unde mergi?",from:"De la",to:"Spre",loc:"Locația mea",fast:"Mai rapid",
+      walk:"Mai puțin mers pe jos",when:"Plecare",day:"Azi, miercuri",lines:"Linii",
+      min:"min",change:"schimbare",direct:"direct",wait:"așteptare",
+      trip:"Traseul tău",stops:"stații",back:"Înapoi",walkm:"pe jos",
+      fastest:"cel mai rapid",least:"cel mai puțin mers",ticket:"Bilet",
+      fare:"Bilet 24pay, valabil 60 minute · cursă spre Arcuș",
+      buy:"Deschide în 24pay",interp:"oră estimată",
+      unoff:"neoficial",dark:"Întunecat",light:"Luminos",
+      note:"Traseul real al celor 12 linii, din shapes.txt. Itinerariul calculat din orar.",
+      disc:"Prototip · Nu este site-ul oficial Multi-Trans SA. Datele provin din orarul publicat pe multitrans.ro. Orele marcate cu asterisc sunt interpolate, neoficiale.",
+      dep:"plecare",arr:"sosire",samestop:"Schimbare în aceeași stație"}
+};
+const t = k => T[L][k];
+const nm = o => typeof o === "string" ? o : o[L === "hu" ? "hu" : "ro"];
+
+// line chips: pick text colour by luminance, nudge the two that fail AA
+const FIX = {"2":"#C23325","2D":"#C23325","9":"#C99A80"};
+const chipColor = id => FIX[id] || D.colors[id] || "#555";
+function textOn(hex){
+  const c = [1,3,5].map(i => parseInt(hex.substr(i,2),16)/255)
+    .map(v => v <= .03928 ? v/12.92 : Math.pow((v+.055)/1.055,2.4));
+  const l = .2126*c[0] + .7152*c[1] + .0722*c[2];
+  return (l + .05) / .05 > 4.5 ? "#232E10" : "#ffffff";
+}
+function lineChip(id, small){
+  const bg = chipColor(id);
+  return `<span class="line${small?" sm":""}" style="background:${bg};color:${textOn(bg)}">${id}</span>`;
+}
+const WALKSVG = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+  stroke-linecap="round" stroke-linejoin="round"><circle cx="13.5" cy="3.6" r="2.1" fill="currentColor" stroke="none"/>
+  <path d="M13 7.6 9.4 9.9 8 14"/><path d="M13 7.6l2.9 1.5L18 12.6"/>
+  <path d="M13 7.6 11.4 14l-2.7 6.3"/><path d="M11.4 14l3 2.1.9 4.2"/></svg>`;
+const walkTag = m => `<span class="walkicon">${WALKSVG}${m}</span>`;
+
+/* ---------- results ---------- */
+const cost = j => j.total + j.walkMin * (0.3 + pref * 2.2);
+function ranked(){
+  const c = D.journeys.map((j,i) => ({j,i}));
+  c.sort((a,b) => cost(a.j) - cost(b.j) || a.j.total - b.j.total);
+  return c;
+}
+function drawList(){
+  const order = ranked();
+  const fastest = D.journeys.reduce((a,b) => b.total < a.total ? b : a);
+  const least = D.journeys.reduce((a,b) => b.walkMin < a.walkMin ? b : a);
+  document.getElementById("list").innerHTML = order.map(({j,i}) => {
+    const rides = j.legs.filter(l => l.k === "ride");
+    const modes = j.legs.filter(l => l.k === "ride" || l.m > 0)
+      .map(l => l.k === "ride" ? lineChip(l.line) : walkTag(l.min))
+      .join('<span class="dot"></span>');
+    const tags = [];
+    if (j === fastest) tags.push(`<span class="tag hi">${t("fastest")}</span>`);
+    if (j === least && j !== fastest) tags.push(`<span class="tag">${t("least")}</span>`);
+    if (rides.length > 1) tags.push(`<span class="tag">${rides.length-1} ${t("change")}</span>`);
+    else tags.push(`<span class="tag">${t("direct")}</span>`);
+    return `<button class="result" data-i="${i}" aria-current="${i===chosen}">
+      <div class="r-top">
+        <div class="r-modes">${modes}</div>
+        <div class="r-dur"><b>${j.total}</b><span>${t("min")}</span></div>
+      </div>
+      <div class="r-bot"><b>${j.dep} → ${j.arr}</b><span class="dot"></span>
+        <span>${j.tickets} × ${j.price.toFixed(1).replace(".",",").replace(",0","")} lej</span></div>
+      <div class="r-tags">${tags.join("")}</div>
+    </button>`;
+  }).join("");
+  document.querySelectorAll(".result").forEach(b =>
+    b.onclick = () => openDetail(+b.dataset.i));
+}
+
+/* ---------- detail ---------- */
+function openDetail(i){
+  chosen = i;
+  const j = D.journeys[i];
+  const el = document.getElementById("detail");
+  let html = `<div class="dhead"><button id="back" aria-label="${t("back")}"
+      style="font-size:22px;line-height:1;width:26px">‹</button><b>${t("trip")}</b></div>
+    <div class="dsum">
+      <div class="r-modes">${j.legs.filter(l => l.k === "ride" || l.m > 0)
+        .map(l => l.k === "ride" ? lineChip(l.line) : walkTag(l.min))
+        .join('<span class="dot"></span>')}</div>
+      <div class="r-dur"><b>${j.total}</b><span>${t("min")}</span></div>
+    </div><div class="tl">`;
+
+  const first = j.legs.find(l => l.k === "ride");
+  html += node({pip:chipColor(first.line), bar:chipColor(first.line),
+    name:nm(D.from), sub:t("dep"), time:j.dep});
+
+  j.legs.forEach((l,k) => {
+    if (l.k === "ride"){
+      const col = chipColor(l.line), mid = l.stops.slice(1,-1), end = l.stops[l.stops.length-1];
+      let body = `<div class="ride-head">${lineChip(l.line,true)}
+        <span class="n-sub" style="margin:0">→ ${nm(l.head)}</span></div>`;
+      if (mid.length) body += `<details class="between"><summary>${mid.length} ${t("stops")} ⌄</summary>
+        <ol>${mid.map(s => `<li>${nm({hu:s.h,ro:s.n})} <b>${s.t}${s.tp?"":"*"}</b></li>`).join("")}</ol></details>`;
+      html += `<div class="node" style="--bar:${col};--pip:${col}">
+        <div class="rail-c"><span class="pip" style="--pip:${col}"></span></div>
+        <div class="n-body">${body}</div><div class="n-time"></div></div>`;
+      if (j.legs[k+1])
+        html += node({pip:col, bar:"transparent",
+          name: nm({hu:end.h, ro:end.n}), sub:"", time:end.t, soft:!end.tp});
+    } else {
+      const same = l.m === 0;
+      html += `<div class="node walk"><div class="rail-c"><span class="pip"
+          style="--pip:var(--ink-2);width:9px;height:9px;border-width:2.5px"></span></div>
+        <div class="n-body"><div class="walkbox">${same ? "" : WALKSVG}
+          <span>${same ? t("samestop") : `${l.m} m · ${l.min} ${t("min")} ${t("walkm")}`}</span></div>
+          <div class="n-sub">${nm(l.to)}${j.wait ? ` · ${j.wait} ${t("min")} ${t("wait")}` : ""}</div>
+        </div><div class="n-time soft"></div></div>`;
+    }
+  });
+  const last = j.legs.filter(l => l.k === "ride").pop();
+  const fin = last.stops[last.stops.length - 1];
+  html += node({pip:"var(--ink)", bar:"transparent", name:nm(D.to), sub:t("arr"),
+    time:j.arr, flag:true, soft:!fin.tp});
+  html += `</div>
+    <div class="fare">
+      <div class="fare-row"><span>${t("ticket")}</span>
+        <b>${j.tickets} × ${j.price.toFixed(1).replace(".",",").replace(",0","")} lej</b></div>
+      <small>${t("fare")}</small>
+      <button class="cta">${t("buy")}</button>
+    </div>`;
+  el.innerHTML = html;
+  el.hidden = false;
+  document.getElementById("list").hidden = true;
+  document.getElementById("controls").style.display = "none";
+  document.getElementById("back").onclick = closeDetail;
+  document.getElementById("scroll").scrollTop = 0;
+  drawTrip(j);
+}
+function node({pip,bar,name,sub,time,flag,soft}){
+  return `<div class="node" style="--bar:${bar}">
+    <div class="rail-c"><span class="pip${flag?" flag":""}" style="--pip:${pip}"></span></div>
+    <div class="n-body"><div class="n-name">${name}</div>
+      ${sub?`<div class="n-sub">${sub}</div>`:""}</div>
+    <div class="n-time${soft?" soft":""}">${time}${soft?"*":""}</div></div>`;
+}
+function closeDetail(){
+  document.getElementById("detail").hidden = true;
+  document.getElementById("list").hidden = false;
+  document.getElementById("controls").style.display = "";
+  drawList(); drawTrip(D.journeys[chosen]);
+}
+
+/* ---------- map ---------- */
+const SVG = document.getElementById("svg");
+function setView(x0,y0,w,h){
+  const MIN = 1400;                       // never zoom past ~1.4 km across
+  if (w < MIN){ x0 -= (MIN-w)/2; w = MIN; }
+  if (h < MIN){ y0 -= (MIN-h)/2; h = MIN; }
+  const pad = Math.max(w,h) * 0.12;
+  x0 -= pad; y0 -= pad; w += pad*2; h += pad*2;
+  const box = SVG.getBoundingClientRect();
+  const ar = (box.width || 1000) / (box.height || 800);
+  if (w/h < ar){ const nw = h*ar; x0 -= (nw-w)/2; w = nw; }
+  else { const nh = w/ar; y0 -= (nh-h)/2; h = nh; }
+  view = [x0, y0, w, h];
+  SVG.setAttribute("viewBox", view.join(" "));
+  const s = view[2] / 900;
+  document.getElementById("net").style.strokeWidth = (s*11)+"px";
+  document.getElementById("trip").style.setProperty("--tw",(s*26)+"px");
+  document.getElementById("stopdots").style.setProperty("--r",(s*7)+"px");
+  SVG.querySelectorAll("#trip path").forEach(p => {
+    const w0 = p.dataset.role === "case" ? s*40 : p.dataset.role === "walk" ? s*17 : s*26;
+    p.setAttribute("stroke-width", w0);
+    if (p.dataset.role === "walk") p.setAttribute("stroke-dasharray", `${s*4} ${s*22}`);
+  });
+  SVG.querySelectorAll("#marks circle").forEach(c => c.setAttribute("r", s*17));
+  SVG.querySelectorAll("#stopdots circle").forEach(c => c.setAttribute("r", s*5));
+}
+const d2 = pts => "M" + pts.map(p => p.join(" ")).join("L");
+function drawNet(){
+  document.getElementById("net").innerHTML =
+    Object.values(D.net).map(p => `<path d="${d2(p)}"/>`).join("");
+  document.getElementById("stopdots").innerHTML =
+    D.stops.map(s => `<circle class="stopdot" cx="${s.x}" cy="${s.y}" r="5" stroke-width="2"/>`).join("");
+}
+function drawTrip(j){
+  const paths = [], marks = [];
+  j.legs.forEach(l => {
+    if (l.k === "ride"){
+      paths.push(`<path data-role="case" d="${d2(l.path)}" stroke="var(--map-case)"/>`);
+      paths.push(`<path data-role="ride" d="${d2(l.path)}" stroke="${chipColor(l.line)}"/>`);
+      l.stops.forEach(s => marks.push(
+        `<circle cx="${s.x}" cy="${s.y}" r="14" fill="var(--map-case)"
+                 stroke="${chipColor(l.line)}" stroke-width="6"/>`));
+    } else if (l.m > 0) {
+      paths.push(`<path data-role="walk" d="${d2(l.path)}" stroke="var(--ink)"
+        stroke-linecap="round" opacity=".75"/>`);
+    }
+  });
+  document.getElementById("trip").innerHTML = paths.join("");
+  document.getElementById("marks").innerHTML = marks.join("");
+  const all = j.legs.flatMap(l => l.path);
+  const xs = all.map(p => p[0]), ys = all.map(p => p[1]);
+  setView(Math.min(...xs), Math.min(...ys),
+          Math.max(...xs)-Math.min(...xs), Math.max(...ys)-Math.min(...ys));
+}
+document.getElementById("zin").onclick = () => zoom(0.75);
+document.getElementById("zout").onclick = () => zoom(1/0.75);
+function zoom(f){
+  const [x,y,w,h] = view, cx = x+w/2, cy = y+h/2;
+  setView(cx-w*f/2, cy-h*f/2, w*f, h*f);
+}
+
+/* ---------- search suggestions ---------- */
+const ALIAS = [
+  {q:"söröző",     ro:"Str. Sporturilor", hu:"Sport utca",        why:"helyi név"},
+  {q:"anl",        ro:"Str. Lăcrămioarei 1", hu:"Gyöngyvirág utca 1", why:"helyi név"},
+  {q:"sepsi value center", ro:"Centru Comercial", hu:"Bevásárlóközpont", why:"üzletközpont"},
+  {q:"kórház",     ro:"Spitalul Județean", hu:"Megyei Kórház",    why:"helyi név"},
+  {q:"állomás",    ro:"Gara CFR",          hu:"Vasútállomás",     why:"helyi név"}
+];
+const fold = s => s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+function suggest(input, box){
+  const v = fold(input.value.trim());
+  if (!v){ box.hidden = true; return; }
+  const seen = new Set(), out = [];
+  ALIAS.forEach(a => { if (fold(a.q).includes(v) || v.includes(fold(a.q))){
+    out.push({n:L==="hu"?a.hu:a.ro, s:a.why, alias:a.q, ic:"◎"}); seen.add(a.hu); }});
+  D.stops.forEach(s => {
+    const label = L === "hu" ? s.h : s.n;
+    if (seen.has(label) || out.length > 7) return;
+    if (fold(label).includes(v)){ seen.add(label);
+      out.push({n:label, s:(L==="hu"?s.n:s.h) + (s.z==="arcus"?" · Árkos":""), ic:"⬤"}); }
+  });
+  box.innerHTML = out.length ? out.map(o => `<button>
+      <span class="sg-ic">${o.ic}</span>
+      <span class="sg-t"><span class="sg-n">${o.n}</span><span class="sg-s">${o.s}</span></span>
+      ${o.alias ? `<span class="sg-alias">${o.alias}</span>` : ""}</button>`).join("")
+    : `<button><span class="sg-ic">·</span><span class="sg-t"><span class="sg-n">—</span></span></button>`;
+  box.hidden = false;
+  box.querySelectorAll("button").forEach((b,k) => b.onclick = () => {
+    input.value = out[k] ? out[k].n : ""; box.hidden = true;
+  });
+}
+["from","to"].forEach(id => {
+  const inp = document.getElementById("i-"+id), box = document.getElementById("sugg");
+  inp.addEventListener("input", () => suggest(inp, box));
+  inp.addEventListener("focus", () => suggest(inp, box));
+  inp.addEventListener("blur", () => setTimeout(() => box.hidden = true, 180));
+});
+document.getElementById("swap").onclick = () => {
+  const a = document.getElementById("i-from"), b = document.getElementById("i-to");
+  [a.value, b.value] = [b.value, a.value];
+};
+
+/* ---------- chrome ---------- */
+document.getElementById("pref").oninput = e => { pref = e.target.value/100; drawList(); };
+function setLang(x){
+  L = x;
+  document.getElementById("hu").setAttribute("aria-pressed", x === "hu");
+  document.getElementById("ro").setAttribute("aria-pressed", x === "ro");
+  document.getElementById("q").textContent = t("q");
+  document.getElementById("l-from").textContent = t("from");
+  document.getElementById("l-to").textContent = t("to");
+  document.getElementById("l-loc").textContent = t("loc");
+  document.getElementById("p-a").textContent = t("fast");
+  document.getElementById("p-b").textContent = t("walk");
+  document.getElementById("c-when").innerHTML = t("when") + " <small>08:30</small>";
+  document.getElementById("c-day").textContent = t("day");
+  document.getElementById("c-lines").textContent = t("lines");
+  document.getElementById("unoff").textContent = t("unoff");
+  document.getElementById("note").textContent = t("note");
+  document.getElementById("disc").textContent = t("disc");
+  document.getElementById("i-from").value = nm(D.from);
+  document.getElementById("i-to").value = nm(D.to);
+  const open = !document.getElementById("detail").hidden;
+  drawList(); if (open) openDetail(chosen);
+  document.getElementById("th").textContent =
+    document.documentElement.dataset.theme === "dark" ? t("light") : t("dark");
+}
+document.getElementById("hu").onclick = () => setLang("hu");
+document.getElementById("ro").onclick = () => setLang("ro");
+document.getElementById("th").onclick = () => {
+  const r = document.documentElement;
+  const dark = r.dataset.theme === "dark"
+    || (!r.dataset.theme && matchMedia("(prefers-color-scheme:dark)").matches);
+  r.dataset.theme = dark ? "light" : "dark";
+  document.getElementById("th").textContent = dark ? t("dark") : t("light");
+};
+
+drawNet(); setLang("hu");
+const qs = new URLSearchParams(location.search);
+if (qs.get("lang") === "ro") setLang("ro");
+const jq = parseInt(qs.get("j"), 10);
+if (Number.isInteger(jq) && D.journeys[jq]) openDetail(jq);
+else drawTrip(D.journeys[0]);
+addEventListener("resize", () => { if (view) drawTrip(D.journeys[chosen]); });
+</script>

@@ -1,0 +1,42 @@
+{
+  "shape_id": "9-depart",
+  "line": "9",
+  "direction": "depart",
+  "profile": "mapbox/driving",
+  "note": "running time only; contains no waiting or timetable information",
+  "total_seconds": 1976,
+  "legs": [
+    {
+      "seconds": 149,
+      "metres": 913
+    },
+    {
+      "seconds": 180,
+      "metres": 962
+    },
+    {
+      "seconds": 80,
+      "metres": 243
+    },
+    {
+      "seconds": 270,
+      "metres": 1307
+    },
+    {
+      "seconds": 75,
+      "metres": 385
+    },
+    {
+      "seconds": 214,
+      "metres": 1246
+    },
+    {
+      "seconds": 426,
+      "metres": 2757
+    },
+    {
+      "seconds": 582,
+      "metres": 4843
+    }
+  ]
+}

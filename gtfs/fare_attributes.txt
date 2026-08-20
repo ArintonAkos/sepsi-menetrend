@@ -1,0 +1,6 @@
+fare_id,price,currency_type,payment_method,transfers,agency_id,transfer_duration
+city_24pay,2.50,RON,1,,multitrans,3000
+city_machine,2.50,RON,1,0,multitrans,
+city_two,5.00,RON,1,1,multitrans,
+city_driver,5.00,RON,0,0,multitrans,
+arcus_24pay,4.00,RON,1,,multitrans,3600

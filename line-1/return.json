@@ -1,0 +1,97 @@
+{
+  "line": "1",
+  "direction": "return",
+  "circular": false,
+  "closes_loop_at_start": false,
+  "headsign": {
+    "ro": "Gara CFR → Cap Linie Simeria",
+    "hu": "Vasútállomás → Szemerja Végállomás"
+  },
+  "source": {
+    "ro": "https://multitrans.ro/jarat-1-retur.html",
+    "hu": "https://multitrans.ro/jarat-1-retur-hu.html"
+  },
+  "stop_count": 8,
+  "stops": [
+    {
+      "stop_sequence": 1,
+      "name": {
+        "ro": "Gara CFR",
+        "hu": "Vasútállomás"
+      },
+      "stop_lat": 45.8631,
+      "stop_lon": 25.8101,
+      "distance_to_next_m": 928
+    },
+    {
+      "stop_sequence": 2,
+      "name": {
+        "ro": "Str. Sporturilor",
+        "hu": "Sport utca"
+      },
+      "stop_lat": 45.8641,
+      "stop_lon": 25.7986,
+      "distance_to_next_m": 555
+    },
+    {
+      "stop_sequence": 3,
+      "name": {
+        "ro": "Biserica Reformată",
+        "hu": "Református Templom"
+      },
+      "stop_lat": 45.8643,
+      "stop_lon": 25.7919,
+      "distance_to_next_m": 521
+    },
+    {
+      "stop_sequence": 4,
+      "name": {
+        "ro": "Parcul Elisabeta",
+        "hu": "Erzsébet Park"
+      },
+      "stop_lat": 45.8643,
+      "stop_lon": 25.7866,
+      "distance_to_next_m": 665
+    },
+    {
+      "stop_sequence": 5,
+      "name": {
+        "ro": "Institutul de Proiectări",
+        "hu": "Tervező Intézet"
+      },
+      "stop_lat": 45.8617,
+      "stop_lon": 25.7819,
+      "distance_to_next_m": 643
+    },
+    {
+      "stop_sequence": 6,
+      "name": {
+        "ro": "Str. Dealului",
+        "hu": "Domb utca"
+      },
+      "stop_lat": 45.8594,
+      "stop_lon": 25.776,
+      "distance_to_next_m": 506
+    },
+    {
+      "stop_sequence": 7,
+      "name": {
+        "ro": "Spitalul Județean",
+        "hu": "Megyei Kórház"
+      },
+      "stop_lat": 45.863,
+      "stop_lon": 25.7778,
+      "distance_to_next_m": 466
+    },
+    {
+      "stop_sequence": 8,
+      "name": {
+        "ro": "Cap Linie Simeria",
+        "hu": "Szemerja Végállomás"
+      },
+      "stop_lat": 45.8671,
+      "stop_lon": 25.7791,
+      "distance_to_next_m": null
+    }
+  ]
+}

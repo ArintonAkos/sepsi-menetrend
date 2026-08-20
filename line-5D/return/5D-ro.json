@@ -1,0 +1,114 @@
+[
+  {
+    "stop_id": 1,
+    "stop_name_ro": "Multi-Trans",
+    "stop_lat": 45.8593,
+    "stop_lon": 25.8389,
+    "direction": "Câmpul Frumos → Str. József Attila 2",
+    "distance_to_next": "431 m"
+  },
+  {
+    "stop_id": 2,
+    "stop_name_ro": "Câmpul Frumos",
+    "stop_lat": 45.8619,
+    "stop_lon": 25.841,
+    "direction": "Câmpul Frumos → Str. József Attila 2",
+    "distance_to_next": "2161 m"
+  },
+  {
+    "stop_id": 3,
+    "stop_name_ro": "Autoliv",
+    "stop_lat": 45.8658,
+    "stop_lon": 25.8153,
+    "direction": "Câmpul Frumos → Str. József Attila 2",
+    "distance_to_next": "760 m"
+  },
+  {
+    "stop_id": 4,
+    "stop_name_ro": "Gara CFR",
+    "stop_lat": 45.8631,
+    "stop_lon": 25.8101,
+    "direction": "Câmpul Frumos → Str. József Attila 2",
+    "distance_to_next": "1378 m"
+  },
+  {
+    "stop_id": 5,
+    "stop_name_ro": "Str. Lăcrămioarei 1",
+    "stop_lat": 45.8605,
+    "stop_lon": 25.8001,
+    "direction": "Câmpul Frumos → Str. József Attila 2",
+    "distance_to_next": "328 m"
+  },
+  {
+    "stop_id": 6,
+    "stop_name_ro": "Str. Lăcrămioarei 2",
+    "stop_lat": 45.858,
+    "stop_lon": 25.7981,
+    "direction": "Câmpul Frumos → Str. József Attila 2",
+    "distance_to_next": "327 m"
+  },
+  {
+    "stop_id": 7,
+    "stop_name_ro": "B-dul Nicolae Iorga 1",
+    "stop_lat": 45.858,
+    "stop_lon": 25.7948,
+    "direction": "Câmpul Frumos → Str. József Attila 2",
+    "distance_to_next": "264 m"
+  },
+  {
+    "stop_id": 8,
+    "stop_name_ro": "B-dul Nicolae Iorga 2",
+    "stop_lat": 45.8591,
+    "stop_lon": 25.792,
+    "direction": "Câmpul Frumos → Str. József Attila 2",
+    "distance_to_next": "693 m"
+  },
+  {
+    "stop_id": 9,
+    "stop_name_ro": "Tribunal",
+    "stop_lat": 45.8624,
+    "stop_lon": 25.7879,
+    "direction": "Câmpul Frumos → Str. József Attila 2",
+    "distance_to_next": "747 m"
+  },
+  {
+    "stop_id": 10,
+    "stop_name_ro": "Institutul de Proiectări",
+    "stop_lat": 45.8617,
+    "stop_lon": 25.7819,
+    "direction": "Câmpul Frumos → Str. József Attila 2",
+    "distance_to_next": "566 m"
+  },
+  {
+    "stop_id": 11,
+    "stop_name_ro": "Str. Dealului",
+    "stop_lat": 45.8589,
+    "stop_lon": 25.7768,
+    "direction": "Câmpul Frumos → Str. József Attila 2",
+    "distance_to_next": "820 m"
+  },
+  {
+    "stop_id": 12,
+    "stop_name_ro": "Str. Dózsa György",
+    "stop_lat": 45.8568,
+    "stop_lon": 25.7733,
+    "direction": "Câmpul Frumos → Str. József Attila 2",
+    "distance_to_next": "579 m"
+  },
+  {
+    "stop_id": 13,
+    "stop_name_ro": "Izvorul Sulfuros",
+    "stop_lat": 45.8555,
+    "stop_lon": 25.7672,
+    "direction": "Câmpul Frumos → Str. József Attila 2",
+    "distance_to_next": "452 m"
+  },
+  {
+    "stop_id": 14,
+    "stop_name_ro": "Str. József Attila 2",
+    "stop_lat": 45.8541,
+    "stop_lon": 25.7722,
+    "direction": "Câmpul Frumos → Str. József Attila 2",
+    "distance_to_next": "0 m"
+  }
+]

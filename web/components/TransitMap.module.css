@@ -1,0 +1,44 @@
+.map { position: absolute; inset: 0; }
+.map :global(.mapboxgl-ctrl-attrib) {
+  font-size: 10px;
+  background: color-mix(in srgb, var(--paper) 88%, transparent) !important;
+}
+.map :global(.mapboxgl-ctrl-attrib a) { color: var(--muted) !important; }
+.map :global(.mapboxgl-ctrl-group) {
+  background: var(--paper) !important;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow) !important;
+}
+.map :global(.mapboxgl-ctrl-group button + button) { border-top: 1px solid var(--border); }
+:global(:root[data-theme="dark"]) .map :global(.mapboxgl-ctrl-icon) {
+  filter: invert(1) hue-rotate(180deg);
+}
+@media (prefers-color-scheme: dark) {
+  :global(:root:not([data-theme="light"])) .map :global(.mapboxgl-ctrl-icon) {
+    filter: invert(1) hue-rotate(180deg);
+  }
+}
+.missing {
+  position: absolute; inset: 0; display: grid; align-content: center; gap: 8px;
+  padding: 32px; text-align: center; color: var(--muted); background: var(--surface);
+  /* a filename is one long unbreakable word; without this it pushed the whole
+     page wider than the phone and everything else drifted right with it */
+  overflow-wrap: anywhere;
+}
+.missing p { margin: 0; }
+.missing code { background: var(--sunk); padding: 1px 5px; border-radius: 4px; color: var(--ink); }
+
+/* stop popup */
+.map :global(.stopPopup .mapboxgl-popup-content) {
+  background: var(--paper); color: var(--ink);
+  border: 1px solid var(--border); border-radius: 12px;
+  box-shadow: var(--shadow); padding: 9px 12px; font: inherit;
+}
+.map :global(.stopPopup .mapboxgl-popup-tip) { border-top-color: var(--paper); }
+.map :global(.stopPopup b) { display: block; font-size: 14px; font-weight: 700; }
+.map :global(.stopPopup span) { display: block; font-size: 12px; color: var(--muted); }
+.map :global(.stopPopup .lines) { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 6px; }
+.map :global(.stopPopup .lines i) {
+  font-style: normal; font-size: 11px; font-weight: 800; padding: 1px 6px;
+  border-radius: 5px; background: var(--sunk); color: var(--ink);
+}

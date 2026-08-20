@@ -1,0 +1,2148 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Sepsiszentgyörgy · buszhálózat</title>
+
+<link href="https://api.mapbox.com/mapbox-gl-js/v3.9.0/mapbox-gl.css" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+/* The panel follows the basemap: a street or pale map gets a light interface,
+   a dark map gets a dark one, so the two halves never read as separate pages.
+   In both, the interface itself stays achromatic — the routes are the only
+   saturated thing on screen. */
+:root, :root[data-theme="light"] {
+  --ink:        #ffffff;
+  --ink-2:      #f2f5f9;
+  --ink-3:      #e5eaf1;
+  --edge:       #d9e0e9;
+  --text:       #101720;
+  --text-dim:   #4d5a6a;
+  --text-faint: #7e8b9b;
+  --signal:     #101720;
+  --signal-fg:  #ffffff;
+  --walk:       #66748a;
+  --panel-w:    370px;
+}
+
+:root[data-theme="dark"] {
+  --ink:        #10151b;
+  --ink-2:      #171e26;
+  --ink-3:      #212b36;
+  --edge:       #26313d;
+  --text:       #e8ecf1;
+  --text-dim:   #93a1b0;
+  --text-faint: #64748b;
+  --signal:     #f1f5f9;
+  --signal-fg:  #16202b;
+  --walk:       #8fa0b3;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: "IBM Plex Sans", system-ui, sans-serif;
+  background: var(--ink);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ---------- shell ---------- */
+
+.shell {
+  display: grid;
+  grid-template-columns: var(--panel-w) 1fr;
+  height: 100%;
+  overflow: hidden;
+}
+
+/* Grid and flex children default to min-width:auto, so one wide control can
+   push the whole panel past the viewport. On a phone that cropped the basemap
+   buttons and the preference select off the right edge. */
+.shell > *,
+.field > div,
+.when > div,
+.row-2 > div,
+.leg-body,
+.trip-head > span { min-width: 0; }
+
+.panel {
+  background: var(--ink);
+  border-right: 1px solid var(--edge);
+  overflow-y: auto;
+  overflow-x: hidden;
+  overscroll-behavior: contain;
+}
+
+#map { height: 100%; }
+
+.masthead {
+  padding: 22px 22px 18px;
+  border-bottom: 1px solid var(--edge);
+}
+
+.masthead h1 {
+  margin: 0;
+  font-family: "Barlow Condensed", sans-serif;
+  font-weight: 700;
+  font-size: 30px;
+  letter-spacing: 0.01em;
+  line-height: 1.05;
+  text-transform: uppercase;
+}
+
+.masthead .sub {
+  margin-top: 4px;
+  font-size: 13px;
+  color: var(--text-dim);
+}
+
+.meta {
+  margin-top: 14px;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 11px;
+  color: var(--text-faint);
+  letter-spacing: 0.02em;
+}
+
+.basemaps { display: flex; gap: 4px; margin-top: 14px; }
+
+.basemaps button {
+  flex: 1;
+  background: none;
+  border: 1px solid var(--edge);
+  border-radius: 3px;
+  color: var(--text-faint);
+  font: 500 11px/1 "IBM Plex Sans", sans-serif;
+  padding: 6px 4px;
+  cursor: pointer;
+}
+
+.basemaps button:hover { color: var(--text); }
+
+.basemaps button[aria-pressed="true"] {
+  background: var(--ink-3);
+  border-color: var(--text-faint);
+  color: var(--text);
+}
+
+.basemaps button:focus-visible { outline: 2px solid var(--signal); outline-offset: 2px; }
+
+/* ---------- sections ---------- */
+
+.block { border-bottom: 1px solid var(--edge); padding: 18px 22px 22px; }
+
+.block-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.block-head h2 {
+  margin: 0;
+  font-family: "Barlow Condensed", sans-serif;
+  font-weight: 600;
+  font-size: 17px;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--text);
+}
+
+.mini-actions { display: flex; gap: 4px; }
+
+.mini {
+  background: none;
+  border: 1px solid var(--edge);
+  color: var(--text-dim);
+  font: 500 11px/1 "IBM Plex Sans", sans-serif;
+  padding: 5px 8px;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.mini:hover { color: var(--text); border-color: var(--text-faint); }
+
+/* ---------- the signature: line plates ---------- */
+
+.plate {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 34px;
+  height: 25px;
+  padding: 0 7px;
+  border-radius: 3px;
+  font-family: "Barlow Condensed", sans-serif;
+  font-weight: 700;
+  font-size: 18px;
+  letter-spacing: 0.03em;
+  color: #fff;
+  flex: none;
+}
+
+.plate.sm { min-width: 27px; height: 20px; font-size: 15px; padding: 0 5px; }
+
+/* ---------- line list ---------- */
+
+.lines { display: flex; flex-direction: column; gap: 2px; }
+
+.line-row {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 11px;
+  width: 100%;
+  padding: 7px 8px;
+  background: none;
+  border: 0;
+  border-radius: 4px;
+  text-align: left;
+  cursor: pointer;
+  color: inherit;
+  font: inherit;
+  transition: background 120ms ease;
+}
+
+.line-row:hover { background: var(--ink-2); }
+.line-row[aria-pressed="false"] { opacity: 0.34; }
+.line-row[aria-pressed="false"]:hover { opacity: 0.62; }
+
+.line-row .desc {
+  font-size: 12px;
+  line-height: 1.32;
+  color: var(--text-dim);
+  min-width: 0;
+}
+
+.line-row .loop {
+  display: block;
+  margin-top: 2px;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  color: var(--text-faint);
+  text-transform: uppercase;
+}
+
+/* ---------- planner ---------- */
+
+.field { margin-bottom: 9px; }
+
+.field label {
+  display: block;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  margin-bottom: 5px;
+}
+
+.field select {
+  width: 100%;
+  background: var(--ink-2);
+  border: 1px solid var(--edge);
+  border-radius: 4px;
+  color: var(--text);
+  font: 400 13px/1.3 "IBM Plex Sans", sans-serif;
+  padding: 9px 10px;
+  cursor: pointer;
+}
+
+.field select:focus-visible,
+.mini:focus-visible,
+.line-row:focus-visible,
+.go:focus-visible,
+.swap:focus-visible {
+  outline: 2px solid var(--signal);
+  outline-offset: 2px;
+}
+
+.row-2 { display: grid; grid-template-columns: 1fr auto; gap: 8px; align-items: end; }
+
+.swap {
+  background: var(--ink-2);
+  border: 1px solid var(--edge);
+  color: var(--text-dim);
+  border-radius: 4px;
+  height: 36px;
+  width: 34px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.swap:hover { color: var(--text); }
+
+.go {
+  width: 100%;
+  margin-top: 4px;
+  background: var(--signal);
+  color: var(--signal-fg);
+  border: 0;
+  border-radius: 4px;
+  font: 600 13px/1 "IBM Plex Sans", sans-serif;
+  padding: 11px;
+  cursor: pointer;
+}
+
+.go:hover { filter: brightness(1.07); }
+
+.search { position: relative; }
+
+.search input {
+  width: 100%;
+  background: var(--ink-2);
+  border: 1px solid var(--edge);
+  border-radius: 4px;
+  color: var(--text);
+  font: 400 13px/1.3 "IBM Plex Sans", sans-serif;
+  padding: 9px 10px;
+}
+
+.search input::placeholder { color: var(--text-faint); }
+
+.search input:focus-visible {
+  outline: 2px solid var(--signal);
+  outline-offset: 2px;
+}
+
+.search input.set { border-color: var(--text-faint); }
+
+.suggest {
+  position: absolute;
+  z-index: 20;
+  left: 0;
+  right: 0;
+  top: calc(100% + 3px);
+  margin: 0;
+  padding: 4px;
+  list-style: none;
+  max-height: 260px;
+  overflow-y: auto;
+  background: var(--ink);
+  border: 1px solid var(--edge);
+  border-radius: 5px;
+  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.28);
+}
+
+.suggest li {
+  padding: 7px 9px;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 12.5px;
+  line-height: 1.3;
+}
+
+.suggest li:hover, .suggest li[aria-selected="true"] { background: var(--ink-2); }
+
+.suggest .kind {
+  display: block;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 9.5px;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  margin-bottom: 1px;
+}
+
+.suggest .none { color: var(--text-faint); cursor: default; }
+.suggest .none:hover { background: none; }
+
+.when { display: grid; grid-template-columns: 1fr auto; gap: 8px; }
+
+.when input[type="time"] {
+  background: var(--ink-2);
+  border: 1px solid var(--edge);
+  border-radius: 4px;
+  color: var(--text);
+  font: 400 13px/1.3 "IBM Plex Sans", sans-serif;
+  padding: 8px 9px;
+}
+
+.when input[type="time"]:focus-visible {
+  outline: 2px solid var(--signal);
+  outline-offset: 2px;
+}
+
+.leave-by {
+  margin: 14px 0 0;
+  padding: 10px 12px;
+  border: 1px solid var(--edge);
+  border-left: 3px solid var(--signal);
+  border-radius: 4px;
+  background: var(--ink-2);
+  font-size: 12.5px;
+  line-height: 1.4;
+  color: var(--text-dim);
+}
+
+.leave-by b { color: var(--text); font-size: 15px; }
+
+.at {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 11px;
+  color: var(--text-faint);
+  margin-right: 6px;
+}
+
+.waited { color: var(--text-dim); }
+
+#pick-hint { margin-top: 8px; }
+
+.hint {
+  margin-top: 10px;
+  font-size: 11.5px;
+  line-height: 1.45;
+  color: var(--text-faint);
+}
+
+/* ---------- results as a strip diagram ---------- */
+
+.results { margin-top: 16px; display: flex; flex-direction: column; gap: 10px; }
+
+.trip {
+  border: 1px solid var(--edge);
+  border-radius: 5px;
+  background: var(--ink-2);
+  overflow: hidden;
+}
+
+.trip.active { border-color: var(--signal); }
+
+.trip-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  width: 100%;
+  padding: 9px 12px;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+}
+
+.trip-head:hover { background: var(--ink-3); }
+
+.trip-plates { display: flex; align-items: center; gap: 5px; flex-wrap: wrap; }
+
+.trip-plates .arrow { color: var(--text-faint); font-size: 11px; }
+
+.walker { vertical-align: -1px; flex: none; }
+
+.walk-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 3px;
+  border: 1px solid var(--edge);
+  color: var(--text-dim);
+}
+
+.leg-ride .walker { margin-right: 1px; }
+
+.fare-note {
+  margin: 0;
+  padding: 9px 12px 11px;
+  border-top: 1px solid var(--edge);
+  font-size: 11.5px;
+  line-height: 1.45;
+  color: var(--text-dim);
+}
+
+.fare-note b { color: var(--text); }
+
+.trip-cost {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 10.5px;
+  line-height: 1.5;
+  color: var(--text-faint);
+  white-space: nowrap;
+  text-align: right;
+}
+
+.trip-cost b { font-size: 13px; font-weight: 500; color: var(--text); }
+
+.fare {
+  display: inline-block;
+  margin-top: 3px;
+  padding: 1px 6px;
+  border-radius: 3px;
+  background: var(--ink-3);
+  color: var(--text);
+  font-size: 11px;
+}
+
+.strip { padding: 4px 12px 13px; }
+
+.leg { display: grid; grid-template-columns: 13px 1fr; gap: 10px; }
+
+.spine { position: relative; }
+
+.spine::before {
+  content: "";
+  position: absolute;
+  left: 5px;
+  top: 5px;
+  bottom: -5px;
+  width: 3px;
+  background: var(--legcolor, var(--walk));
+  border-radius: 2px;
+}
+
+.leg.walking .spine::before {
+  background: repeating-linear-gradient(
+    to bottom, var(--walk) 0 3px, transparent 3px 6px
+  );
+}
+
+.node {
+  position: relative;
+  z-index: 1;
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  background: var(--ink);
+  border: 3px solid var(--legcolor, var(--walk));
+}
+
+.leg-body { padding-bottom: 15px; min-width: 0; }
+
+.stop-name {
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+
+.stop-alt {
+  font-size: 11px;
+  color: var(--text-faint);
+  line-height: 1.3;
+  overflow-wrap: anywhere;
+}
+
+.leg-ride {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin: 7px 0 1px;
+  font-size: 11.5px;
+  color: var(--text-dim);
+}
+
+.leg-ride .count { font-family: "IBM Plex Mono", monospace; font-size: 10.5px; }
+
+.empty {
+  font-size: 12.5px;
+  color: var(--text-faint);
+  line-height: 1.5;
+  padding: 14px 0 2px;
+}
+
+/* ---------- inspector popup ---------- */
+
+.mapboxgl-popup-content {
+  background: var(--ink);
+  border: 1px solid var(--edge);
+  border-radius: 5px;
+  padding: 13px 15px 14px;
+  box-shadow: 0 12px 34px rgba(0, 0, 0, 0.45);
+  font-family: "IBM Plex Sans", sans-serif;
+}
+
+.mapboxgl-popup-tip { display: none; }
+.mapboxgl-popup-close-button { color: var(--text-faint); font-size: 17px; padding: 2px 7px; }
+.mapboxgl-popup-close-button:hover { background: none; color: var(--text); }
+
+/* the town is bilingual, so a stop is shown under both its names at once */
+.pop-hu { font-size: 15px; font-weight: 600; line-height: 1.2; color: var(--text); }
+.pop-ro { font-size: 12.5px; line-height: 1.25; color: var(--text-dim); margin-top: 2px; }
+
+.pop-lines {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+  margin-top: 11px;
+  padding-top: 10px;
+  border-top: 1px solid var(--edge);
+}
+
+.pop-actions { display: flex; gap: 5px; margin-top: 11px; }
+
+.pop-actions button {
+  flex: 1;
+  background: var(--ink-2);
+  border: 1px solid var(--edge);
+  color: var(--text-dim);
+  font: 500 11px/1 "IBM Plex Sans", sans-serif;
+  padding: 7px;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.pop-actions button:hover { color: var(--text); border-color: var(--text-faint); }
+
+.pop-note {
+  margin-top: 9px;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 10px;
+  color: var(--text-faint);
+}
+
+/* ---------- failure ---------- */
+
+.fail {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 40px;
+  background: var(--ink-2);
+  text-align: center;
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: var(--text-dim);
+}
+
+.fail code {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 12px;
+  color: var(--signal);
+}
+
+/* ---------- responsive ---------- */
+
+/* On a phone the map goes on top and the panel scrolls under it, with the
+   planner ahead of the line list: someone on the street wants a departure, not
+   a network overview. Controls grow to a comfortable thumb target, and the
+   suggestion list is capped so it cannot swallow the screen. */
+@media (max-width: 820px) {
+  .shell {
+    grid-template-columns: 1fr;
+    grid-template-rows: 42vh 1fr;
+    height: 100dvh;
+  }
+
+  #map { order: 1; }
+
+  .panel {
+    order: 2;
+    border-right: 0;
+    border-top: 1px solid var(--edge);
+    display: flex;
+    flex-direction: column;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .masthead { order: 1; padding: 14px 16px 12px; }
+  .masthead h1 { font-size: 21px; }
+  .masthead .sub, .meta { display: none; }
+  .basemaps { margin-top: 10px; }
+
+  .block { padding: 14px 16px 18px; }
+  .planner { order: 2; }
+  .network { order: 3; }
+
+  .field select,
+  .search input,
+  .when input {
+    width: 100%;
+    padding: 12px 11px;
+    font-size: 16px;                    /* under 16px iOS zooms the page in */
+  }
+
+  .go { padding: 14px; font-size: 15px; }
+  .swap { height: 44px; width: 42px; }
+  .mini, .basemaps button { padding: 9px 10px; }
+  .line-row { padding: 10px 8px; }
+  .trip-head { padding: 12px; }
+  .suggest { max-height: 200px; }
+  .leave-by { font-size: 13.5px; }
+}
+
+@media (max-width: 420px) {
+  .when { grid-template-columns: 1fr; }
+  .trip-head { flex-wrap: wrap; }
+  .trip-cost { text-align: left; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; animation: none !important; }
+}
+</style>
+
+<div class="shell">
+  <aside class="panel">
+    <header class="masthead">
+      <h1>Sepsiszentgyörgy<br>buszhálózat</h1>
+      <div class="sub">Multi-Trans · hálózati böngésző</div>
+      <div class="meta" id="meta"></div>
+      <div class="basemaps" id="basemaps"></div>
+    </header>
+
+    <section class="block network">
+      <div class="block-head">
+        <h2>Vonalak</h2>
+        <div class="mini-actions">
+          <button class="mini" id="all">Mind</button>
+          <button class="mini" id="none">Egyik sem</button>
+        </div>
+      </div>
+      <div class="lines" id="lines"></div>
+    </section>
+
+    <section class="block planner">
+      <div class="block-head">
+        <h2>Útvonal</h2>
+        <div class="mini-actions">
+          <button class="mini" id="lang" aria-pressed="true">magyar</button>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="from">Honnan</label>
+        <div class="search">
+          <input type="text" id="from" placeholder="megálló, cím vagy hely…"
+                 autocomplete="off" spellcheck="false">
+          <ul class="suggest" id="from-list" hidden></ul>
+        </div>
+      </div>
+
+      <div class="field row-2">
+        <div>
+          <label for="to">Hová</label>
+          <div class="search">
+            <input type="text" id="to" placeholder="megálló, cím vagy hely…"
+                   autocomplete="off" spellcheck="false">
+            <ul class="suggest" id="to-list" hidden></ul>
+          </div>
+        </div>
+        <button class="swap" id="swap" title="Csere">⇅</button>
+      </div>
+
+      <div class="field when">
+        <div>
+          <label for="mode">Időpont</label>
+          <select id="mode">
+            <option value="depart">Ekkor indulok</option>
+            <option value="arrive">Ekkorra érkezem</option>
+          </select>
+        </div>
+        <div>
+          <label for="when">Óra</label>
+          <input type="time" id="when">
+        </div>
+      </div>
+
+      <div class="field when">
+        <div>
+          <label for="day">Nap</label>
+          <input type="date" id="day">
+        </div>
+        <div>
+          <label for="prefer">Mi számít</label>
+          <select id="prefer">
+            <option value="fast">Gyorsabb</option>
+            <option value="balanced" selected>Kiegyensúlyozott</option>
+            <option value="walk">Kevesebb gyaloglás</option>
+          </select>
+        </div>
+      </div>
+
+      <button class="go" id="go">Útvonal keresése</button>
+      <p class="hint" id="pick-hint">Írd be a megálló nevét vagy egy címet, vagy
+        kattints bárhová a térképen — a gyaloglás a legközelebbi megállókig
+        beleszámít.</p>
+      <p class="hint">
+        Az indulások a Multi-Trans kiírt menetrendjéből jönnek, így a
+        várakozás is valós. Ahol egy megállóhoz nincs kiírt idő, ott a
+        szomszédos kiírt megállótól a valós úthálózaton mért menetidővel
+        számolom — a kiírt időpontokhoz mérve ez 2 perc körüli eltérés.
+        A gyaloglás a járdahálózaton mért.
+      </p>
+      <p class="hint" id="daykind"></p>
+
+      <div class="results" id="results"></div>
+    </section>
+  </aside>
+
+  <div id="map"></div>
+</div>
+
+<script src="https://api.mapbox.com/mapbox-gl-js/v3.9.0/mapbox-gl.js"></script>
+<script>
+const DATA = __DATA__;
+
+const LINE = Object.fromEntries(DATA.lines.map(l => [l.id, l]));
+
+/* The operator's own colours, adjusted per basemap: line 10 is pure black and
+   would disappear on the dark map, line 6 is neon and would disappear on the
+   light one. build_map.py works out both variants. */
+const lineColor = id =>
+  (basemap.theme === "dark" ? LINE[id].color_dark : LINE[id].color) || LINE[id].color;
+const ST = DATA.stations;
+const shown = new Set(DATA.lines.map(l => l.id));
+let lang = "hu";
+let trips = [];
+let activeTrip = -1;
+
+/* ---------- network index ----------
+   The unit of planning is a platform: one kerb of one stop. A station groups
+   the kerbs that face each other, but a bus is boarded at a particular kerb,
+   and reaching the other one costs a walk to a crossing. Working in platforms
+   makes that cost explicit, and lets a journey begin at any point on the map
+   rather than only at a stop. */
+
+const PLATFORMS = [];
+ST.forEach(s => s.points.forEach((p, kerb) => PLATFORMS.push({
+  key: `${s.id}:${kerb}`, station: s.id, kerb, lat: p[0], lng: p[1],
+})));
+const PLAT = new Map(PLATFORMS.map(p => [p.key, p]));
+
+const platformOf = (routeIndex, stopIndex) => {
+  const r = DATA.routes[routeIndex];
+  return `${r.stations[stopIndex]}:${r.kerbs[stopIndex]}`;
+};
+const stationOf = key => ST[PLAT.get(key).station];
+
+// platform -> every service calling there, as {route, index}
+const boardings = new Map();
+DATA.routes.forEach((r, ri) => r.stations.forEach((_, i) => {
+  const key = platformOf(ri, i);
+  if (!boardings.has(key)) boardings.set(key, []);
+  boardings.get(key).push({ r: ri, i });
+}));
+
+// platform -> platforms within walking distance, with the real pavement route
+const onFoot = new Map(PLATFORMS.map(p => [p.key, []]));
+for (const [pair, leg] of Object.entries(DATA.walks)) {
+  const [a, b] = pair.split(">");
+  if (onFoot.has(a)) onFoot.get(a).push([b, leg]);
+}
+
+const nameOf = s => s.name[lang];
+const other = s => s.name[lang === "hu" ? "ro" : "hu"];
+
+const metresBetween = (a, b) => {
+  const lat = (a.lat + b.lat) / 2 * Math.PI / 180;
+  return Math.hypot((b.lng - a.lng) * 111320 * Math.cos(lat),
+                    (b.lat - a.lat) * 111320);
+};
+
+/* ---------- time ----------
+   Riding comes from the road network and walking from the pavement network,
+   both measured. The wait at a transfer is the one assumption left, because
+   the timetable is not wired in yet. */
+
+const SPEED = DATA.speed;
+let waitMinutes = 8;            // only used where a line has no published times
+
+/* ---------- the timetable ----------
+   Departures are stored as one number per trip - when it leaves the first stop
+   - plus the seconds it takes to reach each later stop. So a stop with no
+   printed time still gets one, carried from the nearest stop that has one over
+   the measured road time. Against the printed times that lands within about
+   two minutes. */
+
+const rightNow = new Date();
+let travelDay = rightNow;
+// Saturday and Sunday share one timetable, which is how the operator prints it
+const serviceFor = d => ([0, 6].includes(d.getDay()) ? "weekend" : "weekday");
+let service = serviceFor(rightNow);
+
+const DAY_NAMES = ["vasárnap", "hétfő", "kedd", "szerda", "csütörtök",
+                   "péntek", "szombat"];
+
+const isoDate = d => `${d.getFullYear()}-${String(d.getMonth() + 1)
+  .padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+
+/* The reader picks a date and the timetable follows from it, because the
+   operator publishes only two: weekdays, and Saturday-Sunday together. Saying
+   which one applies removes the guesswork a "weekday / weekend" dropdown left. */
+function showDayKind() {
+  const kind = service === "weekend" ? "hétvégi" : "munkanapi";
+  const today = isoDate(travelDay) === isoDate(rightNow) ? " · ma" : "";
+  const early = DATA.schedule_valid && isoDate(travelDay) < "2026-08-07"
+    ? ` — a beolvasott menetrend ${DATA.schedule_valid.toLowerCase()}` : "";
+  document.getElementById("daykind").textContent =
+    `${DAY_NAMES[travelDay.getDay()]}${today} · ${kind} menetrend${early}`;
+}
+let mode = "depart";
+/* How much worse a minute on foot feels than a minute on the bus.
+   Sorting by walking distance first was too blunt: it would accept any amount
+   of extra riding to save a few metres, which is the "round the loop rather
+   than cross the road" mistake in reverse. Turning walking into extra minutes
+   puts both on one scale, so 4 minutes of walking is weighed against however
+   much riding it actually saves. OpenTripPlanner calls this walk reluctance. */
+const WALK_PENALTY = { fast: 0.3, balanced: 1.0, walk: 2.5 };
+let prefer = "balanced";
+let wantedAt = rightNow.getHours() * 60 + rightNow.getMinutes();
+
+/* Times at stops with no printed departure are carried over from the nearest
+   printed one, and land within about two minutes. Offering a connection
+   tighter than that would be promising a bus you might watch pull away, so
+   changing between two buses needs this much slack. */
+const MIN_TRANSFER = 2;
+
+const hhmm = mins => {
+  const m = ((Math.round(mins) % 1440) + 1440) % 1440;
+  return `${String(Math.floor(m / 60)).padStart(2, "0")}:${String(m % 60).padStart(2, "0")}`;
+};
+
+function schedule(routeIndex) {
+  const r = DATA.routes[routeIndex];
+  return DATA.schedule[`${r.line}-${r.direction}`] || null;
+}
+
+const departures = routeIndex => {
+  const s = schedule(routeIndex);
+  return s ? s[service] || [] : [];
+};
+
+// leave at `ready` and catch the first bus you can at every step
+function timeForward(trip, ready) {
+  let now = ready;
+  const legs = [];
+  for (const leg of trip.legs) {
+    if (leg.kind === "walk") {
+      legs.push({ ...leg, at: now, until: now + leg.s / 60, wait: 0 });
+      now += leg.s / 60;
+      continue;
+    }
+    const s = schedule(leg.r);
+    if (!s) return null;
+    const board = s.offsets[leg.from] / 60, land = s.offsets[leg.to] / 60;
+    const earliest = now + (legs.some(l => l.kind === "ride") ? MIN_TRANSFER : 0);
+    const start = departures(leg.r).find(t => t + board >= earliest - 1e-6);
+    if (start === undefined) return null;          // nothing left today
+    legs.push({ ...leg, at: start + board, until: start + land,
+                wait: start + board - now });
+    now = start + land;
+  }
+  return { legs, leave: ready, arrive: now };
+}
+
+// the latest you can leave and still be there by `deadline`
+function latestLeave(trip, deadline) {
+  let now = deadline;
+  for (let i = trip.legs.length - 1; i >= 0; i--) {
+    const leg = trip.legs[i];
+    if (leg.kind === "walk") { now -= leg.s / 60; continue; }
+    const s = schedule(leg.r);
+    if (!s) return null;
+    const board = s.offsets[leg.from] / 60, land = s.offsets[leg.to] / 60;
+    let chosen = null;
+    for (const t of departures(leg.r)) {
+      if (t + land <= now + 1e-6) chosen = t; else break;
+    }
+    if (chosen === null) return null;
+    now = chosen + board;
+    // whatever brought you here has to arrive in time to make this connection,
+    // which is a claim about the leg before, not about this one's arrival
+    if (trip.legs.slice(0, i).some(l => l.kind === "ride")) now -= MIN_TRANSFER;
+  }
+  return now;
+}
+
+function applyTiming(trip) {
+  if (mode === "arrive") {
+    const leave = latestLeave(trip, wantedAt);
+    if (leave === null) return null;
+    const forward = timeForward(trip, leave);
+    // a later bus may still arrive in time; keep the tightest departure
+    return forward && forward.arrive <= wantedAt + 1e-6 ? forward : null;
+  }
+  const forward = timeForward(trip, wantedAt);
+  if (!forward) return null;
+  /* Catching the first bus after the requested time does not mean leaving at
+     the requested time: standing at the stop for an hour helps nobody. Pull
+     the departure as late as it can go while still catching the same buses. */
+  const latest = latestLeave(trip, forward.arrive);
+  if (latest === null || latest < wantedAt) return forward;
+  const tightened = timeForward(trip, latest);
+  return tightened && tightened.arrive <= forward.arrive + 1e-6
+    ? tightened : forward;
+}
+
+function rideMinutes(routeIndex, from, to) {
+  const secs = DATA.routes[routeIndex].secs;
+  let total = 0;
+  for (let i = from; i < to; i++) total += secs[i];
+  return (total + (to - from - 1) * SPEED.dwell) / 60;
+}
+
+function legMinutes(leg) {
+  return leg.kind === "walk" ? leg.s / 60 : rideMinutes(leg.r, leg.from, leg.to);
+}
+
+const clock = min => {
+  const t = Math.max(1, Math.round(min));
+  return t < 60 ? `${t} perc` : `${Math.floor(t / 60)} ó ${t % 60} p`;
+};
+
+function makeTrip(legs, walked) {
+  const rides = legs.filter(l => l.kind === "ride");
+  return {
+    legs,
+    transfers: Math.max(0, rides.length - 1),
+    stops: rides.reduce((n, l) => n + (l.to - l.from), 0),
+    walk: walked,
+    moving: legs.reduce((n, l) => n + legMinutes(l), 0),
+    key: legs.map(l => l.kind === "ride"
+      ? `${l.r}:${l.from}>${l.to}` : `w${l.a}>${l.b}`).join("|"),
+  };
+}
+
+const walkMinutes = t =>
+  t.legs.reduce((n, l) => n + (l.kind === "walk" ? l.s / 60 : 0), 0);
+
+/* What the journey costs on one scale: the time it really takes, measured from
+   the hour you asked about, plus the extra weight walking carries. In arrive-by
+   mode the time spent is how early you have to leave, so leaving late still
+   wins - but not at the price of any amount of walking. */
+function cost(t) {
+  const spent = mode === "arrive"
+    ? wantedAt - t.timing.leave
+    : t.timing.arrive - wantedAt;
+  return spent + walkMinutes(t) * WALK_PENALTY[prefer];
+}
+
+/* ---------- what it costs ----------
+   The time-limited tickets are the ones a journey planner can reason about:
+   one ticket covers every boarding inside its window, so a trip needs a second
+   only when the changes push past it. Arcuș is outside the city zone, and its
+   ticket is dearer and lasts longer, so any journey touching it is priced at
+   that rate. */
+
+function ticketFor(trip) {
+  if (!DATA.fares || !trip.timing) return null;
+  const rides = trip.timing.legs.filter(l => l.kind === "ride");
+  if (!rides.length) return null;
+
+  const touchesArcus = rides.some(l => {
+    const r = DATA.routes[l.r];
+    for (let i = l.from; i <= l.to; i++) {
+      if (ST[r.stations[i]].zone === "arcus") return true;
+    }
+    return false;
+  });
+  const zone = touchesArcus ? "arcus" : "city";
+  const ticket = DATA.fares.tickets.find(t => t.zone === zone);
+  if (!ticket) return null;
+
+  // a fresh ticket whenever the previous one has run out by boarding time
+  let count = 0, validUntil = -Infinity;
+  for (const leg of rides) {
+    if (leg.at > validUntil) {
+      count += 1;
+      validUntil = leg.at + ticket.minutes;
+    }
+  }
+  return { ticket, count, total: count * ticket.price };
+}
+
+const money = v => `${v.toFixed(2).replace(".", ",").replace(",00", "")} lej`;
+
+const totalMinutes = t => t.timing
+  ? t.timing.arrive - t.timing.leave
+  : t.moving + t.transfers * waitMinutes;
+
+/* ---------- journey planning ----------
+   Rides are enumerated rather than searched: 19 direction variants of at most
+   33 stops is small enough. Two changes are only explored when nothing simpler
+   connects the two platforms. */
+
+function rideTo(routeIndex, boardAt, target) {
+  const r = DATA.routes[routeIndex];
+  for (let j = boardAt + 1; j < r.stations.length; j++) {
+    if (platformOf(routeIndex, j) === target) return j;  // first arrival wins
+  }
+  return -1;
+}
+
+const walkStep = (from, to, leg) =>
+  ({ kind: "walk", a: from, b: to, m: leg.m, s: leg.s, path: leg.path });
+
+/* Three directions have no published departures at all - the operator prints
+   only one direction for lines 1D, 2D and 5D. They have to be left out of
+   planning rather than filtered afterwards: they often look quickest on
+   distance alone, and would crowd the timetabled options out of the shortlist
+   before the clock is ever applied. */
+const timetabled = new Set(
+  DATA.routes.map((r, i) => [i, `${r.line}-${r.direction}`])
+    .filter(([, key]) => DATA.schedule[key]).map(([i]) => i)
+);
+
+const callsAt = key =>
+  (boardings.get(key) || []).filter(b => timetabled.has(b.r));
+
+function planDirect(from, to) {
+  const out = [];
+  for (const a of callsAt(from)) {
+    const j = rideTo(a.r, a.i, to);
+    if (j > -1) out.push(makeTrip([{ kind: "ride", r: a.r, from: a.i, to: j }], 0));
+  }
+  return out;
+}
+
+function planOneChange(from, to) {
+  const out = [];
+  for (const a of callsAt(from)) {
+    const r1 = DATA.routes[a.r];
+    for (let k = a.i + 1; k < r1.stations.length; k++) {
+      const x = platformOf(a.r, k);
+      if (x === from || x === to) continue;
+      for (const [y, cross] of [[x, null], ...(onFoot.get(x) || [])]) {
+        for (const b of callsAt(y)) {
+          if (DATA.routes[b.r].line === r1.line) continue;  // no doubling back
+          const j = rideTo(b.r, b.i, to);
+          if (j < 0) continue;
+          const legs = [{ kind: "ride", r: a.r, from: a.i, to: k }];
+          if (cross) legs.push(walkStep(x, y, cross));
+          legs.push({ kind: "ride", r: b.r, from: b.i, to: j });
+          out.push(makeTrip(legs, cross ? cross.m : 0));
+        }
+      }
+    }
+  }
+  return out;
+}
+
+function planTwoChanges(from, to) {
+  const out = [];
+  for (const a of callsAt(from)) {
+    const r1 = DATA.routes[a.r];
+    for (let k = a.i + 1; k < r1.stations.length; k++) {
+      const x = platformOf(a.r, k);
+      if (x === from || x === to) continue;
+      for (const [y, first] of [[x, null], ...(onFoot.get(x) || [])]) {
+        for (const b of callsAt(y)) {
+          const r2 = DATA.routes[b.r];
+          if (r2.line === r1.line) continue;
+          for (let n = b.i + 1; n < r2.stations.length; n++) {
+            const z = platformOf(b.r, n);
+            if (z === to || z === x || z === from) continue;
+            for (const [w, second] of [[z, null], ...(onFoot.get(z) || [])]) {
+              for (const c of callsAt(w)) {
+                if (DATA.routes[c.r].line === r2.line) continue;
+                const j = rideTo(c.r, c.i, to);
+                if (j < 0) continue;
+                const legs = [{ kind: "ride", r: a.r, from: a.i, to: k }];
+                if (first) legs.push(walkStep(x, y, first));
+                legs.push({ kind: "ride", r: b.r, from: b.i, to: n });
+                if (second) legs.push(walkStep(z, w, second));
+                legs.push({ kind: "ride", r: c.r, from: c.i, to: j });
+                out.push(makeTrip(legs,
+                  (first ? first.m : 0) + (second ? second.m : 0)));
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  return out;
+}
+
+function plan(from, to, deep = true) {
+  if (from === to) return [];
+  let found = [...planDirect(from, to), ...planOneChange(from, to)];
+  if (!found.length && deep) found = planTwoChanges(from, to);
+
+  const seen = new Set();
+  return found
+    .filter(t => !seen.has(t.key) && seen.add(t.key))
+    .sort((p, q) => totalMinutes(p) - totalMinutes(q) || p.transfers - q.transfers)
+    .slice(0, 6);
+}
+
+/* ---------- panel ---------- */
+
+const WALKER = `<svg class="walker" viewBox="0 0 24 24" width="12" height="12"
+  fill="currentColor" aria-hidden="true"><path d="M13.5 5.5a2 2 0 1 0 0-4 2 2 0
+  0 0 0 4zM9.8 8.9 7 23h2.1l1.8-8 2.1 2v6h2v-7.5l-2.1-2 .6-3A7 7 0 0 0 19 13v-2
+  a5 5 0 0 1-4.2-2.4l-1-1.6c-.4-.6-1-1-1.8-1-.3 0-.5 0-.8.2L6 8.3V13h2V9.6l1.8-.7z"
+  /></svg>`;
+
+function plate(lineId, small) {
+  return `<span class="plate${small ? " sm" : ""}" style="background:${lineColor(lineId)}">${lineId}</span>`;
+}
+
+function drawLineList() {
+  document.getElementById("lines").innerHTML = DATA.lines.map(l => `
+    <button class="line-row" data-line="${l.id}" aria-pressed="${shown.has(l.id)}">
+      ${plate(l.id)}
+      <span class="desc">${l.description}${
+        l.circular ? '<span class="loop">körjárat</span>' : ""}</span>
+    </button>`).join("");
+}
+
+/* ---------- endpoints ----------
+   A journey runs between two endpoints, and an endpoint is either a stop from
+   the list or any point on the map. For a free point the walk to the nearby
+   kerbs is not in the prepared data, so it is asked for when needed: a single
+   Matrix request returns the pavement walking time from that point to every
+   candidate kerb at once. */
+
+const MAX_ACCESS_M = 1200;     // furthest we will consider walking to a stop
+const NEAREST_KERBS = 8;       // Matrix takes 25 coordinates; 8 is plenty
+
+// what the reader has chosen for each end: a stop, an address, or a map point
+const chosen = { from: null, to: null };
+
+const endpoint = which => chosen[which];
+
+function endpointName(place) {
+  if (!place) return "";
+  if (place.kind === "station") return nameOf(ST[place.id]);
+  return place.label || "Térképi pont";
+}
+
+function setEndpoint(which, place) {
+  chosen[which] = place;
+  const input = document.getElementById(which);
+  input.value = endpointName(place);
+  input.classList.toggle("set", !!place);
+  closeSuggestions(which);
+}
+
+/* ---------- searching for a place ----------
+   Stops are matched here, instantly, because the list is small and known.
+   Anything else is an address, and goes to Mapbox geocoding biased towards the
+   town, so "Kossuth Lajos utca" finds the one in Sfântu Gheorghe rather than
+   the one in Baraolt. */
+
+const fold = t => t.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+
+function stopMatches(query) {
+  const q = fold(query);
+  return ST
+    .filter(s => fold(s.name.hu).includes(q) || fold(s.name.ro).includes(q))
+    .slice(0, 6)
+    .map(s => ({
+      kind: "station", id: s.id, lat: s.lat, lng: s.lng,
+      label: nameOf(s), hint: other(s), tag: "megálló",
+    }));
+}
+
+/* Photon rather than Mapbox geocoding, because Mapbox does not know this town.
+   Asked for "Sepsi Value Center", "Lidl" or "Tamási Áron Színház" it returns
+   nothing or, worse, a street with a similar name - which would send a rider
+   somewhere else entirely. Photon reads OpenStreetMap, tolerates the spelling
+   ("Centre" vs "Center"), and found six of the seven landmarks tested.
+   The box keeps results in the county; the town is the only thing these buses
+   serve, and it stops "Value Center" matching a mall in Ohio. */
+const PHOTON = "https://photon.komoot.io/api/";
+const REGION = "25.2,45.4,26.6,46.4";
+
+const CATEGORY = {
+  supermarket: "üzlet", mall: "bevásárlóközpont", retail: "bevásárlóközpont",
+  school: "iskola", college: "iskola", university: "egyetem",
+  hospital: "kórház", pharmacy: "gyógyszertár", theatre: "színház",
+  restaurant: "étterem", cafe: "kávézó", bank: "bank", museum: "múzeum",
+  sports_centre: "sportlétesítmény", stadium: "stadion", church: "templom",
+  townhall: "hivatal", post_office: "posta", hotel: "szálláshely",
+};
+
+async function addressMatches(query) {
+  if (query.trim().length < 3) return [];
+  try {
+    const res = await fetch(
+      `${PHOTON}?q=${encodeURIComponent(query)}&lat=45.8665&lon=25.7855`
+      + `&bbox=${REGION}&limit=8&lang=default`);
+    const data = await res.json();
+    return (data.features || []).map(f => {
+      const p = f.properties;
+      const where = [p.street, p.housenumber].filter(Boolean).join(" ");
+      return {
+        kind: "point",
+        lat: f.geometry.coordinates[1],
+        lng: f.geometry.coordinates[0],
+        label: p.name || where || p.city || "",
+        hint: [where && p.name ? where : "", p.city, p.postcode]
+          .filter(Boolean).join(" · "),
+        tag: CATEGORY[p.osm_value] || (p.osm_key === "highway" ? "utca" : "hely"),
+      };
+    }).filter(x => x.label);
+  } catch (err) {
+    return [];
+  }
+}
+
+let suggestFor = null, suggestTimer = null;
+
+function closeSuggestions(which) {
+  const list = document.getElementById(which + "-list");
+  list.hidden = true;
+  list.innerHTML = "";
+}
+
+function renderSuggestions(which, items) {
+  const list = document.getElementById(which + "-list");
+  if (!items.length) {
+    list.innerHTML = `<li class="none">Nincs találat</li>`;
+  } else {
+    list.innerHTML = items.map((item, i) => `<li data-index="${i}">
+      <span class="kind">${item.tag}</span>${item.label}
+      ${item.hint ? `<span class="stop-alt">${item.hint}</span>` : ""}
+    </li>`).join("");
+  }
+  list.hidden = false;
+  suggestFor = { which, items };
+}
+
+function onSearchInput(which) {
+  const query = document.getElementById(which).value;
+  chosen[which] = null;
+  document.getElementById(which).classList.remove("set");
+  if (!query.trim()) return closeSuggestions(which);
+
+  renderSuggestions(which, stopMatches(query));
+  clearTimeout(suggestTimer);
+  suggestTimer = setTimeout(async () => {
+    const stops = stopMatches(query);
+    const places = await addressMatches(query);
+    if (document.getElementById(which).value === query) {
+      renderSuggestions(which, [...stops, ...places]);
+    }
+  }, 320);
+}
+
+function candidates(place) {
+  if (place.kind === "station") {
+    return ST[place.id].points.map((_, kerb) => ({
+      key: `${place.id}:${kerb}`, seconds: 0, metres: 0,
+    }));
+  }
+  return PLATFORMS
+    .map(p => ({ p, d: metresBetween(place, p) }))
+    .filter(x => x.d <= MAX_ACCESS_M)
+    .sort((a, b) => a.d - b.d)
+    .slice(0, NEAREST_KERBS)
+    .map(x => ({
+      key: x.p.key,
+      metres: Math.round(x.d),
+      seconds: Math.round(x.d / SPEED.walk * 60),
+    }));
+}
+
+async function pavementTimes(place, list, arriving) {
+  if (place.kind === "station" || !list.length) return list;
+  const points = list.map(c => PLAT.get(c.key));
+  const coords = [place, ...points]
+    .map(p => `${p.lng.toFixed(6)},${p.lat.toFixed(6)}`).join(";");
+  const others = points.map((_, i) => i + 1).join(";");
+  const query = arriving ? `sources=${others}&destinations=0`
+                         : `sources=0&destinations=${others}`;
+  try {
+    const res = await fetch(
+      `https://api.mapbox.com/directions-matrix/v1/mapbox/walking/${coords}`
+      + `?${query}&annotations=duration,distance&access_token=${DATA.token}`);
+    const data = await res.json();
+    if (data.code !== "Ok") throw new Error(data.code);
+    const secs = arriving ? data.durations.map(r => r[0]) : data.durations[0];
+    const dist = arriving ? data.distances.map(r => r[0]) : data.distances[0];
+    return list.map((c, i) => secs[i] == null ? c : {
+      key: c.key, seconds: Math.round(secs[i]), metres: Math.round(dist[i]),
+      measured: true,
+    });
+  } catch (err) {
+    return list;              // keep the straight-line estimate
+  }
+}
+
+/* Geometry for the walk to and from the bus is only fetched for the itinerary
+   actually being shown, so picking a route costs at most two more requests. */
+async function drawableWalks(trip) {
+  const jobs = trip.legs.filter(l => l.kind === "walk" && !l.path).map(async leg => {
+    const a = leg.a ? PLAT.get(leg.a) : trip.origin;
+    const b = leg.b ? PLAT.get(leg.b) : trip.destination;
+    try {
+      const res = await fetch(
+        `https://api.mapbox.com/directions/v5/mapbox/walking/`
+        + `${a.lng.toFixed(6)},${a.lat.toFixed(6)};${b.lng.toFixed(6)},${b.lat.toFixed(6)}`
+        + `?geometries=geojson&overview=full&access_token=${DATA.token}`);
+      const data = await res.json();
+      if (data.code === "Ok" && data.routes[0]) {
+        leg.path = data.routes[0].geometry.coordinates;
+        leg.m = Math.round(data.routes[0].distance);
+        leg.s = Math.round(data.routes[0].duration);
+      }
+    } catch (err) { /* the straight line will have to do */ }
+  });
+  await Promise.all(jobs);
+}
+
+async function search() {
+  const a = endpoint("from"), b = endpoint("to");
+  const [starts, ends] = await Promise.all([
+    pavementTimes(a, candidates(a), false),
+    pavementTimes(b, candidates(b), true),
+  ]);
+
+  const deep = starts.length * ends.length <= 4;
+  const found = [];
+  for (const s of starts) {
+    for (const e of ends) {
+      if (s.key === e.key) continue;
+      for (const t of plan(s.key, e.key, deep)) {
+        const legs = [...t.legs];
+        if (a.kind === "point") {
+          legs.unshift({ kind: "walk", a: null, b: s.key,
+                         m: s.metres, s: s.seconds, path: null });
+        }
+        if (b.kind === "point") {
+          legs.push({ kind: "walk", a: e.key, b: null,
+                      m: e.metres, s: e.seconds, path: null });
+        }
+        const trip = makeTrip(legs, t.walk + s.metres + e.metres);
+        trip.origin = a;
+        trip.destination = b;
+        trip.timing = applyTiming(trip);
+        if (!trip.timing) continue;      // no service that fits, or none at all
+        found.push(trip);
+      }
+    }
+  }
+
+  const seen = new Set();
+  return found
+    .filter(t => !seen.has(t.key) && seen.add(t.key))
+    .sort((p, q) => cost(p) - cost(q) || p.transfers - q.transfers)
+    .slice(0, 6);
+}
+
+/* ---------- results ---------- */
+
+function legColor(leg) {
+  return leg.kind === "walk"
+    ? "var(--walk)" : lineColor(DATA.routes[leg.r].line);
+}
+
+function node(title, subtitle, leg, at) {
+  const stamp = at === undefined ? "" : `<span class="at">${hhmm(at)}</span>`;
+  return `<div class="leg${leg && leg.kind === "walk" ? " walking" : ""}"
+               style="--legcolor:${leg ? legColor(leg) : "var(--walk)"}">
+    <div class="spine"><div class="node"></div></div>
+    <div class="leg-body">
+      <div class="stop-name">${stamp}${title}</div>
+      ${subtitle ? `<div class="stop-alt">${subtitle}</div>` : ""}
+      ${leg ? legDetail(leg) : ""}
+    </div>
+  </div>`;
+}
+
+function platformNode(key, leg, at) {
+  const s = stationOf(key);
+  return node(nameOf(s), other(s), leg, at);
+}
+
+function legDetail(leg) {
+  if (leg.kind === "walk") {
+    let label = "gyaloglás";
+    if (!leg.a) label = "gyaloglás a megállóig";
+    else if (!leg.b) label = "gyaloglás a célig";
+    else if (PLAT.get(leg.a).station === PLAT.get(leg.b).station) {
+      label = "átkelés a túloldalra";
+    }
+    return `<div class="leg-ride">${WALKER}${label}
+      <span class="count">${leg.m} m · ${clock(leg.s / 60)}</span></div>`;
+  }
+  const r = DATA.routes[leg.r];
+  const n = leg.to - leg.from;
+  const waited = leg.wait > 0.5
+    ? `<span class="waited">${Math.round(leg.wait)} p várakozás</span>` : "";
+  const when = leg.at === undefined ? ""
+    : ` · ${hhmm(leg.at)} → ${hhmm(leg.until)}`;
+  return `<div class="leg-ride">${plate(r.line, true)}
+    <span>${r.headsign[lang]}</span>
+    ${waited}
+    <span class="count">${n} megálló${when}</span>
+    </div>`;
+}
+
+function tripStrip(t) {
+  const legs = t.timing ? t.timing.legs : t.legs;
+  let html = "";
+  for (const leg of legs) {
+    if (leg.kind === "ride") {
+      html += platformNode(platformOf(leg.r, leg.from), leg, leg.at);
+    } else if (leg.a) {
+      html += platformNode(leg.a, leg, leg.at);
+    } else {
+      html += node(endpointName(t.origin), "kiindulópont", leg, leg.at);
+    }
+  }
+  const last = legs[legs.length - 1];
+  const arrive = last.until;
+  if (last.kind === "walk" && !last.b) {
+    html += node(endpointName(t.destination), "célpont", null, arrive);
+  } else {
+    const key = last.kind === "ride" ? platformOf(last.r, last.to) : last.b;
+    const s = stationOf(key);
+    html += node(nameOf(s), other(s), null, arrive);
+  }
+  return html;
+}
+
+/* Some stops really are unreachable by bus: a handful sit on one direction
+   only, or so near the end of every route serving them that you cannot start
+   a journey there. Say which, rather than leaving a blank result. */
+function whyNot(from, to) {
+  if (from.kind === "point" || to.kind === "point") {
+    return `Egyik közeli megállóból sem vezet ide járat legfeljebb két
+      átszállással. Próbálj meg egy másik pontot választani, vagy nézd meg
+      fordítva.`;
+  }
+  const platforms = key => ST[key].points.map((_, k) => `${key}:${k}`);
+  const arrivals = platforms(to.id)
+    .flatMap(k => boardings.get(k) || []).filter(b => b.i > 0).length;
+  const departures = platforms(from.id)
+    .flatMap(k => boardings.get(k) || [])
+    .filter(b => b.i < DATA.routes[b.r].stations.length - 1).length;
+
+  if (!arrivals) {
+    return `A(z) <b>${nameOf(ST[to.id])}</b> megállót egyetlen vonal sem érinti
+      úgy, hogy oda meg lehessen érkezni — csak indulási végállomásként
+      szerepel.`;
+  }
+  if (!departures) {
+    return `A(z) <b>${nameOf(ST[from.id])}</b> minden vonalán az utolsó megálló,
+      így onnan nem indul tovább járat.`;
+  }
+  const lines = ST[to.id].lines;
+  if (lines.length === 1) {
+    return `A(z) <b>${nameOf(ST[to.id])}</b> megállót csak a ${lines[0]}-es vonal
+      érinti, és csak az egyik irányában. Gyalog a szomszédos megállóból
+      közelíthető meg.`;
+  }
+  return `A két megálló között ebben az irányban nincs átjárás. Próbáld meg
+    fordítva, vagy egy szomszédos megállóval.`;
+}
+
+function fareNote(t) {
+  const fare = ticketFor(t);
+  if (!fare) return "";
+  const t1 = fare.ticket;
+  const many = fare.count > 1
+    ? ` — ebből ${fare.count} kell, mert az átszállás túllépi az érvényességet`
+    : "";
+  return `<p class="fare-note">${t1.name[lang]} · <b>${money(t1.price)}</b> ·
+    ${t1.minutes} perc${many}</p>`;
+}
+
+function fareTag(t) {
+  const fare = ticketFor(t);
+  if (!fare) return "";
+  const many = fare.count > 1 ? `${fare.count} × ` : "";
+  return `<br><span class="fare">${many}${money(fare.total)}</span>`;
+}
+
+function drawResults() {
+  const box = document.getElementById("results");
+  if (!trips.length) {
+    box.innerHTML = `<p class="empty">${
+      mode === "arrive"
+        ? `Nincs olyan járat, amivel ${hhmm(wantedAt)}-ra oda lehetne érni.`
+        : `${hhmm(wantedAt)} után nincs induló járat erre az útvonalra.`}
+      ${whyNot(endpoint("from"), endpoint("to"))}</p>`;
+    return;
+  }
+  const best = trips[0];
+  const banner = best.timing ? `<p class="leave-by">${
+    mode === "arrive"
+      ? `Legkésőbb <b>${hhmm(best.timing.leave)}</b>-kor indulj el, hogy
+         ${hhmm(wantedAt)}-ra odaérj.`
+      : `Ha ${hhmm(wantedAt)}-kor indulsz, <b>${hhmm(best.timing.arrive)}</b>-kor
+         érsz oda.`}</p>` : "";
+
+  box.innerHTML = banner + trips.map((t, i) => {
+    const plates = t.legs.map(l => l.kind === "walk"
+      ? `<span class="walk-chip">${WALKER}</span>`
+      : plate(DATA.routes[l.r].line, true)).join('<span class="arrow">→</span>');
+    const label = t.transfers === 0 ? "közvetlen" : `${t.transfers} átszállás`;
+    const span = t.timing
+      ? `${hhmm(t.timing.leave)} → ${hhmm(t.timing.arrive)}` : "";
+    return `<article class="trip${i === activeTrip ? " active" : ""}">
+      <button class="trip-head" data-trip="${i}">
+        <span class="trip-plates">${plates}</span>
+        <span class="trip-cost"><b>${clock(totalMinutes(t))}</b><br>${span}<br>
+          ${label} · ${t.walk} m ${WALKER}${fareTag(t)}</span>
+      </button>
+      ${i === activeTrip
+        ? `<div class="strip">${tripStrip(t)}</div>${fareNote(t)}` : ""}
+    </article>`;
+  }).join("");
+}
+
+/* ---------- map ---------- */
+
+mapboxgl.accessToken = DATA.token;
+
+const BASEMAPS = [
+  { id: "streets", label: "Utcák", style: "streets-v12", theme: "light" },
+  { id: "pale", label: "Halvány", style: "light-v11", theme: "light" },
+  { id: "dark", label: "Sötét", style: "dark-v11", theme: "dark" },
+];
+
+// how the overlay has to change so it stays legible on each basemap
+const PAINT = {
+  light: { casing: "#ffffff", stopFill: "#ffffff", stopEdge: "#33404f", halo: "#ffffff", walk: "#4a5766" },
+  dark: { casing: "#0a0e13", stopFill: "#0d1218", stopEdge: "#dbe3ec", halo: "#080b0f", walk: "#c3cedb" },
+};
+
+let basemap = BASEMAPS[0];
+let map;
+
+function paint() { return PAINT[basemap.theme]; }
+
+document.documentElement.dataset.theme = basemap.theme;
+
+try {
+  map = new mapboxgl.Map({
+    container: "map",
+    style: `mapbox://styles/mapbox/${basemap.style}`,
+    center: [25.7855, 45.8665],
+    zoom: 12.6,
+    attributionControl: true,
+  });
+} catch (err) {
+  showFailure();
+}
+
+function showFailure() {
+  document.getElementById("map").innerHTML = `<div class="fail"><div>
+    A térkép nem tölthető be. Ha a Mapbox token lejárt vagy vissza lett vonva,
+    cseréld ki a <code>build_map.py</code> fájlban a
+    <code>MAPBOX_TOKEN</code> értékét, és futtasd újra.
+  </div></div>`;
+}
+
+if (map) {
+  map.on("error", e => {
+    if (e.error && /401|403/.test(String(e.error.status || e.error.message))) {
+      showFailure();
+    }
+  });
+  map.addControl(new mapboxgl.NavigationControl({ showCompass: false }), "top-right");
+  // fires for the first style and again after every basemap switch, which
+  // wipes custom layers and needs them put back
+  map.on("style.load", () => {
+    buildLayers();
+    if (!framed) {
+      map.fitBounds(coreBounds(), { padding: 44, duration: 0 });
+      framed = true;
+    }
+    if (activeTrip > -1 && trips[activeTrip]) showTrip(trips[activeTrip], false);
+  });
+}
+
+let framed = false;
+
+function drawBasemaps() {
+  document.getElementById("basemaps").innerHTML = BASEMAPS.map(b =>
+    `<button data-base="${b.id}" aria-pressed="${b.id === basemap.id}">${b.label}</button>`
+  ).join("");
+}
+
+document.getElementById("basemaps").addEventListener("click", e => {
+  const btn = e.target.closest("[data-base]");
+  if (!btn || btn.dataset.base === basemap.id) return;
+  basemap = BASEMAPS.find(b => b.id === btn.dataset.base);
+  document.documentElement.dataset.theme = basemap.theme;
+  drawBasemaps();
+  drawLineList();
+  if (trips.length) drawResults();
+  map.setStyle(`mapbox://styles/mapbox/${basemap.style}`);
+});
+
+const LINE_WIDTH = ["interpolate", ["linear"], ["zoom"], 11, 2.4, 14, 4.6, 17, 7.5];
+
+function buildLayers() {
+  // Slide everything above the basemap's geometry but under its labels, so
+  // place names stay readable while no road can paint over a route.
+  //
+  // "before the first symbol layer" is the usual shorthand and it is wrong
+  // here: mapbox/streets-v12 puts tunnel-oneway-arrow-blue at index 36 and
+  // then carries on with 66 more road, bridge and pavement layers above it.
+  // Inserting there buried every route under the white street fills. The real
+  // boundary is just above the topmost non-symbol layer.
+  const layers = map.getStyle().layers;
+  let boundary = layers.length;
+  for (let i = layers.length - 1; i >= 0; i--) {
+    if (layers[i].type !== "symbol") { boundary = i + 1; break; }
+  }
+  const under = boundary < layers.length ? layers[boundary].id : undefined;
+  const add = spec => map.addLayer(spec, under);
+
+  // one source for every route, so overlapping lines can be cased and dimmed
+  // together instead of fighting each other across 19 separate layers
+  map.addSource("routes", {
+    type: "geojson",
+    data: {
+      type: "FeatureCollection",
+      features: DATA.routes.map((r, ri) => ({
+        type: "Feature",
+        properties: { ri, line: r.line, color: lineColor(r.line) },
+        geometry: { type: "LineString", coordinates: r.shape },
+      })),
+    },
+  });
+
+  add({
+    id: "routes-casing",
+    type: "line",
+    source: "routes",
+    layout: { "line-cap": "round", "line-join": "round" },
+    paint: {
+      "line-color": paint().casing,
+      "line-width": ["interpolate", ["linear"], ["zoom"], 11, 4.6, 14, 8, 17, 12],
+      "line-opacity": 0.95,
+    },
+  });
+
+  add({
+    id: "routes",
+    type: "line",
+    source: "routes",
+    layout: { "line-cap": "round", "line-join": "round" },
+    paint: {
+      "line-color": ["get", "color"],
+      "line-width": LINE_WIDTH,
+      "line-opacity": 0.95,
+    },
+  });
+
+  map.addSource("stations", { type: "geojson", data: stationGeo() });
+  add({
+    id: "stations",
+    type: "circle",
+    source: "stations",
+    paint: {
+      // kept out of the way until you are zoomed in far enough to want them
+      "circle-radius": ["interpolate", ["linear"], ["zoom"], 12, 2.2, 14, 3.6, 17, 6.5],
+      "circle-color": paint().stopFill,
+      "circle-stroke-color": paint().stopEdge,
+      "circle-stroke-width": ["interpolate", ["linear"], ["zoom"], 12, 1, 15, 1.8],
+      "circle-opacity": ["interpolate", ["linear"], ["zoom"], 11.5, 0, 12.5, 1],
+      "circle-stroke-opacity": ["interpolate", ["linear"], ["zoom"], 11.5, 0, 12.5, 1],
+    },
+  });
+
+  map.addSource("trip", { type: "geojson", data: empty() });
+  add({
+    id: "trip-casing",
+    type: "line",
+    source: "trip",
+    layout: { "line-cap": "round", "line-join": "round" },
+    paint: { "line-color": paint().casing, "line-width": 12, "line-opacity": 0.75 },
+  });
+  // line-dasharray takes no data-driven expression, so riding and walking are
+  // drawn by two layers filtered on the same source
+  add({
+    id: "trip-ride",
+    type: "line",
+    source: "trip",
+    filter: ["==", ["get", "walk"], false],
+    layout: { "line-cap": "round", "line-join": "round" },
+    paint: { "line-color": ["get", "color"], "line-width": 5.5 },
+  });
+  add({
+    id: "trip-walk",
+    type: "line",
+    source: "trip",
+    filter: ["==", ["get", "walk"], true],
+    layout: { "line-cap": "butt", "line-join": "round" },
+    paint: {
+      "line-color": paint().walk,
+      "line-width": 4,
+      "line-dasharray": [0.6, 1.4],
+    },
+  });
+
+  // the same figure as in the itinerary, so a dashed line is unmistakably a walk
+  const walker = new Image(30, 30);
+  walker.onload = () => { if (!map.hasImage("walker")) map.addImage("walker", walker); };
+  walker.src = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(
+    `<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30">
+       <circle cx="15" cy="15" r="12" fill="${paint().casing}"
+               stroke="${paint().walk}" stroke-width="2"/>
+       <g transform="translate(6 6) scale(0.75)" fill="${paint().walk}">
+         <path d="M13.5 5.5a2 2 0 1 0 0-4 2 2 0 0 0 0 4zM9.8 8.9 7 23h2.1l1.8-8
+           2.1 2v6h2v-7.5l-2.1-2 .6-3A7 7 0 0 0 19 13v-2a5 5 0 0 1-4.2-2.4l-1-1.6
+           c-.4-.6-1-1-1.8-1-.3 0-.5 0-.8.2L6 8.3V13h2V9.6l1.8-.7z"/>
+       </g></svg>`);
+
+  add({
+    id: "trip-walk-icon",
+    type: "symbol",
+    source: "trip",
+    filter: ["==", ["get", "walk"], true],
+    layout: {
+      "symbol-placement": "line-center",
+      "icon-image": "walker",
+      "icon-size": 0.85,
+      "icon-allow-overlap": true,
+      "icon-ignore-placement": true,
+    },
+  });
+
+  map.addSource("trip-nodes", { type: "geojson", data: empty() });
+  add({
+    id: "trip-nodes",
+    type: "circle",
+    source: "trip-nodes",
+    paint: {
+      "circle-radius": 6,
+      "circle-color": paint().casing,
+      "circle-stroke-color": ["get", "color"],
+      "circle-stroke-width": 3.5,
+    },
+  });
+
+  // line numbers repeated along each route, the way a transit map carries them
+  add({
+    id: "route-labels",
+    type: "symbol",
+    source: "routes",
+    layout: {
+      "symbol-placement": "line",
+      "text-field": ["get", "line"],
+      "text-font": ["DIN Pro Bold", "Arial Unicode MS Bold"],
+      "text-size": ["interpolate", ["linear"], ["zoom"], 12, 10, 16, 13],
+      "symbol-spacing": 170,
+      "text-padding": 5,
+      "text-rotation-alignment": "viewport",
+      "text-pitch-alignment": "viewport",
+    },
+    paint: {
+      "text-color": ["get", "color"],
+      "text-halo-color": paint().halo,
+      "text-halo-width": 2.2,
+    },
+  });
+
+  map.on("click", "stations", e => openStation(+e.features[0].properties.id, e.lngLat));
+  map.on("click", e => {
+    const onStop = map.queryRenderedFeatures(e.point, { layers: ["stations"] });
+    if (!onStop.length) openPlace(e.lngLat);
+  });
+  map.on("mouseenter", "stations", () => map.getCanvas().style.cursor = "pointer");
+  map.on("mouseleave", "stations", () => map.getCanvas().style.cursor = "");
+  applyVisibility();
+}
+
+/* Framing on the whole network would shrink the town to a knot: line 9 runs
+   out to Sugásfürdő and line 3 down to Szotyor, so two rural tails set the
+   scale. Open on where the stops actually are instead, and let the reader zoom
+   out for the tails. */
+function coreBounds() {
+  const cut = arr => {
+    const s = [...arr].sort((a, b) => a - b);
+    const k = Math.floor(s.length * 0.07);
+    return [s[k], s[s.length - 1 - k]];
+  };
+  const [w, e] = cut(ST.map(s => s.lng));
+  const [south, north] = cut(ST.map(s => s.lat));
+  return new mapboxgl.LngLatBounds([w, south], [e, north]);
+}
+
+const empty = () => ({ type: "FeatureCollection", features: [] });
+
+/* One marker per physical stop, not per station.
+   Stations group the kerbs of a road together so a transfer counts as
+   happening in one place, but drawing that group would put a single dot in the
+   middle of the carriageway and hide the fact that there are two shelters.
+   The map shows all 97 stopping points; clicking any of them opens the station
+   they belong to. */
+function stationGeo() {
+  return {
+    type: "FeatureCollection",
+    features: ST
+      .filter(s => s.lines.some(l => shown.has(l)))
+      .flatMap(s => s.points.map(p => ({
+        type: "Feature",
+        properties: { id: s.id },
+        geometry: { type: "Point", coordinates: [p[1], p[0]] },
+      }))),
+  };
+}
+
+function applyVisibility() {
+  if (!map || !map.getLayer("routes")) return;
+  // an empty list matches nothing, which is exactly the "no lines shown" case
+  const filter = ["in", ["get", "line"], ["literal", [...shown]]];
+  map.setFilter("routes", filter);
+  map.setFilter("routes-casing", filter);
+  map.setFilter("route-labels", filter);
+  // a planned journey needs to stand out from the rest of the network
+  const dim = activeTrip > -1 ? 0.22 : 0.95;
+  map.setPaintProperty("routes", "line-opacity", dim);
+  map.getSource("stations").setData(stationGeo());
+}
+
+let popup;
+
+function openStation(id, lngLat) {
+  const s = ST[id];
+  if (popup) popup.remove();
+  popup = new mapboxgl.Popup({ closeButton: true, maxWidth: "270px", offset: 10 })
+    .setLngLat(lngLat || [s.lng, s.lat])
+    .setHTML(`
+      <div class="pop-hu">${s.name.hu}</div>
+      <div class="pop-ro">${s.name.ro}</div>
+      <div class="pop-lines">${s.lines.map(l => plate(l, true)).join("")}</div>
+      <div class="pop-actions">
+        <button data-pick="from" data-id="${id}">Innen indulok</button>
+        <button data-pick="to" data-id="${id}">Ide megyek</button>
+      </div>
+      ${s.points.length > 1
+        ? `<div class="pop-note">${s.points.length} megállóhely · az út két oldalán</div>`
+        : ""}`)
+    .addTo(map);
+}
+
+function showTrip(t, fit = true) {
+  const at = key => {
+    const p = PLAT.get(key);
+    return [p.lng, p.lat];
+  };
+  const features = [];
+  for (const leg of t.legs) {
+    if (leg.kind === "walk") {
+      const a = leg.a ? at(leg.a) : [t.origin.lng, t.origin.lat];
+      const b = leg.b ? at(leg.b) : [t.destination.lng, t.destination.lat];
+      features.push({
+        type: "Feature",
+        properties: { color: paint().walk, walk: true },
+        geometry: {
+          type: "LineString",
+          coordinates: leg.path && leg.path.length > 1 ? leg.path : [a, b],
+        },
+      });
+      continue;
+    }
+    const r = DATA.routes[leg.r];
+    const a = r.vertices[leg.from], b = r.vertices[leg.to];
+    features.push({
+      type: "Feature",
+      properties: { color: lineColor(r.line), walk: false },
+      geometry: {
+        type: "LineString",
+        coordinates: a < b ? r.shape.slice(a, b + 1) : [r.shape[a], r.shape[b]],
+      },
+    });
+  }
+  map.getSource("trip").setData({ type: "FeatureCollection", features });
+
+  // markers on the exact kerbs you board, change and alight at
+  const nodes = [];
+  const mark = (coords, color) => nodes.push({
+    type: "Feature", properties: { color },
+    geometry: { type: "Point", coordinates: coords },
+  });
+  if (t.origin && t.origin.kind === "point") {
+    mark([t.origin.lng, t.origin.lat], paint().walk);
+  }
+  for (const leg of t.legs) {
+    if (leg.kind !== "ride") continue;
+    mark(at(platformOf(leg.r, leg.from)), lineColor(DATA.routes[leg.r].line));
+  }
+  const rides = t.legs.filter(l => l.kind === "ride");
+  if (rides.length) {
+    const last = rides[rides.length - 1];
+    mark(at(platformOf(last.r, last.to)), paint().stopEdge);
+  }
+  if (t.destination && t.destination.kind === "point") {
+    mark([t.destination.lng, t.destination.lat], paint().stopEdge);
+  }
+  map.getSource("trip-nodes").setData({ type: "FeatureCollection", features: nodes });
+
+  applyVisibility();
+
+  const box = new mapboxgl.LngLatBounds();
+  features.forEach(f => f.geometry.coordinates.forEach(c => box.extend(c)));
+  if (fit && !box.isEmpty()) map.fitBounds(box, { padding: 70, maxZoom: 15.5 });
+}
+
+function clearTrip() {
+  map.getSource("trip").setData(empty());
+  map.getSource("trip-nodes").setData(empty());
+  applyVisibility();
+}
+
+/* Picking a spot that is not a stop: the same two actions as the stop popup,
+   so starting from an address works the same way as starting from a shelter. */
+function openPlace(lngLat) {
+  if (popup) popup.remove();
+  popup = new mapboxgl.Popup({ closeButton: true, maxWidth: "250px", offset: 10 })
+    .setLngLat(lngLat)
+    .setHTML(`
+      <div class="pop-hu">Térképi pont</div>
+      <div class="pop-ro">${lngLat.lat.toFixed(5)}, ${lngLat.lng.toFixed(5)}</div>
+      <div class="pop-actions">
+        <button data-place="from" data-lat="${lngLat.lat}" data-lng="${lngLat.lng}">Innen indulok</button>
+        <button data-place="to" data-lat="${lngLat.lat}" data-lng="${lngLat.lng}">Ide megyek</button>
+      </div>
+      <div class="pop-note">a legközelebbi megállókig a gyaloglás beleszámít</div>`)
+    .addTo(map);
+}
+
+/* ---------- wiring ---------- */
+
+document.getElementById("lines").addEventListener("click", e => {
+  const row = e.target.closest("[data-line]");
+  if (!row) return;
+  const id = row.dataset.line;
+  shown.has(id) ? shown.delete(id) : shown.add(id);
+  row.setAttribute("aria-pressed", shown.has(id));
+  applyVisibility();
+});
+
+document.getElementById("all").onclick = () => {
+  DATA.lines.forEach(l => shown.add(l.id));
+  drawLineList(); applyVisibility();
+};
+
+document.getElementById("none").onclick = () => {
+  shown.clear();
+  drawLineList(); applyVisibility();
+};
+
+document.getElementById("swap").onclick = () => {
+  const a = chosen.from, b = chosen.to;
+  setEndpoint("from", b);
+  setEndpoint("to", a);
+};
+
+for (const which of ["from", "to"]) {
+  const input = document.getElementById(which);
+  input.addEventListener("input", () => onSearchInput(which));
+  input.addEventListener("focus", () => {
+    if (input.value.trim() && !chosen[which]) onSearchInput(which);
+  });
+  document.getElementById(which + "-list").addEventListener("mousedown", e => {
+    const row = e.target.closest("[data-index]");
+    if (!row || !suggestFor) return;
+    e.preventDefault();
+    setEndpoint(which, suggestFor.items[+row.dataset.index]);
+  });
+  input.addEventListener("blur", () => setTimeout(() => closeSuggestions(which), 120));
+}
+
+document.addEventListener("click", e => {
+  const place = e.target.closest("[data-place]");
+  if (!place) return;
+  setEndpoint(place.dataset.place, {
+    kind: "point", lat: +place.dataset.lat, lng: +place.dataset.lng,
+    label: `${(+place.dataset.lat).toFixed(4)}, ${(+place.dataset.lng).toFixed(4)}`,
+  });
+  if (popup) popup.remove();
+});
+
+document.getElementById("mode").onchange = e => { mode = e.target.value; };
+document.getElementById("day").onchange = e => {
+  const picked = new Date(e.target.value + "T12:00:00");
+  if (isNaN(picked)) return;
+  travelDay = picked;
+  service = serviceFor(picked);
+  showDayKind();
+};
+document.getElementById("prefer").onchange = e => { prefer = e.target.value; };
+document.getElementById("when").onchange = e => {
+  const [h, m] = e.target.value.split(":");
+  if (h !== undefined && m !== undefined) wantedAt = +h * 60 + +m;
+};
+
+document.getElementById("lang").onclick = e => {
+  lang = lang === "hu" ? "ro" : "hu";
+  e.target.textContent = lang === "hu" ? "magyar" : "română";
+  e.target.setAttribute("aria-pressed", lang === "hu");
+  for (const which of ["from", "to"]) {
+    if (chosen[which]) setEndpoint(which, chosen[which]);   // relabel
+  }
+  drawResults();
+};
+
+const go = document.getElementById("go");
+
+go.onclick = async () => {
+  if (!chosen.from || !chosen.to) {
+    document.getElementById("results").innerHTML =
+      `<p class="empty">Válaszd ki, honnan és hová utazol — írj be egy
+       megállót vagy címet, vagy kattints a térképre.</p>`;
+    return;
+  }
+  go.disabled = true;
+  go.textContent = "Keresés…";
+  try {
+    trips = await search();
+  } finally {
+    go.disabled = false;
+    go.textContent = "Útvonal keresése";
+  }
+  activeTrip = trips.length ? 0 : -1;
+  drawResults();
+  if (trips.length) await selectTrip(0);
+  else clearTrip();
+};
+
+/* The walk to and from the bus is only drawn for the itinerary on screen, so
+   choosing one costs at most two extra requests rather than dozens up front. */
+async function selectTrip(i) {
+  const trip = trips[i];
+  showTrip(trip);
+  if (trip.legs.some(l => l.kind === "walk" && !l.path)) {
+    await drawableWalks(trip);
+    drawResults();
+    showTrip(trip, false);
+  }
+}
+
+document.getElementById("results").addEventListener("click", e => {
+  const head = e.target.closest("[data-trip]");
+  if (!head) return;
+  const i = +head.dataset.trip;
+  activeTrip = activeTrip === i ? -1 : i;
+  drawResults();
+  if (activeTrip > -1) selectTrip(activeTrip);
+  else clearTrip();
+});
+
+document.addEventListener("click", e => {
+  const btn = e.target.closest("[data-pick]");
+  if (!btn) return;
+  const s = ST[+btn.dataset.id];
+  setEndpoint(btn.dataset.pick,
+    { kind: "station", id: s.id, lat: s.lat, lng: s.lng });
+  if (popup) popup.remove();
+});
+
+/* ---------- boot ---------- */
+
+const loops = DATA.lines.filter(l => l.circular).length;
+// the full-resolution length, so thinning the drawn line cannot shrink the figure
+const km = DATA.routes.reduce((n, r) => n + r.length_m, 0) / 1000;
+
+document.getElementById("meta").textContent =
+  `${DATA.lines.length} vonal · ${loops} körjárat · ${ST.length} megálló · ${km.toFixed(1)} km`;
+
+drawBasemaps();
+drawLineList();
+
+// start from the clock on the wall, and from today's kind of day
+document.getElementById("when").value = hhmm(wantedAt);
+document.getElementById("day").value = isoDate(travelDay);
+document.getElementById("mode").value = mode;
+showDayKind();
+
+</script>

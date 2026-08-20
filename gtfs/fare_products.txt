@@ -1,0 +1,11 @@
+fare_product_id,fare_product_name,fare_media_id,amount,currency
+city_24pay,Bilet valabil 50 minute prin aplicația 24pay,app,2.50,RON
+city_machine,"Bilet o călătorie, procurat prin automate de bilete",machine,2.50,RON
+city_two,Bilet 2 călătorii,machine,5.00,RON
+city_driver,"Bilet de la conducătorul autobuzului, o călătorie",cash,5.00,RON
+arcus_24pay,"Bilet valabil 60 minute prin aplicația 24pay, cursele spre Arcuș",app,4.00,RON
+monthly_all,Abonament lunar toate liniile,machine,84.00,RON
+monthly_pension_75,"Abonament lunar, pensii 1601–2000 lei (reducere 75%)",machine,21.00,RON
+monthly_pension_50,"Abonament lunar, pensii 2001–2400 lei (reducere 50%)",machine,42.00,RON
+monthly_pension_free,"Abonament gratuit, pensii până la 1600 lei",machine,0.00,RON
+monthly_student_free,Abonament gratuit pentru elevii din municipiul Sfântu Gheorghe,machine,0.00,RON

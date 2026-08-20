@@ -1,0 +1,121 @@
+/* The drawer is one sheet of paper. The header used to be a shade darker than
+   the grip strip directly above it, which made the grip look like a separate
+   piece of furniture the header was sliding under. */
+.head { display: flex; align-items: center; gap: 10px; padding: 11px 16px;
+  background: var(--paper); border-bottom: 1px solid var(--border);
+  position: sticky; top: 0; z-index: 4; }
+.head button { display: grid; place-items: center; width: 28px; height: 28px;
+  margin-left: -4px; color: var(--ink); }
+.head b { font-family: ui-rounded, "SF Pro Rounded", "Varela Round", system-ui, sans-serif;
+  font-size: 16px; }
+.summary { display: flex; align-items: center; gap: 12px; padding: 12px 18px;
+  background: var(--paper); border-bottom: 1px solid var(--border); }
+.modes { display: flex; gap: 5px; flex: 1; flex-wrap: wrap; }
+.dur { text-align: right; }
+.dur b { font-size: 24px; font-variant-numeric: tabular-nums; }
+.dur span { font-size: 12px; color: var(--muted); margin-left: 2px; }
+
+.timeline { list-style: none; margin: 0; padding: 8px 18px 18px; }
+.timeline > li { list-style: none; }
+.node { display: grid; grid-template-columns: 26px 1fr auto; gap: 0 12px;
+  align-items: stretch; position: relative; }
+.rail { position: relative; display: flex; justify-content: center;
+  align-items: flex-start; padding-top: 4px; }
+.rail::before { content: ""; position: absolute; top: 0; bottom: 0; width: 4px;
+  border-radius: 2px; background: var(--bar, transparent); }
+.walkNode .rail::before {
+  background-image: linear-gradient(var(--ink-2) 55%, transparent 0);
+  background-size: 4px 10px; background-repeat: repeat-y; opacity: .5;
+}
+.pip, .pipFilled, .pipSmall { position: relative; z-index: 2; border-radius: 50%;
+  background: var(--paper); border: 3.5px solid var(--ink); margin-top: 3px; }
+.pip { width: 13px; height: 13px; }
+/* Both ends of the trip get the same solid marker. A hollow ring at the top
+   made the origin look like one more stop along the way. */
+.pipFilled { width: 13px; height: 13px; background: currentColor;
+  border-color: currentColor; box-shadow: 0 0 0 3px var(--paper); }
+.pipSmall { width: 9px; height: 9px; border-width: 2.5px; border-color: var(--ink-2); }
+.body { padding-bottom: 16px; min-width: 0; }
+.name { font-weight: 700; font-size: 15px; }
+.sub { font-size: 13px; color: var(--muted); margin-top: 2px; }
+.time { font-variant-numeric: tabular-nums; font-weight: 600; font-size: 14px;
+  align-self: start; padding-top: 1px; }
+.soft { color: var(--muted); font-weight: 400; }
+.rideHead { display: flex; align-items: center; gap: 8px; margin: 2px 0 4px; }
+.pill { display: inline-flex; align-items: center; justify-content: center;
+  min-width: 22px; height: 20px; padding: 0 6px; border-radius: 6px;
+  font-weight: 800; font-size: 12px;
+  font-family: ui-rounded, "SF Pro Rounded", "Varela Round", system-ui, sans-serif;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.18); }
+.between { margin-top: 8px; border: 1px solid var(--border); border-radius: 11px;
+  overflow: hidden; background: var(--surface); }
+.between summary { cursor: pointer; list-style: none; padding: 8px 12px;
+  font-size: 13px; font-weight: 600; color: var(--ink-2);
+  display: flex; align-items: center; gap: 6px; }
+.between summary svg { transition: transform var(--quick) var(--ease); flex: 0 0 auto; }
+.between[open] summary svg { transform: rotate(180deg); }
+@media (prefers-reduced-motion: reduce) { .between summary svg { transition: none; } }
+.between summary::-webkit-details-marker { display: none; }
+.between ol { margin: 0; padding: 2px 12px 10px 30px; font-size: 13px;
+  color: var(--muted); display: flex; flex-direction: column; gap: 5px; }
+.between li { padding-left: 2px; }
+/* --hair against the panel is 1.3:1 - a number you cannot read is not a
+   number. The same muted tone as the text beside it reads as one block. */
+.between li::marker { color: var(--muted); font-variant-numeric: tabular-nums; }
+.between b { color: var(--ink); font-weight: 500; font-variant-numeric: tabular-nums; }
+.walkRow { display: flex; align-items: center; gap: 8px; font-size: 13px;
+  color: var(--ink-2); font-weight: 600; }
+
+.fare { margin: 4px 18px 18px; padding: 14px 16px; border: 1px solid var(--border);
+  border-radius: var(--radius); background: var(--surface); display: grid; gap: 8px; }
+.fareRow { display: flex; justify-content: space-between; align-items: baseline; }
+.fareRow b { font-size: 19px;
+  font-family: ui-rounded, "SF Pro Rounded", "Varela Round", system-ui, sans-serif; }
+.fare small { color: var(--muted); font-size: 12px; line-height: 1.45; }
+
+.estimated { margin: 0 18px 12px; font-size: 12px; line-height: 1.5; color: var(--muted); }
+
+/* the detail slides in from the side it came from, so the back button reads as
+   a way back rather than a different screen */
+.head { animation: none; }
+.timeline { animation: enter var(--quick) var(--ease); }
+/* the steps come down the timeline in the order you will walk them. Keyed by
+   position, so they mount once when the journey opens and do not replay. */
+.timeline > li { animation: fadeIn var(--quick) var(--ease) both; }
+.timeline > li:nth-child(2) { animation-delay: calc(var(--step) * 1); }
+.timeline > li:nth-child(3) { animation-delay: calc(var(--step) * 2); }
+.timeline > li:nth-child(4) { animation-delay: calc(var(--step) * 3); }
+.timeline > li:nth-child(5) { animation-delay: calc(var(--step) * 4); }
+.timeline > li:nth-child(n + 6) { animation-delay: calc(var(--step) * 5); }
+@keyframes enter {
+  from { opacity: 0; transform: translateX(8px); }
+  to   { opacity: 1; transform: none; }
+}
+@media (prefers-reduced-motion: reduce) { .timeline { animation: none; } }
+
+/* if you miss this one, when is the next - the thing a printed timetable tells
+   you and a single suggested journey does not */
+.later { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px;
+  margin: 6px 0 2px; font-size: 12px; color: var(--muted); }
+.later b { font-weight: 600; color: var(--ink-2); font-variant-numeric: tabular-nums;
+  background: var(--sunk); border-radius: 6px; padding: 1px 6px; }
+
+/* if you miss this one, when is the next - the thing a printed timetable tells
+   you and a single suggested journey does not */
+.later { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px;
+  margin: 6px 0 2px; font-size: 12px; color: var(--muted); }
+.later b { font-weight: 600; color: var(--ink-2); font-variant-numeric: tabular-nums;
+  background: var(--sunk); border-radius: 6px; padding: 1px 6px; }
+
+.wait { display: inline-flex; align-items: center; gap: 6px; margin-top: 6px;
+  padding: 3px 9px; border-radius: 999px; background: var(--sunk);
+  font-size: 12px; font-weight: 600; color: var(--muted); }
+.wait::before { content: ""; width: 6px; height: 6px; border-radius: 50%;
+  background: currentColor; opacity: .55; }
+
+/* Local for the same reason riseIn is local in the list modules: a module
+   cannot reach a keyframe declared in the global stylesheet. */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}

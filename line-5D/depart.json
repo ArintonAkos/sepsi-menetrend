@@ -1,0 +1,167 @@
+{
+  "line": "5D",
+  "direction": "depart",
+  "circular": false,
+  "closes_loop_at_start": false,
+  "headsign": {
+    "ro": "Str. József Attila 2 → Câmpul Frumos",
+    "hu": "József Attila u. 2 → Szépmező"
+  },
+  "source": {
+    "ro": "https://multitrans.ro/jarat-5d.html",
+    "hu": "https://multitrans.ro/jarat-5d-hu.html"
+  },
+  "stop_count": 15,
+  "stops": [
+    {
+      "stop_sequence": 1,
+      "name": {
+        "ro": "Str. József Attila 2",
+        "hu": "József Attila u. 2"
+      },
+      "stop_lat": 45.8541,
+      "stop_lon": 25.7722,
+      "distance_to_next_m": 399
+    },
+    {
+      "stop_sequence": 2,
+      "name": {
+        "ro": "Str. József Attila 1",
+        "hu": "József Attila u. 1"
+      },
+      "stop_lat": 45.8544,
+      "stop_lon": 25.7771,
+      "distance_to_next_m": 274
+    },
+    {
+      "stop_sequence": 3,
+      "name": {
+        "ro": "Str. Kós Károly",
+        "hu": "Kós Károly utca"
+      },
+      "stop_lat": 45.8559,
+      "stop_lon": 25.779,
+      "distance_to_next_m": 400
+    },
+    {
+      "stop_sequence": 4,
+      "name": {
+        "ro": "Fabrica de Țigarete",
+        "hu": "Cigarettagyár"
+      },
+      "stop_lat": 45.8584,
+      "stop_lon": 25.7822,
+      "distance_to_next_m": 396
+    },
+    {
+      "stop_sequence": 5,
+      "name": {
+        "ro": "Col. Mihai Viteazul",
+        "hu": "Vitéz Mihály Líceum"
+      },
+      "stop_lat": 45.861,
+      "stop_lon": 25.7855,
+      "distance_to_next_m": 295
+    },
+    {
+      "stop_sequence": 6,
+      "name": {
+        "ro": "Casa cu Arcade",
+        "hu": "Lábasház"
+      },
+      "stop_lat": 45.8636,
+      "stop_lon": 25.7866,
+      "distance_to_next_m": 549
+    },
+    {
+      "stop_sequence": 7,
+      "name": {
+        "ro": "Biserica Reformată",
+        "hu": "Református Templom"
+      },
+      "stop_lat": 45.8643,
+      "stop_lon": 25.7919,
+      "distance_to_next_m": 550
+    },
+    {
+      "stop_sequence": 8,
+      "name": {
+        "ro": "B-dul Grigore Bălan 1",
+        "hu": "G. Bálán sugárút 1"
+      },
+      "stop_lat": 45.8622,
+      "stop_lon": 25.7962,
+      "distance_to_next_m": 469
+    },
+    {
+      "stop_sequence": 9,
+      "name": {
+        "ro": "B-dul Grigore Bălan 2",
+        "hu": "G. Bálán sugárút 2"
+      },
+      "stop_lat": 45.858,
+      "stop_lon": 25.7964,
+      "distance_to_next_m": 270
+    },
+    {
+      "stop_sequence": 10,
+      "name": {
+        "ro": "Str. Lăcrămioarei 2",
+        "hu": "Gyöngyvirág utca 2"
+      },
+      "stop_lat": 45.858,
+      "stop_lon": 25.7981,
+      "distance_to_next_m": 240
+    },
+    {
+      "stop_sequence": 11,
+      "name": {
+        "ro": "Str. Lăcrămioarei 1",
+        "hu": "Gyöngyvirág utca 1"
+      },
+      "stop_lat": 45.8598,
+      "stop_lon": 25.7995,
+      "distance_to_next_m": 1068
+    },
+    {
+      "stop_sequence": 12,
+      "name": {
+        "ro": "Gara CFR",
+        "hu": "Vasútállomás"
+      },
+      "stop_lat": 45.8631,
+      "stop_lon": 25.8101,
+      "distance_to_next_m": 734
+    },
+    {
+      "stop_sequence": 13,
+      "name": {
+        "ro": "Autoliv",
+        "hu": "Autoliv"
+      },
+      "stop_lat": 45.8658,
+      "stop_lon": 25.8153,
+      "distance_to_next_m": 2133
+    },
+    {
+      "stop_sequence": 14,
+      "name": {
+        "ro": "Câmpul Frumos",
+        "hu": "Szépmező"
+      },
+      "stop_lat": 45.8619,
+      "stop_lon": 25.841,
+      "distance_to_next_m": 493
+    },
+    {
+      "stop_sequence": 15,
+      "name": {
+        "ro": "Multi-Trans",
+        "hu": "Multi-Trans"
+      },
+      "stop_lat": 45.8593,
+      "stop_lon": 25.8389,
+      "distance_to_next_m": null
+    }
+  ]
+}

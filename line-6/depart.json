@@ -1,0 +1,347 @@
+{
+  "line": "6",
+  "direction": "depart",
+  "circular": true,
+  "closes_loop_at_start": true,
+  "headsign": {
+    "ro": "Str. Bartók Béla – traseu circular",
+    "hu": "Bartók Béla utca – körjárat"
+  },
+  "source": {
+    "ro": "https://multitrans.ro/jarat-6.html",
+    "hu": "https://multitrans.ro/jarat-6-hu.html"
+  },
+  "stop_count": 33,
+  "stops": [
+    {
+      "stop_sequence": 1,
+      "name": {
+        "ro": "Str. Bartók Béla",
+        "hu": "Bartók Béla utca"
+      },
+      "stop_lat": 45.8609,
+      "stop_lon": 25.7715,
+      "distance_to_next_m": 402
+    },
+    {
+      "stop_sequence": 2,
+      "name": {
+        "ro": "Str. Dealului",
+        "hu": "Domb utca"
+      },
+      "stop_lat": 45.8594,
+      "stop_lon": 25.776,
+      "distance_to_next_m": 643
+    },
+    {
+      "stop_sequence": 3,
+      "name": {
+        "ro": "Institutul de Proiectări",
+        "hu": "Tervező Intézet"
+      },
+      "stop_lat": 45.8617,
+      "stop_lon": 25.7819,
+      "distance_to_next_m": 91
+    },
+    {
+      "stop_sequence": 4,
+      "name": {
+        "ro": "Institutul de Proiectări",
+        "hu": "Tervező Intézet"
+      },
+      "stop_lat": 45.8616,
+      "stop_lon": 25.7822,
+      "distance_to_next_m": 618
+    },
+    {
+      "stop_sequence": 5,
+      "name": {
+        "ro": "Casa cu Arcade",
+        "hu": "Lábasház"
+      },
+      "stop_lat": 45.8636,
+      "stop_lon": 25.7866,
+      "distance_to_next_m": 79
+    },
+    {
+      "stop_sequence": 6,
+      "name": {
+        "ro": "Parcul Elisabeta",
+        "hu": "Erzsébet Park"
+      },
+      "stop_lat": 45.8643,
+      "stop_lon": 25.7866,
+      "distance_to_next_m": 982
+    },
+    {
+      "stop_sequence": 7,
+      "name": {
+        "ro": "Lic. Plugor Sándor",
+        "hu": "Plugor Sándor Líceum"
+      },
+      "stop_lat": 45.8681,
+      "stop_lon": 25.7874,
+      "distance_to_next_m": 391
+    },
+    {
+      "stop_sequence": 8,
+      "name": {
+        "ro": "Piața Kálvin",
+        "hu": "Kálvin tér"
+      },
+      "stop_lat": 45.8709,
+      "stop_lon": 25.7885,
+      "distance_to_next_m": 501
+    },
+    {
+      "stop_sequence": 9,
+      "name": {
+        "ro": "Cartierul Ciucului",
+        "hu": "Csíki negyed"
+      },
+      "stop_lat": 45.8739,
+      "stop_lon": 25.792,
+      "distance_to_next_m": 404
+    },
+    {
+      "stop_sequence": 10,
+      "name": {
+        "ro": "Str. Ciucului 2",
+        "hu": "Csíki utca 2"
+      },
+      "stop_lat": 45.872,
+      "stop_lon": 25.7957,
+      "distance_to_next_m": 370
+    },
+    {
+      "stop_sequence": 11,
+      "name": {
+        "ro": "Str. Ciucului 1",
+        "hu": "Csíki utca 1"
+      },
+      "stop_lat": 45.8693,
+      "stop_lon": 25.7931,
+      "distance_to_next_m": 417
+    },
+    {
+      "stop_sequence": 12,
+      "name": {
+        "ro": "Debren",
+        "hu": "Debren"
+      },
+      "stop_lat": 45.8671,
+      "stop_lon": 25.7958,
+      "distance_to_next_m": 514
+    },
+    {
+      "stop_sequence": 13,
+      "name": {
+        "ro": "Str. Sporturilor",
+        "hu": "Sport utca"
+      },
+      "stop_lat": 45.8641,
+      "stop_lon": 25.7986,
+      "distance_to_next_m": 1368
+    },
+    {
+      "stop_sequence": 14,
+      "name": {
+        "ro": "Centru Comercial",
+        "hu": "Bevásárlóközpont"
+      },
+      "stop_lat": 45.8693,
+      "stop_lon": 25.801,
+      "distance_to_next_m": 638
+    },
+    {
+      "stop_sequence": 15,
+      "name": {
+        "ro": "Fabrica de Lapte",
+        "hu": "Tejgyár"
+      },
+      "stop_lat": 45.8751,
+      "stop_lon": 25.8007,
+      "distance_to_next_m": 1128
+    },
+    {
+      "stop_sequence": 16,
+      "name": {
+        "ro": "Arena Sepsi",
+        "hu": "Sepsi Aréna"
+      },
+      "stop_lat": 45.8822,
+      "stop_lon": 25.8071,
+      "distance_to_next_m": 1170
+    },
+    {
+      "stop_sequence": 17,
+      "name": {
+        "ro": "Fabrica de Lapte",
+        "hu": "Tejgyár"
+      },
+      "stop_lat": 45.8751,
+      "stop_lon": 25.8007,
+      "distance_to_next_m": 590
+    },
+    {
+      "stop_sequence": 18,
+      "name": {
+        "ro": "Centru Comercial",
+        "hu": "Bevásárlóközpont"
+      },
+      "stop_lat": 45.8698,
+      "stop_lon": 25.8006,
+      "distance_to_next_m": 1100
+    },
+    {
+      "stop_sequence": 19,
+      "name": {
+        "ro": "Str. Sporturilor",
+        "hu": "Sport utca"
+      },
+      "stop_lat": 45.8641,
+      "stop_lon": 25.7986,
+      "distance_to_next_m": 491
+    },
+    {
+      "stop_sequence": 20,
+      "name": {
+        "ro": "Debren",
+        "hu": "Debren"
+      },
+      "stop_lat": 45.8671,
+      "stop_lon": 25.7958,
+      "distance_to_next_m": 407
+    },
+    {
+      "stop_sequence": 21,
+      "name": {
+        "ro": "Str. Ciucului 1",
+        "hu": "Csíki utca 1"
+      },
+      "stop_lat": 45.8693,
+      "stop_lon": 25.7931,
+      "distance_to_next_m": 295
+    },
+    {
+      "stop_sequence": 22,
+      "name": {
+        "ro": "Str. Ciucului 2",
+        "hu": "Csíki utca 2"
+      },
+      "stop_lat": 45.8714,
+      "stop_lon": 25.7951,
+      "distance_to_next_m": 434
+    },
+    {
+      "stop_sequence": 23,
+      "name": {
+        "ro": "Cartierul Ciucului",
+        "hu": "Csíki negyed"
+      },
+      "stop_lat": 45.8739,
+      "stop_lon": 25.7926,
+      "distance_to_next_m": 569
+    },
+    {
+      "stop_sequence": 24,
+      "name": {
+        "ro": "Piața Kálvin",
+        "hu": "Kálvin tér"
+      },
+      "stop_lat": 45.8709,
+      "stop_lon": 25.7887,
+      "distance_to_next_m": 287
+    },
+    {
+      "stop_sequence": 25,
+      "name": {
+        "ro": "Lic. Plugor Sándor",
+        "hu": "Plugor Sándor Líceum"
+      },
+      "stop_lat": 45.8689,
+      "stop_lon": 25.7868,
+      "distance_to_next_m": 582
+    },
+    {
+      "stop_sequence": 26,
+      "name": {
+        "ro": "Str. Gábor Áron",
+        "hu": "Gábor Áron utca"
+      },
+      "stop_lat": 45.8648,
+      "stop_lon": 25.7851,
+      "distance_to_next_m": 471
+    },
+    {
+      "stop_sequence": 27,
+      "name": {
+        "ro": "Institutul de Proiectări",
+        "hu": "Tervező Intézet"
+      },
+      "stop_lat": 45.8617,
+      "stop_lon": 25.7819,
+      "distance_to_next_m": 566
+    },
+    {
+      "stop_sequence": 28,
+      "name": {
+        "ro": "Str. Dealului",
+        "hu": "Domb utca"
+      },
+      "stop_lat": 45.8589,
+      "stop_lon": 25.7768,
+      "distance_to_next_m": 583
+    },
+    {
+      "stop_sequence": 29,
+      "name": {
+        "ro": "Spitalul Județean",
+        "hu": "Megyei Kórház"
+      },
+      "stop_lat": 45.863,
+      "stop_lon": 25.7778,
+      "distance_to_next_m": 368
+    },
+    {
+      "stop_sequence": 30,
+      "name": {
+        "ro": "Str. Vânătorilor 1",
+        "hu": "Vadász utca 1"
+      },
+      "stop_lat": 45.8645,
+      "stop_lon": 25.7756,
+      "distance_to_next_m": 243
+    },
+    {
+      "stop_sequence": 31,
+      "name": {
+        "ro": "Str. Vânătorilor 2",
+        "hu": "Vadász utca 2"
+      },
+      "stop_lat": 45.8648,
+      "stop_lon": 25.7725,
+      "distance_to_next_m": 363
+    },
+    {
+      "stop_sequence": 32,
+      "name": {
+        "ro": "Str. Ghioceilor",
+        "hu": "Hóvirág utca"
+      },
+      "stop_lat": 45.8633,
+      "stop_lon": 25.7699,
+      "distance_to_next_m": 354
+    },
+    {
+      "stop_sequence": 33,
+      "name": {
+        "ro": "Str. Bartók Béla",
+        "hu": "Bartók Béla utca"
+      },
+      "stop_lat": 45.8609,
+      "stop_lon": 25.7715,
+      "distance_to_next_m": null
+    }
+  ]
+}

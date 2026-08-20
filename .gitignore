@@ -1,0 +1,8 @@
+__pycache__/
+.DS_Store
+.history/
+web/node_modules/
+web/.next/
+web/out/
+web/.env*
+!web/.env.local.example

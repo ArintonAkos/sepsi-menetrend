@@ -1,0 +1,137 @@
+{
+  "line": "7",
+  "direction": "return",
+  "circular": false,
+  "closes_loop_at_start": false,
+  "headsign": {
+    "ro": "Gara CFR → Cap Linie Simeria",
+    "hu": "Vasútállomás → Szemerja Végállomás"
+  },
+  "source": {
+    "ro": "https://multitrans.ro/jarat-7-retur.html",
+    "hu": "https://multitrans.ro/jarat-7-retur-hu.html"
+  },
+  "stop_count": 12,
+  "stops": [
+    {
+      "stop_sequence": 1,
+      "name": {
+        "ro": "Gara CFR",
+        "hu": "Vasútállomás"
+      },
+      "stop_lat": 45.8631,
+      "stop_lon": 25.8101,
+      "distance_to_next_m": 928
+    },
+    {
+      "stop_sequence": 2,
+      "name": {
+        "ro": "Str. Sporturilor",
+        "hu": "Sport utca"
+      },
+      "stop_lat": 45.8641,
+      "stop_lon": 25.7986,
+      "distance_to_next_m": 416
+    },
+    {
+      "stop_sequence": 3,
+      "name": {
+        "ro": "B-dul Grigore Bălan 1",
+        "hu": "G. Bálán sugárút 1"
+      },
+      "stop_lat": 45.8622,
+      "stop_lon": 25.7962,
+      "distance_to_next_m": 469
+    },
+    {
+      "stop_sequence": 4,
+      "name": {
+        "ro": "B-dul Grigore Bălan 2",
+        "hu": "G. Bálán sugárút 2"
+      },
+      "stop_lat": 45.858,
+      "stop_lon": 25.7964,
+      "distance_to_next_m": 190
+    },
+    {
+      "stop_sequence": 5,
+      "name": {
+        "ro": "B-dul Nicolae Iorga 1",
+        "hu": "N. Iorga sugárút 1"
+      },
+      "stop_lat": 45.858,
+      "stop_lon": 25.7948,
+      "distance_to_next_m": 264
+    },
+    {
+      "stop_sequence": 6,
+      "name": {
+        "ro": "B-dul Nicolae Iorga 2",
+        "hu": "N. Iorga sugárút 2"
+      },
+      "stop_lat": 45.8591,
+      "stop_lon": 25.792,
+      "distance_to_next_m": 693
+    },
+    {
+      "stop_sequence": 7,
+      "name": {
+        "ro": "Tribunal",
+        "hu": "Törvényszék"
+      },
+      "stop_lat": 45.8624,
+      "stop_lon": 25.7879,
+      "distance_to_next_m": 318
+    },
+    {
+      "stop_sequence": 8,
+      "name": {
+        "ro": "Col. Mihai Viteazul",
+        "hu": "Vitéz Mihály Líceum"
+      },
+      "stop_lat": 45.861,
+      "stop_lon": 25.7855,
+      "distance_to_next_m": 344
+    },
+    {
+      "stop_sequence": 9,
+      "name": {
+        "ro": "Fabrica de Țigarete",
+        "hu": "Cigarettagyár"
+      },
+      "stop_lat": 45.8589,
+      "stop_lon": 25.7826,
+      "distance_to_next_m": 590
+    },
+    {
+      "stop_sequence": 10,
+      "name": {
+        "ro": "Str. Dealului",
+        "hu": "Domb utca"
+      },
+      "stop_lat": 45.8589,
+      "stop_lon": 25.7768,
+      "distance_to_next_m": 583
+    },
+    {
+      "stop_sequence": 11,
+      "name": {
+        "ro": "Spitalul Județean",
+        "hu": "Megyei Kórház"
+      },
+      "stop_lat": 45.863,
+      "stop_lon": 25.7778,
+      "distance_to_next_m": 466
+    },
+    {
+      "stop_sequence": 12,
+      "name": {
+        "ro": "Cap Linie Simeria",
+        "hu": "Szemerja Végállomás"
+      },
+      "stop_lat": 45.8671,
+      "stop_lon": 25.7791,
+      "distance_to_next_m": null
+    }
+  ]
+}

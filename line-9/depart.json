@@ -1,0 +1,107 @@
+{
+  "line": "9",
+  "direction": "depart",
+  "circular": false,
+  "closes_loop_at_start": false,
+  "headsign": {
+    "ro": "Gara CFR → Șugaș Băi",
+    "hu": "Vasútállomás → Sugásfürdő"
+  },
+  "source": {
+    "ro": "https://multitrans.ro/jarat-9.html",
+    "hu": "https://multitrans.ro/jarat-9-hu.html"
+  },
+  "stop_count": 9,
+  "stops": [
+    {
+      "stop_sequence": 1,
+      "name": {
+        "ro": "Gara CFR",
+        "hu": "Vasútállomás"
+      },
+      "stop_lat": 45.8631,
+      "stop_lon": 25.8101,
+      "distance_to_next_m": 928
+    },
+    {
+      "stop_sequence": 2,
+      "name": {
+        "ro": "Str. Sporturilor",
+        "hu": "Sport utca"
+      },
+      "stop_lat": 45.8641,
+      "stop_lon": 25.7986,
+      "distance_to_next_m": 974
+    },
+    {
+      "stop_sequence": 3,
+      "name": {
+        "ro": "Tribunal",
+        "hu": "Törvényszék"
+      },
+      "stop_lat": 45.8624,
+      "stop_lon": 25.7879,
+      "distance_to_next_m": 252
+    },
+    {
+      "stop_sequence": 4,
+      "name": {
+        "ro": "Casa cu Arcade",
+        "hu": "Lábasház"
+      },
+      "stop_lat": 45.8636,
+      "stop_lon": 25.7866,
+      "distance_to_next_m": 1061
+    },
+    {
+      "stop_sequence": 5,
+      "name": {
+        "ro": "Lic. Plugor Sándor",
+        "hu": "Plugor Sándor Líceum"
+      },
+      "stop_lat": 45.8681,
+      "stop_lon": 25.7874,
+      "distance_to_next_m": 410
+    },
+    {
+      "stop_sequence": 6,
+      "name": {
+        "ro": "Piața Kálvin",
+        "hu": "Kálvin tér"
+      },
+      "stop_lat": 45.8709,
+      "stop_lon": 25.7887,
+      "distance_to_next_m": 1258
+    },
+    {
+      "stop_sequence": 7,
+      "name": {
+        "ro": "Str. Borviz",
+        "hu": "Borvíz utca"
+      },
+      "stop_lat": 45.8745,
+      "stop_lon": 25.7753,
+      "distance_to_next_m": 2764
+    },
+    {
+      "stop_sequence": 8,
+      "name": {
+        "ro": "Fântâna Honvéd",
+        "hu": "Honvéd kút"
+      },
+      "stop_lat": 45.8724,
+      "stop_lon": 25.741,
+      "distance_to_next_m": 4935
+    },
+    {
+      "stop_sequence": 9,
+      "name": {
+        "ro": "Șugaș Băi",
+        "hu": "Sugásfürdő"
+      },
+      "stop_lat": 45.8967,
+      "stop_lon": 25.7071,
+      "distance_to_next_m": null
+    }
+  ]
+}

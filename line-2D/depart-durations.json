@@ -1,0 +1,66 @@
+{
+  "shape_id": "2D-depart",
+  "line": "2D",
+  "direction": "depart",
+  "profile": "mapbox/driving",
+  "note": "running time only; contains no waiting or timetable information",
+  "total_seconds": 1738,
+  "legs": [
+    {
+      "seconds": 72,
+      "metres": 388
+    },
+    {
+      "seconds": 107,
+      "metres": 645
+    },
+    {
+      "seconds": 125,
+      "metres": 581
+    },
+    {
+      "seconds": 270,
+      "metres": 1307
+    },
+    {
+      "seconds": 73,
+      "metres": 375
+    },
+    {
+      "seconds": 90,
+      "metres": 487
+    },
+    {
+      "seconds": 68,
+      "metres": 376
+    },
+    {
+      "seconds": 75,
+      "metres": 360
+    },
+    {
+      "seconds": 88,
+      "metres": 394
+    },
+    {
+      "seconds": 122,
+      "metres": 512
+    },
+    {
+      "seconds": 141,
+      "metres": 931
+    },
+    {
+      "seconds": 126,
+      "metres": 725
+    },
+    {
+      "seconds": 213,
+      "metres": 2144
+    },
+    {
+      "seconds": 168,
+      "metres": 420
+    }
+  ]
+}

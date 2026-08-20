@@ -1,0 +1,499 @@
+route_id,service_id,trip_id,trip_headsign,direction_id,shape_id
+1,weekday,1-depart-weekday-001,Cap Linie Simeria → Gara CFR,0,1-depart
+1,weekday,1-depart-weekday-002,Cap Linie Simeria → Gara CFR,0,1-depart
+1,weekday,1-depart-weekday-003,Cap Linie Simeria → Gara CFR,0,1-depart
+1,weekday,1-depart-weekday-004,Cap Linie Simeria → Gara CFR,0,1-depart
+1,weekday,1-depart-weekday-005,Cap Linie Simeria → Gara CFR,0,1-depart
+1,weekday,1-depart-weekday-006,Cap Linie Simeria → Gara CFR,0,1-depart
+1,weekday,1-depart-weekday-007,Cap Linie Simeria → Gara CFR,0,1-depart
+1,weekday,1-depart-weekday-008,Cap Linie Simeria → Gara CFR,0,1-depart
+1,weekday,1-depart-weekday-009,Cap Linie Simeria → Gara CFR,0,1-depart
+1,weekday,1-depart-weekday-010,Cap Linie Simeria → Gara CFR,0,1-depart
+1,weekday,1-depart-weekday-011,Cap Linie Simeria → Gara CFR,0,1-depart
+1,weekday,1-depart-weekday-012,Cap Linie Simeria → Gara CFR,0,1-depart
+1,weekday,1-depart-weekday-013,Cap Linie Simeria → Gara CFR,0,1-depart
+1,weekday,1-depart-weekday-014,Cap Linie Simeria → Gara CFR,0,1-depart
+1,weekday,1-depart-weekday-015,Cap Linie Simeria → Gara CFR,0,1-depart
+1,weekday,1-depart-weekday-016,Cap Linie Simeria → Gara CFR,0,1-depart
+1,weekday,1-depart-weekday-017,Cap Linie Simeria → Gara CFR,0,1-depart
+1,weekday,1-depart-weekday-018,Cap Linie Simeria → Gara CFR,0,1-depart
+1,weekday,1-depart-weekday-019,Cap Linie Simeria → Gara CFR,0,1-depart
+1,weekday,1-depart-weekday-020,Cap Linie Simeria → Gara CFR,0,1-depart
+1,weekday,1-depart-weekday-021,Cap Linie Simeria → Gara CFR,0,1-depart
+1,weekday,1-depart-weekday-022,Cap Linie Simeria → Gara CFR,0,1-depart
+1,weekday,1-depart-weekday-023,Cap Linie Simeria → Gara CFR,0,1-depart
+1,weekday,1-depart-weekday-024,Cap Linie Simeria → Gara CFR,0,1-depart
+1,weekday,1-depart-weekday-025,Cap Linie Simeria → Gara CFR,0,1-depart
+1,weekday,1-depart-weekday-026,Cap Linie Simeria → Gara CFR,0,1-depart
+1,weekday,1-depart-weekday-027,Cap Linie Simeria → Gara CFR,0,1-depart
+1,weekday,1-depart-weekday-028,Cap Linie Simeria → Gara CFR,0,1-depart
+1,weekday,1-depart-weekday-029,Cap Linie Simeria → Gara CFR,0,1-depart
+1,weekday,1-depart-weekday-030,Cap Linie Simeria → Gara CFR,0,1-depart
+1,weekday,1-depart-weekday-031,Cap Linie Simeria → Gara CFR,0,1-depart
+1,weekday,1-depart-weekday-032,Cap Linie Simeria → Gara CFR,0,1-depart
+1,weekday,1-depart-weekday-033,Cap Linie Simeria → Gara CFR,0,1-depart
+1,weekday,1-depart-weekday-034,Cap Linie Simeria → Gara CFR,0,1-depart
+1,weekday,1-depart-weekday-035,Cap Linie Simeria → Gara CFR,0,1-depart
+1,weekday,1-depart-weekday-036,Cap Linie Simeria → Gara CFR,0,1-depart
+1,weekday,1-depart-weekday-037,Cap Linie Simeria → Gara CFR,0,1-depart
+1,weekday,1-depart-weekday-038,Cap Linie Simeria → Gara CFR,0,1-depart
+1,weekend,1-depart-weekend-001,Cap Linie Simeria → Gara CFR,0,1-depart
+1,weekend,1-depart-weekend-002,Cap Linie Simeria → Gara CFR,0,1-depart
+1,weekend,1-depart-weekend-003,Cap Linie Simeria → Gara CFR,0,1-depart
+1,weekend,1-depart-weekend-004,Cap Linie Simeria → Gara CFR,0,1-depart
+1,weekend,1-depart-weekend-005,Cap Linie Simeria → Gara CFR,0,1-depart
+1,weekend,1-depart-weekend-006,Cap Linie Simeria → Gara CFR,0,1-depart
+1,weekend,1-depart-weekend-007,Cap Linie Simeria → Gara CFR,0,1-depart
+1,weekend,1-depart-weekend-008,Cap Linie Simeria → Gara CFR,0,1-depart
+1,weekend,1-depart-weekend-009,Cap Linie Simeria → Gara CFR,0,1-depart
+1,weekend,1-depart-weekend-010,Cap Linie Simeria → Gara CFR,0,1-depart
+1,weekend,1-depart-weekend-011,Cap Linie Simeria → Gara CFR,0,1-depart
+1,weekend,1-depart-weekend-012,Cap Linie Simeria → Gara CFR,0,1-depart
+1,weekend,1-depart-weekend-013,Cap Linie Simeria → Gara CFR,0,1-depart
+1,weekend,1-depart-weekend-014,Cap Linie Simeria → Gara CFR,0,1-depart
+1,weekend,1-depart-weekend-015,Cap Linie Simeria → Gara CFR,0,1-depart
+1,weekend,1-depart-weekend-016,Cap Linie Simeria → Gara CFR,0,1-depart
+1,weekend,1-depart-weekend-017,Cap Linie Simeria → Gara CFR,0,1-depart
+1,weekend,1-depart-weekend-018,Cap Linie Simeria → Gara CFR,0,1-depart
+1,weekend,1-depart-weekend-019,Cap Linie Simeria → Gara CFR,0,1-depart
+1,weekend,1-depart-weekend-020,Cap Linie Simeria → Gara CFR,0,1-depart
+1,weekend,1-depart-weekend-021,Cap Linie Simeria → Gara CFR,0,1-depart
+1,weekend,1-depart-weekend-022,Cap Linie Simeria → Gara CFR,0,1-depart
+1,weekend,1-depart-weekend-023,Cap Linie Simeria → Gara CFR,0,1-depart
+1,weekend,1-depart-weekend-024,Cap Linie Simeria → Gara CFR,0,1-depart
+1,weekend,1-depart-weekend-025,Cap Linie Simeria → Gara CFR,0,1-depart
+1,weekend,1-depart-weekend-026,Cap Linie Simeria → Gara CFR,0,1-depart
+1,weekend,1-depart-weekend-027,Cap Linie Simeria → Gara CFR,0,1-depart
+1,weekend,1-depart-weekend-028,Cap Linie Simeria → Gara CFR,0,1-depart
+1,weekend,1-depart-weekend-029,Cap Linie Simeria → Gara CFR,0,1-depart
+1,weekend,1-depart-weekend-030,Cap Linie Simeria → Gara CFR,0,1-depart
+1,weekend,1-depart-weekend-031,Cap Linie Simeria → Gara CFR,0,1-depart
+1,weekend,1-depart-weekend-032,Cap Linie Simeria → Gara CFR,0,1-depart
+1,weekend,1-depart-weekend-033,Cap Linie Simeria → Gara CFR,0,1-depart
+1,weekend,1-depart-weekend-034,Cap Linie Simeria → Gara CFR,0,1-depart
+1,weekend,1-depart-weekend-035,Cap Linie Simeria → Gara CFR,0,1-depart
+1,weekend,1-depart-weekend-036,Cap Linie Simeria → Gara CFR,0,1-depart
+1,weekday,1-return-weekday-001,Gara CFR → Cap Linie Simeria,1,1-return
+1,weekday,1-return-weekday-002,Gara CFR → Cap Linie Simeria,1,1-return
+1,weekday,1-return-weekday-003,Gara CFR → Cap Linie Simeria,1,1-return
+1,weekday,1-return-weekday-004,Gara CFR → Cap Linie Simeria,1,1-return
+1,weekday,1-return-weekday-005,Gara CFR → Cap Linie Simeria,1,1-return
+1,weekday,1-return-weekday-006,Gara CFR → Cap Linie Simeria,1,1-return
+1,weekday,1-return-weekday-007,Gara CFR → Cap Linie Simeria,1,1-return
+1,weekday,1-return-weekday-008,Gara CFR → Cap Linie Simeria,1,1-return
+1,weekday,1-return-weekday-009,Gara CFR → Cap Linie Simeria,1,1-return
+1,weekday,1-return-weekday-010,Gara CFR → Cap Linie Simeria,1,1-return
+1,weekday,1-return-weekday-011,Gara CFR → Cap Linie Simeria,1,1-return
+1,weekday,1-return-weekday-012,Gara CFR → Cap Linie Simeria,1,1-return
+1,weekday,1-return-weekday-013,Gara CFR → Cap Linie Simeria,1,1-return
+1,weekday,1-return-weekday-014,Gara CFR → Cap Linie Simeria,1,1-return
+1,weekday,1-return-weekday-015,Gara CFR → Cap Linie Simeria,1,1-return
+1,weekday,1-return-weekday-016,Gara CFR → Cap Linie Simeria,1,1-return
+1,weekday,1-return-weekday-017,Gara CFR → Cap Linie Simeria,1,1-return
+1,weekday,1-return-weekday-018,Gara CFR → Cap Linie Simeria,1,1-return
+1,weekday,1-return-weekday-019,Gara CFR → Cap Linie Simeria,1,1-return
+1,weekday,1-return-weekday-020,Gara CFR → Cap Linie Simeria,1,1-return
+1,weekday,1-return-weekday-021,Gara CFR → Cap Linie Simeria,1,1-return
+1,weekday,1-return-weekday-022,Gara CFR → Cap Linie Simeria,1,1-return
+1,weekday,1-return-weekday-023,Gara CFR → Cap Linie Simeria,1,1-return
+1,weekday,1-return-weekday-024,Gara CFR → Cap Linie Simeria,1,1-return
+1,weekday,1-return-weekday-025,Gara CFR → Cap Linie Simeria,1,1-return
+1,weekday,1-return-weekday-026,Gara CFR → Cap Linie Simeria,1,1-return
+1,weekday,1-return-weekday-027,Gara CFR → Cap Linie Simeria,1,1-return
+1,weekday,1-return-weekday-028,Gara CFR → Cap Linie Simeria,1,1-return
+1,weekday,1-return-weekday-029,Gara CFR → Cap Linie Simeria,1,1-return
+1,weekday,1-return-weekday-030,Gara CFR → Cap Linie Simeria,1,1-return
+1,weekday,1-return-weekday-031,Gara CFR → Cap Linie Simeria,1,1-return
+1,weekday,1-return-weekday-032,Gara CFR → Cap Linie Simeria,1,1-return
+1,weekday,1-return-weekday-033,Gara CFR → Cap Linie Simeria,1,1-return
+1,weekday,1-return-weekday-034,Gara CFR → Cap Linie Simeria,1,1-return
+1,weekday,1-return-weekday-035,Gara CFR → Cap Linie Simeria,1,1-return
+1,weekday,1-return-weekday-036,Gara CFR → Cap Linie Simeria,1,1-return
+1,weekday,1-return-weekday-037,Gara CFR → Cap Linie Simeria,1,1-return
+1,weekday,1-return-weekday-038,Gara CFR → Cap Linie Simeria,1,1-return
+1,weekend,1-return-weekend-001,Gara CFR → Cap Linie Simeria,1,1-return
+1,weekend,1-return-weekend-002,Gara CFR → Cap Linie Simeria,1,1-return
+1,weekend,1-return-weekend-003,Gara CFR → Cap Linie Simeria,1,1-return
+1,weekend,1-return-weekend-004,Gara CFR → Cap Linie Simeria,1,1-return
+1,weekend,1-return-weekend-005,Gara CFR → Cap Linie Simeria,1,1-return
+1,weekend,1-return-weekend-006,Gara CFR → Cap Linie Simeria,1,1-return
+1,weekend,1-return-weekend-007,Gara CFR → Cap Linie Simeria,1,1-return
+1,weekend,1-return-weekend-008,Gara CFR → Cap Linie Simeria,1,1-return
+1,weekend,1-return-weekend-009,Gara CFR → Cap Linie Simeria,1,1-return
+1,weekend,1-return-weekend-010,Gara CFR → Cap Linie Simeria,1,1-return
+1,weekend,1-return-weekend-011,Gara CFR → Cap Linie Simeria,1,1-return
+1,weekend,1-return-weekend-012,Gara CFR → Cap Linie Simeria,1,1-return
+1,weekend,1-return-weekend-013,Gara CFR → Cap Linie Simeria,1,1-return
+1,weekend,1-return-weekend-014,Gara CFR → Cap Linie Simeria,1,1-return
+1,weekend,1-return-weekend-015,Gara CFR → Cap Linie Simeria,1,1-return
+1,weekend,1-return-weekend-016,Gara CFR → Cap Linie Simeria,1,1-return
+1,weekend,1-return-weekend-017,Gara CFR → Cap Linie Simeria,1,1-return
+1,weekend,1-return-weekend-018,Gara CFR → Cap Linie Simeria,1,1-return
+1,weekend,1-return-weekend-019,Gara CFR → Cap Linie Simeria,1,1-return
+1,weekend,1-return-weekend-020,Gara CFR → Cap Linie Simeria,1,1-return
+1,weekend,1-return-weekend-021,Gara CFR → Cap Linie Simeria,1,1-return
+1,weekend,1-return-weekend-022,Gara CFR → Cap Linie Simeria,1,1-return
+1,weekend,1-return-weekend-023,Gara CFR → Cap Linie Simeria,1,1-return
+1,weekend,1-return-weekend-024,Gara CFR → Cap Linie Simeria,1,1-return
+1,weekend,1-return-weekend-025,Gara CFR → Cap Linie Simeria,1,1-return
+1,weekend,1-return-weekend-026,Gara CFR → Cap Linie Simeria,1,1-return
+1,weekend,1-return-weekend-027,Gara CFR → Cap Linie Simeria,1,1-return
+1,weekend,1-return-weekend-028,Gara CFR → Cap Linie Simeria,1,1-return
+1,weekend,1-return-weekend-029,Gara CFR → Cap Linie Simeria,1,1-return
+1,weekend,1-return-weekend-030,Gara CFR → Cap Linie Simeria,1,1-return
+1,weekend,1-return-weekend-031,Gara CFR → Cap Linie Simeria,1,1-return
+1,weekend,1-return-weekend-032,Gara CFR → Cap Linie Simeria,1,1-return
+1,weekend,1-return-weekend-033,Gara CFR → Cap Linie Simeria,1,1-return
+1,weekend,1-return-weekend-034,Gara CFR → Cap Linie Simeria,1,1-return
+1,weekend,1-return-weekend-035,Gara CFR → Cap Linie Simeria,1,1-return
+1D,weekday,1D-return-weekday-001,Câmpul Frumos → Cap Linie Simeria,1,1D-return
+1D,weekday,1D-return-weekday-002,Câmpul Frumos → Cap Linie Simeria,1,1D-return
+1D,weekday,1D-return-weekday-003,Câmpul Frumos → Cap Linie Simeria,1,1D-return
+1D,weekday,1D-return-weekday-004,Câmpul Frumos → Cap Linie Simeria,1,1D-return
+1D,weekday,1D-return-weekday-005,Câmpul Frumos → Cap Linie Simeria,1,1D-return
+1D,weekday,1D-return-weekday-006,Câmpul Frumos → Cap Linie Simeria,1,1D-return
+1D,weekday,1D-return-weekday-007,Câmpul Frumos → Cap Linie Simeria,1,1D-return
+1D,weekday,1D-return-weekday-008,Câmpul Frumos → Cap Linie Simeria,1,1D-return
+1D,weekend,1D-return-weekend-001,Câmpul Frumos → Cap Linie Simeria,1,1D-return
+1D,weekend,1D-return-weekend-002,Câmpul Frumos → Cap Linie Simeria,1,1D-return
+1D,weekend,1D-return-weekend-003,Câmpul Frumos → Cap Linie Simeria,1,1D-return
+1D,weekend,1D-return-weekend-004,Câmpul Frumos → Cap Linie Simeria,1,1D-return
+1D,weekend,1D-return-weekend-005,Câmpul Frumos → Cap Linie Simeria,1,1D-return
+1D,weekend,1D-return-weekend-006,Câmpul Frumos → Cap Linie Simeria,1,1D-return
+2,weekday,2-depart-weekday-001,Bartók Béla – traseu circular,0,2-depart
+2,weekday,2-depart-weekday-002,Bartók Béla – traseu circular,0,2-depart
+2,weekday,2-depart-weekday-003,Bartók Béla – traseu circular,0,2-depart
+2,weekday,2-depart-weekday-004,Bartók Béla – traseu circular,0,2-depart
+2,weekday,2-depart-weekday-005,Bartók Béla – traseu circular,0,2-depart
+2,weekday,2-depart-weekday-006,Bartók Béla – traseu circular,0,2-depart
+2,weekday,2-depart-weekday-007,Bartók Béla – traseu circular,0,2-depart
+2,weekday,2-depart-weekday-008,Bartók Béla – traseu circular,0,2-depart
+2,weekday,2-depart-weekday-009,Bartók Béla – traseu circular,0,2-depart
+2,weekday,2-depart-weekday-010,Bartók Béla – traseu circular,0,2-depart
+2,weekday,2-depart-weekday-011,Bartók Béla – traseu circular,0,2-depart
+2,weekday,2-depart-weekday-012,Bartók Béla – traseu circular,0,2-depart
+2,weekday,2-depart-weekday-013,Bartók Béla – traseu circular,0,2-depart
+2,weekday,2-depart-weekday-014,Bartók Béla – traseu circular,0,2-depart
+2,weekday,2-depart-weekday-015,Bartók Béla – traseu circular,0,2-depart
+2,weekday,2-depart-weekday-016,Bartók Béla – traseu circular,0,2-depart
+2,weekday,2-depart-weekday-017,Bartók Béla – traseu circular,0,2-depart
+2,weekday,2-depart-weekday-018,Bartók Béla – traseu circular,0,2-depart
+2,weekday,2-depart-weekday-019,Bartók Béla – traseu circular,0,2-depart
+2,weekday,2-depart-weekday-020,Bartók Béla – traseu circular,0,2-depart
+2,weekday,2-depart-weekday-021,Bartók Béla – traseu circular,0,2-depart
+2,weekday,2-depart-weekday-022,Bartók Béla – traseu circular,0,2-depart
+2,weekday,2-depart-weekday-023,Bartók Béla – traseu circular,0,2-depart
+2,weekday,2-depart-weekday-024,Bartók Béla – traseu circular,0,2-depart
+2,weekday,2-depart-weekday-025,Bartók Béla – traseu circular,0,2-depart
+2,weekday,2-depart-weekday-026,Bartók Béla – traseu circular,0,2-depart
+2,weekend,2-depart-weekend-001,Bartók Béla – traseu circular,0,2-depart
+2,weekend,2-depart-weekend-002,Bartók Béla – traseu circular,0,2-depart
+2,weekend,2-depart-weekend-003,Bartók Béla – traseu circular,0,2-depart
+2,weekend,2-depart-weekend-004,Bartók Béla – traseu circular,0,2-depart
+2,weekend,2-depart-weekend-005,Bartók Béla – traseu circular,0,2-depart
+2,weekend,2-depart-weekend-006,Bartók Béla – traseu circular,0,2-depart
+2,weekend,2-depart-weekend-007,Bartók Béla – traseu circular,0,2-depart
+2,weekend,2-depart-weekend-008,Bartók Béla – traseu circular,0,2-depart
+2,weekend,2-depart-weekend-009,Bartók Béla – traseu circular,0,2-depart
+2,weekend,2-depart-weekend-010,Bartók Béla – traseu circular,0,2-depart
+2,weekend,2-depart-weekend-011,Bartók Béla – traseu circular,0,2-depart
+2,weekend,2-depart-weekend-012,Bartók Béla – traseu circular,0,2-depart
+2,weekend,2-depart-weekend-013,Bartók Béla – traseu circular,0,2-depart
+2,weekend,2-depart-weekend-014,Bartók Béla – traseu circular,0,2-depart
+2,weekend,2-depart-weekend-015,Bartók Béla – traseu circular,0,2-depart
+2,weekend,2-depart-weekend-016,Bartók Béla – traseu circular,0,2-depart
+2,weekend,2-depart-weekend-017,Bartók Béla – traseu circular,0,2-depart
+2,weekend,2-depart-weekend-018,Bartók Béla – traseu circular,0,2-depart
+2D,weekday,2D-return-weekday-001,Câmpul Frumos → Str. Bartók Béla,1,2D-return
+2D,weekday,2D-return-weekday-002,Câmpul Frumos → Str. Bartók Béla,1,2D-return
+2D,weekday,2D-return-weekday-003,Câmpul Frumos → Str. Bartók Béla,1,2D-return
+2D,weekday,2D-return-weekday-004,Câmpul Frumos → Str. Bartók Béla,1,2D-return
+2D,weekday,2D-return-weekday-005,Câmpul Frumos → Str. Bartók Béla,1,2D-return
+2D,weekday,2D-return-weekday-006,Câmpul Frumos → Str. Bartók Béla,1,2D-return
+2D,weekday,2D-return-weekday-007,Câmpul Frumos → Str. Bartók Béla,1,2D-return
+2D,weekday,2D-return-weekday-008,Câmpul Frumos → Str. Bartók Béla,1,2D-return
+2D,weekday,2D-return-weekday-009,Câmpul Frumos → Str. Bartók Béla,1,2D-return
+2D,weekday,2D-return-weekday-010,Câmpul Frumos → Str. Bartók Béla,1,2D-return
+2D,weekend,2D-return-weekend-001,Câmpul Frumos → Str. Bartók Béla,1,2D-return
+2D,weekend,2D-return-weekend-002,Câmpul Frumos → Str. Bartók Béla,1,2D-return
+2D,weekend,2D-return-weekend-003,Câmpul Frumos → Str. Bartók Béla,1,2D-return
+3,weekday,3-depart-weekday-001,Str. Țigaretei – traseu circular,0,3-depart
+3,weekday,3-depart-weekday-002,Str. Țigaretei – traseu circular,0,3-depart
+3,weekday,3-depart-weekday-003,Str. Țigaretei – traseu circular,0,3-depart
+3,weekday,3-depart-weekday-004,Str. Țigaretei – traseu circular,0,3-depart
+3,weekday,3-depart-weekday-005,Str. Țigaretei – traseu circular,0,3-depart
+3,weekday,3-depart-weekday-006,Str. Țigaretei – traseu circular,0,3-depart
+3,weekday,3-depart-weekday-007,Str. Țigaretei – traseu circular,0,3-depart
+3,weekday,3-depart-weekday-008,Str. Țigaretei – traseu circular,0,3-depart
+3,weekday,3-depart-weekday-009,Str. Țigaretei – traseu circular,0,3-depart
+3,weekday,3-depart-weekday-010,Str. Țigaretei – traseu circular,0,3-depart
+3,weekday,3-depart-weekday-011,Str. Țigaretei – traseu circular,0,3-depart
+3,weekday,3-depart-weekday-012,Str. Țigaretei – traseu circular,0,3-depart
+3,weekday,3-depart-weekday-013,Str. Țigaretei – traseu circular,0,3-depart
+3,weekday,3-depart-weekday-014,Str. Țigaretei – traseu circular,0,3-depart
+3,weekday,3-depart-weekday-015,Str. Țigaretei – traseu circular,0,3-depart
+3,weekend,3-depart-weekend-001,Str. Țigaretei – traseu circular,0,3-depart
+3,weekend,3-depart-weekend-002,Str. Țigaretei – traseu circular,0,3-depart
+3,weekend,3-depart-weekend-003,Str. Țigaretei – traseu circular,0,3-depart
+3,weekend,3-depart-weekend-004,Str. Țigaretei – traseu circular,0,3-depart
+3,weekend,3-depart-weekend-005,Str. Țigaretei – traseu circular,0,3-depart
+3,weekend,3-depart-weekend-006,Str. Țigaretei – traseu circular,0,3-depart
+3,weekend,3-depart-weekend-007,Str. Țigaretei – traseu circular,0,3-depart
+3,weekend,3-depart-weekend-008,Str. Țigaretei – traseu circular,0,3-depart
+4,weekday,4-depart-weekday-001,Str. Țigaretei – traseu circular,0,4-depart
+4,weekday,4-depart-weekday-002,Str. Țigaretei – traseu circular,0,4-depart
+4,weekday,4-depart-weekday-003,Str. Țigaretei – traseu circular,0,4-depart
+4,weekday,4-depart-weekday-004,Str. Țigaretei – traseu circular,0,4-depart
+4,weekday,4-depart-weekday-005,Str. Țigaretei – traseu circular,0,4-depart
+4,weekday,4-depart-weekday-006,Str. Țigaretei – traseu circular,0,4-depart
+4,weekday,4-depart-weekday-007,Str. Țigaretei – traseu circular,0,4-depart
+4,weekday,4-depart-weekday-008,Str. Țigaretei – traseu circular,0,4-depart
+4,weekday,4-depart-weekday-009,Str. Țigaretei – traseu circular,0,4-depart
+4,weekday,4-depart-weekday-010,Str. Țigaretei – traseu circular,0,4-depart
+4,weekday,4-depart-weekday-011,Str. Țigaretei – traseu circular,0,4-depart
+4,weekday,4-depart-weekday-012,Str. Țigaretei – traseu circular,0,4-depart
+4,weekday,4-depart-weekday-013,Str. Țigaretei – traseu circular,0,4-depart
+4,weekday,4-depart-weekday-014,Str. Țigaretei – traseu circular,0,4-depart
+4,weekday,4-depart-weekday-015,Str. Țigaretei – traseu circular,0,4-depart
+4,weekday,4-depart-weekday-016,Str. Țigaretei – traseu circular,0,4-depart
+4,weekend,4-depart-weekend-001,Str. Țigaretei – traseu circular,0,4-depart
+4,weekend,4-depart-weekend-002,Str. Țigaretei – traseu circular,0,4-depart
+4,weekend,4-depart-weekend-003,Str. Țigaretei – traseu circular,0,4-depart
+4,weekend,4-depart-weekend-004,Str. Țigaretei – traseu circular,0,4-depart
+4,weekend,4-depart-weekend-005,Str. Țigaretei – traseu circular,0,4-depart
+4,weekend,4-depart-weekend-006,Str. Țigaretei – traseu circular,0,4-depart
+4,weekend,4-depart-weekend-007,Str. Țigaretei – traseu circular,0,4-depart
+4,weekend,4-depart-weekend-008,Str. Țigaretei – traseu circular,0,4-depart
+4,weekend,4-depart-weekend-009,Str. Țigaretei – traseu circular,0,4-depart
+5,weekday,5-depart-weekday-001,Str. József Attila – traseu circular,0,5-depart
+5,weekday,5-depart-weekday-002,Str. József Attila – traseu circular,0,5-depart
+5,weekday,5-depart-weekday-003,Str. József Attila – traseu circular,0,5-depart
+5,weekday,5-depart-weekday-004,Str. József Attila – traseu circular,0,5-depart
+5,weekday,5-depart-weekday-005,Str. József Attila – traseu circular,0,5-depart
+5,weekday,5-depart-weekday-006,Str. József Attila – traseu circular,0,5-depart
+5,weekday,5-depart-weekday-007,Str. József Attila – traseu circular,0,5-depart
+5,weekday,5-depart-weekday-008,Str. József Attila – traseu circular,0,5-depart
+5,weekday,5-depart-weekday-009,Str. József Attila – traseu circular,0,5-depart
+5,weekday,5-depart-weekday-010,Str. József Attila – traseu circular,0,5-depart
+5,weekday,5-depart-weekday-011,Str. József Attila – traseu circular,0,5-depart
+5,weekday,5-depart-weekday-012,Str. József Attila – traseu circular,0,5-depart
+5,weekday,5-depart-weekday-013,Str. József Attila – traseu circular,0,5-depart
+5,weekday,5-depart-weekday-014,Str. József Attila – traseu circular,0,5-depart
+5,weekday,5-depart-weekday-015,Str. József Attila – traseu circular,0,5-depart
+5,weekday,5-depart-weekday-016,Str. József Attila – traseu circular,0,5-depart
+5,weekday,5-depart-weekday-017,Str. József Attila – traseu circular,0,5-depart
+5,weekday,5-depart-weekday-018,Str. József Attila – traseu circular,0,5-depart
+5,weekday,5-depart-weekday-019,Str. József Attila – traseu circular,0,5-depart
+5,weekday,5-depart-weekday-020,Str. József Attila – traseu circular,0,5-depart
+5,weekday,5-depart-weekday-021,Str. József Attila – traseu circular,0,5-depart
+5,weekday,5-depart-weekday-022,Str. József Attila – traseu circular,0,5-depart
+5,weekday,5-depart-weekday-023,Str. József Attila – traseu circular,0,5-depart
+5,weekend,5-depart-weekend-001,Str. József Attila – traseu circular,0,5-depart
+5,weekend,5-depart-weekend-002,Str. József Attila – traseu circular,0,5-depart
+5,weekend,5-depart-weekend-003,Str. József Attila – traseu circular,0,5-depart
+5,weekend,5-depart-weekend-004,Str. József Attila – traseu circular,0,5-depart
+5,weekend,5-depart-weekend-005,Str. József Attila – traseu circular,0,5-depart
+5,weekend,5-depart-weekend-006,Str. József Attila – traseu circular,0,5-depart
+5,weekend,5-depart-weekend-007,Str. József Attila – traseu circular,0,5-depart
+5,weekend,5-depart-weekend-008,Str. József Attila – traseu circular,0,5-depart
+5,weekend,5-depart-weekend-009,Str. József Attila – traseu circular,0,5-depart
+5,weekend,5-depart-weekend-010,Str. József Attila – traseu circular,0,5-depart
+5,weekend,5-depart-weekend-011,Str. József Attila – traseu circular,0,5-depart
+5,weekend,5-depart-weekend-012,Str. József Attila – traseu circular,0,5-depart
+5,weekend,5-depart-weekend-013,Str. József Attila – traseu circular,0,5-depart
+5,weekend,5-depart-weekend-014,Str. József Attila – traseu circular,0,5-depart
+5,weekend,5-depart-weekend-015,Str. József Attila – traseu circular,0,5-depart
+5D,weekday,5D-return-weekday-001,Câmpul Frumos → Str. József Attila 2,1,5D-return
+5D,weekday,5D-return-weekday-002,Câmpul Frumos → Str. József Attila 2,1,5D-return
+5D,weekday,5D-return-weekday-003,Câmpul Frumos → Str. József Attila 2,1,5D-return
+5D,weekday,5D-return-weekday-004,Câmpul Frumos → Str. József Attila 2,1,5D-return
+5D,weekend,5D-return-weekend-001,Câmpul Frumos → Str. József Attila 2,1,5D-return
+5D,weekend,5D-return-weekend-002,Câmpul Frumos → Str. József Attila 2,1,5D-return
+6,weekday,6-depart-weekday-001,Str. Bartók Béla – traseu circular,0,6-depart
+6,weekday,6-depart-weekday-002,Str. Bartók Béla – traseu circular,0,6-depart
+6,weekday,6-depart-weekday-003,Str. Bartók Béla – traseu circular,0,6-depart
+6,weekday,6-depart-weekday-004,Str. Bartók Béla – traseu circular,0,6-depart
+6,weekday,6-depart-weekday-005,Str. Bartók Béla – traseu circular,0,6-depart
+6,weekday,6-depart-weekday-006,Str. Bartók Béla – traseu circular,0,6-depart
+6,weekday,6-depart-weekday-007,Str. Bartók Béla – traseu circular,0,6-depart
+6,weekday,6-depart-weekday-008,Str. Bartók Béla – traseu circular,0,6-depart
+6,weekday,6-depart-weekday-009,Str. Bartók Béla – traseu circular,0,6-depart
+6,weekday,6-depart-weekday-010,Str. Bartók Béla – traseu circular,0,6-depart
+6,weekday,6-depart-weekday-011,Str. Bartók Béla – traseu circular,0,6-depart
+6,weekday,6-depart-weekday-012,Str. Bartók Béla – traseu circular,0,6-depart
+6,weekday,6-depart-weekday-013,Str. Bartók Béla – traseu circular,0,6-depart
+6,weekday,6-depart-weekday-014,Str. Bartók Béla – traseu circular,0,6-depart
+6,weekday,6-depart-weekday-015,Str. Bartók Béla – traseu circular,0,6-depart
+6,weekday,6-depart-weekday-016,Str. Bartók Béla – traseu circular,0,6-depart
+6,weekday,6-depart-weekday-017,Str. Bartók Béla – traseu circular,0,6-depart
+6,weekday,6-depart-weekday-018,Str. Bartók Béla – traseu circular,0,6-depart
+6,weekday,6-depart-weekday-019,Str. Bartók Béla – traseu circular,0,6-depart
+6,weekday,6-depart-weekday-020,Str. Bartók Béla – traseu circular,0,6-depart
+6,weekday,6-depart-weekday-021,Str. Bartók Béla – traseu circular,0,6-depart
+6,weekend,6-depart-weekend-001,Str. Bartók Béla – traseu circular,0,6-depart
+6,weekend,6-depart-weekend-002,Str. Bartók Béla – traseu circular,0,6-depart
+6,weekend,6-depart-weekend-003,Str. Bartók Béla – traseu circular,0,6-depart
+6,weekend,6-depart-weekend-004,Str. Bartók Béla – traseu circular,0,6-depart
+6,weekend,6-depart-weekend-005,Str. Bartók Béla – traseu circular,0,6-depart
+6,weekend,6-depart-weekend-006,Str. Bartók Béla – traseu circular,0,6-depart
+6,weekend,6-depart-weekend-007,Str. Bartók Béla – traseu circular,0,6-depart
+6,weekend,6-depart-weekend-008,Str. Bartók Béla – traseu circular,0,6-depart
+6,weekend,6-depart-weekend-009,Str. Bartók Béla – traseu circular,0,6-depart
+6,weekend,6-depart-weekend-010,Str. Bartók Béla – traseu circular,0,6-depart
+6,weekend,6-depart-weekend-011,Str. Bartók Béla – traseu circular,0,6-depart
+6,weekend,6-depart-weekend-012,Str. Bartók Béla – traseu circular,0,6-depart
+6,weekend,6-depart-weekend-013,Str. Bartók Béla – traseu circular,0,6-depart
+6,weekend,6-depart-weekend-014,Str. Bartók Béla – traseu circular,0,6-depart
+6,weekend,6-depart-weekend-015,Str. Bartók Béla – traseu circular,0,6-depart
+6,weekend,6-depart-weekend-016,Str. Bartók Béla – traseu circular,0,6-depart
+6,weekend,6-depart-weekend-017,Str. Bartók Béla – traseu circular,0,6-depart
+7,weekday,7-depart-weekday-001,Cap Linie Simeria → Gara CFR,0,7-depart
+7,weekday,7-depart-weekday-002,Cap Linie Simeria → Gara CFR,0,7-depart
+7,weekday,7-depart-weekday-003,Cap Linie Simeria → Gara CFR,0,7-depart
+7,weekday,7-depart-weekday-004,Cap Linie Simeria → Gara CFR,0,7-depart
+7,weekday,7-depart-weekday-005,Cap Linie Simeria → Gara CFR,0,7-depart
+7,weekday,7-depart-weekday-006,Cap Linie Simeria → Gara CFR,0,7-depart
+7,weekday,7-depart-weekday-007,Cap Linie Simeria → Gara CFR,0,7-depart
+7,weekday,7-depart-weekday-008,Cap Linie Simeria → Gara CFR,0,7-depart
+7,weekday,7-depart-weekday-009,Cap Linie Simeria → Gara CFR,0,7-depart
+7,weekday,7-depart-weekday-010,Cap Linie Simeria → Gara CFR,0,7-depart
+7,weekday,7-depart-weekday-011,Cap Linie Simeria → Gara CFR,0,7-depart
+7,weekday,7-depart-weekday-012,Cap Linie Simeria → Gara CFR,0,7-depart
+7,weekday,7-depart-weekday-013,Cap Linie Simeria → Gara CFR,0,7-depart
+7,weekday,7-depart-weekday-014,Cap Linie Simeria → Gara CFR,0,7-depart
+7,weekday,7-depart-weekday-015,Cap Linie Simeria → Gara CFR,0,7-depart
+7,weekday,7-depart-weekday-016,Cap Linie Simeria → Gara CFR,0,7-depart
+7,weekday,7-depart-weekday-017,Cap Linie Simeria → Gara CFR,0,7-depart
+7,weekday,7-depart-weekday-018,Cap Linie Simeria → Gara CFR,0,7-depart
+7,weekday,7-depart-weekday-019,Cap Linie Simeria → Gara CFR,0,7-depart
+7,weekday,7-depart-weekday-020,Cap Linie Simeria → Gara CFR,0,7-depart
+7,weekday,7-depart-weekday-021,Cap Linie Simeria → Gara CFR,0,7-depart
+7,weekday,7-depart-weekday-022,Cap Linie Simeria → Gara CFR,0,7-depart
+7,weekday,7-depart-weekday-023,Cap Linie Simeria → Gara CFR,0,7-depart
+7,weekday,7-depart-weekday-024,Cap Linie Simeria → Gara CFR,0,7-depart
+7,weekday,7-depart-weekday-025,Cap Linie Simeria → Gara CFR,0,7-depart
+7,weekday,7-depart-weekday-026,Cap Linie Simeria → Gara CFR,0,7-depart
+7,weekday,7-depart-weekday-027,Cap Linie Simeria → Gara CFR,0,7-depart
+7,weekday,7-depart-weekday-028,Cap Linie Simeria → Gara CFR,0,7-depart
+7,weekend,7-depart-weekend-001,Cap Linie Simeria → Gara CFR,0,7-depart
+7,weekend,7-depart-weekend-002,Cap Linie Simeria → Gara CFR,0,7-depart
+7,weekend,7-depart-weekend-003,Cap Linie Simeria → Gara CFR,0,7-depart
+7,weekend,7-depart-weekend-004,Cap Linie Simeria → Gara CFR,0,7-depart
+7,weekend,7-depart-weekend-005,Cap Linie Simeria → Gara CFR,0,7-depart
+7,weekend,7-depart-weekend-006,Cap Linie Simeria → Gara CFR,0,7-depart
+7,weekend,7-depart-weekend-007,Cap Linie Simeria → Gara CFR,0,7-depart
+7,weekend,7-depart-weekend-008,Cap Linie Simeria → Gara CFR,0,7-depart
+7,weekend,7-depart-weekend-009,Cap Linie Simeria → Gara CFR,0,7-depart
+7,weekend,7-depart-weekend-010,Cap Linie Simeria → Gara CFR,0,7-depart
+7,weekend,7-depart-weekend-011,Cap Linie Simeria → Gara CFR,0,7-depart
+7,weekend,7-depart-weekend-012,Cap Linie Simeria → Gara CFR,0,7-depart
+7,weekend,7-depart-weekend-013,Cap Linie Simeria → Gara CFR,0,7-depart
+7,weekend,7-depart-weekend-014,Cap Linie Simeria → Gara CFR,0,7-depart
+7,weekend,7-depart-weekend-015,Cap Linie Simeria → Gara CFR,0,7-depart
+7,weekend,7-depart-weekend-016,Cap Linie Simeria → Gara CFR,0,7-depart
+7,weekend,7-depart-weekend-017,Cap Linie Simeria → Gara CFR,0,7-depart
+7,weekend,7-depart-weekend-018,Cap Linie Simeria → Gara CFR,0,7-depart
+7,weekend,7-depart-weekend-019,Cap Linie Simeria → Gara CFR,0,7-depart
+7,weekend,7-depart-weekend-020,Cap Linie Simeria → Gara CFR,0,7-depart
+7,weekend,7-depart-weekend-021,Cap Linie Simeria → Gara CFR,0,7-depart
+7,weekend,7-depart-weekend-022,Cap Linie Simeria → Gara CFR,0,7-depart
+7,weekday,7-return-weekday-001,Gara CFR → Cap Linie Simeria,1,7-return
+7,weekday,7-return-weekday-002,Gara CFR → Cap Linie Simeria,1,7-return
+7,weekday,7-return-weekday-003,Gara CFR → Cap Linie Simeria,1,7-return
+7,weekday,7-return-weekday-004,Gara CFR → Cap Linie Simeria,1,7-return
+7,weekday,7-return-weekday-005,Gara CFR → Cap Linie Simeria,1,7-return
+7,weekday,7-return-weekday-006,Gara CFR → Cap Linie Simeria,1,7-return
+7,weekday,7-return-weekday-007,Gara CFR → Cap Linie Simeria,1,7-return
+7,weekday,7-return-weekday-008,Gara CFR → Cap Linie Simeria,1,7-return
+7,weekday,7-return-weekday-009,Gara CFR → Cap Linie Simeria,1,7-return
+7,weekday,7-return-weekday-010,Gara CFR → Cap Linie Simeria,1,7-return
+7,weekday,7-return-weekday-011,Gara CFR → Cap Linie Simeria,1,7-return
+7,weekday,7-return-weekday-012,Gara CFR → Cap Linie Simeria,1,7-return
+7,weekday,7-return-weekday-013,Gara CFR → Cap Linie Simeria,1,7-return
+7,weekday,7-return-weekday-014,Gara CFR → Cap Linie Simeria,1,7-return
+7,weekday,7-return-weekday-015,Gara CFR → Cap Linie Simeria,1,7-return
+7,weekday,7-return-weekday-016,Gara CFR → Cap Linie Simeria,1,7-return
+7,weekday,7-return-weekday-017,Gara CFR → Cap Linie Simeria,1,7-return
+7,weekday,7-return-weekday-018,Gara CFR → Cap Linie Simeria,1,7-return
+7,weekday,7-return-weekday-019,Gara CFR → Cap Linie Simeria,1,7-return
+7,weekday,7-return-weekday-020,Gara CFR → Cap Linie Simeria,1,7-return
+7,weekday,7-return-weekday-021,Gara CFR → Cap Linie Simeria,1,7-return
+7,weekday,7-return-weekday-022,Gara CFR → Cap Linie Simeria,1,7-return
+7,weekday,7-return-weekday-023,Gara CFR → Cap Linie Simeria,1,7-return
+7,weekday,7-return-weekday-024,Gara CFR → Cap Linie Simeria,1,7-return
+7,weekday,7-return-weekday-025,Gara CFR → Cap Linie Simeria,1,7-return
+7,weekday,7-return-weekday-026,Gara CFR → Cap Linie Simeria,1,7-return
+7,weekday,7-return-weekday-027,Gara CFR → Cap Linie Simeria,1,7-return
+7,weekday,7-return-weekday-028,Gara CFR → Cap Linie Simeria,1,7-return
+7,weekend,7-return-weekend-001,Gara CFR → Cap Linie Simeria,1,7-return
+7,weekend,7-return-weekend-002,Gara CFR → Cap Linie Simeria,1,7-return
+7,weekend,7-return-weekend-003,Gara CFR → Cap Linie Simeria,1,7-return
+7,weekend,7-return-weekend-004,Gara CFR → Cap Linie Simeria,1,7-return
+7,weekend,7-return-weekend-005,Gara CFR → Cap Linie Simeria,1,7-return
+7,weekend,7-return-weekend-006,Gara CFR → Cap Linie Simeria,1,7-return
+7,weekend,7-return-weekend-007,Gara CFR → Cap Linie Simeria,1,7-return
+7,weekend,7-return-weekend-008,Gara CFR → Cap Linie Simeria,1,7-return
+7,weekend,7-return-weekend-009,Gara CFR → Cap Linie Simeria,1,7-return
+7,weekend,7-return-weekend-010,Gara CFR → Cap Linie Simeria,1,7-return
+7,weekend,7-return-weekend-011,Gara CFR → Cap Linie Simeria,1,7-return
+7,weekend,7-return-weekend-012,Gara CFR → Cap Linie Simeria,1,7-return
+7,weekend,7-return-weekend-013,Gara CFR → Cap Linie Simeria,1,7-return
+7,weekend,7-return-weekend-014,Gara CFR → Cap Linie Simeria,1,7-return
+7,weekend,7-return-weekend-015,Gara CFR → Cap Linie Simeria,1,7-return
+7,weekend,7-return-weekend-016,Gara CFR → Cap Linie Simeria,1,7-return
+7,weekend,7-return-weekend-017,Gara CFR → Cap Linie Simeria,1,7-return
+7,weekend,7-return-weekend-018,Gara CFR → Cap Linie Simeria,1,7-return
+7,weekend,7-return-weekend-019,Gara CFR → Cap Linie Simeria,1,7-return
+7,weekend,7-return-weekend-020,Gara CFR → Cap Linie Simeria,1,7-return
+7,weekend,7-return-weekend-021,Gara CFR → Cap Linie Simeria,1,7-return
+7,weekend,7-return-weekend-022,Gara CFR → Cap Linie Simeria,1,7-return
+9,weekday,9-depart-weekday-001,Gara CFR → Șugaș Băi,0,9-depart
+9,weekday,9-depart-weekday-002,Gara CFR → Șugaș Băi,0,9-depart
+9,weekday,9-depart-weekday-003,Gara CFR → Șugaș Băi,0,9-depart
+9,weekday,9-depart-weekday-004,Gara CFR → Șugaș Băi,0,9-depart
+9,weekend,9-depart-weekend-001,Gara CFR → Șugaș Băi,0,9-depart
+9,weekend,9-depart-weekend-002,Gara CFR → Șugaș Băi,0,9-depart
+9,weekend,9-depart-weekend-003,Gara CFR → Șugaș Băi,0,9-depart
+9,weekend,9-depart-weekend-004,Gara CFR → Șugaș Băi,0,9-depart
+9,weekday,9-return-weekday-001,Șugaș Băi → Gara CFR,1,9-return
+9,weekday,9-return-weekday-002,Șugaș Băi → Gara CFR,1,9-return
+9,weekday,9-return-weekday-003,Șugaș Băi → Gara CFR,1,9-return
+9,weekday,9-return-weekday-004,Șugaș Băi → Gara CFR,1,9-return
+9,weekend,9-return-weekend-001,Șugaș Băi → Gara CFR,1,9-return
+9,weekend,9-return-weekend-002,Șugaș Băi → Gara CFR,1,9-return
+9,weekend,9-return-weekend-003,Șugaș Băi → Gara CFR,1,9-return
+9,weekend,9-return-weekend-004,Șugaș Băi → Gara CFR,1,9-return
+10,weekday,10-depart-weekday-001,Casa cu Arcade → Centru Arcuș,0,10-depart
+10,weekday,10-depart-weekday-002,Casa cu Arcade → Centru Arcuș,0,10-depart
+10,weekday,10-depart-weekday-003,Casa cu Arcade → Centru Arcuș,0,10-depart
+10,weekday,10-depart-weekday-004,Casa cu Arcade → Centru Arcuș,0,10-depart
+10,weekday,10-depart-weekday-005,Casa cu Arcade → Centru Arcuș,0,10-depart
+10,weekday,10-depart-weekday-006,Casa cu Arcade → Centru Arcuș,0,10-depart
+10,weekday,10-depart-weekday-007,Casa cu Arcade → Centru Arcuș,0,10-depart
+10,weekday,10-depart-weekday-008,Casa cu Arcade → Centru Arcuș,0,10-depart
+10,weekday,10-depart-weekday-009,Casa cu Arcade → Centru Arcuș,0,10-depart
+10,weekday,10-depart-weekday-010,Casa cu Arcade → Centru Arcuș,0,10-depart
+10,weekday,10-depart-weekday-011,Casa cu Arcade → Centru Arcuș,0,10-depart
+10,weekend,10-depart-weekend-001,Casa cu Arcade → Centru Arcuș,0,10-depart
+10,weekend,10-depart-weekend-002,Casa cu Arcade → Centru Arcuș,0,10-depart
+10,weekend,10-depart-weekend-003,Casa cu Arcade → Centru Arcuș,0,10-depart
+10,weekend,10-depart-weekend-004,Casa cu Arcade → Centru Arcuș,0,10-depart
+10,weekend,10-depart-weekend-005,Casa cu Arcade → Centru Arcuș,0,10-depart
+10,weekend,10-depart-weekend-006,Casa cu Arcade → Centru Arcuș,0,10-depart
+10,weekday,10-return-weekday-001,Centru Arcuș → Casa cu Arcade,1,10-return
+10,weekday,10-return-weekday-002,Centru Arcuș → Casa cu Arcade,1,10-return
+10,weekday,10-return-weekday-003,Centru Arcuș → Casa cu Arcade,1,10-return
+10,weekday,10-return-weekday-004,Centru Arcuș → Casa cu Arcade,1,10-return
+10,weekday,10-return-weekday-005,Centru Arcuș → Casa cu Arcade,1,10-return
+10,weekday,10-return-weekday-006,Centru Arcuș → Casa cu Arcade,1,10-return
+10,weekday,10-return-weekday-007,Centru Arcuș → Casa cu Arcade,1,10-return
+10,weekday,10-return-weekday-008,Centru Arcuș → Casa cu Arcade,1,10-return
+10,weekday,10-return-weekday-009,Centru Arcuș → Casa cu Arcade,1,10-return
+10,weekday,10-return-weekday-010,Centru Arcuș → Casa cu Arcade,1,10-return
+10,weekday,10-return-weekday-011,Centru Arcuș → Casa cu Arcade,1,10-return
+10,weekend,10-return-weekend-001,Centru Arcuș → Casa cu Arcade,1,10-return
+10,weekend,10-return-weekend-002,Centru Arcuș → Casa cu Arcade,1,10-return
+10,weekend,10-return-weekend-003,Centru Arcuș → Casa cu Arcade,1,10-return
+10,weekend,10-return-weekend-004,Centru Arcuș → Casa cu Arcade,1,10-return
+10,weekend,10-return-weekend-005,Centru Arcuș → Casa cu Arcade,1,10-return
+10,weekend,10-return-weekend-006,Centru Arcuș → Casa cu Arcade,1,10-return

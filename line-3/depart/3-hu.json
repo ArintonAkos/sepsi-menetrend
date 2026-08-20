@@ -1,0 +1,258 @@
+[
+  {
+    "stop_id": 1,
+    "stop_name_ro": "Cigaretta utca 1",
+    "stop_lat": 45.8566,
+    "stop_lon": 25.7821,
+    "direction": "Cigaretta utca – körjárat",
+    "distance_to_next": "311 m"
+  },
+  {
+    "stop_id": 2,
+    "stop_name_ro": "Cigaretta utca 2",
+    "stop_lat": 45.8551,
+    "stop_lon": 25.7851,
+    "direction": "Cigaretta utca – körjárat",
+    "distance_to_next": "409 m"
+  },
+  {
+    "stop_id": 3,
+    "stop_name_ro": "Cigaretta utca 3",
+    "stop_lat": 45.8543,
+    "stop_lon": 25.7903,
+    "direction": "Cigaretta utca – körjárat",
+    "distance_to_next": "246 m"
+  },
+  {
+    "stop_id": 4,
+    "stop_name_ro": "Comfort Residence",
+    "stop_lat": 45.8548,
+    "stop_lon": 25.7931,
+    "direction": "Cigaretta utca – körjárat",
+    "distance_to_next": "138 m"
+  },
+  {
+    "stop_id": 5,
+    "stop_name_ro": "Gyár utca 1",
+    "stop_lat": 45.8557,
+    "stop_lon": 25.7932,
+    "direction": "Cigaretta utca – körjárat",
+    "distance_to_next": "728 m"
+  },
+  {
+    "stop_id": 6,
+    "stop_name_ro": "Gyár utca 2",
+    "stop_lat": 45.8596,
+    "stop_lon": 25.7858,
+    "direction": "Cigaretta utca – körjárat",
+    "distance_to_next": "231 m"
+  },
+  {
+    "stop_id": 7,
+    "stop_name_ro": "Vitéz Mihály Líceum",
+    "stop_lat": 45.861,
+    "stop_lon": 25.7855,
+    "direction": "Cigaretta utca – körjárat",
+    "distance_to_next": "298 m"
+  },
+  {
+    "stop_id": 8,
+    "stop_name_ro": "Lábasház",
+    "stop_lat": 45.8636,
+    "stop_lon": 25.7866,
+    "direction": "Cigaretta utca – körjárat",
+    "distance_to_next": "648 m"
+  },
+  {
+    "stop_id": 9,
+    "stop_name_ro": "Református Templom",
+    "stop_lat": 45.8638,
+    "stop_lon": 25.7931,
+    "direction": "Cigaretta utca – körjárat",
+    "distance_to_next": "424 m"
+  },
+  {
+    "stop_id": 10,
+    "stop_name_ro": "Sport utca",
+    "stop_lat": 45.864,
+    "stop_lon": 25.7983,
+    "direction": "Cigaretta utca – körjárat",
+    "distance_to_next": "932 m"
+  },
+  {
+    "stop_id": 11,
+    "stop_name_ro": "Vasútállomás",
+    "stop_lat": 45.8631,
+    "stop_lon": 25.8101,
+    "direction": "Cigaretta utca – körjárat",
+    "distance_to_next": "1092 m"
+  },
+  {
+    "stop_id": 12,
+    "stop_name_ro": "Terminál",
+    "stop_lat": 45.8568,
+    "stop_lon": 25.8066,
+    "direction": "Cigaretta utca – körjárat",
+    "distance_to_next": "592 m"
+  },
+  {
+    "stop_id": 13,
+    "stop_name_ro": "Brassói út 2",
+    "stop_lat": 45.8518,
+    "stop_lon": 25.8058,
+    "direction": "Cigaretta utca – körjárat",
+    "distance_to_next": "357 m"
+  },
+  {
+    "stop_id": 14,
+    "stop_name_ro": "Brassói út 3",
+    "stop_lat": 45.8486,
+    "stop_lon": 25.8052,
+    "direction": "Cigaretta utca – körjárat",
+    "distance_to_next": "1392 m"
+  },
+  {
+    "stop_id": 15,
+    "stop_name_ro": "Kilyén",
+    "stop_lat": 45.8364,
+    "stop_lon": 25.8041,
+    "direction": "Cigaretta utca – körjárat",
+    "distance_to_next": "1452 m"
+  },
+  {
+    "stop_id": 16,
+    "stop_name_ro": "Motel Calypso",
+    "stop_lat": 45.8239,
+    "stop_lon": 25.8,
+    "direction": "Cigaretta utca – körjárat",
+    "distance_to_next": "997 m"
+  },
+  {
+    "stop_id": 17,
+    "stop_name_ro": "Szotyor 1",
+    "stop_lat": 45.8149,
+    "stop_lon": 25.7989,
+    "direction": "Cigaretta utca – körjárat",
+    "distance_to_next": "230 m"
+  },
+  {
+    "stop_id": 18,
+    "stop_name_ro": "Szotyor",
+    "stop_lat": 45.8129,
+    "stop_lon": 25.7993,
+    "direction": "Cigaretta utca – körjárat",
+    "distance_to_next": "229 m"
+  },
+  {
+    "stop_id": 19,
+    "stop_name_ro": "Szotyor 1",
+    "stop_lat": 45.8149,
+    "stop_lon": 25.7989,
+    "direction": "Cigaretta utca – körjárat",
+    "distance_to_next": "1098 m"
+  },
+  {
+    "stop_id": 20,
+    "stop_name_ro": "Motel Calypso",
+    "stop_lat": 45.8247,
+    "stop_lon": 25.8004,
+    "direction": "Cigaretta utca – körjárat",
+    "distance_to_next": "1384 m"
+  },
+  {
+    "stop_id": 21,
+    "stop_name_ro": "Kilyén",
+    "stop_lat": 45.8367,
+    "stop_lon": 25.8042,
+    "direction": "Cigaretta utca – körjárat",
+    "distance_to_next": "1343 m"
+  },
+  {
+    "stop_id": 22,
+    "stop_name_ro": "Brassói út 3",
+    "stop_lat": 45.8486,
+    "stop_lon": 25.8054,
+    "direction": "Cigaretta utca – körjárat",
+    "distance_to_next": "342 m"
+  },
+  {
+    "stop_id": 23,
+    "stop_name_ro": "Brassói út 2",
+    "stop_lat": 45.8516,
+    "stop_lon": 25.806,
+    "direction": "Cigaretta utca – körjárat",
+    "distance_to_next": "612 m"
+  },
+  {
+    "stop_id": 24,
+    "stop_name_ro": "Brassói út 1",
+    "stop_lat": 45.8571,
+    "stop_lon": 25.8072,
+    "direction": "Cigaretta utca – körjárat",
+    "distance_to_next": "953 m"
+  },
+  {
+    "stop_id": 25,
+    "stop_name_ro": "Vasútállomás",
+    "stop_lat": 45.8631,
+    "stop_lon": 25.8101,
+    "direction": "Cigaretta utca – körjárat",
+    "distance_to_next": "907 m"
+  },
+  {
+    "stop_id": 26,
+    "stop_name_ro": "Sport utca",
+    "stop_lat": 45.8641,
+    "stop_lon": 25.7986,
+    "direction": "Cigaretta utca – körjárat",
+    "distance_to_next": "544 m"
+  },
+  {
+    "stop_id": 27,
+    "stop_name_ro": "Református Templom",
+    "stop_lat": 45.8643,
+    "stop_lon": 25.7919,
+    "direction": "Cigaretta utca – körjárat",
+    "distance_to_next": "498 m"
+  },
+  {
+    "stop_id": 28,
+    "stop_name_ro": "Erzsébet Park",
+    "stop_lat": 45.8643,
+    "stop_lon": 25.7866,
+    "direction": "Cigaretta utca – körjárat",
+    "distance_to_next": "519 m"
+  },
+  {
+    "stop_id": 29,
+    "stop_name_ro": "Vitéz Mihály Líceum",
+    "stop_lat": 45.8601,
+    "stop_lon": 25.7842,
+    "direction": "Cigaretta utca – körjárat",
+    "distance_to_next": "184 m"
+  },
+  {
+    "stop_id": 30,
+    "stop_name_ro": "Cigarettagyár",
+    "stop_lat": 45.8589,
+    "stop_lon": 25.7826,
+    "direction": "Cigaretta utca – körjárat",
+    "distance_to_next": "64 m"
+  },
+  {
+    "stop_id": 31,
+    "stop_name_ro": "Cigarettagyár",
+    "stop_lat": 45.8584,
+    "stop_lon": 25.7822,
+    "direction": "Cigaretta utca – körjárat",
+    "distance_to_next": "290 m a kör záródásáig"
+  },
+  {
+    "stop_id": 32,
+    "stop_name_ro": "Cigaretta utca 1",
+    "stop_lat": 45.8566,
+    "stop_lon": 25.7821,
+    "direction": "Cigaretta utca – körjárat",
+    "distance_to_next": "0 m"
+  }
+]

@@ -1,0 +1,127 @@
+{
+  "line": "1D",
+  "direction": "return",
+  "circular": false,
+  "closes_loop_at_start": false,
+  "headsign": {
+    "ro": "Câmpul Frumos → Cap Linie Simeria",
+    "hu": "Szépmező → Szemerja Végállomás"
+  },
+  "source": {
+    "ro": "https://multitrans.ro/jarat-1d-retur.html",
+    "hu": "https://multitrans.ro/jarat-1d-retur-hu.html"
+  },
+  "stop_count": 11,
+  "stops": [
+    {
+      "stop_sequence": 1,
+      "name": {
+        "ro": "Multi-Trans",
+        "hu": "Multi-Trans"
+      },
+      "stop_lat": 45.8593,
+      "stop_lon": 25.8389,
+      "distance_to_next_m": 431
+    },
+    {
+      "stop_sequence": 2,
+      "name": {
+        "ro": "Câmpul Frumos",
+        "hu": "Szépmező"
+      },
+      "stop_lat": 45.8619,
+      "stop_lon": 25.841,
+      "distance_to_next_m": 2161
+    },
+    {
+      "stop_sequence": 3,
+      "name": {
+        "ro": "Autoliv",
+        "hu": "Autoliv"
+      },
+      "stop_lat": 45.8658,
+      "stop_lon": 25.8153,
+      "distance_to_next_m": 760
+    },
+    {
+      "stop_sequence": 4,
+      "name": {
+        "ro": "Gara CFR",
+        "hu": "Vasútállomás"
+      },
+      "stop_lat": 45.8631,
+      "stop_lon": 25.8101,
+      "distance_to_next_m": 940
+    },
+    {
+      "stop_sequence": 5,
+      "name": {
+        "ro": "Str. Sporturilor",
+        "hu": "Sport utca"
+      },
+      "stop_lat": 45.8641,
+      "stop_lon": 25.7986,
+      "distance_to_next_m": 556
+    },
+    {
+      "stop_sequence": 6,
+      "name": {
+        "ro": "Biserica Reformată",
+        "hu": "Református Templom"
+      },
+      "stop_lat": 45.8643,
+      "stop_lon": 25.7919,
+      "distance_to_next_m": 521
+    },
+    {
+      "stop_sequence": 7,
+      "name": {
+        "ro": "Parcul Elisabeta",
+        "hu": "Erzsébet Park"
+      },
+      "stop_lat": 45.8643,
+      "stop_lon": 25.7866,
+      "distance_to_next_m": 665
+    },
+    {
+      "stop_sequence": 8,
+      "name": {
+        "ro": "Institutul de Proiectări",
+        "hu": "Tervező Intézet"
+      },
+      "stop_lat": 45.8617,
+      "stop_lon": 25.7819,
+      "distance_to_next_m": 643
+    },
+    {
+      "stop_sequence": 9,
+      "name": {
+        "ro": "Str. Dealului",
+        "hu": "Domb utca"
+      },
+      "stop_lat": 45.8594,
+      "stop_lon": 25.776,
+      "distance_to_next_m": 506
+    },
+    {
+      "stop_sequence": 10,
+      "name": {
+        "ro": "Spitalul Județean",
+        "hu": "Megyei Kórház"
+      },
+      "stop_lat": 45.863,
+      "stop_lon": 25.7778,
+      "distance_to_next_m": 466
+    },
+    {
+      "stop_sequence": 11,
+      "name": {
+        "ro": "Cap Linie Simeria",
+        "hu": "Szemerja Végállomás"
+      },
+      "stop_lat": 45.8671,
+      "stop_lon": 25.7791,
+      "distance_to_next_m": null
+    }
+  ]
+}

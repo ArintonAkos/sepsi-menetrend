@@ -1,0 +1,114 @@
+{
+  "shape_id": "2-depart",
+  "line": "2",
+  "direction": "depart",
+  "profile": "mapbox/driving",
+  "note": "running time only; contains no waiting or timetable information",
+  "total_seconds": 2517,
+  "legs": [
+    {
+      "seconds": 83,
+      "metres": 469
+    },
+    {
+      "seconds": 97,
+      "metres": 564
+    },
+    {
+      "seconds": 125,
+      "metres": 581
+    },
+    {
+      "seconds": 270,
+      "metres": 1307
+    },
+    {
+      "seconds": 75,
+      "metres": 385
+    },
+    {
+      "seconds": 88,
+      "metres": 477
+    },
+    {
+      "seconds": 78,
+      "metres": 456
+    },
+    {
+      "seconds": 66,
+      "metres": 280
+    },
+    {
+      "seconds": 88,
+      "metres": 394
+    },
+    {
+      "seconds": 122,
+      "metres": 512
+    },
+    {
+      "seconds": 141,
+      "metres": 931
+    },
+    {
+      "seconds": 149,
+      "metres": 913
+    },
+    {
+      "seconds": 115,
+      "metres": 492
+    },
+    {
+      "seconds": 89,
+      "metres": 379
+    },
+    {
+      "seconds": 65,
+      "metres": 366
+    },
+    {
+      "seconds": 67,
+      "metres": 337
+    },
+    {
+      "seconds": 99,
+      "metres": 538
+    },
+    {
+      "seconds": 61,
+      "metres": 275
+    },
+    {
+      "seconds": 114,
+      "metres": 575
+    },
+    {
+      "seconds": 78,
+      "metres": 456
+    },
+    {
+      "seconds": 109,
+      "metres": 636
+    },
+    {
+      "seconds": 83,
+      "metres": 493
+    },
+    {
+      "seconds": 65,
+      "metres": 364
+    },
+    {
+      "seconds": 51,
+      "metres": 243
+    },
+    {
+      "seconds": 72,
+      "metres": 371
+    },
+    {
+      "seconds": 67,
+      "metres": 341
+    }
+  ]
+}

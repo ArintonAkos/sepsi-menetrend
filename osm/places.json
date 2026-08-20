@@ -1,0 +1,5354 @@
+{
+  "version": 0.6,
+  "generator": "Overpass API 0.7.62.11 87bfad18",
+  "osm3s": {
+    "timestamp_osm_base": "2026-08-19T20:24:50Z",
+    "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL."
+  },
+  "elements": [
+
+{
+  "type": "node",
+  "id": 128566747,
+  "lat": 45.8659935,
+  "lon": 25.7865367,
+  "tags": {
+    "admin_level": "4",
+    "alt_name:de": "Sankt Georgen",
+    "alt_name:hu": "Sepsiszentgyörgy",
+    "alt_name:ml": "സെന്റ് ജോർജ്ജ്",
+    "alt_name:ro": "Sfântu Gheorghe",
+    "capital": "4",
+    "name": "Sfântu Gheorghe",
+    "name:ar": "سفنتو جيورجي",
+    "name:be": "Сфынту-Георгэ",
+    "name:bg": "Сфънту Георге",
+    "name:de": "Sfântu Gheorghe",
+    "name:el": "Σφίντου Γκεόργκε",
+    "name:en": "Sfântu Gheorghe",
+    "name:fa": "سفنتو گئورگه",
+    "name:fr": "Sfântu Gheorghe",
+    "name:hr": "Sfântu Gheorghe",
+    "name:hu": "Sepsiszentgyörgy",
+    "name:ka": "სფინტუ-გეორგე",
+    "name:lt": "Sfintu Georgė",
+    "name:ml": "സ്ഫെന്റു ഗിയോർഗെ",
+    "name:ro": "Sfântu Gheorghe",
+    "name:ru": "Сфынту-Георге",
+    "name:sr": "Свети Ђорђе",
+    "name:uk": "Сфинту-Георге",
+    "old_postal_code": "4000",
+    "place": "city",
+    "population": "56006",
+    "population:census:1992": "67220",
+    "siruta:code": "63401",
+    "siruta:code_sup": "63394",
+    "siruta:county": "Covasna",
+    "siruta:county_code": "CV",
+    "siruta:county_id": "14",
+    "siruta:name_sup": "Sepsiszentgyörgy",
+    "siruta:type": "9",
+    "wikidata": "Q202362",
+    "wikipedia": "ro:Sfântu Gheorghe"
+  }
+},
+{
+  "type": "node",
+  "id": 262774362,
+  "lat": 45.9167854,
+  "lon": 25.7792124,
+  "tags": {
+    "name": "Valea Crișului",
+    "name:hu": "Sepsikőröspatak",
+    "name:ro": "Valea Crișului",
+    "name:uk": "Валя-Крішулуй",
+    "old_postal_code": "4014",
+    "place": "village",
+    "population": "1538",
+    "population:census:1992": "1538",
+    "postal_code": "527165",
+    "postal_code:source": "INSSE - SIRUTA",
+    "siruta:code": "64915",
+    "siruta:code_sup": "64906",
+    "siruta:county": "Covasna",
+    "siruta:county_code": "CV",
+    "siruta:county_id": "14",
+    "siruta:name_sup": "Valea Crișului",
+    "siruta:type": "22",
+    "wikidata": "Q1096174",
+    "wikipedia": "ro:Valea Crișului, Covasna"
+  }
+},
+{
+  "type": "node",
+  "id": 262774363,
+  "lat": 45.9012139,
+  "lon": 25.7745954,
+  "tags": {
+    "name": "Arcuș",
+    "name:hu": "Árkos",
+    "name:ro": "Arcuș",
+    "name:uk": "Аркуш",
+    "old_postal_code": "4013",
+    "place": "village",
+    "population": "1248",
+    "population:census:1992": "1248",
+    "postal_code": "527166",
+    "postal_code:source": "INSSE - SIRUTA",
+    "siruta:code": "64924",
+    "siruta:code_sup": "65113",
+    "siruta:county": "Covasna",
+    "siruta:county_code": "CV",
+    "siruta:county_id": "14",
+    "siruta:name_sup": "Arcuș",
+    "siruta:type": "22",
+    "wikidata": "Q1048484",
+    "wikipedia": "ro:Arcuș, Covasna"
+  }
+},
+{
+  "type": "node",
+  "id": 262774461,
+  "lat": 45.9043159,
+  "lon": 25.8432127,
+  "tags": {
+    "name": "Ghidfalău",
+    "name:hu": "Gidófalva",
+    "name:ro": "Ghidfalău",
+    "name:uk": "Гідфалеу",
+    "old_postal_code": "4035",
+    "place": "village",
+    "population": "1113",
+    "population:census:1992": "1113",
+    "postal_code": "527095",
+    "postal_code:source": "INSSE - SIRUTA",
+    "siruta:code": "64354",
+    "siruta:code_sup": "64345",
+    "siruta:county": "Covasna",
+    "siruta:county_code": "CV",
+    "siruta:county_id": "14",
+    "siruta:name_sup": "Ghidfalău",
+    "siruta:type": "22",
+    "wikidata": "Q1010410",
+    "wikipedia": "ro:Ghidfalău, Covasna"
+  }
+},
+{
+  "type": "node",
+  "id": 380461184,
+  "lat": 45.7944297,
+  "lon": 25.7710043,
+  "tags": {
+    "name": "Ilieni",
+    "name:de": "Ilgendorf",
+    "name:hu": "Illyefalva",
+    "name:ro": "Ilieni",
+    "old_postal_code": "4016",
+    "place": "village",
+    "population": "996",
+    "population:census:1992": "996",
+    "postal_code": "527105",
+    "postal_code:source": "INSSE - SIRUTA",
+    "siruta:code": "64434",
+    "siruta:code_sup": "64425",
+    "siruta:county": "Covasna",
+    "siruta:county_code": "CV",
+    "siruta:county_id": "14",
+    "siruta:name_sup": "Ilieni",
+    "siruta:type": "22",
+    "wikidata": "Q1096328",
+    "wikipedia": "ro:Ilieni, Covasna"
+  }
+},
+{
+  "type": "node",
+  "id": 403880188,
+  "lat": 45.8539529,
+  "lon": 25.6830130,
+  "tags": {
+    "name": "Vâlcele",
+    "name:hu": "Előpatak",
+    "name:uk": "Вилчеле",
+    "old_postal_code": "4017",
+    "place": "village",
+    "population": "988",
+    "population:census:1992": "988",
+    "postal_code": "527175",
+    "postal_code:source": "INSSE - SIRUTA",
+    "siruta:code": "64988",
+    "siruta:code_sup": "64942",
+    "siruta:county": "Covasna",
+    "siruta:county_code": "CV",
+    "siruta:county_id": "14",
+    "siruta:name_sup": "Vâlcele",
+    "siruta:type": "23",
+    "wikidata": "Q10832330",
+    "wikipedia": "ro:Vâlcele, Covasna"
+  }
+},
+{
+  "type": "node",
+  "id": 413584503,
+  "lat": 45.8248600,
+  "lon": 25.8744753,
+  "tags": {
+    "is_in:country": "România",
+    "is_in:county": "Covasna",
+    "name": "Sântionlunca",
+    "name:hu": "Szentivánlaborfalva",
+    "name:ro": "Sântionlunca",
+    "name:uk": "Синтіонлунка",
+    "old_postal_code": "4005",
+    "place": "village",
+    "population": "808",
+    "population:census:1992": "808",
+    "postal_code": "527137",
+    "postal_code:source": "INSSE - SIRUTA",
+    "siruta:code": "64700",
+    "siruta:code_sup": "64639",
+    "siruta:county": "Covasna",
+    "siruta:county_code": "CV",
+    "siruta:county_id": "14",
+    "siruta:name_sup": "Ozun",
+    "siruta:type": "23",
+    "wikidata": "Q714482",
+    "wikipedia": "ro:Sântionlunca, Covasna"
+  }
+},
+{
+  "type": "node",
+  "id": 413584505,
+  "lat": 45.8008193,
+  "lon": 25.8476644,
+  "tags": {
+    "name": "Ozun",
+    "name:hu": "Uzon",
+    "name:ro": "Ozun",
+    "name:uk": "Озун",
+    "old_postal_code": "4005",
+    "place": "village",
+    "population": "2714",
+    "population:census:1992": "2714",
+    "postal_code": "527130",
+    "postal_code:source": "INSSE - SIRUTA",
+    "siruta:code": "64648",
+    "siruta:code_sup": "64639",
+    "siruta:county": "Covasna",
+    "siruta:county_code": "CV",
+    "siruta:county_id": "14",
+    "siruta:name_sup": "Ozun",
+    "siruta:type": "22",
+    "wikidata": "Q1096772",
+    "wikipedia": "ro:Ozun, Covasna"
+  }
+},
+{
+  "type": "node",
+  "id": 430137653,
+  "lat": 45.8243577,
+  "lon": 25.6940153,
+  "tags": {
+    "is_in": "Vâlcele;Covasna;România",
+    "is_in:country": "România",
+    "is_in:county": "Covasna",
+    "name": "Hetea",
+    "name:hu": "Hete",
+    "name:uk": "Хетя",
+    "old_postal_code": "4017",
+    "place": "village",
+    "population": "168",
+    "population:census:1992": "168",
+    "postal_code": "527178",
+    "postal_code:source": "INSSE - SIRUTA",
+    "siruta:code": "64979",
+    "siruta:code_sup": "64942",
+    "siruta:county": "Covasna",
+    "siruta:county_code": "CV",
+    "siruta:county_id": "14",
+    "siruta:name_sup": "Vâlcele",
+    "siruta:type": "23",
+    "wikidata": "Q1035861",
+    "wikipedia": "ro:Hetea, Covasna"
+  }
+},
+{
+  "type": "node",
+  "id": 461604336,
+  "lat": 45.8371333,
+  "lon": 25.8031554,
+  "tags": {
+    "is_in": "Sfântu Gheorghe;Covasna;România",
+    "is_in:country": "România",
+    "is_in:county": "Covasna",
+    "name": "Chilieni",
+    "name:hu": "Kilyén",
+    "name:ro": "Chilieni",
+    "name:uk": "Кілієнь",
+    "old_postal_code": "4011",
+    "place": "village",
+    "population": "642",
+    "population:census:1992": "642",
+    "postal_code": "520001",
+    "postal_code:source": "INSSE - SIRUTA",
+    "siruta:code": "63410",
+    "siruta:code_sup": "63394",
+    "siruta:county": "Covasna",
+    "siruta:county_code": "CV",
+    "siruta:county_id": "14",
+    "siruta:name_sup": "Sfântu Gheorghe",
+    "siruta:type": "11",
+    "wikidata": "Q714105",
+    "wikipedia": "ro:Chilieni, Covasna"
+  }
+},
+{
+  "type": "node",
+  "id": 461604340,
+  "lat": 45.8118698,
+  "lon": 25.7998834,
+  "tags": {
+    "name": "Coșeni",
+    "name:hu": "Szotyor",
+    "name:uk": "Кошень",
+    "old_postal_code": "4011",
+    "place": "village",
+    "population": "497",
+    "population:census:1992": "497",
+    "postal_code": "520002",
+    "postal_code:source": "INSSE - SIRUTA",
+    "siruta:code": "63429",
+    "siruta:code_sup": "63394",
+    "siruta:county": "Covasna",
+    "siruta:county_code": "CV",
+    "siruta:county_id": "14",
+    "siruta:name_sup": "Sfântu Gheorghe",
+    "siruta:type": "11",
+    "wikidata": "Q714373",
+    "wikipedia": "ro:Coșeni, Covasna"
+  }
+},
+{
+  "type": "node",
+  "id": 461608567,
+  "lat": 45.8987460,
+  "lon": 25.8678276,
+  "tags": {
+    "is_in:country": "România",
+    "is_in:county": "Covasna",
+    "name": "Fotoș",
+    "name:hu": "Fotosmartonos",
+    "name:ro": "Fotoș",
+    "name:uk": "Фотош",
+    "old_postal_code": "4035",
+    "place": "village",
+    "population": "380",
+    "population:census:1992": "380",
+    "postal_code": "527097",
+    "postal_code:source": "INSSE - SIRUTA",
+    "siruta:code": "64372",
+    "siruta:code_sup": "64345",
+    "siruta:county": "Covasna",
+    "siruta:county_code": "CV",
+    "siruta:county_id": "14",
+    "siruta:name_sup": "Ghidfalău",
+    "siruta:type": "23",
+    "wikidata": "Q722856",
+    "wikipedia": "ro:Fotoș, Covasna"
+  }
+},
+{
+  "type": "node",
+  "id": 461608568,
+  "lat": 45.9266261,
+  "lon": 25.8504302,
+  "tags": {
+    "is_in:country": "România",
+    "is_in:county": "Covasna",
+    "name": "Zoltan",
+    "name:hu": "Étfalvazoltán",
+    "name:ro": "Zoltan",
+    "name:uk": "Золтан",
+    "old_postal_code": "4035",
+    "place": "village",
+    "population": "380",
+    "population:census:1992": "380",
+    "postal_code": "527098",
+    "postal_code:source": "INSSE - SIRUTA",
+    "siruta:code": "64381",
+    "siruta:code_sup": "64345",
+    "siruta:county": "Covasna",
+    "siruta:county_code": "CV",
+    "siruta:county_id": "14",
+    "siruta:name_sup": "Ghidfalău",
+    "siruta:type": "23",
+    "wikidata": "Q723172",
+    "wikipedia": "ro:Zoltan, Covasna"
+  }
+},
+{
+  "type": "node",
+  "id": 461609026,
+  "lat": 45.8243000,
+  "lon": 25.7601474,
+  "tags": {
+    "name": "Sâncraiu",
+    "name:hu": "Sepsiszentkirály",
+    "name:uk": "Синкраю",
+    "old_postal_code": "4015",
+    "place": "village",
+    "population": "280",
+    "population:census:1992": "280",
+    "postal_code": "527107",
+    "postal_code:source": "INSSE - SIRUTA",
+    "siruta:code": "64452",
+    "siruta:code_sup": "64425",
+    "siruta:county": "Covasna",
+    "siruta:county_code": "CV",
+    "siruta:county_id": "14",
+    "siruta:name_sup": "Ilieni",
+    "siruta:type": "23",
+    "wikidata": "Q714262",
+    "wikipedia": "ro:Sâncraiu, Covasna"
+  }
+},
+{
+  "type": "node",
+  "id": 512624459,
+  "lat": 45.8975418,
+  "lon": 25.7079922,
+  "tags": {
+    "is_in:country": "România",
+    "is_in:county": "Covasna",
+    "name": "Șugaș Băi",
+    "name:hu": "Sugásfürdő",
+    "place": "village"
+  }
+},
+{
+  "type": "node",
+  "id": 2710585336,
+  "lat": 45.7991258,
+  "lon": 25.7925841,
+  "tags": {
+    "building": "industrial",
+    "name": "S.C. VIASTEIN S.R.L"
+  }
+},
+{
+  "type": "node",
+  "id": 2712281752,
+  "lat": 45.8613802,
+  "lon": 25.8173347,
+  "tags": {
+    "building": "industrial",
+    "name": "DUNAPACK Rambox SRL"
+  }
+},
+{
+  "type": "node",
+  "id": 3476057438,
+  "lat": 45.8647429,
+  "lon": 25.7026317,
+  "tags": {
+    "ele": "809",
+    "name": "Mosighet",
+    "name:hu": "Mészégető-tető",
+    "place": "locality"
+  }
+},
+{
+  "type": "node",
+  "id": 3560746968,
+  "lat": 45.8889499,
+  "lon": 25.7048393,
+  "tags": {
+    "ele": "916",
+    "name": "Poiana Sarmani",
+    "name:hu": "Szármány-pusztája",
+    "place": "locality"
+  }
+},
+{
+  "type": "node",
+  "id": 3574886893,
+  "lat": 45.8661034,
+  "lon": 25.7449270,
+  "tags": {
+    "name": "Poiana Kölcze",
+    "name:hu": "Kölcze-puszta",
+    "place": "locality"
+  }
+},
+{
+  "type": "node",
+  "id": 4078727256,
+  "lat": 45.8429194,
+  "lon": 25.7207081,
+  "tags": {
+    "name": "Câmpul Benedec",
+    "name:hu": "Benedek mező",
+    "place": "locality"
+  }
+},
+{
+  "type": "node",
+  "id": 4078776227,
+  "lat": 45.8475027,
+  "lon": 25.6931698,
+  "tags": {
+    "name": "Farbükk",
+    "name:hu": "Farbükk",
+    "place": "locality"
+  }
+},
+{
+  "type": "node",
+  "id": 4173133589,
+  "lat": 45.9051356,
+  "lon": 25.6810623,
+  "tags": {
+    "name": "Poiana Benkő",
+    "name:hu": "Benkő-kert",
+    "place": "locality"
+  }
+},
+{
+  "type": "node",
+  "id": 4173133590,
+  "lat": 45.8421534,
+  "lon": 25.7479512,
+  "tags": {
+    "alt_name:hu": "Kéni-puszta",
+    "name": "Poiana Chilieni",
+    "name:hu": "Kilyéni-puszta",
+    "place": "locality"
+  }
+},
+{
+  "type": "node",
+  "id": 4218698377,
+  "lat": 45.8878059,
+  "lon": 25.7563479,
+  "tags": {
+    "name": "Pădurea Rotundă",
+    "name:hu": "Kerekerdő",
+    "place": "locality"
+  }
+},
+{
+  "type": "node",
+  "id": 4218715593,
+  "lat": 45.8703895,
+  "lon": 25.7261475,
+  "tags": {
+    "name": "Nádas-puszta",
+    "name:hu": "Nádas-puszta",
+    "place": "locality"
+  }
+},
+{
+  "type": "node",
+  "id": 4366487078,
+  "lat": 45.8544410,
+  "lon": 25.7730847,
+  "tags": {
+    "name": "Simeria Veche",
+    "name:hu": "Régiszemerja",
+    "place": "suburb"
+  }
+},
+{
+  "type": "node",
+  "id": 4693322018,
+  "lat": 45.8798282,
+  "lon": 25.8072376,
+  "tags": {
+    "name": "Rufarét",
+    "place": "neighbourhood"
+  }
+},
+{
+  "type": "node",
+  "id": 5420205912,
+  "lat": 45.8640795,
+  "lon": 25.7961413,
+  "tags": {
+    "name": "Piata Széchenyi Istvan",
+    "name:hu": "Széchenyi István tér",
+    "place": "locality"
+  }
+},
+{
+  "type": "node",
+  "id": 5429217399,
+  "lat": 45.8712762,
+  "lon": 25.7890600,
+  "tags": {
+    "name": "Piața Kálvin",
+    "name:hu": "Kálvin tér",
+    "place": "locality"
+  }
+},
+{
+  "type": "node",
+  "id": 6273798885,
+  "lat": 45.8702909,
+  "lon": 25.7536853,
+  "tags": {
+    "name": "Poiana Biróné",
+    "name:hu": "Bíróné-pusztája",
+    "place": "locality"
+  }
+},
+{
+  "type": "node",
+  "id": 6280509697,
+  "lat": 45.8660067,
+  "lon": 25.7922000,
+  "tags": {
+    "addr:city": "Sepsiszentgyörgy",
+    "addr:housenumber": "17",
+    "addr:postcode": "520027",
+    "addr:street": "Strada Oltului",
+    "building": "yes",
+    "name": "Camera de Comerț și Industrie Covasna",
+    "name:hu": "Kovászna Megyei Kereskedelmi és Iparkamara"
+  }
+},
+{
+  "type": "node",
+  "id": 7095736285,
+  "lat": 45.8935627,
+  "lon": 25.7324695,
+  "tags": {
+    "name": "Pilișca",
+    "name:hu": "Piliske",
+    "place": "locality"
+  }
+},
+{
+  "type": "node",
+  "id": 11881151426,
+  "lat": 45.9082328,
+  "lon": 25.6975727,
+  "tags": {
+    "amenity": "place_of_worship",
+    "building": "chapel",
+    "inscription": "A kápolna legyen számunkra az, amire adatott, az imádság helye. Nem szabad más célra használni.",
+    "name": "Erdei kápolna",
+    "religion": "christian"
+  }
+},
+{
+  "type": "node",
+  "id": 12918731842,
+  "lat": 45.8840637,
+  "lon": 25.7987849,
+  "tags": {
+    "name": "Cartier Kossuth Lajos",
+    "place": "neighbourhood"
+  }
+},
+{
+  "type": "node",
+  "id": 13015641697,
+  "lat": 45.8999606,
+  "lon": 25.7777936,
+  "tags": {
+    "name": "Piața Gábor Áron",
+    "name:ro": "Piața Gábor Áron",
+    "place": "square"
+  }
+},
+{
+  "type": "node",
+  "id": 13015765470,
+  "lat": 45.9043722,
+  "lon": 25.7711118,
+  "tags": {
+    "name": "Gelje",
+    "place": "quarter"
+  }
+},
+{
+  "type": "node",
+  "id": 13015765471,
+  "lat": 45.9009402,
+  "lon": 25.7692322,
+  "tags": {
+    "name": "Felszeg",
+    "place": "quarter"
+  }
+},
+{
+  "type": "node",
+  "id": 13015765472,
+  "lat": 45.8988629,
+  "lon": 25.7827747,
+  "tags": {
+    "name": "Alszeg",
+    "place": "quarter"
+  }
+},
+{
+  "type": "node",
+  "id": 13015802849,
+  "lat": 45.9058801,
+  "lon": 25.7770980,
+  "tags": {
+    "name": "Árkos Liget",
+    "place": "quarter"
+  }
+},
+{
+  "type": "node",
+  "id": 13034347418,
+  "lat": 45.8747683,
+  "lon": 25.7927089,
+  "tags": {
+    "name": "Cartierul Ciuc",
+    "name:hu": "Csíki negyed",
+    "place": "suburb"
+  }
+},
+{
+  "type": "way",
+  "id": 34698839,
+  "center": {
+    "lat": 45.8637655,
+    "lon": 25.7858830
+  },
+  "tags": {
+    "amenity": "place_of_worship",
+    "building": "church",
+    "check_date": "2025-10-24",
+    "contact:facebook": "szentjozsefpb",
+    "contact:website": "https://szentjozsef.katolikussepsi.ro/",
+    "denomination": "roman_catholic",
+    "name": "Biserica Romano-Catolică \"Sfântul Iosif\"",
+    "name:hu": "Szent József római katolikus templom",
+    "religion": "christian",
+    "url:miserend": "https://miserend.hu/templom/3297",
+    "wikidata": "Q137163476"
+  }
+},
+{
+  "type": "way",
+  "id": 85608185,
+  "center": {
+    "lat": 45.8695779,
+    "lon": 25.7628942
+  },
+  "tags": {
+    "CLC:code": "312",
+    "CLC:explanation": "See http://wiki.openstreetmap.org/wiki/Romania_CLC_Import.",
+    "CLC:shapeId": "138586",
+    "CLC:year": "2006",
+    "historic": "archaeological_site",
+    "landuse": "forest",
+    "leaf_type": "needleleaved",
+    "name": "Őrkő",
+    "name:hu": "Őrkő",
+    "place": "locality",
+    "source": "European Environment Agency (EEA), CORINE Land Cover, 2006",
+    "source:ro": "Agenţia Europeană de Mediu, CORINE Land Cover, 2006"
+  }
+},
+{
+  "type": "way",
+  "id": 87025819,
+  "center": {
+    "lat": 45.8334493,
+    "lon": 25.7153012
+  },
+  "tags": {
+    "CLC:code": "231",
+    "CLC:explanation": "See http://wiki.openstreetmap.org/wiki/Romania_CLC_Import.",
+    "CLC:shapeId": "124220",
+    "CLC:year": "2006",
+    "landuse": "meadow",
+    "name": "Pășunea Plopului",
+    "name:hu": "Keresztény-legelő",
+    "source": "European Environment Agency (EEA), CORINE Land Cover, 2006",
+    "source:ro": "Agenţia Europeană de Mediu, CORINE Land Cover, 2006"
+  }
+},
+{
+  "type": "way",
+  "id": 142893878,
+  "center": {
+    "lat": 45.8658638,
+    "lon": 25.7877900
+  },
+  "tags": {
+    "addr:city": "Sfântu Gheorghe",
+    "addr:housenumber": "1",
+    "addr:postcode": "520008",
+    "addr:street": "Piața Libertății",
+    "amenity": "theatre",
+    "building": "yes",
+    "name": "Teatrul \"Tamási Áron\"",
+    "name:hu": "Tamási Áron Színház",
+    "website": "https://www.tasz.ro",
+    "wikidata": "Q1316501"
+  }
+},
+{
+  "type": "way",
+  "id": 142893881,
+  "center": {
+    "lat": 45.8641565,
+    "lon": 25.7905307
+  },
+  "tags": {
+    "building": "retail",
+    "building:levels": "4",
+    "name": "Magazinul Universal \"Șugaș\"",
+    "name:hu": "Sugás Áruház",
+    "opening_hours": "Mo-Fr 09:00-20:00; Sa 09:00-17:00",
+    "roof:levels": "1",
+    "shop": "mall"
+  }
+},
+{
+  "type": "way",
+  "id": 142896791,
+  "center": {
+    "lat": 45.8637110,
+    "lon": 25.7868185
+  },
+  "tags": {
+    "amenity": "school",
+    "building": "yes",
+    "check_date": "2025-10-24",
+    "name": "Grup Școlar Constantin Brâncuși"
+  }
+},
+{
+  "type": "way",
+  "id": 142896792,
+  "center": {
+    "lat": 45.8621337,
+    "lon": 25.7869726
+  },
+  "tags": {
+    "amenity": "school",
+    "building": "yes",
+    "name": "Liceul Teoretic \" Mikes Kelemen\"",
+    "name:hu": "Mikes Kelemen Elméleti Líceum"
+  }
+},
+{
+  "type": "way",
+  "id": 142896793,
+  "center": {
+    "lat": 45.8619944,
+    "lon": 25.7879247
+  },
+  "tags": {
+    "amenity": "courthouse",
+    "building": "yes",
+    "name": "Tribunal",
+    "name:hu": "Törvényszék"
+  }
+},
+{
+  "type": "way",
+  "id": 142896795,
+  "center": {
+    "lat": 45.8629415,
+    "lon": 25.7859984
+  },
+  "tags": {
+    "amenity": "place_of_worship",
+    "building": "yes",
+    "denomination": "protestant",
+    "name": "Biserica unitariană",
+    "name:hu": "Unitárius templom",
+    "religion": "christian"
+  }
+},
+{
+  "type": "way",
+  "id": 142898169,
+  "center": {
+    "lat": 45.8644815,
+    "lon": 25.7874250
+  },
+  "tags": {
+    "amenity": "place_of_worship",
+    "building": "yes",
+    "denomination": "orthodox",
+    "name": "Catedrala Ortodoxă",
+    "religion": "christian",
+    "wikidata": "Q137163591",
+    "wikipedia": "ro:Catedrala Ortodoxă din Sfântu Gheorghe"
+  }
+},
+{
+  "type": "way",
+  "id": 142905344,
+  "center": {
+    "lat": 45.8655955,
+    "lon": 25.7894925
+  },
+  "tags": {
+    "amenity": "restaurant",
+    "building": "yes",
+    "cuisine": "regional",
+    "fax": "+40 267 311 787",
+    "name": "Restaurantul Sugás",
+    "name:hu": "Sugás Étterem",
+    "outdoor_seating": "terrace",
+    "phone": "+40 267 312 171,+40 728 985 360",
+    "stars": "3",
+    "website": "https://www.sugaskert.ro/"
+  }
+},
+{
+  "type": "way",
+  "id": 142905640,
+  "center": {
+    "lat": 45.8647332,
+    "lon": 25.7891386
+  },
+  "tags": {
+    "building": "yes",
+    "name": "Casa Bene",
+    "name:hu": "Bene-ház",
+    "wikidata": "Q42889293"
+  }
+},
+{
+  "type": "way",
+  "id": 143059483,
+  "center": {
+    "lat": 45.8731274,
+    "lon": 25.7859646
+  },
+  "tags": {
+    "addr:city": "Sfântu Gheorghe",
+    "addr:housenumber": "1",
+    "addr:street": "Strada Cetății",
+    "amenity": "place_of_worship",
+    "building": "church",
+    "denomination": "reformed",
+    "name": "Vártemplom",
+    "name:ro": "Cetatea Biserica Reformată",
+    "religion": "christian",
+    "tourism": "attraction",
+    "wikidata": "Q1287153",
+    "wikipedia": "ro:Biserica reformată din Sfântu Gheorghe"
+  }
+},
+{
+  "type": "way",
+  "id": 143071258,
+  "center": {
+    "lat": 45.8632730,
+    "lon": 25.8102264
+  },
+  "tags": {
+    "building": "train_station",
+    "building:levels": "2",
+    "name": "Gara Sfântu Gheorghe",
+    "name:hu": "Sepsiszentgyörgy vasútállomás",
+    "name:ro": "Gara"
+  }
+},
+{
+  "type": "way",
+  "id": 143231845,
+  "center": {
+    "lat": 45.8587146,
+    "lon": 25.8006184
+  },
+  "tags": {
+    "addr:city": "Sfântu Gheorghe",
+    "addr:housenumber": "1-3",
+    "addr:postcode": "520086",
+    "addr:street": "Strada Lalelei",
+    "building": "school",
+    "name": "Școala Generală \"Nicolae Colan\"",
+    "name:hu": "Nicolae Colan iskola",
+    "website": "https://colan.ro/"
+  }
+},
+{
+  "type": "way",
+  "id": 143231847,
+  "center": {
+    "lat": 45.8637139,
+    "lon": 25.7925804
+  },
+  "tags": {
+    "amenity": "place_of_worship",
+    "building": "yes",
+    "check_date": "2025-10-24",
+    "denomination": "protestant",
+    "name": "Biserica reformată din centru",
+    "name:hu": "Belvárosi református templom",
+    "religion": "christian",
+    "wheelchair": "yes"
+  }
+},
+{
+  "type": "way",
+  "id": 143232915,
+  "center": {
+    "lat": 45.8608998,
+    "lon": 25.7840070
+  },
+  "tags": {
+    "amenity": "school",
+    "building": "yes",
+    "name": "Colegiul Național \"Mihai Viteazul\""
+  }
+},
+{
+  "type": "way",
+  "id": 143232916,
+  "center": {
+    "lat": 45.8603875,
+    "lon": 25.7883936
+  },
+  "tags": {
+    "amenity": "marketplace",
+    "building": "yes",
+    "name": "Piața Centrală Agro-alimentară",
+    "opening_hours": "Mo-Su 07:00-20:00",
+    "organic": "yes"
+  }
+},
+{
+  "type": "way",
+  "id": 143232918,
+  "center": {
+    "lat": 45.8618050,
+    "lon": 25.7851949
+  },
+  "tags": {
+    "building": "yes",
+    "name": "Muzeul Național Secuiesc",
+    "name:hu": "Székely Nemzeti Múzeum",
+    "tourism": "museum",
+    "wikidata": "Q1302159",
+    "wikipedia": "hu:Székely Nemzeti Múzeum"
+  }
+},
+{
+  "type": "way",
+  "id": 143234672,
+  "center": {
+    "lat": 45.8620882,
+    "lon": 25.7809757
+  },
+  "tags": {
+    "addr:city": "Sfântu Gheorghe",
+    "addr:housenumber": "24A",
+    "addr:postcode": "520100",
+    "addr:street": "Aleea Tineretului",
+    "building": "kindergarten",
+    "name": "Albă ca Zăpada",
+    "name:hu": "Hófehérke"
+  }
+},
+{
+  "type": "way",
+  "id": 144129691,
+  "center": {
+    "lat": 45.8734489,
+    "lon": 25.7834144
+  },
+  "tags": {
+    "denomination": "protestant",
+    "landuse": "cemetery",
+    "name": "Cimitirul Reformat",
+    "name:hu": "Református temető",
+    "religion": "christian"
+  }
+},
+{
+  "type": "way",
+  "id": 144131943,
+  "center": {
+    "lat": 45.8639134,
+    "lon": 25.7792650
+  },
+  "tags": {
+    "building": "hospital",
+    "name": "Policlinica"
+  }
+},
+{
+  "type": "way",
+  "id": 144132372,
+  "center": {
+    "lat": 45.8659663,
+    "lon": 25.7853784
+  },
+  "tags": {
+    "amenity": "library",
+    "building": "public",
+    "name": "Biblioteca Județeană \"Bod Péter\"",
+    "name:hu": "Bod Péter Megyei Könyvtár",
+    "wikidata": "Q832870",
+    "wikipedia": "ro:Biblioteca Județeană Covasna"
+  }
+},
+{
+  "type": "way",
+  "id": 144132373,
+  "center": {
+    "lat": 45.8669939,
+    "lon": 25.7881784
+  },
+  "tags": {
+    "abandoned": "yes",
+    "building": "hotel",
+    "building:levels": "11",
+    "disused": "yes",
+    "name": "Hotel \"Bodoc\""
+  }
+},
+{
+  "type": "way",
+  "id": 144132377,
+  "center": {
+    "lat": 45.8691915,
+    "lon": 25.7861242
+  },
+  "tags": {
+    "building": "school",
+    "name": "Liceul de Artă \"Plugor Sándor\"",
+    "name:hu": "Plugor Sándor Művészeti Líceum"
+  }
+},
+{
+  "type": "way",
+  "id": 144134543,
+  "center": {
+    "lat": 45.8626557,
+    "lon": 25.8066617
+  },
+  "tags": {
+    "addr:city": "Sfântu Gheorghe",
+    "addr:street": "Strada Păiș David Locotenent",
+    "amenity": "fuel",
+    "brand": "Rompetrol",
+    "brand:wikidata": "Q1788862",
+    "brand:wikipedia": "en:Rompetrol",
+    "building": "yes",
+    "contact:email": "infoline@rompetrol.com",
+    "contact:facebook": "https://www.facebook.com/Rompetrol.Romania",
+    "contact:instagram": "https://www.instagram.com/rompetrol",
+    "contact:phone": "+40 372 784 977",
+    "contact:website": "https://www.rompetrol.ro/",
+    "name": "Rompetrol",
+    "opening_hours": "24/7",
+    "tiktok": "https://www.tiktok.com/@rompetrol.romania"
+  }
+},
+{
+  "type": "way",
+  "id": 144134637,
+  "center": {
+    "lat": 45.8640772,
+    "lon": 25.8026561
+  },
+  "tags": {
+    "addr:city": "Sfântu Gheorghe",
+    "amenity": "fuel",
+    "brand": "MOL",
+    "brand:wikidata": "Q549181",
+    "brand:wikipedia": "en:MOL (company)",
+    "building": "yes",
+    "name": "MOL"
+  }
+},
+{
+  "type": "way",
+  "id": 144211300,
+  "center": {
+    "lat": 45.8679531,
+    "lon": 25.7870242
+  },
+  "tags": {
+    "building": "yes",
+    "name": "Casa de Cultură Municipală",
+    "name:hu": "Városi Művelődési Ház"
+  }
+},
+{
+  "type": "way",
+  "id": 144211303,
+  "center": {
+    "lat": 45.8684286,
+    "lon": 25.7873271
+  },
+  "tags": {
+    "building": "yes",
+    "name": "Palatul Beör",
+    "name:hu": "Beör palota"
+  }
+},
+{
+  "type": "way",
+  "id": 144211314,
+  "center": {
+    "lat": 45.8682606,
+    "lon": 25.7862352
+  },
+  "tags": {
+    "addr:street": "Strada Kossuth Lajos",
+    "building": "school",
+    "name": "Liceul de Artă \"Plugor Sándor\"",
+    "name:hu": "Plugor Sándor Művészeti Líceum"
+  }
+},
+{
+  "type": "way",
+  "id": 144211321,
+  "center": {
+    "lat": 45.8670338,
+    "lon": 25.7844274
+  },
+  "tags": {
+    "amenity": "community_centre",
+    "building": "yes",
+    "name": "Casa de Cultură a Sindicatelor"
+  }
+},
+{
+  "type": "way",
+  "id": 144215234,
+  "center": {
+    "lat": 45.8666915,
+    "lon": 25.7864436
+  },
+  "tags": {
+    "building": "yes",
+    "building:levels": "3",
+    "name": "Consiliul Județean Covasna",
+    "name:hu": "Kovászna Megye Tanácsa",
+    "office": "government",
+    "roof:shape": "gabled"
+  }
+},
+{
+  "type": "way",
+  "id": 144215235,
+  "center": {
+    "lat": 45.8650536,
+    "lon": 25.7847766
+  },
+  "tags": {
+    "amenity": "school",
+    "building": "yes",
+    "name": "Grup Școlar \"Kós Károly\"",
+    "name:hu": "Kós Károly Iskolaközpont"
+  }
+},
+{
+  "type": "way",
+  "id": 144215238,
+  "center": {
+    "lat": 45.8669060,
+    "lon": 25.7862409
+  },
+  "tags": {
+    "building": "yes",
+    "name": "Prefectura Covasna",
+    "office": "government"
+  }
+},
+{
+  "type": "way",
+  "id": 144215240,
+  "center": {
+    "lat": 45.8655105,
+    "lon": 25.7850829
+  },
+  "tags": {
+    "SIRUTA:code": "63401",
+    "addr:city": "Sfântu Gheorghe",
+    "addr:housenumber": "16",
+    "addr:postcode": "520008",
+    "addr:street": "Strada Gabor Aron",
+    "building": "yes",
+    "codul_entității_muzeale": "6928600.0",
+    "email": "secretariat@mncr.ro",
+    "fax": "0267/314.139",
+    "name": "Muzeul Național al Carpaților Răsăriteni",
+    "name:en": "National Museum of the Eastern Carpathians",
+    "opening_hours": "Tu-Sa 09:00-17:00; Su 10:00-15:00; Mo closed",
+    "phone": "0267/314.139",
+    "source": "INP",
+    "source:link": "http://date.gov.ro/dataset/ghidul-muzeelor-din-romania",
+    "tourism": "museum",
+    "tourism_survey": "11.12.2013 12:58:11",
+    "website": "https://www.mncr.ro/",
+    "wikidata": "Q18542277",
+    "wikipedia": "ro:Muzeul Național al Carpaților Răsăriteni"
+  }
+},
+{
+  "type": "way",
+  "id": 144215650,
+  "center": {
+    "lat": 45.8648434,
+    "lon": 25.7908429
+  },
+  "tags": {
+    "amenity": "bank",
+    "atm": "yes",
+    "brand": "Raiffeisen Bank",
+    "brand:wikidata": "Q7283806",
+    "building": "yes",
+    "name": "Raiffeisen Bank",
+    "wheelchair": "yes"
+  }
+},
+{
+  "type": "way",
+  "id": 144215651,
+  "center": {
+    "lat": 45.8649922,
+    "lon": 25.7906758
+  },
+  "tags": {
+    "amenity": "bank",
+    "atm": "yes",
+    "brand": "Banca Transilvania",
+    "brand:wikidata": "Q806161",
+    "building": "yes",
+    "name": "Banca Transilvania",
+    "wheelchair": "no"
+  }
+},
+{
+  "type": "way",
+  "id": 144215652,
+  "center": {
+    "lat": 45.8639865,
+    "lon": 25.7868821
+  },
+  "tags": {
+    "amenity": "school",
+    "building": "yes",
+    "check_date": "2025-10-24",
+    "name": "Școala de Artă și de Meserii",
+    "name:hu": "Művészeti Népiskola"
+  }
+},
+{
+  "type": "way",
+  "id": 144215653,
+  "center": {
+    "lat": 45.8656486,
+    "lon": 25.7907391
+  },
+  "tags": {
+    "amenity": "community_centre",
+    "building": "yes",
+    "community_centre": "cultural_centre",
+    "contact:facebook": "https://www.facebook.com/centruldecultura.arcus/",
+    "name": "Centrul cultural Árkos"
+  }
+},
+{
+  "type": "way",
+  "id": 144215654,
+  "center": {
+    "lat": 45.8644623,
+    "lon": 25.7869949
+  },
+  "tags": {
+    "building": "yes",
+    "name": "Casa cu Arcade",
+    "name:hu": "Lábas Ház",
+    "wikidata": "Q18538641",
+    "wikipedia": "ro:Casa cu arcade (Lábasház)"
+  }
+},
+{
+  "type": "way",
+  "id": 144215933,
+  "center": {
+    "lat": 45.8626497,
+    "lon": 25.7823358
+  },
+  "tags": {
+    "addr:housename": "15",
+    "addr:housenumber": "15",
+    "addr:street": "Strada Presei",
+    "building": "apartments",
+    "name": "15"
+  }
+},
+{
+  "type": "way",
+  "id": 144215934,
+  "center": {
+    "lat": 45.8622466,
+    "lon": 25.7821521
+  },
+  "tags": {
+    "addr:housenumber": "14",
+    "building": "apartments",
+    "name": "14"
+  }
+},
+{
+  "type": "way",
+  "id": 144215946,
+  "center": {
+    "lat": 45.8626186,
+    "lon": 25.7870551
+  },
+  "tags": {
+    "amenity": "kindergarten",
+    "building": "yes",
+    "name": "Csipike"
+  }
+},
+{
+  "type": "way",
+  "id": 144216171,
+  "center": {
+    "lat": 45.8619140,
+    "lon": 25.7816015
+  },
+  "tags": {
+    "addr:housename": "13",
+    "addr:housenumber": "13",
+    "addr:street": "Aleea Tineretului",
+    "building": "apartments",
+    "name": "13"
+  }
+},
+{
+  "type": "way",
+  "id": 144216172,
+  "center": {
+    "lat": 45.8611099,
+    "lon": 25.7813118
+  },
+  "tags": {
+    "addr:city": "Sfântu Gheorghe",
+    "addr:housename": "11",
+    "addr:housenumber": "11",
+    "building": "apartments",
+    "name": "11"
+  }
+},
+{
+  "type": "way",
+  "id": 144216173,
+  "center": {
+    "lat": 45.8614690,
+    "lon": 25.7815078
+  },
+  "tags": {
+    "addr:housename": "12",
+    "addr:housenumber": "12",
+    "building": "apartments",
+    "name": "12"
+  }
+},
+{
+  "type": "way",
+  "id": 144217188,
+  "center": {
+    "lat": 45.8620530,
+    "lon": 25.7776244
+  },
+  "tags": {
+    "amenity": "school",
+    "building": "school",
+    "name": "Școala Generală \"Váradi József\"",
+    "name:hu": "Váradi József Általános Iskola"
+  }
+},
+{
+  "type": "way",
+  "id": 144286433,
+  "center": {
+    "lat": 45.8628019,
+    "lon": 25.7790434
+  },
+  "tags": {
+    "addr:housenumber": "12/D",
+    "addr:street": "Aleea Muzelor",
+    "building": "apartments",
+    "name": "12/D"
+  }
+},
+{
+  "type": "way",
+  "id": 144286435,
+  "center": {
+    "lat": 45.8625681,
+    "lon": 25.7790899
+  },
+  "tags": {
+    "addr:housenumber": "12/C",
+    "addr:street": "Aleea Muzelor",
+    "building": "apartments",
+    "name": "12/C"
+  }
+},
+{
+  "type": "way",
+  "id": 144286441,
+  "center": {
+    "lat": 45.8623405,
+    "lon": 25.7791158
+  },
+  "tags": {
+    "addr:housenumber": "12/B",
+    "addr:street": "Aleea Muzelor",
+    "building": "apartments",
+    "name": "12/B"
+  }
+},
+{
+  "type": "way",
+  "id": 144286443,
+  "center": {
+    "lat": 45.8622085,
+    "lon": 25.7788357
+  },
+  "tags": {
+    "addr:housenumber": "12/A",
+    "addr:street": "Aleea Muzelor",
+    "building": "apartments",
+    "name": "12/A"
+  }
+},
+{
+  "type": "way",
+  "id": 144293925,
+  "center": {
+    "lat": 45.8639494,
+    "lon": 25.7775377
+  },
+  "tags": {
+    "building": "yes",
+    "leisure": "sports_centre",
+    "name": "Sala Sporturilor Szabó Kati",
+    "name:hu": "Szabó Kati Sportcsarnok"
+  }
+},
+{
+  "type": "way",
+  "id": 144293928,
+  "center": {
+    "lat": 45.8626771,
+    "lon": 25.7833887
+  },
+  "tags": {
+    "building": "yes",
+    "name": "Institutul de proiectări",
+    "name:hu": "Tervezőintézet"
+  }
+},
+{
+  "type": "way",
+  "id": 144293936,
+  "center": {
+    "lat": 45.8634540,
+    "lon": 25.7830590
+  },
+  "tags": {
+    "building": "hospital",
+    "name": "Clinica de Pneumoftizologie",
+    "name:hu": "Tüdőbeteg klinika"
+  }
+},
+{
+  "type": "way",
+  "id": 144293945,
+  "center": {
+    "lat": 45.8673601,
+    "lon": 25.7793224
+  },
+  "tags": {
+    "addr:city": "Sfântu Gheorghe",
+    "addr:housenumber": "14",
+    "addr:postcode": "520050",
+    "addr:street": "Strada Berzei",
+    "building": "yes",
+    "building:levels": "2",
+    "name": "Hotel Fidelitas",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "way",
+  "id": 144293951,
+  "center": {
+    "lat": 45.8646276,
+    "lon": 25.7912290
+  },
+  "tags": {
+    "amenity": "fast_food",
+    "building": "yes",
+    "cuisine": "regional",
+    "name": "Bistro",
+    "toilets:wheelchair": "no",
+    "wheelchair": "no"
+  }
+},
+{
+  "type": "way",
+  "id": 144293958,
+  "center": {
+    "lat": 45.8646004,
+    "lon": 25.7916739
+  },
+  "tags": {
+    "amenity": "bank",
+    "atm": "yes",
+    "brand": "BRD",
+    "brand:wikidata": "Q796927",
+    "building": "yes",
+    "name": "BRD"
+  }
+},
+{
+  "type": "way",
+  "id": 144297001,
+  "center": {
+    "lat": 45.8619194,
+    "lon": 25.7920143
+  },
+  "tags": {
+    "amenity": "place_of_worship",
+    "building": "yes",
+    "check_date": "2025-10-24",
+    "denomination": "lutheran",
+    "name": "Biserica evanghelică",
+    "name:hu": "Evangélikus templom",
+    "religion": "christian",
+    "wheelchair": "yes"
+  }
+},
+{
+  "type": "way",
+  "id": 144299612,
+  "center": {
+    "lat": 45.8594420,
+    "lon": 25.7778215
+  },
+  "tags": {
+    "addr:housenumber": "16",
+    "building": "apartments",
+    "building:levels": "5",
+    "name": "16",
+    "roof:shape": "flat"
+  }
+},
+{
+  "type": "way",
+  "id": 144299614,
+  "center": {
+    "lat": 45.8598868,
+    "lon": 25.7788871
+  },
+  "tags": {
+    "addr:housenumber": "8",
+    "building": "apartments",
+    "building:levels": "5",
+    "name": "8",
+    "roof:shape": "flat"
+  }
+},
+{
+  "type": "way",
+  "id": 144299616,
+  "center": {
+    "lat": 45.8596667,
+    "lon": 25.7786518
+  },
+  "tags": {
+    "addr:housenumber": "18",
+    "building": "apartments",
+    "building:levels": "5",
+    "name": "18",
+    "roof:shape": "flat"
+  }
+},
+{
+  "type": "way",
+  "id": 144299623,
+  "center": {
+    "lat": 45.8594868,
+    "lon": 25.7782628
+  },
+  "tags": {
+    "addr:housenumber": "17",
+    "building": "apartments",
+    "building:levels": "5",
+    "name": "17",
+    "roof:shape": "flat"
+  }
+},
+{
+  "type": "way",
+  "id": 144299625,
+  "center": {
+    "lat": 45.8591271,
+    "lon": 25.7775847
+  },
+  "tags": {
+    "addr:housenumber": "16",
+    "building": "apartments",
+    "building:levels": "5",
+    "layer": "1",
+    "name": "16",
+    "roof:shape": "flat"
+  }
+},
+{
+  "type": "way",
+  "id": 144299904,
+  "center": {
+    "lat": 45.8600919,
+    "lon": 25.7784862
+  },
+  "tags": {
+    "addr:housenumber": "8",
+    "addr:street": "Strada Înfrățirii",
+    "building": "apartments",
+    "building:levels": "5",
+    "name": "8",
+    "roof:shape": "flat"
+  }
+},
+{
+  "type": "way",
+  "id": 144302965,
+  "center": {
+    "lat": 45.8634952,
+    "lon": 25.7783466
+  },
+  "tags": {
+    "addr:housenumber": "1",
+    "building": "apartments",
+    "building:levels": "11",
+    "name": "1"
+  }
+},
+{
+  "type": "way",
+  "id": 144302969,
+  "center": {
+    "lat": 45.8625467,
+    "lon": 25.7803591
+  },
+  "tags": {
+    "addr:housenumber": "15/D",
+    "building": "apartments",
+    "name": "15/D"
+  }
+},
+{
+  "type": "way",
+  "id": 144302970,
+  "center": {
+    "lat": 45.8591478,
+    "lon": 25.7786180
+  },
+  "tags": {
+    "addr:housenumber": "20",
+    "addr:street": "Strada Vasile Goldiș",
+    "building": "apartments",
+    "building:levels": "5",
+    "name": "20",
+    "roof:shape": "flat"
+  }
+},
+{
+  "type": "way",
+  "id": 144302972,
+  "center": {
+    "lat": 45.8589291,
+    "lon": 25.7780617
+  },
+  "tags": {
+    "addr:housenumber": "19",
+    "addr:street": "Strada Vasile Goldiș",
+    "building": "apartments",
+    "building:levels": "5",
+    "name": "19",
+    "roof:shape": "flat"
+  }
+},
+{
+  "type": "way",
+  "id": 144302974,
+  "center": {
+    "lat": 45.8594495,
+    "lon": 25.7790777
+  },
+  "tags": {
+    "addr:housenumber": "21",
+    "addr:street": "Strada Vasile Goldiș",
+    "building": "apartments",
+    "building:levels": "5",
+    "name": "21",
+    "roof:shape": "flat"
+  }
+},
+{
+  "type": "way",
+  "id": 144302977,
+  "center": {
+    "lat": 45.8623897,
+    "lon": 25.7801021
+  },
+  "tags": {
+    "addr:housenumber": "15/C",
+    "building": "apartments",
+    "name": "15/C"
+  }
+},
+{
+  "type": "way",
+  "id": 144302978,
+  "center": {
+    "lat": 45.8621325,
+    "lon": 25.7794761
+  },
+  "tags": {
+    "addr:housenumber": "15/A",
+    "building": "apartments",
+    "name": "15/A"
+  }
+},
+{
+  "type": "way",
+  "id": 144302981,
+  "center": {
+    "lat": 45.8622582,
+    "lon": 25.7797891
+  },
+  "tags": {
+    "addr:housenumber": "15/B",
+    "building": "apartments",
+    "name": "15/B"
+  }
+},
+{
+  "type": "way",
+  "id": 144652559,
+  "center": {
+    "lat": 45.8600847,
+    "lon": 25.7806619
+  },
+  "tags": {
+    "addr:housenumber": "1",
+    "addr:street": "Strada Vasile Goldiș",
+    "building": "apartments",
+    "name": "1"
+  }
+},
+{
+  "type": "way",
+  "id": 144652560,
+  "center": {
+    "lat": 45.8596379,
+    "lon": 25.7801088
+  },
+  "tags": {
+    "addr:housenumber": "2",
+    "building": "apartments",
+    "building:levels": "11",
+    "name": "2"
+  }
+},
+{
+  "type": "way",
+  "id": 144652561,
+  "center": {
+    "lat": 45.8611690,
+    "lon": 25.7820986
+  },
+  "tags": {
+    "addr:housenumber": "6/A",
+    "addr:street": "Strada László Ferenc",
+    "building": "apartments",
+    "name": "6/A"
+  }
+},
+{
+  "type": "way",
+  "id": 144652562,
+  "center": {
+    "lat": 45.8619723,
+    "lon": 25.7834722
+  },
+  "tags": {
+    "addr:housenumber": "3/A",
+    "addr:street": "Strada László Ferenc",
+    "building": "apartments",
+    "name": "3/A"
+  }
+},
+{
+  "type": "way",
+  "id": 144652563,
+  "center": {
+    "lat": 45.8615377,
+    "lon": 25.7844360
+  },
+  "tags": {
+    "addr:housenumber": "1/A",
+    "addr:street": "Strada László Ferenc",
+    "building": "apartments",
+    "name": "1/A"
+  }
+},
+{
+  "type": "way",
+  "id": 144652564,
+  "center": {
+    "lat": 45.8616942,
+    "lon": 25.7825054
+  },
+  "tags": {
+    "addr:housenumber": "5/B",
+    "addr:street": "Strada László Ferenc",
+    "building": "apartments",
+    "name": "5/B"
+  }
+},
+{
+  "type": "way",
+  "id": 144652565,
+  "center": {
+    "lat": 45.8613842,
+    "lon": 25.7821005
+  },
+  "tags": {
+    "addr:housenumber": "6/B",
+    "addr:street": "Strada László Ferenc",
+    "building": "apartments",
+    "name": "6/B"
+  }
+},
+{
+  "type": "way",
+  "id": 144652566,
+  "center": {
+    "lat": 45.8621905,
+    "lon": 25.7834782
+  },
+  "tags": {
+    "addr:housenumber": "3/B",
+    "addr:street": "Strada László Ferenc",
+    "building": "apartments",
+    "name": "3/B"
+  }
+},
+{
+  "type": "way",
+  "id": 144652567,
+  "center": {
+    "lat": 45.8614790,
+    "lon": 25.7825035
+  },
+  "tags": {
+    "addr:housenumber": "5/A",
+    "addr:street": "Strada László Ferenc",
+    "building": "apartments",
+    "name": "5/A"
+  }
+},
+{
+  "type": "way",
+  "id": 144652568,
+  "center": {
+    "lat": 45.8619430,
+    "lon": 25.7829954
+  },
+  "tags": {
+    "addr:housenumber": "4/B",
+    "addr:street": "Strada László Ferenc",
+    "building": "apartments",
+    "name": "4/B"
+  }
+},
+{
+  "type": "way",
+  "id": 144652569,
+  "center": {
+    "lat": 45.8617255,
+    "lon": 25.7829988
+  },
+  "tags": {
+    "addr:housenumber": "4/A",
+    "addr:street": "Strada László Ferenc",
+    "building": "apartments",
+    "name": "4/A"
+  }
+},
+{
+  "type": "way",
+  "id": 144652570,
+  "center": {
+    "lat": 45.8619349,
+    "lon": 25.7839708
+  },
+  "tags": {
+    "addr:housenumber": "2/A",
+    "addr:street": "Strada László Ferenc",
+    "building": "apartments",
+    "name": "2/A"
+  }
+},
+{
+  "type": "way",
+  "id": 144652571,
+  "center": {
+    "lat": 45.8575416,
+    "lon": 25.7792745
+  },
+  "tags": {
+    "addr:housenumber": "4/B",
+    "addr:street": "Strada Viitorului",
+    "building": "apartments",
+    "name": "4/B"
+  }
+},
+{
+  "type": "way",
+  "id": 144652572,
+  "center": {
+    "lat": 45.8581608,
+    "lon": 25.7801043
+  },
+  "tags": {
+    "addr:housenumber": "2",
+    "addr:street": "Strada Viitorului",
+    "building": "apartments",
+    "building:levels": "5",
+    "name": "2/A/B/C"
+  }
+},
+{
+  "type": "way",
+  "id": 144668367,
+  "center": {
+    "lat": 45.8571982,
+    "lon": 25.7753721
+  },
+  "tags": {
+    "amenity": "place_of_worship",
+    "building": "church",
+    "check_date": "2025-10-24",
+    "denomination": "protestant",
+    "name": "Biserica reformată",
+    "name:hu": "Szemerjai református templom",
+    "religion": "christian"
+  }
+},
+{
+  "type": "way",
+  "id": 144668861,
+  "center": {
+    "lat": 45.8579160,
+    "lon": 25.7752797
+  },
+  "tags": {
+    "addr:housenumber": "10",
+    "addr:street": "Strada Dealului",
+    "building": "apartments",
+    "name": "11/A"
+  }
+},
+{
+  "type": "way",
+  "id": 144668862,
+  "center": {
+    "lat": 45.8580798,
+    "lon": 25.7760382
+  },
+  "tags": {
+    "addr:housenumber": "6",
+    "addr:street": "Strada Dealului",
+    "building": "apartments",
+    "name": "10"
+  }
+},
+{
+  "type": "way",
+  "id": 144668865,
+  "center": {
+    "lat": 45.8579749,
+    "lon": 25.7755830
+  },
+  "tags": {
+    "building": "apartments",
+    "name": "11/B"
+  }
+},
+{
+  "type": "way",
+  "id": 144668868,
+  "center": {
+    "lat": 45.8583498,
+    "lon": 25.7763918
+  },
+  "tags": {
+    "addr:housenumber": "4",
+    "addr:street": "Strada Dealului",
+    "building": "apartments",
+    "name": "9"
+  }
+},
+{
+  "type": "way",
+  "id": 144669555,
+  "center": {
+    "lat": 45.8595596,
+    "lon": 25.7773758
+  },
+  "tags": {
+    "addr:housenumber": "15",
+    "building": "apartments",
+    "building:levels": "5",
+    "name": "15",
+    "roof:shape": "flat"
+  }
+},
+{
+  "type": "way",
+  "id": 144669559,
+  "center": {
+    "lat": 45.8592556,
+    "lon": 25.7772217
+  },
+  "tags": {
+    "addr:housenumber": "15",
+    "building": "apartments",
+    "building:levels": "5",
+    "name": "15",
+    "roof:shape": "flat"
+  }
+},
+{
+  "type": "way",
+  "id": 144669700,
+  "center": {
+    "lat": 45.8627105,
+    "lon": 25.7796264
+  },
+  "tags": {
+    "addr:housenumber": "13",
+    "addr:street": "Strada Presei",
+    "building": "apartments",
+    "name": "13"
+  }
+},
+{
+  "type": "way",
+  "id": 144669701,
+  "center": {
+    "lat": 45.8626216,
+    "lon": 25.7800220
+  },
+  "tags": {
+    "addr:housenumber": "14",
+    "addr:street": "Strada Presei",
+    "building": "apartments",
+    "name": "14"
+  }
+},
+{
+  "type": "way",
+  "id": 144717214,
+  "center": {
+    "lat": 45.8613318,
+    "lon": 25.7902234
+  },
+  "tags": {
+    "building": "hospital",
+    "emergency": "no",
+    "name": "Centrul de Transfuzii Sanguine"
+  }
+},
+{
+  "type": "way",
+  "id": 144718842,
+  "center": {
+    "lat": 45.8564351,
+    "lon": 25.7928092
+  },
+  "tags": {
+    "building": "school",
+    "name": "Liceul Economic"
+  }
+},
+{
+  "type": "way",
+  "id": 144718843,
+  "center": {
+    "lat": 45.8553867,
+    "lon": 25.7923831
+  },
+  "tags": {
+    "amenity": "place_of_worship",
+    "building": "yes",
+    "check_date": "2025-10-24",
+    "denomination": "catholic",
+    "name": "Biserica Romano-Catolică \"Regele Cristos\"",
+    "name:hu": "Krisztus Király Római Katolokus Templom",
+    "religion": "christian"
+  }
+},
+{
+  "type": "way",
+  "id": 144769250,
+  "center": {
+    "lat": 45.8598363,
+    "lon": 25.8069719
+  },
+  "tags": {
+    "amenity": "fuel",
+    "brand": "Lukoil",
+    "brand:wikidata": "Q329347",
+    "building": "yes",
+    "compressed_air": "yes",
+    "layer": "1",
+    "name": "Lukoil"
+  }
+},
+{
+  "type": "way",
+  "id": 144773059,
+  "center": {
+    "lat": 45.8645082,
+    "lon": 25.8070355
+  },
+  "tags": {
+    "addr:city": "Sfântu Gheorghe",
+    "addr:housenumber": "6",
+    "addr:street": "Aleea Hărniciei",
+    "building": "apartments",
+    "building:levels": "9",
+    "name": "bl. 27"
+  }
+},
+{
+  "type": "way",
+  "id": 144934134,
+  "center": {
+    "lat": 45.8695190,
+    "lon": 25.7822313
+  },
+  "tags": {
+    "amenity": "place_of_worship",
+    "building": "yes",
+    "denomination": "orthodox",
+    "name": "Biserica Ortodoxă \"Sfântul Gheorghe\"",
+    "religion": "christian",
+    "wikidata": "Q18538039",
+    "wikipedia": "ro:Biserica Sfântul Gheorghe din Sfântu Gheorghe"
+  }
+},
+{
+  "type": "way",
+  "id": 144934135,
+  "center": {
+    "lat": 45.8686220,
+    "lon": 25.7850233
+  },
+  "tags": {
+    "building": "yes",
+    "name": "Casa ”Csulak”",
+    "name:hu": "Csulak-ház"
+  }
+},
+{
+  "type": "way",
+  "id": 144934136,
+  "center": {
+    "lat": 45.8653861,
+    "lon": 25.7949918
+  },
+  "tags": {
+    "building": "kindergarten",
+    "name": "Grădinița \"Benedek Elek\"",
+    "name:hu": "Benedek Elek Napköziotthonos Óvoda",
+    "phone": "0267–313251",
+    "source": "http://www.sfantugheorgheinfo.ro/index.php?page=4"
+  }
+},
+{
+  "type": "way",
+  "id": 144934137,
+  "center": {
+    "lat": 45.8613411,
+    "lon": 25.7862263
+  },
+  "tags": {
+    "building": "yes",
+    "name": "Míves Ház"
+  }
+},
+{
+  "type": "way",
+  "id": 144936009,
+  "center": {
+    "lat": 45.8700101,
+    "lon": 25.7941202
+  },
+  "tags": {
+    "addr:city": "Sfântu Gheorghe",
+    "addr:housenumber": "50",
+    "addr:street": "Strada Ciucului",
+    "building": "university",
+    "name": "Universitatea \"Sapientia\"",
+    "name:hu": "Dr. Gámán János Szakközépiskola"
+  }
+},
+{
+  "type": "way",
+  "id": 144937719,
+  "center": {
+    "lat": 45.8743674,
+    "lon": 25.7970067
+  },
+  "tags": {
+    "amenity": "place_of_worship",
+    "building": "church",
+    "check_date": "2025-10-27",
+    "denomination": "roman_catholic",
+    "name": "Biserica Catolică",
+    "name:hu": "Szent Gellért püspök templom",
+    "religion": "christian",
+    "url:miserend": "https://miserend.hu/templom/3291"
+  }
+},
+{
+  "type": "way",
+  "id": 145026710,
+  "center": {
+    "lat": 45.8670293,
+    "lon": 25.7918825
+  },
+  "tags": {
+    "building": "yes",
+    "name": "Casa ”Gyulai”",
+    "name:hu": "Gyulai-ház"
+  }
+},
+{
+  "type": "way",
+  "id": 145027128,
+  "center": {
+    "lat": 45.8596471,
+    "lon": 25.7820895
+  },
+  "tags": {
+    "addr:housenumber": "6/C",
+    "addr:street": "Aleea Teilor",
+    "building": "apartments",
+    "name": "6/C"
+  }
+},
+{
+  "type": "way",
+  "id": 145027129,
+  "center": {
+    "lat": 45.8598231,
+    "lon": 25.7821486
+  },
+  "tags": {
+    "addr:housenumber": "6/B",
+    "addr:street": "Aleea Teilor",
+    "building": "apartments",
+    "name": "6/B"
+  }
+},
+{
+  "type": "way",
+  "id": 145027130,
+  "center": {
+    "lat": 45.8596749,
+    "lon": 25.7813205
+  },
+  "tags": {
+    "addr:housenumber": "3/B",
+    "addr:street": "Aleea Teilor",
+    "building": "apartments",
+    "name": "3/B"
+  }
+},
+{
+  "type": "way",
+  "id": 145027131,
+  "center": {
+    "lat": 45.8600004,
+    "lon": 25.7821899
+  },
+  "tags": {
+    "addr:housenumber": "6/A",
+    "addr:street": "Aleea Teilor",
+    "building": "apartments",
+    "name": "6/A"
+  }
+},
+{
+  "type": "way",
+  "id": 145027132,
+  "center": {
+    "lat": 45.8598521,
+    "lon": 25.7813618
+  },
+  "tags": {
+    "addr:housenumber": "3/C",
+    "addr:street": "Aleea Teilor",
+    "building": "apartments",
+    "name": "3/C"
+  }
+},
+{
+  "type": "way",
+  "id": 145027133,
+  "center": {
+    "lat": 45.8594988,
+    "lon": 25.7812414
+  },
+  "tags": {
+    "addr:housenumber": "3/A",
+    "addr:street": "Aleea Teilor",
+    "building": "apartments",
+    "name": "3/A"
+  }
+},
+{
+  "type": "way",
+  "id": 145027136,
+  "center": {
+    "lat": 45.8608242,
+    "lon": 25.7826709
+  },
+  "tags": {
+    "addr:housenumber": "9",
+    "addr:street": "Strada László Ferenc",
+    "building": "apartments",
+    "name": "Bl.9"
+  }
+},
+{
+  "type": "way",
+  "id": 154289453,
+  "center": {
+    "lat": 45.8628458,
+    "lon": 25.7808864
+  },
+  "tags": {
+    "addr:housenumber": "15",
+    "addr:street": "Strada Presei",
+    "building": "apartments",
+    "name": "15"
+  }
+},
+{
+  "type": "way",
+  "id": 154289454,
+  "center": {
+    "lat": 45.8614298,
+    "lon": 25.7829088
+  },
+  "tags": {
+    "addr:housenumber": "8",
+    "addr:street": "Strada László Ferenc",
+    "building": "apartments",
+    "name": "8"
+  }
+},
+{
+  "type": "way",
+  "id": 154289455,
+  "center": {
+    "lat": 45.8629676,
+    "lon": 25.7803417
+  },
+  "tags": {
+    "addr:housenumber": "16",
+    "addr:street": "Strada Presei",
+    "building": "apartments",
+    "name": "16"
+  }
+},
+{
+  "type": "way",
+  "id": 154289456,
+  "center": {
+    "lat": 45.8632912,
+    "lon": 25.7807807
+  },
+  "tags": {
+    "building": "yes",
+    "emergency": "ambulance_station",
+    "name": "Ambulanța"
+  }
+},
+{
+  "type": "way",
+  "id": 154289463,
+  "center": {
+    "lat": 45.8571175,
+    "lon": 25.7784374
+  },
+  "tags": {
+    "addr:city": "Sfântu Gheorghe",
+    "addr:housenumber": "6",
+    "addr:street": "Strada Viitorului",
+    "building": "apartments",
+    "name": "6"
+  }
+},
+{
+  "type": "way",
+  "id": 154289465,
+  "center": {
+    "lat": 45.8626563,
+    "lon": 25.7816786
+  },
+  "tags": {
+    "addr:housenumber": "17",
+    "addr:street": "Strada Presei",
+    "building": "apartments",
+    "name": "17"
+  }
+},
+{
+  "type": "way",
+  "id": 154289466,
+  "center": {
+    "lat": 45.8626364,
+    "lon": 25.7814355
+  },
+  "tags": {
+    "addr:housenumber": "18",
+    "building": "apartments",
+    "name": "18"
+  }
+},
+{
+  "type": "way",
+  "id": 173066777,
+  "center": {
+    "lat": 45.9293128,
+    "lon": 25.7965464
+  },
+  "tags": {
+    "amenity": "place_of_worship",
+    "building": "yes",
+    "denomination": "protestant",
+    "name": "Biserica Protestantă",
+    "religion": "christian"
+  }
+},
+{
+  "type": "way",
+  "id": 174504934,
+  "center": {
+    "lat": 45.9000416,
+    "lon": 25.7776072
+  },
+  "tags": {
+    "amenity": "townhall",
+    "building": "yes",
+    "name": "Primăria Arcuș",
+    "townhall:type": "village"
+  }
+},
+{
+  "type": "way",
+  "id": 174504935,
+  "center": {
+    "lat": 45.9038555,
+    "lon": 25.7703183
+  },
+  "tags": {
+    "amenity": "place_of_worship",
+    "building": "church",
+    "denomination": "orthodox",
+    "name": "Biserica Adormirea Maicii Domnului",
+    "name:hu": "Istenszülő mennybevétele ortodox templom",
+    "religion": "christian"
+  }
+},
+{
+  "type": "way",
+  "id": 174504936,
+  "center": {
+    "lat": 45.9006440,
+    "lon": 25.7749320
+  },
+  "tags": {
+    "addr:city": "Arcuș",
+    "addr:postcode": "527166",
+    "addr:street": "Benedek Elek",
+    "amenity": "place_of_worship",
+    "building": "yes",
+    "denomination": "unitarian",
+    "name": "Biserica Unitariană Arcuș",
+    "religion": "christian"
+  }
+},
+{
+  "type": "way",
+  "id": 174523248,
+  "center": {
+    "lat": 45.9013123,
+    "lon": 25.7766510
+  },
+  "tags": {
+    "addr:city": "Arcuș",
+    "addr:housenumber": "77",
+    "addr:postcode": "527166",
+    "addr:postcode:source": "Date de la Poșta Română, publicate sub Licența pentru Guvernare Deschisă v1.0 la http://date.gov.ro/organization/posta-romana",
+    "addr:street": "Strada Gelje-Gelei József",
+    "amenity": "community_centre",
+    "building": "yes",
+    "name": "Casa de cultură",
+    "name:hu": "Kultúrház"
+  }
+},
+{
+  "type": "way",
+  "id": 174523252,
+  "center": {
+    "lat": 45.9011780,
+    "lon": 25.7728468
+  },
+  "tags": {
+    "amenity": "place_of_worship",
+    "building": "yes",
+    "denomination": "protestant",
+    "name": "Biserica Reformată Arcuș",
+    "religion": "christian"
+  }
+},
+{
+  "type": "way",
+  "id": 174533367,
+  "center": {
+    "lat": 45.8641614,
+    "lon": 25.7766030
+  },
+  "tags": {
+    "building": "yes",
+    "leisure": "sports_centre",
+    "name": "Sala de sport"
+  }
+},
+{
+  "type": "way",
+  "id": 174533368,
+  "center": {
+    "lat": 45.8608090,
+    "lon": 25.7753933
+  },
+  "tags": {
+    "amenity": "university",
+    "building": "yes",
+    "name": "Universitatea \"Babeș-Bolyai\"",
+    "name:hu": "Babeș-Bolyai Tudományegyetem"
+  }
+},
+{
+  "type": "way",
+  "id": 174533447,
+  "center": {
+    "lat": 45.8630355,
+    "lon": 25.7816959
+  },
+  "tags": {
+    "building": "office",
+    "name": "Incubatorul de Afaceri Sfântu Gheorghe"
+  }
+},
+{
+  "type": "way",
+  "id": 174775136,
+  "center": {
+    "lat": 45.9219658,
+    "lon": 25.8528442
+  },
+  "tags": {
+    "amenity": "place_of_worship",
+    "building": "yes",
+    "denomination": "protestant",
+    "name": "Biserica reformată Zoltan",
+    "name:hu": "Étfalvazoltáni Református templom",
+    "religion": "christian"
+  }
+},
+{
+  "type": "way",
+  "id": 174789119,
+  "center": {
+    "lat": 45.9294965,
+    "lon": 25.8458919
+  },
+  "tags": {
+    "amenity": "place_of_worship",
+    "building": "yes",
+    "denomination": "protestant",
+    "name": "Biserica Protestantă",
+    "religion": "christian"
+  }
+},
+{
+  "type": "way",
+  "id": 174791870,
+  "center": {
+    "lat": 45.9017311,
+    "lon": 25.8399728
+  },
+  "tags": {
+    "amenity": "place_of_worship",
+    "building": "yes",
+    "denomination": "protestant",
+    "name": "Biserica Reformată Ghidfălău",
+    "religion": "christian"
+  }
+},
+{
+  "type": "way",
+  "id": 174791871,
+  "center": {
+    "lat": 45.9016587,
+    "lon": 25.8403962
+  },
+  "tags": {
+    "building": "house",
+    "name": "Casa Memorială Czetz János",
+    "name:hu": "Czetz János emlékház",
+    "name:ro": "Casa Memorială Czetz János",
+    "subject:wikidata": "Q686993",
+    "subject:wikipedia": "hu:Czetz János",
+    "tourism": "museum"
+  }
+},
+{
+  "type": "way",
+  "id": 174791872,
+  "center": {
+    "lat": 45.9043766,
+    "lon": 25.8423876
+  },
+  "tags": {
+    "amenity": "townhall",
+    "building": "yes",
+    "name": "Primăria Ghidfălău",
+    "name:hu": "Gidófalvi polgármesteri hivatal"
+  }
+},
+{
+  "type": "way",
+  "id": 243167765,
+  "center": {
+    "lat": 45.8629887,
+    "lon": 25.8026128
+  },
+  "tags": {
+    "addr:city": "Sfântu Gheorghe",
+    "brand": "Lidl",
+    "brand:wikidata": "Q151954",
+    "brand:wikipedia": "en:Lidl",
+    "building": "retail",
+    "building:levels": "1",
+    "name": "Lidl",
+    "opening_hours": "Mo-Sa 07:30-22:00; Su 08:00-21:00; PH off",
+    "roof:levels": "0",
+    "shop": "supermarket",
+    "toilets:wheelchair": "yes",
+    "wheelchair": "yes"
+  }
+},
+{
+  "type": "way",
+  "id": 243168448,
+  "center": {
+    "lat": 45.8572229,
+    "lon": 25.7975799
+  },
+  "tags": {
+    "addr:city": "Sfântu Gheorghe",
+    "addr:street": "Strada Nicolae Iorga",
+    "brand": "Penny",
+    "brand:wikidata": "Q284688",
+    "brand:wikipedia": "en:Penny (supermarket)",
+    "building": "yes",
+    "name": "PENNY",
+    "shop": "supermarket"
+  }
+},
+{
+  "type": "way",
+  "id": 243168614,
+  "center": {
+    "lat": 45.8560803,
+    "lon": 25.7918621
+  },
+  "tags": {
+    "amenity": "car_wash",
+    "building": "yes",
+    "name": "King's"
+  }
+},
+{
+  "type": "way",
+  "id": 247011772,
+  "center": {
+    "lat": 45.8649615,
+    "lon": 25.8023582
+  },
+  "tags": {
+    "brand": "Supeco",
+    "brand:wikidata": "Q110066889",
+    "building": "yes",
+    "name": "Supeco",
+    "shop": "supermarket"
+  }
+},
+{
+  "type": "way",
+  "id": 247024165,
+  "center": {
+    "lat": 45.8711799,
+    "lon": 25.7895495
+  },
+  "tags": {
+    "amenity": "fuel",
+    "building": "retail",
+    "building:levels": "1",
+    "name": "Petrom",
+    "opening_hours": "24/7",
+    "roof:levels": "0",
+    "wheelchair": "yes"
+  }
+},
+{
+  "type": "way",
+  "id": 264194721,
+  "center": {
+    "lat": 45.8656733,
+    "lon": 25.7837317
+  },
+  "tags": {
+    "amenity": "restaurant",
+    "building": "yes",
+    "cuisine": "regional",
+    "name": "Restaurant Park"
+  }
+},
+{
+  "type": "way",
+  "id": 264367336,
+  "center": {
+    "lat": 45.8756565,
+    "lon": 25.7997525
+  },
+  "tags": {
+    "addr:city": "Sfântu Gheorghe",
+    "addr:housenumber": "1",
+    "addr:postcode": "520036",
+    "addr:postcode:source": "Date de la Poșta Română, publicate sub Licența pentru Guvernare Deschisă v1.0 la http://date.gov.ro/organization/posta-romana",
+    "addr:street": "Strada Lunca Oltului",
+    "barrier": "fence",
+    "is_in:city": "Sfântu Gheorghe",
+    "is_in:country": "România",
+    "is_in:county": "Covasna",
+    "landuse": "industrial",
+    "name": "Covalact"
+  }
+},
+{
+  "type": "way",
+  "id": 264428749,
+  "center": {
+    "lat": 45.8624210,
+    "lon": 25.7856272
+  },
+  "tags": {
+    "contact:facebook": "szentjozsefpb",
+    "contact:website": "https://szentjozsef.katolikussepsi.ro/",
+    "denomination": "catholic",
+    "landuse": "religious",
+    "name": "Szent József plébánia",
+    "religion": "christian"
+  }
+},
+{
+  "type": "way",
+  "id": 264586325,
+  "center": {
+    "lat": 45.8577152,
+    "lon": 25.7747516
+  },
+  "tags": {
+    "addr:housenumber": "11",
+    "addr:street": "Strada Dealului",
+    "building": "apartments",
+    "building:levels": "10",
+    "name": "25,26,27"
+  }
+},
+{
+  "type": "way",
+  "id": 264588582,
+  "center": {
+    "lat": 45.8602070,
+    "lon": 25.7816007
+  },
+  "tags": {
+    "addr:housenumber": "4",
+    "addr:street": "Aleea Teilor",
+    "building": "apartments",
+    "name": "4/A/B"
+  }
+},
+{
+  "type": "way",
+  "id": 264588838,
+  "center": {
+    "lat": 45.8592541,
+    "lon": 25.7816629
+  },
+  "tags": {
+    "addr:housenumber": "5",
+    "building": "apartments",
+    "name": "5/A/B/C"
+  }
+},
+{
+  "type": "way",
+  "id": 264909637,
+  "center": {
+    "lat": 45.8646289,
+    "lon": 25.7913970
+  },
+  "tags": {
+    "building": "yes",
+    "name": "Aria",
+    "shop": "confectionery"
+  }
+},
+{
+  "type": "way",
+  "id": 264910459,
+  "center": {
+    "lat": 45.8629602,
+    "lon": 25.7779036
+  },
+  "tags": {
+    "amenity": "fast_food",
+    "building": "yes",
+    "cuisine": "fast_food",
+    "name": "Bertis Pub"
+  }
+},
+{
+  "type": "way",
+  "id": 265039999,
+  "center": {
+    "lat": 45.8634009,
+    "lon": 25.7916199
+  },
+  "tags": {
+    "addr:city": "Sfântu Gheorghe",
+    "addr:housenumber": "20",
+    "addr:postcode": "520024",
+    "addr:street": "Strada Nicolae Bălcescu",
+    "building": "yes",
+    "fax": "0267-313560",
+    "name": "Mimi Brico Shop",
+    "operator": "FREZY IMP-EX SRL",
+    "phone": "0267-313560",
+    "shop": "doityourself"
+  }
+},
+{
+  "type": "way",
+  "id": 265186580,
+  "center": {
+    "lat": 45.8619088,
+    "lon": 25.7842339
+  },
+  "tags": {
+    "addr:housenumber": "2/B",
+    "addr:street": "Strada László Ferenc",
+    "building": "apartments",
+    "building:levels": "0",
+    "name": "2/B"
+  }
+},
+{
+  "type": "way",
+  "id": 265187339,
+  "center": {
+    "lat": 45.8579247,
+    "lon": 25.7781034
+  },
+  "tags": {
+    "addr:city": "Sfântu Gheorghe",
+    "addr:housenumber": "7A",
+    "addr:street": "Strada Umbrei",
+    "building": "apartments",
+    "building:levels": "5",
+    "name": "7A",
+    "roof:shape": "flat"
+  }
+},
+{
+  "type": "way",
+  "id": 265187340,
+  "center": {
+    "lat": 45.8576136,
+    "lon": 25.7779595
+  },
+  "tags": {
+    "addr:city": "Sfântu Gheorghe",
+    "addr:housenumber": "7",
+    "building": "apartments",
+    "name": "7"
+  }
+},
+{
+  "type": "way",
+  "id": 265187341,
+  "center": {
+    "lat": 45.8575558,
+    "lon": 25.7777127
+  },
+  "tags": {
+    "addr:city": "Sfântu Gheorghe",
+    "addr:housenumber": "7/A",
+    "building": "apartments",
+    "name": "7/A"
+  }
+},
+{
+  "type": "way",
+  "id": 265187342,
+  "center": {
+    "lat": 45.8575020,
+    "lon": 25.7774655
+  },
+  "tags": {
+    "addr:city": "Sfântu Gheorghe",
+    "addr:housenumber": "7/B",
+    "building": "apartments",
+    "layer": "1",
+    "name": "7/B"
+  }
+},
+{
+  "type": "way",
+  "id": 265187343,
+  "center": {
+    "lat": 45.8574538,
+    "lon": 25.7772174
+  },
+  "tags": {
+    "addr:city": "Sfântu Gheorghe",
+    "addr:housenumber": "7/C",
+    "building": "apartments",
+    "name": "7/C"
+  }
+},
+{
+  "type": "way",
+  "id": 265187721,
+  "center": {
+    "lat": 45.8571453,
+    "lon": 25.7779664
+  },
+  "tags": {
+    "addr:city": "Sfântu Gheorghe",
+    "addr:housenumber": "5",
+    "addr:street": "Strada Viitorului",
+    "building": "apartments",
+    "name": "5"
+  }
+},
+{
+  "type": "way",
+  "id": 265188681,
+  "center": {
+    "lat": 45.8596089,
+    "lon": 25.7832184
+  },
+  "tags": {
+    "amenity": "theatre",
+    "building": "yes",
+    "name": "Dózsa György klub"
+  }
+},
+{
+  "type": "way",
+  "id": 265189819,
+  "center": {
+    "lat": 45.8577454,
+    "lon": 25.7785399
+  },
+  "tags": {
+    "addr:city": "Sfântu Gheorghe",
+    "addr:housenumber": "3/C",
+    "addr:street": "Strada Viitorului",
+    "building": "apartments",
+    "name": "3/C"
+  }
+},
+{
+  "type": "way",
+  "id": 265189821,
+  "center": {
+    "lat": 45.8577814,
+    "lon": 25.7788069
+  },
+  "tags": {
+    "addr:city": "Sfântu Gheorghe",
+    "addr:housenumber": "3/B",
+    "addr:street": "Strada Viitorului",
+    "building": "apartments",
+    "name": "3/B"
+  }
+},
+{
+  "type": "way",
+  "id": 265189823,
+  "center": {
+    "lat": 45.8578591,
+    "lon": 25.7790485
+  },
+  "tags": {
+    "addr:city": "Sfântu Gheorghe",
+    "addr:housenumber": "3/A",
+    "addr:street": "Strada Viitorului",
+    "building": "apartments",
+    "name": "3/A"
+  }
+},
+{
+  "type": "way",
+  "id": 265190533,
+  "center": {
+    "lat": 45.8573968,
+    "lon": 25.7790361
+  },
+  "tags": {
+    "addr:city": "Sfântu Gheorghe",
+    "addr:housenumber": "4/C",
+    "addr:street": "Strada Viitorului",
+    "building": "apartments",
+    "name": "4/C"
+  }
+},
+{
+  "type": "way",
+  "id": 265190535,
+  "center": {
+    "lat": 45.8583527,
+    "lon": 25.7793664
+  },
+  "tags": {
+    "addr:housenumber": "1/E",
+    "addr:street": "Strada Viitorului",
+    "building": "apartments",
+    "building:levels": "5",
+    "name": "1/E",
+    "roof:shape": "flat"
+  }
+},
+{
+  "type": "way",
+  "id": 265190537,
+  "center": {
+    "lat": 45.8585305,
+    "lon": 25.7794170
+  },
+  "tags": {
+    "addr:housenumber": "1/D",
+    "addr:street": "Strada Viitorului",
+    "building": "apartments",
+    "building:levels": "5",
+    "name": "1/D",
+    "roof:shape": "flat"
+  }
+},
+{
+  "type": "way",
+  "id": 265190538,
+  "center": {
+    "lat": 45.8585858,
+    "lon": 25.7796639
+  },
+  "tags": {
+    "addr:housenumber": "1/C",
+    "addr:street": "Strada Viitorului",
+    "building": "apartments",
+    "building:levels": "5",
+    "name": "1/C",
+    "roof:shape": "flat"
+  }
+},
+{
+  "type": "way",
+  "id": 265190540,
+  "center": {
+    "lat": 45.8586315,
+    "lon": 25.7799176
+  },
+  "tags": {
+    "addr:housenumber": "1/B",
+    "addr:street": "Strada Viitorului",
+    "building": "apartments",
+    "building:levels": "5",
+    "name": "1/B",
+    "roof:shape": "flat"
+  }
+},
+{
+  "type": "way",
+  "id": 265190541,
+  "center": {
+    "lat": 45.8586777,
+    "lon": 25.7801664
+  },
+  "tags": {
+    "addr:housenumber": "1/A",
+    "addr:street": "Strada Viitorului",
+    "building": "apartments",
+    "building:levels": "5",
+    "name": "1/A",
+    "roof:shape": "flat"
+  }
+},
+{
+  "type": "way",
+  "id": 265193680,
+  "center": {
+    "lat": 45.8555470,
+    "lon": 25.7752782
+  },
+  "tags": {
+    "addr:city": "Sfântu Gheorghe",
+    "addr:housenumber": "4",
+    "addr:street": "Strada Bolyai János",
+    "building": "apartments",
+    "name": "4/A/B/C/D/E"
+  }
+},
+{
+  "type": "way",
+  "id": 265193681,
+  "center": {
+    "lat": 45.8558286,
+    "lon": 25.7753023
+  },
+  "tags": {
+    "addr:city": "Sfântu Gheorghe",
+    "addr:housenumber": "3",
+    "addr:street": "Strada Bolyai János",
+    "building": "apartments",
+    "name": "3/A/B/C/D"
+  }
+},
+{
+  "type": "way",
+  "id": 265193682,
+  "center": {
+    "lat": 45.8561361,
+    "lon": 25.7753024
+  },
+  "tags": {
+    "addr:city": "Sfântu Gheorghe",
+    "addr:housenumber": "2",
+    "building": "apartments",
+    "name": "2/A/B/C"
+  }
+},
+{
+  "type": "way",
+  "id": 265193683,
+  "center": {
+    "lat": 45.8564516,
+    "lon": 25.7753073
+  },
+  "tags": {
+    "addr:city": "Sfântu Gheorghe",
+    "addr:housenumber": "1",
+    "addr:street": "Strada Gheorghe Doja",
+    "building": "apartments",
+    "name": "1/A/B"
+  }
+},
+{
+  "type": "way",
+  "id": 265594451,
+  "center": {
+    "lat": 45.8617921,
+    "lon": 25.7959847
+  },
+  "tags": {
+    "building": "yes",
+    "name": "Romtelecom",
+    "office": "company"
+  }
+},
+{
+  "type": "way",
+  "id": 265612461,
+  "center": {
+    "lat": 45.8652096,
+    "lon": 25.7892940
+  },
+  "tags": {
+    "building": "yes",
+    "name": "Hotel Șugaș",
+    "name:hu": "Sugás Hotel",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "way",
+  "id": 290581635,
+  "center": {
+    "lat": 45.8475427,
+    "lon": 25.8083717
+  },
+  "tags": {
+    "landuse": "industrial",
+    "name": "Arcon SRL"
+  }
+},
+{
+  "type": "way",
+  "id": 290582113,
+  "center": {
+    "lat": 45.8684155,
+    "lon": 25.7906377
+  },
+  "tags": {
+    "addr:city": "Sfântu Gheorghe",
+    "addr:housenumber": "32",
+    "addr:street": "Strada Kőrösi Csoma Sándor",
+    "building": "yes",
+    "name": "Arcon SRL",
+    "office": "company",
+    "phone": "+40267314229",
+    "website": "http://www.arcon.com.ro"
+  }
+},
+{
+  "type": "way",
+  "id": 295955316,
+  "center": {
+    "lat": 45.8613467,
+    "lon": 25.7843200
+  },
+  "tags": {
+    "addr:housenumber": "1/B",
+    "addr:street": "Strada László Ferenc",
+    "building": "apartments",
+    "name": "1/B"
+  }
+},
+{
+  "type": "way",
+  "id": 309422907,
+  "center": {
+    "lat": 45.8781154,
+    "lon": 25.7993654
+  },
+  "tags": {
+    "barrier": "fence",
+    "landuse": "industrial",
+    "name": "Ready Garment Technology Romania SRL (RGT)"
+  }
+},
+{
+  "type": "way",
+  "id": 316325288,
+  "center": {
+    "lat": 45.8716659,
+    "lon": 25.7856136
+  },
+  "tags": {
+    "amenity": "restaurant",
+    "building": "yes",
+    "cuisine": "regional",
+    "name": "Restaurant Perth"
+  }
+},
+{
+  "type": "way",
+  "id": 316325289,
+  "center": {
+    "lat": 45.8714077,
+    "lon": 25.7857249
+  },
+  "tags": {
+    "building": "yes",
+    "name": "Motel Perth",
+    "tourism": "motel"
+  }
+},
+{
+  "type": "way",
+  "id": 316325290,
+  "center": {
+    "lat": 45.8715550,
+    "lon": 25.7858752
+  },
+  "tags": {
+    "amenity": "restaurant",
+    "building": "yes",
+    "cuisine": "regional",
+    "name": "Restaurant Perth"
+  }
+},
+{
+  "type": "way",
+  "id": 333042546,
+  "center": {
+    "lat": 45.8750849,
+    "lon": 25.7412197
+  },
+  "tags": {
+    "building": "yes",
+    "name": "Simon farm"
+  }
+},
+{
+  "type": "way",
+  "id": 333975123,
+  "center": {
+    "lat": 45.8964501,
+    "lon": 25.7103515
+  },
+  "tags": {
+    "building": "yes",
+    "email": "covalpin@gmail.com",
+    "name": "Cabana CovAlpin",
+    "phone": "+40 755 292 634",
+    "tourism": "guest_house",
+    "website": "https://covalpin.ro"
+  }
+},
+{
+  "type": "way",
+  "id": 334367101,
+  "center": {
+    "lat": 45.8632490,
+    "lon": 25.7982088
+  },
+  "tags": {
+    "addr:city": "Sepsiszentgyörgy",
+    "addr:housenumber": "6",
+    "addr:street": "Strada Málik József",
+    "amenity": "place_of_worship",
+    "building": "house",
+    "denomination": "reformed",
+    "description": "Tiszta, Krisztus központú igehirdetések, az istentisztelet vasárnaponként 10-től református liturgiával folyik, a kötetlenebb bibliatanulmányozás pedig szerdánként 18 órától.  A Református Presbiteriánus Egyház (reformatus.net) gyülekezete tartja itt az a",
+    "name": "Református Presbiteriánus Gyülekezet / Károlyi Gáspár Alapítvány",
+    "name:en": "Reformed Presbyterian Church",
+    "name:hu": "Református Presbiteriánus Gyülekezet",
+    "name:ro": "Adunare Reformat Presbiterian",
+    "religion": "christian",
+    "service_times": "Vasárnap 10:00",
+    "url": "https://reformatus.net"
+  }
+},
+{
+  "type": "way",
+  "id": 366154099,
+  "center": {
+    "lat": 45.8780538,
+    "lon": 25.7991866
+  },
+  "tags": {
+    "building": "yes",
+    "name": "TTC"
+  }
+},
+{
+  "type": "way",
+  "id": 369002098,
+  "center": {
+    "lat": 45.8680038,
+    "lon": 25.8014991
+  },
+  "tags": {
+    "addr:city": "Sfântu Gheorghe",
+    "addr:street": "Strada Lunca Oltului",
+    "building": "yes",
+    "name": "C+C En Gross",
+    "phone": "0267 306 400",
+    "shop": "general"
+  }
+},
+{
+  "type": "way",
+  "id": 369030269,
+  "center": {
+    "lat": 45.8697627,
+    "lon": 25.8020473
+  },
+  "tags": {
+    "addr:city": "Sfântu Gheorghe",
+    "addr:housenumber": "4-6",
+    "addr:street": "Strada Lunca Oltului",
+    "brand": "Kaufland",
+    "brand:wikidata": "Q685967",
+    "brand:wikipedia": "en:Kaufland",
+    "building": "retail",
+    "building:levels": "1",
+    "name": "Kaufland",
+    "opening_hours": "Mo-Sa 07:30-21:00; Su 08:00-18:00",
+    "roof:levels": "0",
+    "shop": "supermarket",
+    "website": "https://www.kaufland.ro/utile/magazin/sfantu-gheorghe-5600.html",
+    "wheelchair": "yes"
+  }
+},
+{
+  "type": "way",
+  "id": 374657153,
+  "center": {
+    "lat": 45.8656333,
+    "lon": 25.7844248
+  },
+  "tags": {
+    "building": "yes",
+    "name": "Park Hostel",
+    "tourism": "hostel"
+  }
+},
+{
+  "type": "way",
+  "id": 376380930,
+  "center": {
+    "lat": 45.8661976,
+    "lon": 25.7873186
+  },
+  "tags": {
+    "amenity": "theatre",
+    "building": "yes",
+    "name": "Scena mica",
+    "name:hu": "Kisszínpad"
+  }
+},
+{
+  "type": "way",
+  "id": 379556404,
+  "center": {
+    "lat": 45.8000801,
+    "lon": 25.8473530
+  },
+  "tags": {
+    "amenity": "place_of_worship",
+    "building": "church",
+    "denomination": "roman_catholic",
+    "name": "Urunk mennybemenetele templom",
+    "name:hu": "Urunk mennybemenetele templom",
+    "religion": "christian",
+    "url:miserend": "http://miserend.hu/?templom=3338"
+  }
+},
+{
+  "type": "way",
+  "id": 400542602,
+  "center": {
+    "lat": 45.8599545,
+    "lon": 25.8523464
+  },
+  "tags": {
+    "barrier": "fence",
+    "landuse": "industrial",
+    "name": "KTW"
+  }
+},
+{
+  "type": "way",
+  "id": 421004413,
+  "center": {
+    "lat": 45.8873814,
+    "lon": 25.8071581
+  },
+  "tags": {
+    "amenity": "vehicle_inspection",
+    "building": "yes",
+    "height": "8",
+    "name": "RAR",
+    "roof:shape": "flat"
+  }
+},
+{
+  "type": "way",
+  "id": 436992436,
+  "center": {
+    "lat": 45.8716477,
+    "lon": 25.8013015
+  },
+  "tags": {
+    "building": "yes",
+    "name": "Ady Service",
+    "shop": "car_repair"
+  }
+},
+{
+  "type": "way",
+  "id": 436992518,
+  "center": {
+    "lat": 45.8714155,
+    "lon": 25.8013012
+  },
+  "tags": {
+    "building": "yes",
+    "name": "ARIX Impex",
+    "shop": "doityourself"
+  }
+},
+{
+  "type": "way",
+  "id": 436993469,
+  "center": {
+    "lat": 45.8734400,
+    "lon": 25.8002007
+  },
+  "tags": {
+    "building": "yes",
+    "name": "April '91",
+    "shop": "doityourself"
+  }
+},
+{
+  "type": "way",
+  "id": 436993533,
+  "center": {
+    "lat": 45.8751118,
+    "lon": 25.8015427
+  },
+  "tags": {
+    "building": "yes",
+    "name": "KIRA",
+    "shop": "doityourself"
+  }
+},
+{
+  "type": "way",
+  "id": 436996114,
+  "center": {
+    "lat": 45.8772721,
+    "lon": 25.8014913
+  },
+  "tags": {
+    "addr:city": "Sfântu Gheorghe",
+    "addr:housenumber": "FN",
+    "addr:street": "Strada Lunca Oltului",
+    "amenity": "restaurant",
+    "building": "yes",
+    "cuisine": "regional",
+    "name": "The Castle Restaurant",
+    "name:hu": "Kastély Vendéglő",
+    "opening_hours": "Mo-Fr 08:00-22:00",
+    "phone": "+40 749 822 822",
+    "website": "https://kastelyvendeglo.ro"
+  }
+},
+{
+  "type": "way",
+  "id": 444225277,
+  "center": {
+    "lat": 45.8813107,
+    "lon": 25.8084301
+  },
+  "tags": {
+    "building": "yes",
+    "leisure": "sports_centre",
+    "name": "Sepsi Arena",
+    "name:hu": "Sepsi Aréna",
+    "sport": "multi"
+  }
+},
+{
+  "type": "way",
+  "id": 594076394,
+  "center": {
+    "lat": 45.8683221,
+    "lon": 25.8016292
+  },
+  "tags": {
+    "addr:city": "Sfântu Gheorghe",
+    "addr:housenumber": "4-6",
+    "addr:street": "Strada Lunca Oltului",
+    "brand": "Hervis",
+    "building": "yes",
+    "name": "Hervis",
+    "shop": "outdoor"
+  }
+},
+{
+  "type": "way",
+  "id": 594076395,
+  "center": {
+    "lat": 45.8718869,
+    "lon": 25.8016742
+  },
+  "tags": {
+    "building": "yes",
+    "name": "Depo",
+    "payment:cash": "yes",
+    "payment:credit_cards": "yes",
+    "shop": "doityourself",
+    "website": "https://depo.ro/"
+  }
+},
+{
+  "type": "way",
+  "id": 594076397,
+  "center": {
+    "lat": 45.8719904,
+    "lon": 25.8003164
+  },
+  "tags": {
+    "building": "yes",
+    "name": "Depo",
+    "shop": "doityourself"
+  }
+},
+{
+  "type": "way",
+  "id": 660334952,
+  "center": {
+    "lat": 45.8581302,
+    "lon": 25.7862462
+  },
+  "tags": {
+    "industrial": "factory",
+    "landuse": "industrial",
+    "material": "light",
+    "name": "Textila Oltul"
+  }
+},
+{
+  "type": "way",
+  "id": 660791685,
+  "center": {
+    "lat": 45.8580447,
+    "lon": 25.8007960
+  },
+  "tags": {
+    "building": "kindergarten",
+    "name": "Grădinița Pinocchio"
+  }
+},
+{
+  "type": "way",
+  "id": 660825472,
+  "center": {
+    "lat": 45.8606228,
+    "lon": 25.7885445
+  },
+  "tags": {
+    "building": "yes",
+    "name": "Bertis",
+    "opening_hours": "Mo-Sa 06:00-21:00; Su 07:00-15:00",
+    "payment:cash": "yes",
+    "payment:credit_cards": "yes",
+    "payment:debit_cards": "yes",
+    "shop": "convenience",
+    "wheelchair": "yes"
+  }
+},
+{
+  "type": "way",
+  "id": 661780811,
+  "center": {
+    "lat": 45.8658047,
+    "lon": 25.7941022
+  },
+  "tags": {
+    "addr:city": "Sfântu Gheorghe",
+    "addr:housenumber": "31-33",
+    "addr:postcode": "520027",
+    "addr:street": "Strada Oltului",
+    "amenity": "fire_station",
+    "building": "yes",
+    "email": "covasna@isujcv.ro",
+    "email_1": "contact@isujcv.ro",
+    "fax": "0267 311 182",
+    "name": "ISU Covasna",
+    "phone": "0267 315 350",
+    "phone_1": "0267 315 351"
+  }
+},
+{
+  "type": "way",
+  "id": 670007720,
+  "center": {
+    "lat": 45.8563402,
+    "lon": 25.7399701
+  },
+  "tags": {
+    "building": "yes",
+    "name": "Pensiunea Évszak",
+    "tourism": "guest_house"
+  }
+},
+{
+  "type": "way",
+  "id": 670214827,
+  "center": {
+    "lat": 45.8978631,
+    "lon": 25.7093474
+  },
+  "tags": {
+    "building": "yes",
+    "name": "Sugás Spa"
+  }
+},
+{
+  "type": "way",
+  "id": 670214830,
+  "center": {
+    "lat": 45.8969900,
+    "lon": 25.7066616
+  },
+  "tags": {
+    "building": "yes",
+    "name": "Phoenix panzió",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "way",
+  "id": 670214834,
+  "center": {
+    "lat": 45.8971299,
+    "lon": 25.7059235
+  },
+  "tags": {
+    "building": "yes",
+    "name": "Görgő panzió",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "way",
+  "id": 670669226,
+  "center": {
+    "lat": 45.8660512,
+    "lon": 25.7922754
+  },
+  "tags": {
+    "addr:city": "Sepsiszentgyörgy",
+    "addr:housenumber": "17",
+    "addr:postcode": "520027",
+    "addr:street": "Strada Oltului",
+    "building": "yes",
+    "name": "Camera de Comerț și Industrie Covasna",
+    "name:hu": "Kovászna Megyei Kereskedelmi és Iparkamara"
+  }
+},
+{
+  "type": "way",
+  "id": 671235190,
+  "center": {
+    "lat": 45.8561163,
+    "lon": 25.8148740
+  },
+  "tags": {
+    "addr:city": "Sfântu Gheorghe",
+    "addr:housenumber": "7",
+    "addr:street": "Strada Constructorilor",
+    "building": "yes",
+    "name": "Brutăria Dioszegi",
+    "name:hu": "Diószegi Pékség",
+    "name:ro": "Brutăria Dioszegi",
+    "shop": "bakery"
+  }
+},
+{
+  "type": "way",
+  "id": 671237131,
+  "center": {
+    "lat": 45.8541192,
+    "lon": 25.7746351
+  },
+  "tags": {
+    "addr:city": "Sfântu Gheorghe",
+    "addr:housenumber": "1/A",
+    "addr:street": "Strada József Attila",
+    "building": "apartments",
+    "name": "1A"
+  }
+},
+{
+  "type": "way",
+  "id": 671237132,
+  "center": {
+    "lat": 45.8541235,
+    "lon": 25.7749260
+  },
+  "tags": {
+    "addr:city": "Sfântu Gheorghe",
+    "addr:housenumber": "1/B",
+    "addr:street": "Strada József Attila",
+    "building": "apartments",
+    "name": "1B"
+  }
+},
+{
+  "type": "way",
+  "id": 671256284,
+  "center": {
+    "lat": 45.8575529,
+    "lon": 25.7784566
+  },
+  "tags": {
+    "addr:city": "Sfântu Gheorghe",
+    "addr:housenumber": "3/D",
+    "addr:street": "Strada Viitorului",
+    "building": "apartments",
+    "name": "3/D"
+  }
+},
+{
+  "type": "way",
+  "id": 671256286,
+  "center": {
+    "lat": 45.8577140,
+    "lon": 25.7795063
+  },
+  "tags": {
+    "addr:housenumber": "4/A",
+    "addr:street": "Strada Viitorului",
+    "building": "apartments",
+    "name": "4/A"
+  }
+},
+{
+  "type": "way",
+  "id": 671256289,
+  "center": {
+    "lat": 45.8590464,
+    "lon": 25.7759737
+  },
+  "tags": {
+    "addr:housenumber": "23",
+    "addr:street": "Strada Vasile Goldiș",
+    "building": "apartments",
+    "name": "Bl.23"
+  }
+},
+{
+  "type": "way",
+  "id": 671256294,
+  "center": {
+    "lat": 45.8589224,
+    "lon": 25.7763421
+  },
+  "tags": {
+    "addr:housenumber": "24",
+    "addr:street": "Strada Vasile Goldiș",
+    "building": "apartments",
+    "name": "Bl.24"
+  }
+},
+{
+  "type": "way",
+  "id": 671260916,
+  "center": {
+    "lat": 45.8601444,
+    "lon": 25.7959795
+  },
+  "tags": {
+    "addr:housenumber": "66/A",
+    "addr:street": "Strada Lázár Mihály",
+    "building": "apartments",
+    "name": "Bl.66, Sc.A"
+  }
+},
+{
+  "type": "way",
+  "id": 671260917,
+  "center": {
+    "lat": 45.8604117,
+    "lon": 25.7959097
+  },
+  "tags": {
+    "addr:housenumber": "65/C",
+    "building": "apartments",
+    "name": "Bl.65, Sc.C"
+  }
+},
+{
+  "type": "way",
+  "id": 676663786,
+  "center": {
+    "lat": 45.8502639,
+    "lon": 25.6794532
+  },
+  "tags": {
+    "amenity": "public_bath",
+    "bath:open_air": "no",
+    "building": "yes",
+    "building:levels": "2",
+    "name": "Előpataki Kezelőközpont (Borvizek útja)"
+  }
+},
+{
+  "type": "way",
+  "id": 763941868,
+  "center": {
+    "lat": 45.8833936,
+    "lon": 25.8071328
+  },
+  "tags": {
+    "addr:city": "Sfântu Gheorghe",
+    "addr:housenumber": "7",
+    "addr:postcode": "520036",
+    "addr:street": "Lunca Oltului",
+    "building": "yes",
+    "leisure": "stadium",
+    "name": "Arena Sepsi OSK",
+    "name:hu": "Sepsi OSK Aréna",
+    "operator": "ACS Sepsi OSK",
+    "sport": "soccer"
+  }
+},
+{
+  "type": "way",
+  "id": 785876931,
+  "center": {
+    "lat": 45.7994110,
+    "lon": 25.8485084
+  },
+  "tags": {
+    "amenity": "townhall",
+    "building": "yes",
+    "name": "Primaria Ozun",
+    "townhall:type": "town"
+  }
+},
+{
+  "type": "way",
+  "id": 785876932,
+  "center": {
+    "lat": 45.7994024,
+    "lon": 25.8488667
+  },
+  "tags": {
+    "building": "yes",
+    "name": "Salamon",
+    "operator": "Salamon SRL",
+    "payment:cash": "yes",
+    "shop": "variety_store"
+  }
+},
+{
+  "type": "way",
+  "id": 785884758,
+  "center": {
+    "lat": 45.7992617,
+    "lon": 25.8481704
+  },
+  "tags": {
+    "building": "school",
+    "name": "Școala Clasele I-VIII ,,Tatrangi Sándor''"
+  }
+},
+{
+  "type": "way",
+  "id": 785884759,
+  "center": {
+    "lat": 45.7990289,
+    "lon": 25.8479547
+  },
+  "tags": {
+    "building": "school",
+    "name": "Școala Clasele I-VIII ,,Tatrangi Sándor''"
+  }
+},
+{
+  "type": "way",
+  "id": 785888645,
+  "center": {
+    "lat": 45.7992975,
+    "lon": 25.8474299
+  },
+  "tags": {
+    "amenity": "place_of_worship",
+    "building": "church",
+    "denomination": "reformed",
+    "name": "Biserica Reformata",
+    "religion": "christian"
+  }
+},
+{
+  "type": "way",
+  "id": 785888647,
+  "center": {
+    "lat": 45.8019687,
+    "lon": 25.8542200
+  },
+  "tags": {
+    "amenity": "place_of_worship",
+    "building": "church",
+    "denomination": "orthodox",
+    "name": "Biserica Nașterea Maicii Domnului",
+    "religion": "christian"
+  }
+},
+{
+  "type": "way",
+  "id": 816609041,
+  "center": {
+    "lat": 45.7940125,
+    "lon": 25.7706076
+  },
+  "tags": {
+    "addr:city": "Ilieni",
+    "addr:housenumber": "97",
+    "addr:postcode": "527105",
+    "addr:street": "Kossuth Lajos",
+    "amenity": "townhall",
+    "building": "yes",
+    "name": "Primăria ilieni",
+    "name:hu": "Polgármesteri hivatal"
+  }
+},
+{
+  "type": "way",
+  "id": 816609056,
+  "center": {
+    "lat": 45.7977864,
+    "lon": 25.7688704
+  },
+  "tags": {
+    "amenity": "place_of_worship",
+    "building": "yes",
+    "denomination": "reformed",
+    "name": "Vártemplom",
+    "name:ro": "biserică fortificată",
+    "religion": "christian"
+  }
+},
+{
+  "type": "way",
+  "id": 816609057,
+  "center": {
+    "lat": 45.7971584,
+    "lon": 25.7685218
+  },
+  "tags": {
+    "addr:city": "Ilieni",
+    "addr:housenumber": "403",
+    "amenity": "place_of_worship",
+    "building": "yes",
+    "denomination": "christian",
+    "name": "Fundatia Diaconica KIDA",
+    "name:en": "Christian Foundation for Youth and Deacony",
+    "name:hu": "Keresztény Ifjúsági és Diakóniai Alapítvány -KIDA",
+    "religion": "christian"
+  }
+},
+{
+  "type": "way",
+  "id": 895738499,
+  "center": {
+    "lat": 45.8618871,
+    "lon": 25.8334118
+  },
+  "tags": {
+    "landuse": "industrial",
+    "name": "Centru de întreținere",
+    "start_date": "2024",
+    "status": "AC,AM,builder:Gott Strasse,progress:94%/01.09.2024 85%/01.06.2024 54.30%/28.12.2023 7%/12.08.2022"
+  }
+},
+{
+  "type": "way",
+  "id": 899393815,
+  "center": {
+    "lat": 45.8805050,
+    "lon": 25.8085479
+  },
+  "tags": {
+    "addr:city": "Sfântu Gheorghe",
+    "addr:housenumber": "7",
+    "addr:postcode": "520036",
+    "addr:street": "Lunca Oltului",
+    "building": "tent",
+    "name": "Patinoar",
+    "name:hu": "Korcsolya pálya",
+    "opening_hours": "Fr-Su 19:00-21:00, Sa- Su 11:00-13:00",
+    "operator": "Sepsi Rekreatív",
+    "piste:type": "ice_skate",
+    "source": "http://www.rekreativ.club/net"
+  }
+},
+{
+  "type": "way",
+  "id": 916911474,
+  "center": {
+    "lat": 45.8414935,
+    "lon": 25.8028819
+  },
+  "tags": {
+    "amenity": "place_of_worship",
+    "building": "church",
+    "denomination": "reformed",
+    "name": "Biserica Reformată",
+    "religion": "christian"
+  }
+},
+{
+  "type": "way",
+  "id": 916911475,
+  "center": {
+    "lat": 45.8380680,
+    "lon": 25.8016980
+  },
+  "tags": {
+    "amenity": "place_of_worship",
+    "building": "church",
+    "denomination": "unitarian",
+    "name": "Biserica Unitariană",
+    "name:hu": "Unitárius templom",
+    "name:ro": "Biserica Unitariană",
+    "religion": "christian"
+  }
+},
+{
+  "type": "way",
+  "id": 922851277,
+  "center": {
+    "lat": 45.8694728,
+    "lon": 25.7745907
+  },
+  "tags": {
+    "amenity": "place_of_worship",
+    "building": "church",
+    "denomination": "roman_catholic",
+    "name": "BIserica Romano-Catolică",
+    "name:hu": "Mária, Világ királynője templom",
+    "religion": "christian",
+    "url:miserend": "https://miserend.hu/templom/3332"
+  }
+},
+{
+  "type": "way",
+  "id": 923358272,
+  "center": {
+    "lat": 45.8696567,
+    "lon": 25.7985689
+  },
+  "tags": {
+    "landuse": "retail",
+    "name": "Sepsi Value Centre"
+  }
+},
+{
+  "type": "way",
+  "id": 925071369,
+  "center": {
+    "lat": 45.8131593,
+    "lon": 25.7996728
+  },
+  "tags": {
+    "amenity": "place_of_worship",
+    "building": "church",
+    "denomination": "reformed",
+    "name": "Biserica Reformată",
+    "religion": "christian"
+  }
+},
+{
+  "type": "way",
+  "id": 925596517,
+  "center": {
+    "lat": 45.9181648,
+    "lon": 25.7764506
+  },
+  "tags": {
+    "amenity": "place_of_worship",
+    "building": "church",
+    "denomination": "protestant",
+    "name": "Biserica Reformată",
+    "religion": "christian"
+  }
+},
+{
+  "type": "way",
+  "id": 925596518,
+  "center": {
+    "lat": 45.9185418,
+    "lon": 25.7764779
+  },
+  "tags": {
+    "amenity": "place_of_worship",
+    "building": "church",
+    "denomination": "roman_catholic",
+    "name": "Biserica Romano-Catolică",
+    "name:hu": "Szentháromság templom",
+    "religion": "christian",
+    "url:miserend": "https://miserend.hu/templom/3277"
+  }
+},
+{
+  "type": "way",
+  "id": 927866495,
+  "center": {
+    "lat": 45.7912640,
+    "lon": 25.7656197
+  },
+  "tags": {
+    "amenity": "place_of_worship",
+    "building": "yes",
+    "denomination": "roman_catholic",
+    "name": "Biserica romano-catolică",
+    "name:hu": "Keresztelő Szent János, Fájdalmas Szűzanya templom",
+    "religion": "christian",
+    "url:miserend": "https://miserend.hu/templom/3181"
+  }
+},
+{
+  "type": "way",
+  "id": 952068534,
+  "center": {
+    "lat": 45.7989585,
+    "lon": 25.8457898
+  },
+  "tags": {
+    "building": "yes",
+    "name": "Langoș",
+    "payment:cash": "yes",
+    "shop": "pastry"
+  }
+},
+{
+  "type": "way",
+  "id": 954388739,
+  "center": {
+    "lat": 45.7994135,
+    "lon": 25.8461893
+  },
+  "tags": {
+    "air_conditioning": "no",
+    "amenity": "restaurant",
+    "building": "yes",
+    "cuisine": "regional;hungarian",
+    "name": "Hanul Paprika",
+    "opening_hours": "Th-Tu 09:00-22:00; We 12:00-22:00",
+    "phone": "+40741482543"
+  }
+},
+{
+  "type": "way",
+  "id": 1012472556,
+  "center": {
+    "lat": 45.8720539,
+    "lon": 25.7897418
+  },
+  "tags": {
+    "amenity": "bar",
+    "building": "yes",
+    "name": "Erege Bar"
+  }
+},
+{
+  "type": "way",
+  "id": 1063227164,
+  "center": {
+    "lat": 45.7954902,
+    "lon": 25.7713891
+  },
+  "tags": {
+    "building": "yes",
+    "healthcare": "yes",
+    "name": "Orvos Medic Arzt"
+  }
+},
+{
+  "type": "way",
+  "id": 1063271121,
+  "center": {
+    "lat": 45.7950109,
+    "lon": 25.7700618
+  },
+  "tags": {
+    "building": "yes",
+    "inscription": "brutarie pékség backerei",
+    "name": "sri Plus Kft.",
+    "shop": "bakery"
+  }
+},
+{
+  "type": "way",
+  "id": 1069565562,
+  "center": {
+    "lat": 45.7957672,
+    "lon": 25.7710456
+  },
+  "tags": {
+    "addr:city": "Ilieni",
+    "addr:housenumber": "84",
+    "building": "yes",
+    "name": "Séra-kúria"
+  }
+},
+{
+  "type": "way",
+  "id": 1069587736,
+  "center": {
+    "lat": 45.8233731,
+    "lon": 25.7614150
+  },
+  "tags": {
+    "building": "yes",
+    "name": "mérlegház"
+  }
+},
+{
+  "type": "way",
+  "id": 1087427162,
+  "center": {
+    "lat": 45.8702524,
+    "lon": 25.7975730
+  },
+  "tags": {
+    "addr:city": "Sfântu Gheorghe",
+    "brand": "Dedeman",
+    "brand:wikidata": "Q5249762",
+    "building": "yes",
+    "name": "Dedeman",
+    "shop": "doityourself"
+  }
+},
+{
+  "type": "way",
+  "id": 1094505830,
+  "center": {
+    "lat": 45.8229522,
+    "lon": 25.7609377
+  },
+  "tags": {
+    "addr:city": "Sâncraiu",
+    "building": "school",
+    "name": "iskola (óvoda)"
+  }
+},
+{
+  "type": "way",
+  "id": 1094530572,
+  "center": {
+    "lat": 45.8227256,
+    "lon": 25.7540236
+  },
+  "tags": {
+    "amenity": "place_of_worship",
+    "building": "yes",
+    "denomination": "unitarian",
+    "name": "Biserica fortificata unitariana",
+    "name:hu": "Unitárius erődtemplom",
+    "religion": "christian",
+    "source": "https://www.hereditatum.ro/muemlekek/adatok.html?muemlek=194#prettyPhoto"
+  }
+},
+{
+  "type": "way",
+  "id": 1102843624,
+  "center": {
+    "lat": 45.8695982,
+    "lon": 25.7861973
+  },
+  "tags": {
+    "building": "yes",
+    "name": "MINI ABC",
+    "shop": "convenience"
+  }
+},
+{
+  "type": "way",
+  "id": 1102858811,
+  "center": {
+    "lat": 45.8702252,
+    "lon": 25.7838457
+  },
+  "tags": {
+    "building": "yes",
+    "name": "mini ABC",
+    "shop": "convenience"
+  }
+},
+{
+  "type": "way",
+  "id": 1107788695,
+  "center": {
+    "lat": 45.8585358,
+    "lon": 25.7757137
+  },
+  "tags": {
+    "addr:city": "Sfântu Gheorghe",
+    "addr:housenumber": "24",
+    "addr:postcode": "520060",
+    "addr:street": "Strada Dealului",
+    "building": "kindergarten",
+    "building:levels": "1",
+    "name": "Gulliver óvoda"
+  }
+},
+{
+  "type": "way",
+  "id": 1110167793,
+  "center": {
+    "lat": 45.8682149,
+    "lon": 25.7940807
+  },
+  "tags": {
+    "building": "public",
+    "name": "Directia Muncii"
+  }
+},
+{
+  "type": "way",
+  "id": 1127442230,
+  "center": {
+    "lat": 45.8477705,
+    "lon": 25.6785631
+  },
+  "tags": {
+    "addr:city": "Vâlcele",
+    "addr:housenumber": "545",
+    "addr:postcode": "527175",
+    "amenity": "place_of_worship",
+    "building": "church",
+    "denomination": "romanian_orthodox",
+    "name": "Biserica Sf. Teodor Stratilat",
+    "name:hu": "Szent Tivadar hadvezér ortodox templom",
+    "religion": "christian"
+  }
+},
+{
+  "type": "way",
+  "id": 1147778876,
+  "center": {
+    "lat": 45.9079347,
+    "lon": 25.6964104
+  },
+  "tags": {
+    "building": "yes",
+    "email": "info@benkovendeghaz.hu",
+    "name": "Benkő Vendégház",
+    "phone": "+40 722 374 155 ; +40 727 919 041",
+    "tourism": "guest_house",
+    "website": "https://benkovendeghaz.ro"
+  }
+},
+{
+  "type": "way",
+  "id": 1147779856,
+  "center": {
+    "lat": 45.9079203,
+    "lon": 25.6960776
+  },
+  "tags": {
+    "building": "yes",
+    "name": "Kicsi ház"
+  }
+},
+{
+  "type": "way",
+  "id": 1147779857,
+  "center": {
+    "lat": 45.9078779,
+    "lon": 25.6959183
+  },
+  "tags": {
+    "building": "yes",
+    "name": "Rönk ház"
+  }
+},
+{
+  "type": "way",
+  "id": 1147779858,
+  "center": {
+    "lat": 45.9078380,
+    "lon": 25.6957560
+  },
+  "tags": {
+    "building": "yes",
+    "name": "Kék ház"
+  }
+},
+{
+  "type": "way",
+  "id": 1228801644,
+  "center": {
+    "lat": 45.9033216,
+    "lon": 25.8160385
+  },
+  "tags": {
+    "building": "greenhouse",
+    "building:levels": "1",
+    "landuse": "greenhouse_horticulture",
+    "name": "Floraria Dalia",
+    "name:hu": "Dália Kertészet"
+  }
+},
+{
+  "type": "way",
+  "id": 1232143665,
+  "center": {
+    "lat": 45.8639573,
+    "lon": 25.7780446
+  },
+  "tags": {
+    "brand": "Fornetti",
+    "brand:wikidata": "Q1003020",
+    "building": "yes",
+    "name": "Fornetti",
+    "shop": "bakery"
+  }
+},
+{
+  "type": "way",
+  "id": 1257172621,
+  "center": {
+    "lat": 45.8552885,
+    "lon": 25.7972610
+  },
+  "tags": {
+    "addr:street": "Bulevardul General Grigore Bălan",
+    "amenity": "police",
+    "building": "yes",
+    "name": "Politia"
+  }
+},
+{
+  "type": "way",
+  "id": 1257172623,
+  "center": {
+    "lat": 45.8552137,
+    "lon": 25.7944926
+  },
+  "tags": {
+    "amenity": "place_of_worship",
+    "building": "yes",
+    "denomination": "orthodox",
+    "name": "Biserica Ortodoxă",
+    "religion": "christian"
+  }
+},
+{
+  "type": "way",
+  "id": 1257524297,
+  "center": {
+    "lat": 45.8661136,
+    "lon": 25.7907095
+  },
+  "tags": {
+    "building": "yes",
+    "heritage": "2",
+    "heritage:operator": "lmi",
+    "name": "Casa Pünkösdi",
+    "ref:RO:lmi": "CV-II-m-B-13112",
+    "start_date": "1839",
+    "wikidata": "Q42889319"
+  }
+},
+{
+  "type": "way",
+  "id": 1259325581,
+  "center": {
+    "lat": 45.8437470,
+    "lon": 25.8046362
+  },
+  "tags": {
+    "brand": "Renault",
+    "brand:wikidata": "Q6686",
+    "building": "yes",
+    "name": "Renault Nissan MIDA",
+    "roof:shape": "flat",
+    "shop": "car"
+  }
+},
+{
+  "type": "way",
+  "id": 1259325582,
+  "center": {
+    "lat": 45.8439377,
+    "lon": 25.8031514
+  },
+  "tags": {
+    "brand": "Citroën",
+    "brand:wikidata": "Q6746",
+    "building": "yes",
+    "name": "NOVOTECH SRL",
+    "roof:shape": "flat",
+    "shop": "car"
+  }
+},
+{
+  "type": "way",
+  "id": 1259325583,
+  "center": {
+    "lat": 45.8445087,
+    "lon": 25.8047347
+  },
+  "tags": {
+    "brand": "Škoda",
+    "brand:wikidata": "Q29637",
+    "building": "yes",
+    "name": "Skoda",
+    "roof:shape": "flat",
+    "shop": "car"
+  }
+},
+{
+  "type": "way",
+  "id": 1259329631,
+  "center": {
+    "lat": 45.8368174,
+    "lon": 25.8009414
+  },
+  "tags": {
+    "addr:city": "Chilieni",
+    "amenity": "community_centre",
+    "building": "public",
+    "community_centre": "cultural_centre",
+    "name": "Cămin Cultural Chilieni",
+    "name:hu": "Kilyéni Művelődési Otthon",
+    "name:ro": "Cămin Cultural Chilieni",
+    "source": "microsoft/BuildingFootprints"
+  }
+},
+{
+  "type": "way",
+  "id": 1259342140,
+  "center": {
+    "lat": 45.8576666,
+    "lon": 25.8067687
+  },
+  "tags": {
+    "amenity": "fuel",
+    "brand": "Petrom",
+    "brand:wikidata": "Q1755034",
+    "building": "yes",
+    "name": "Petrom-V",
+    "operator": "OMV"
+  }
+},
+{
+  "type": "way",
+  "id": 1260637598,
+  "center": {
+    "lat": 45.7994381,
+    "lon": 25.8399491
+  },
+  "tags": {
+    "building": "yes",
+    "name": "Ozun",
+    "name:hu": "Uzon",
+    "network": "CFR",
+    "public_transport": "station",
+    "railway": "station",
+    "source": "microsoft/BuildingFootprints",
+    "train": "yes"
+  }
+},
+{
+  "type": "way",
+  "id": 1260637647,
+  "center": {
+    "lat": 45.7981206,
+    "lon": 25.8457548
+  },
+  "tags": {
+    "building": "yes",
+    "building:architecture": "baroque",
+    "building:levels": "1",
+    "building:material": "brick",
+    "castle_type": "manor",
+    "heritage": "2",
+    "heritage:operator": "lmi",
+    "historic": "castle",
+    "name": "Conacul Béldi-Mikes",
+    "name:hu": "Béldi-Mikes kastély",
+    "roof:shape": "hipped"
+  }
+},
+{
+  "type": "way",
+  "id": 1260641655,
+  "center": {
+    "lat": 45.7956084,
+    "lon": 25.8459475
+  },
+  "tags": {
+    "building": "house",
+    "building:architecture": "baroque",
+    "building:levels": "1",
+    "building:material": "brick",
+    "castle_type": "manor",
+    "heritage": "2",
+    "heritage:operator": "lmi",
+    "historic": "castle",
+    "name": "Conacul Temesváry",
+    "name:hu": "Temesváry kastély",
+    "roof:shape": "hipped"
+  }
+},
+{
+  "type": "way",
+  "id": 1260641689,
+  "center": {
+    "lat": 45.7939908,
+    "lon": 25.8482607
+  },
+  "tags": {
+    "building": "house",
+    "building:architecture": "baroque",
+    "building:levels": "1",
+    "building:material": "brick",
+    "castle_type": "manor",
+    "heritage": "2",
+    "heritage:operator": "lmi",
+    "historic": "castle",
+    "name": "Conacul „Ujvárossy-Ágoston”",
+    "name:hu": "Ujvárossy-Ágoston-kúria",
+    "roof:shape": "hipped"
+  }
+},
+{
+  "type": "way",
+  "id": 1260651643,
+  "center": {
+    "lat": 45.7940819,
+    "lon": 25.8411868
+  },
+  "tags": {
+    "building": "house",
+    "building:architecture": "baroque",
+    "building:levels": "1",
+    "building:material": "brick",
+    "castle_type": "manor",
+    "heritage": "2",
+    "heritage:operator": "lmi",
+    "historic": "castle",
+    "name": "Conacul Gidófalvy",
+    "name:hu": "Gidófalvy-kúria",
+    "roof:shape": "hipped"
+  }
+},
+{
+  "type": "way",
+  "id": 1263069316,
+  "center": {
+    "lat": 45.9004930,
+    "lon": 25.7755904
+  },
+  "tags": {
+    "addr:city": "Arcuș",
+    "building": "school",
+    "name": "Școala Primară Arcuș",
+    "name:hu": "Általános iskola",
+    "name:ro": "Școala Primară Arcuș"
+  }
+},
+{
+  "type": "way",
+  "id": 1263545373,
+  "center": {
+    "lat": 45.7947305,
+    "lon": 25.7709499
+  },
+  "tags": {
+    "amenity": "library",
+    "building": "yes",
+    "name": "Fábián Ernő Községi Könyvtár - Bibliotecă"
+  }
+},
+{
+  "type": "way",
+  "id": 1279889180,
+  "center": {
+    "lat": 45.9078310,
+    "lon": 25.6954722
+  },
+  "tags": {
+    "alt_name": "Varjúvár",
+    "architect": "Kós Károly",
+    "architect:wikipedia": "https://hu.wikipedia.org/wiki/K%C3%B3s_K%C3%A1roly_(%C3%A9p%C3%ADt%C3%A9sz)",
+    "building": "yes",
+    "historic": "building",
+    "name": "Torony a dombtetőn"
+  }
+},
+{
+  "type": "way",
+  "id": 1297190469,
+  "center": {
+    "lat": 45.8867882,
+    "lon": 25.8096654
+  },
+  "tags": {
+    "landuse": "industrial",
+    "name": "SEMOFLEX TRANSILVANIA"
+  }
+},
+{
+  "type": "way",
+  "id": 1297190518,
+  "center": {
+    "lat": 45.8869386,
+    "lon": 25.8074636
+  },
+  "tags": {
+    "amenity": "fuel",
+    "brand": "Lukoil",
+    "brand:wikidata": "Q329347",
+    "building": "retail",
+    "internet_access": "no",
+    "name": "Lukoil",
+    "shop": "yes",
+    "wheelchair": "yes"
+  }
+},
+{
+  "type": "way",
+  "id": 1302027210,
+  "center": {
+    "lat": 45.8548479,
+    "lon": 25.7911311
+  },
+  "tags": {
+    "building": "yes",
+    "name": "garaj"
+  }
+},
+{
+  "type": "way",
+  "id": 1350923908,
+  "center": {
+    "lat": 45.8240148,
+    "lon": 25.7572163
+  },
+  "tags": {
+    "building": "yes",
+    "name": "Sarki Kis Bolt",
+    "shop": "general"
+  }
+},
+{
+  "type": "way",
+  "id": 1394508499,
+  "center": {
+    "lat": 45.9034411,
+    "lon": 25.7736060
+  },
+  "tags": {
+    "amenity": "police",
+    "building": "yes",
+    "name": "Stație de Poliție Arcuș"
+  }
+},
+{
+  "type": "way",
+  "id": 1409227783,
+  "center": {
+    "lat": 45.8696276,
+    "lon": 25.7715535
+  },
+  "tags": {
+    "name": "Őrkő",
+    "place": "suburb"
+  }
+},
+{
+  "type": "way",
+  "id": 1409232770,
+  "center": {
+    "lat": 45.8749045,
+    "lon": 25.7922405
+  },
+  "tags": {
+    "landuse": "residential",
+    "name": "Csíki negyed",
+    "name:ro": "Cartierul Ciuc"
+  }
+},
+{
+  "type": "way",
+  "id": 1416327657,
+  "center": {
+    "lat": 45.8999863,
+    "lon": 25.7778965
+  },
+  "tags": {
+    "name": "Piața Gábor Áron",
+    "name:hu": "Gábor Áron tér",
+    "name:ro": "Piața Gábor Áron",
+    "place": "square"
+  }
+},
+{
+  "type": "way",
+  "id": 1475480739,
+  "center": {
+    "lat": 45.8674496,
+    "lon": 25.8015205
+  },
+  "tags": {
+    "amenity": "car_wash",
+    "landuse": "retail",
+    "name": "Oxy Car Wash"
+  }
+},
+{
+  "type": "way",
+  "id": 1475480740,
+  "center": {
+    "lat": 45.8683190,
+    "lon": 25.8013365
+  },
+  "tags": {
+    "addr:city": "Sfântu Gheorghe",
+    "addr:housenumber": "3",
+    "addr:street": "Strada Lunca Oltului",
+    "building": "yes",
+    "name": "Animax",
+    "not:brand:wikidata": "Q119440709",
+    "shop": "pet"
+  }
+},
+{
+  "type": "relation",
+  "id": 2248612,
+  "center": {
+    "lat": 45.7857784,
+    "lon": 25.3719610
+  },
+  "tags": {
+    "ISO3166-2": "RO-BV",
+    "admin_level": "4",
+    "boundary": "administrative",
+    "name": "Brașov",
+    "name:de": "Kronstadt",
+    "name:en": "Brașov",
+    "name:hu": "Brassó megye",
+    "name:ja": "ブラショヴ",
+    "name:ja-Hira": "ぶらしょぶ",
+    "name:ru": "Брашов",
+    "name:sk": "Brašov",
+    "name:sr": "Брашов",
+    "name:sr-Latn": "Brašov",
+    "place": "county",
+    "place:ro": "județ",
+    "ref:nuts": "RO122",
+    "ref:nuts:3": "RO122",
+    "type": "boundary",
+    "wikidata": "Q182614"
+  }
+},
+{
+  "type": "relation",
+  "id": 2248621,
+  "center": {
+    "lat": 45.8966769,
+    "lon": 25.9482771
+  },
+  "tags": {
+    "ISO3166-2": "RO-CV",
+    "admin_level": "4",
+    "boundary": "administrative",
+    "name": "Covasna",
+    "name:de": "Kovasna",
+    "name:en": "Covasna",
+    "name:hu": "Kovászna megye",
+    "name:ru": "Ковасна",
+    "name:sr": "Ковасна",
+    "name:sr-Latn": "Kovasna",
+    "place": "county",
+    "place:ro": "județ",
+    "ref:nuts": "RO123",
+    "ref:nuts:3": "RO123",
+    "type": "boundary",
+    "wikidata": "Q188959"
+  }
+},
+{
+  "type": "relation",
+  "id": 5371329,
+  "center": {
+    "lat": 45.8775270,
+    "lon": 25.7398432
+  },
+  "tags": {
+    "CLC:explanation": "See http://wiki.openstreetmap.org/wiki/Romania_CLC_Import.",
+    "landuse": "meadow",
+    "name": "Avaș",
+    "name:hu": "Avas",
+    "place": "locality",
+    "type": "multipolygon"
+  }
+},
+{
+  "type": "relation",
+  "id": 10515000,
+  "center": {
+    "lat": 45.7703042,
+    "lon": 25.6295889
+  },
+  "tags": {
+    "admin_level": "8",
+    "boundary": "administrative",
+    "name": "Bod",
+    "name:hu": "Botfalu",
+    "name:prefix": "Comuna",
+    "place": "municipality",
+    "place:ro": "comună",
+    "source": "ANCPI 3rd order set data.gov.ro",
+    "type": "boundary"
+  }
+},
+{
+  "type": "relation",
+  "id": 10715864,
+  "center": {
+    "lat": 45.8501682,
+    "lon": 25.7667250
+  },
+  "tags": {
+    "admin_level": "8",
+    "boundary": "administrative",
+    "name": "Sepsiszentgyörgy",
+    "name:hu": "Sepsiszentgyörgy",
+    "name:prefix": "Municipiul",
+    "name:ro": "Sfântu Gheorghe",
+    "place": "city",
+    "place:ro": "municipiu",
+    "source": "ANCPI 3rd order set data.gov.ro",
+    "type": "boundary",
+    "wikidata": "Q202362"
+  }
+},
+{
+  "type": "relation",
+  "id": 14735716,
+  "center": {
+    "lat": 45.9239221,
+    "lon": 25.8748136
+  },
+  "tags": {
+    "admin_level": "8",
+    "boundary": "administrative",
+    "name": "Ghidfalău",
+    "name:hu": "Gidófalva",
+    "name:prefix": "Comuna",
+    "place": "municipality",
+    "place:ro": "comună",
+    "source": "ANCPI 3rd order set data.gov.ro",
+    "type": "boundary",
+    "wikidata": "Q5064436"
+  }
+},
+{
+  "type": "relation",
+  "id": 14735735,
+  "center": {
+    "lat": 45.8044831,
+    "lon": 25.9272823
+  },
+  "tags": {
+    "admin_level": "8",
+    "boundary": "administrative",
+    "name": "Reci",
+    "name:hu": "Réty",
+    "name:prefix": "Comuna",
+    "place": "municipality",
+    "place:ro": "comună",
+    "source": "ANCPI 3rd order set data.gov.ro",
+    "type": "boundary",
+    "wikidata": "Q732894"
+  }
+},
+{
+  "type": "relation",
+  "id": 14735736,
+  "center": {
+    "lat": 45.8007597,
+    "lon": 25.8837627
+  },
+  "tags": {
+    "admin_level": "8",
+    "boundary": "administrative",
+    "name": "Ozun",
+    "name:hu": "Uzon",
+    "name:prefix": "Comuna",
+    "place": "municipality",
+    "place:ro": "comună",
+    "source": "ANCPI 3rd order set data.gov.ro",
+    "type": "boundary",
+    "wikidata": "Q16426328"
+  }
+},
+{
+  "type": "relation",
+  "id": 14735737,
+  "center": {
+    "lat": 45.8046082,
+    "lon": 25.7460003
+  },
+  "tags": {
+    "admin_level": "8",
+    "boundary": "administrative",
+    "name": "Ilieni",
+    "name:hu": "Illyefalva",
+    "name:prefix": "Comuna",
+    "place": "municipality",
+    "place:ro": "comună",
+    "source": "ANCPI 3rd order set data.gov.ro",
+    "type": "boundary",
+    "wikidata": "Q5058967"
+  }
+},
+{
+  "type": "relation",
+  "id": 14735738,
+  "center": {
+    "lat": 45.7690890,
+    "lon": 25.8066853
+  },
+  "tags": {
+    "admin_level": "8",
+    "boundary": "administrative",
+    "name": "Chichiș",
+    "name:hu": "Kökös",
+    "name:prefix": "Comuna",
+    "place": "municipality",
+    "place:ro": "comună",
+    "source": "ANCPI 3rd order set data.gov.ro",
+    "type": "boundary",
+    "wikidata": "Q12685050"
+  }
+},
+{
+  "type": "relation",
+  "id": 14735797,
+  "center": {
+    "lat": 45.9241947,
+    "lon": 25.6261280
+  },
+  "tags": {
+    "admin_level": "8",
+    "boundary": "administrative",
+    "name": "Belin",
+    "name:hu": "Bölön",
+    "name:prefix": "Comuna",
+    "place": "municipality",
+    "place:ro": "comună",
+    "source": "ANCPI 3rd order set data.gov.ro",
+    "type": "boundary",
+    "wikidata": "Q16426285",
+    "wikipedia": "hu:Bölön község"
+  }
+},
+{
+  "type": "relation",
+  "id": 14735798,
+  "center": {
+    "lat": 45.8629126,
+    "lon": 25.6150810
+  },
+  "tags": {
+    "admin_level": "8",
+    "boundary": "administrative",
+    "name": "Hăghig",
+    "name:hu": "Hídvég",
+    "name:prefix": "Comuna",
+    "place": "municipality",
+    "place:ro": "comună",
+    "source": "ANCPI 3rd order set data.gov.ro",
+    "type": "boundary",
+    "wikidata": "Q16426315",
+    "wikipedia": "hu:Hídvég község"
+  }
+},
+{
+  "type": "relation",
+  "id": 14735799,
+  "center": {
+    "lat": 45.8204519,
+    "lon": 25.6678843
+  },
+  "tags": {
+    "admin_level": "8",
+    "boundary": "administrative",
+    "name": "Vâlcele",
+    "name:hu": "Előpatak",
+    "name:prefix": "Comuna",
+    "place": "municipality",
+    "place:ro": "comună",
+    "source": "ANCPI 3rd order set data.gov.ro",
+    "type": "boundary",
+    "wikidata": "Q12100947"
+  }
+},
+{
+  "type": "relation",
+  "id": 14735800,
+  "center": {
+    "lat": 45.9124131,
+    "lon": 25.7539666
+  },
+  "tags": {
+    "admin_level": "8",
+    "boundary": "administrative",
+    "name": "Arcuș",
+    "name:hu": "Árkos",
+    "name:prefix": "Comuna",
+    "place": "municipality",
+    "place:ro": "comună",
+    "source": "ANCPI 3rd order set data.gov.ro",
+    "type": "boundary",
+    "wikidata": "Q12682832"
+  }
+},
+{
+  "type": "relation",
+  "id": 14735801,
+  "center": {
+    "lat": 45.9529275,
+    "lon": 25.7686285
+  },
+  "tags": {
+    "admin_level": "8",
+    "boundary": "administrative",
+    "name": "Valea Crișului",
+    "name:hu": "Sepsikőröspatak",
+    "name:prefix": "Comuna",
+    "place": "municipality",
+    "place:ro": "comună",
+    "source": "ANCPI 3rd order set data.gov.ro",
+    "type": "boundary",
+    "wikidata": "Q3553531"
+  }
+}
+
+  ]
+}

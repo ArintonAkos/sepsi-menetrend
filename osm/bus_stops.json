@@ -1,0 +1,601 @@
+{
+  "version": 0.6,
+  "generator": "Overpass API 0.7.62.11 87bfad18",
+  "osm3s": {
+    "timestamp_osm_base": "2026-08-20T10:54:59Z",
+    "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL."
+  },
+  "elements": [
+
+{
+  "type": "node",
+  "id": 517367771,
+  "lat": 45.8603914,
+  "lon": 25.7903638,
+  "tags": {
+    "bus": "yes",
+    "highway": "bus_stop",
+    "name": "Stație microbuze",
+    "name:hu": "Távolsági buszmegálló",
+    "public_transport": "platform",
+    "shelter": "no",
+    "tactile_paving": "no"
+  }
+},
+{
+  "type": "node",
+  "id": 1248719235,
+  "lat": 45.8641288,
+  "lon": 25.7984957,
+  "tags": {
+    "bus": "yes",
+    "highway": "bus_stop",
+    "name": "Berărie",
+    "name:hu": "Söröző",
+    "public_transport": "platform",
+    "shelter": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 1248719238,
+  "lat": 45.8641156,
+  "lon": 25.7865231,
+  "tags": {
+    "bus": "yes",
+    "highway": "bus_stop",
+    "name": "Parcul Elisabeta",
+    "name:hu": "Erzsébet park",
+    "public_transport": "platform",
+    "shelter": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 1248719241,
+  "lat": 45.8642888,
+  "lon": 25.7920363,
+  "tags": {
+    "bus": "yes",
+    "highway": "bus_stop",
+    "name": "Biserica reformată",
+    "name:hu": "Református templom",
+    "public_transport": "platform"
+  }
+},
+{
+  "type": "node",
+  "id": 1248719244,
+  "lat": 45.8675334,
+  "lon": 25.7790480,
+  "tags": {
+    "bus": "yes",
+    "highway": "bus_stop",
+    "name": "Str. Berzei",
+    "name:hu": "Gólya utca",
+    "public_transport": "platform"
+  }
+},
+{
+  "type": "node",
+  "id": 1248719255,
+  "lat": 45.8589078,
+  "lon": 25.7768231,
+  "tags": {
+    "bus": "yes",
+    "highway": "bus_stop",
+    "name": "Str. Dealului",
+    "name:hu": "Domb utca",
+    "public_transport": "platform"
+  }
+},
+{
+  "type": "node",
+  "id": 1248719259,
+  "lat": 45.8616606,
+  "lon": 25.7820252,
+  "tags": {
+    "bus": "yes",
+    "highway": "bus_stop",
+    "name": "Institutul de proiectări",
+    "name:hu": "Tervező Intézet",
+    "public_transport": "platform"
+  }
+},
+{
+  "type": "node",
+  "id": 1248719271,
+  "lat": 45.8631474,
+  "lon": 25.7777336,
+  "tags": {
+    "bus": "yes",
+    "highway": "bus_stop",
+    "name": "Spitalul Județean",
+    "name:hu": "Megyei Kórház",
+    "public_transport": "platform"
+  }
+},
+{
+  "type": "node",
+  "id": 1248722779,
+  "lat": 45.8631549,
+  "lon": 25.8101073,
+  "tags": {
+    "bench": "yes",
+    "bus": "yes",
+    "covered": "yes",
+    "highway": "bus_stop",
+    "name": "Gară CF",
+    "name:hu": "Vasútállomás",
+    "name:ro": "Gară CF",
+    "operator": "Sepsi-Bus",
+    "public_transport": "platform",
+    "shelter": "no",
+    "toilets:wheelchair": "yes",
+    "wheelchair": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 1561627778,
+  "lat": 45.8639618,
+  "lon": 25.7928177,
+  "tags": {
+    "bus": "yes",
+    "check_date:shelter": "2025-09-06",
+    "highway": "bus_stop",
+    "name": "Biserica reformată",
+    "name:hu": "Református templom",
+    "public_transport": "platform",
+    "shelter": "no",
+    "tactile_paving": "no"
+  }
+},
+{
+  "type": "node",
+  "id": 1561627779,
+  "lat": 45.8639944,
+  "lon": 25.7983349,
+  "tags": {
+    "bus": "yes",
+    "highway": "bus_stop",
+    "name": "Berărie",
+    "name:hu": "Söröző",
+    "public_transport": "platform",
+    "shelter": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 1561627780,
+  "lat": 45.8636471,
+  "lon": 25.7866207,
+  "tags": {
+    "bus": "yes",
+    "highway": "bus_stop",
+    "name": "Casa cu Arcade",
+    "name:hu": "Lábas Ház",
+    "public_transport": "platform",
+    "shelter": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 1561627878,
+  "lat": 45.8638124,
+  "lon": 25.7779475,
+  "tags": {
+    "bus": "yes",
+    "highway": "bus_stop",
+    "name": "Sala sportului Szabó Kati",
+    "name:hu": "Szabó Kati Sportcsarnok",
+    "public_transport": "platform"
+  }
+},
+{
+  "type": "node",
+  "id": 1561627881,
+  "lat": 45.8616644,
+  "lon": 25.7822337,
+  "tags": {
+    "bus": "yes",
+    "highway": "bus_stop",
+    "name": "Institutul de proiectări",
+    "name:hu": "Tervező Intézet",
+    "public_transport": "platform",
+    "shelter": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 1561627883,
+  "lat": 45.8593666,
+  "lon": 25.7760244,
+  "tags": {
+    "bus": "yes",
+    "highway": "bus_stop",
+    "name": "Str. Dealului",
+    "name:hu": "Domb utca",
+    "public_transport": "platform"
+  }
+},
+{
+  "type": "node",
+  "id": 1561627886,
+  "lat": 45.8675180,
+  "lon": 25.7791974,
+  "tags": {
+    "bus": "yes",
+    "highway": "bus_stop",
+    "name": "Str. Berzei",
+    "name:hu": "Gólya utca",
+    "public_transport": "platform"
+  }
+},
+{
+  "type": "node",
+  "id": 1706007746,
+  "lat": 45.8715157,
+  "lon": 25.7951117,
+  "tags": {
+    "bus": "yes",
+    "highway": "bus_stop",
+    "name": "Str. Ciucului",
+    "name:hu": "Csíki utca",
+    "public_transport": "platform"
+  }
+},
+{
+  "type": "node",
+  "id": 1706007747,
+  "lat": 45.8705221,
+  "lon": 25.7883740,
+  "tags": {
+    "bus": "yes",
+    "highway": "bus_stop",
+    "name": "Piața Kálvin",
+    "name:hu": "Kálvin tér",
+    "public_transport": "platform",
+    "shelter": "no",
+    "tactile_paving": "no"
+  }
+},
+{
+  "type": "node",
+  "id": 1706007748,
+  "lat": 45.8670072,
+  "lon": 25.7958949,
+  "tags": {
+    "bus": "yes",
+    "highway": "bus_stop",
+    "name": "Debren",
+    "public_transport": "platform"
+  }
+},
+{
+  "type": "node",
+  "id": 1706007749,
+  "lat": 45.8670161,
+  "lon": 25.7960357,
+  "tags": {
+    "bus": "yes",
+    "highway": "bus_stop",
+    "name": "Debren",
+    "public_transport": "platform"
+  }
+},
+{
+  "type": "node",
+  "id": 1706007750,
+  "lat": 45.8706230,
+  "lon": 25.7882080,
+  "tags": {
+    "bus": "yes",
+    "highway": "bus_stop",
+    "name": "Piața Kálvin",
+    "name:hu": "Kálvin tér",
+    "public_transport": "platform",
+    "shelter": "no",
+    "tactile_paving": "no"
+  }
+},
+{
+  "type": "node",
+  "id": 1706007751,
+  "lat": 45.8721060,
+  "lon": 25.7957396,
+  "tags": {
+    "bus": "yes",
+    "highway": "bus_stop",
+    "name": "Str. Ciucului",
+    "name:hu": "Csíki utca",
+    "public_transport": "platform"
+  }
+},
+{
+  "type": "node",
+  "id": 1706007752,
+  "lat": 45.8739434,
+  "lon": 25.7923544,
+  "tags": {
+    "bus": "yes",
+    "highway": "bus_stop",
+    "name": "Cartierul Ciucului",
+    "name:hu": "Csíki negyed",
+    "public_transport": "platform",
+    "shelter": "no",
+    "tactile_paving": "no"
+  }
+},
+{
+  "type": "node",
+  "id": 1706007753,
+  "lat": 45.8695174,
+  "lon": 25.7934166,
+  "tags": {
+    "bus": "yes",
+    "highway": "bus_stop",
+    "name": "Universitatea Babeș-Bolyai",
+    "name:hu": "Babeș-Bolyai Tudományegyetem",
+    "public_transport": "platform",
+    "shelter": "no",
+    "tactile_paving": "no"
+  }
+},
+{
+  "type": "node",
+  "id": 1706007754,
+  "lat": 45.8738501,
+  "lon": 25.7922847,
+  "tags": {
+    "bus": "yes",
+    "highway": "bus_stop",
+    "name": "Cartierul Ciucului",
+    "name:hu": "Csíki negyed",
+    "public_transport": "platform",
+    "shelter": "no",
+    "tactile_paving": "no"
+  }
+},
+{
+  "type": "node",
+  "id": 1706007755,
+  "lat": 45.8695734,
+  "lon": 25.7932664,
+  "tags": {
+    "bus": "yes",
+    "highway": "bus_stop",
+    "name": "Universitatea Babeș-Bolyai",
+    "name:hu": "Babeș-Bolyai Tudományegyetem",
+    "public_transport": "platform",
+    "shelter": "no",
+    "tactile_paving": "no"
+  }
+},
+{
+  "type": "node",
+  "id": 1706008917,
+  "lat": 45.8682623,
+  "lon": 25.7873440,
+  "tags": {
+    "bus": "yes",
+    "highway": "bus_stop",
+    "name": "Liceul de artă Pulugor Sándor",
+    "name:hu": "Plugor Sándor Művészeti Líceum",
+    "public_transport": "platform",
+    "shelter": "no",
+    "tactile_paving": "no"
+  }
+},
+{
+  "type": "node",
+  "id": 1706008923,
+  "lat": 45.8679037,
+  "lon": 25.7872636,
+  "tags": {
+    "bus": "yes",
+    "highway": "bus_stop",
+    "name": "Liceul de artă Pulugor Sándor",
+    "name:hu": "Plugor Sándor Művészeti Líceum",
+    "public_transport": "platform",
+    "shelter": "no",
+    "tactile_paving": "no"
+  }
+},
+{
+  "type": "node",
+  "id": 1707145227,
+  "lat": 45.8623469,
+  "lon": 25.7880083,
+  "tags": {
+    "bus": "yes",
+    "highway": "bus_stop",
+    "name": "Tribunal",
+    "name:hu": "Törvényszék",
+    "public_transport": "platform",
+    "shelter": "no",
+    "tactile_paving": "no"
+  }
+},
+{
+  "type": "node",
+  "id": 1707179049,
+  "lat": 45.8119010,
+  "lon": 25.7996191,
+  "tags": {
+    "bus": "yes",
+    "highway": "bus_stop",
+    "name": "Coșeni 2",
+    "name:hu": "Szotyor 2",
+    "public_transport": "platform"
+  }
+},
+{
+  "type": "node",
+  "id": 1707182645,
+  "lat": 45.8240656,
+  "lon": 25.8000103,
+  "tags": {
+    "bus": "yes",
+    "highway": "bus_stop",
+    "name": "PPC",
+    "public_transport": "platform"
+  }
+},
+{
+  "type": "node",
+  "id": 1707182653,
+  "lat": 45.8240474,
+  "lon": 25.8002109,
+  "tags": {
+    "bus": "yes",
+    "highway": "bus_stop",
+    "name": "PPC",
+    "public_transport": "platform"
+  }
+},
+{
+  "type": "node",
+  "id": 1707186223,
+  "lat": 45.8517902,
+  "lon": 25.8056476,
+  "tags": {
+    "bus": "yes",
+    "highway": "bus_stop",
+    "name": "ISAMA 2",
+    "public_transport": "platform"
+  }
+},
+{
+  "type": "node",
+  "id": 1707186224,
+  "lat": 45.8532848,
+  "lon": 25.8065928,
+  "tags": {
+    "bus": "yes",
+    "highway": "bus_stop",
+    "name": "ISAMA 1",
+    "public_transport": "platform"
+  }
+},
+{
+  "type": "node",
+  "id": 1707186225,
+  "lat": 45.8373359,
+  "lon": 25.8036735,
+  "tags": {
+    "highway": "bus_stop",
+    "name": "Chilieni",
+    "name:hu": "Kilyén"
+  }
+},
+{
+  "type": "node",
+  "id": 1707186226,
+  "lat": 45.8517454,
+  "lon": 25.8061411,
+  "tags": {
+    "bus": "yes",
+    "highway": "bus_stop",
+    "name": "ISAMA 2",
+    "public_transport": "platform"
+  }
+},
+{
+  "type": "node",
+  "id": 1707186227,
+  "lat": 45.8373586,
+  "lon": 25.8040315,
+  "tags": {
+    "bus": "yes",
+    "highway": "bus_stop",
+    "name": "Chilieni",
+    "name:hu": "Kilyén",
+    "public_transport": "platform"
+  }
+},
+{
+  "type": "node",
+  "id": 1707186228,
+  "lat": 45.8532990,
+  "lon": 25.8058632,
+  "tags": {
+    "bus": "yes",
+    "highway": "bus_stop",
+    "name": "ISAMA 1",
+    "public_transport": "platform"
+  }
+},
+{
+  "type": "node",
+  "id": 1707192284,
+  "lat": 45.8568117,
+  "lon": 25.8067848,
+  "tags": {
+    "bus": "yes",
+    "highway": "bus_stop",
+    "name": "Calea Brașovului",
+    "name:hu": "Brassói út",
+    "public_transport": "platform"
+  }
+},
+{
+  "type": "node",
+  "id": 1707192293,
+  "lat": 45.8567519,
+  "lon": 25.8073427,
+  "tags": {
+    "highway": "bus_stop",
+    "name": "Calea Brașovului",
+    "name:hu": "Brassói út"
+  }
+},
+{
+  "type": "node",
+  "id": 2705462540,
+  "lat": 45.8616595,
+  "lon": 25.8424959,
+  "tags": {
+    "highway": "bus_stop"
+  }
+},
+{
+  "type": "node",
+  "id": 10091884080,
+  "lat": 45.8688960,
+  "lon": 25.7868566,
+  "tags": {
+    "bus": "yes",
+    "highway": "bus_stop",
+    "public_transport": "platform"
+  }
+},
+{
+  "type": "node",
+  "id": 11707991918,
+  "lat": 45.8151156,
+  "lon": 25.7989563,
+  "tags": {
+    "bus": "yes",
+    "highway": "bus_stop",
+    "name": "Coșeni 1",
+    "name:hu": "Szotyor 1",
+    "public_transport": "platform"
+  }
+},
+{
+  "type": "node",
+  "id": 11707991919,
+  "lat": 45.8151047,
+  "lon": 25.7988051,
+  "tags": {
+    "bus": "yes",
+    "highway": "bus_stop",
+    "name": "Coșeni 1",
+    "name:hu": "Szotyor 1",
+    "public_transport": "platform"
+  }
+}
+
+  ]
+}

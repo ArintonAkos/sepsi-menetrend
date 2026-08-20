@@ -1,0 +1,54 @@
+{
+  "shape_id": "7-return",
+  "line": "7",
+  "direction": "return",
+  "profile": "mapbox/driving",
+  "note": "running time only; contains no waiting or timetable information",
+  "total_seconds": 1006,
+  "legs": [
+    {
+      "seconds": 149,
+      "metres": 913
+    },
+    {
+      "seconds": 100,
+      "metres": 409
+    },
+    {
+      "seconds": 93,
+      "metres": 471
+    },
+    {
+      "seconds": 46,
+      "metres": 175
+    },
+    {
+      "seconds": 56,
+      "metres": 250
+    },
+    {
+      "seconds": 124,
+      "metres": 677
+    },
+    {
+      "seconds": 89,
+      "metres": 319
+    },
+    {
+      "seconds": 78,
+      "metres": 323
+    },
+    {
+      "seconds": 103,
+      "metres": 595
+    },
+    {
+      "seconds": 94,
+      "metres": 574
+    },
+    {
+      "seconds": 74,
+      "metres": 467
+    }
+  ]
+}

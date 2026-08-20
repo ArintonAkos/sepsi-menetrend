@@ -1,0 +1,2 @@
+agency_id,agency_name,agency_url,agency_timezone,agency_lang
+multitrans,Multi-Trans SA Sfântu Gheorghe,https://multitrans.ro,Europe/Bucharest,ro

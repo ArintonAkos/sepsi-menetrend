@@ -1,0 +1,134 @@
+{
+  "shape_id": "3-depart",
+  "line": "3",
+  "direction": "depart",
+  "profile": "mapbox/driving",
+  "note": "running time only; contains no waiting or timetable information",
+  "total_seconds": 2598,
+  "legs": [
+    {
+      "seconds": 51,
+      "metres": 303
+    },
+    {
+      "seconds": 59,
+      "metres": 413
+    },
+    {
+      "seconds": 50,
+      "metres": 261
+    },
+    {
+      "seconds": 37,
+      "metres": 145
+    },
+    {
+      "seconds": 91,
+      "metres": 723
+    },
+    {
+      "seconds": 67,
+      "metres": 224
+    },
+    {
+      "seconds": 88,
+      "metres": 302
+    },
+    {
+      "seconds": 156,
+      "metres": 658
+    },
+    {
+      "seconds": 89,
+      "metres": 419
+    },
+    {
+      "seconds": 141,
+      "metres": 931
+    },
+    {
+      "seconds": 167,
+      "metres": 1093
+    },
+    {
+      "seconds": 71,
+      "metres": 590
+    },
+    {
+      "seconds": 45,
+      "metres": 359
+    },
+    {
+      "seconds": 103,
+      "metres": 1378
+    },
+    {
+      "seconds": 98,
+      "metres": 1451
+    },
+    {
+      "seconds": 64,
+      "metres": 1010
+    },
+    {
+      "seconds": 34,
+      "metres": 226
+    },
+    {
+      "seconds": 36,
+      "metres": 226
+    },
+    {
+      "seconds": 69,
+      "metres": 1104
+    },
+    {
+      "seconds": 92,
+      "metres": 1389
+    },
+    {
+      "seconds": 98,
+      "metres": 1347
+    },
+    {
+      "seconds": 44,
+      "metres": 337
+    },
+    {
+      "seconds": 73,
+      "metres": 619
+    },
+    {
+      "seconds": 126,
+      "metres": 866
+    },
+    {
+      "seconds": 149,
+      "metres": 913
+    },
+    {
+      "seconds": 110,
+      "metres": 547
+    },
+    {
+      "seconds": 126,
+      "metres": 497
+    },
+    {
+      "seconds": 121,
+      "metres": 519
+    },
+    {
+      "seconds": 49,
+      "metres": 182
+    },
+    {
+      "seconds": 27,
+      "metres": 61
+    },
+    {
+      "seconds": 67,
+      "metres": 296
+    }
+  ]
+}

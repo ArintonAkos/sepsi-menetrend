@@ -1,0 +1,6 @@
+leg_group_id,from_area_id,to_area_id,fare_product_id
+city,city,city,city_24pay
+city,city,city,city_machine
+city,city,city,city_two
+city,city,city,city_driver
+arcus,arcus,arcus,arcus_24pay

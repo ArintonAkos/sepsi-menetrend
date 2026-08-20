@@ -1,0 +1,100 @@
+.wrap { position: relative; }
+.field {
+  display: flex; align-items: center; gap: 10px;
+  background: var(--paper); border: 2px solid transparent; border-radius: 999px;
+  padding: 10px 88px 10px 16px;
+}
+.field:focus-within { border-color: var(--signal); }
+.label { font-weight: 700; font-size: 13px; color: var(--field-label); min-width: 52px; }
+.field input { flex: 1; min-width: 0; border: 0; background: none; outline: none;
+  font-size: 16px; }   /* under 16 and iOS zooms in on focus */
+.field input::placeholder { color: var(--muted); }
+
+/* the swap button lives at the right edge, so the pin sits to its left rather
+   than underneath it */
+.pin {
+  position: absolute; right: 50px; top: 50%; transform: translateY(-50%);
+  width: 30px; height: 30px; border-radius: 9px; display: grid; place-items: center;
+  color: var(--field-label); background: var(--sunk);
+}
+.pin svg { width: 17px; height: 17px; }
+.pin { transition: background-color .13s ease, color .13s ease; }
+.pin:hover { background: var(--signal); color: var(--signal-ink); }
+@media (prefers-reduced-motion: reduce) { .pin { transition: none; } }
+
+.list {
+  position: absolute; left: 0; right: 0; top: calc(100% + 8px); z-index: 20;
+  margin: 0; padding: 0; list-style: none; overflow: hidden;
+  background: var(--paper); border: 1px solid var(--border);
+  border-radius: var(--radius); box-shadow: var(--shadow);
+  transform-origin: top center; animation: suggest var(--quick) var(--ease);
+}
+@keyframes suggest {
+  from { opacity: 0; transform: translateY(-5px); }
+  to   { opacity: 1; transform: none; }
+}
+@media (prefers-reduced-motion: reduce) { .list { animation: none; } }
+.list li + li { border-top: 1px solid var(--border); }
+.list button {
+  display: flex; width: 100%; gap: 11px; align-items: center;
+  padding: 10px 15px; text-align: left;
+}
+.list button:hover { background: var(--surface); }
+.icon {
+  width: 26px; height: 26px; border-radius: 8px; display: grid; place-items: center;
+  background: var(--sunk); font-size: 13px; flex: 0 0 auto;
+}
+.text { flex: 1; min-width: 0; }
+.name { display: block; font-weight: 600; font-size: 14px; white-space: nowrap;
+  overflow: hidden; text-overflow: ellipsis; }
+.detail { display: block; font-size: 12px; color: var(--muted); white-space: nowrap;
+  overflow: hidden; text-overflow: ellipsis; }
+.alias {
+  flex: 0 0 auto; font-size: 11px; font-weight: 700;
+  color: var(--signal-ink); background: var(--signal); border-radius: 5px; padding: 1px 5px;
+}
+
+.back { display: none; }
+
+.locate { color: var(--ink); }
+.locate .icon { background: var(--signal); color: var(--signal-ink); }
+.locate svg { width: 15px; height: 15px; }
+
+/* Rendered into the search screen's own section rather than hanging off the
+   field, so it is the page, not a dropdown.
+   This used to be written as :global(.searching) .list, which never matched
+   anything: the class it names is a CSS module name, hashed at build time, so
+   the literal "searching" it looked for does not exist in the document. The
+   list stayed absolutely positioned under its field, covering the other one.
+   It is still a surface of its own: the search screen's own background is the
+   dark olive, so a list with no background of its own put dark text on dark
+   ground, and a negative margin pushed the rows out through the scroller that
+   was meant to clip them. */
+.inPage {
+  position: static; margin: 0; animation: none;
+  box-shadow: none;                 /* it sits on the page, not above it */
+  background: var(--paper); border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+.inPage button { padding: 13px 16px; }
+.inPage li + li { border-top: 1px solid var(--border); }
+/* The card arrives once, when the search screen opens. Its rows deliberately
+   do not: every keystroke gives them new React keys, so a per-row animation
+   would replay on each letter typed - a flicker, not fluidity. */
+.inPage { animation: riseIn var(--quick) var(--ease); }
+
+/* a used-before row carries its own way out, so the list stays yours */
+/* A grid, not a flex row: with `width: 100%` inherited from the list the flex
+   maths collapsed the button to its padding and the name disappeared. Two
+   explicit columns cannot do that. */
+.recentRow { display: grid; grid-template-columns: minmax(0, 1fr) 40px; align-items: stretch; }
+.recentRow > button:first-child { width: auto; min-width: 0; }
+.forget { width: 40px; color: var(--muted); font-size: 20px; line-height: 1; }
+.forget:hover { color: var(--ink); background: var(--sunk); }
+
+/* Local, because a module scopes the keyframe names it references and cannot
+   reach one declared in the global stylesheet. */
+@keyframes riseIn {
+  from { opacity: 0; transform: translateY(7px); }
+  to   { opacity: 1; transform: none; }
+}

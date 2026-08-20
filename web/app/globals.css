@@ -1,0 +1,97 @@
+/* The palette is the operator's own: the logo olive carries the chrome, the
+   logo yellow is the single accent. Line colours never appear in the chrome,
+   so a coloured pill always means a line and nothing else.
+   Contrast was checked for every pair; the notes are the measured ratios. */
+:root {
+  --paper:#FBFAF7; --surface:#F2F1EC; --sunk:#EAE8DF;
+  --ink:#232E10; --ink-2:#3F4A2A; --panel:#2E3D14; --panel-2:#3C5019;
+  --signal:#EFC913; --signal-ink:#232E10;      /* 8.9:1 */
+  --muted:#6A6A5C; --border:#E1DFD4; --hair:#D8D5C8;
+  --field-label:#2E3D14;
+  --shadow:0 1px 2px rgba(35,46,16,.06), 0 8px 24px -12px rgba(35,46,16,.18);
+  --radius:16px;
+
+  /* One motion vocabulary, so nothing in the app moves to its own rhythm.
+     The curve decelerates hard: things arrive quickly and settle, which reads
+     as responsive rather than floaty. Durations are deliberately short - this
+     is a tool someone uses at a bus stop in the rain, and every millisecond of
+     animation is a millisecond they are waiting. */
+  --ease: cubic-bezier(.2, .8, .3, 1);
+  --ease-out: cubic-bezier(.16, 1, .3, 1);
+  --tap: 90ms;        /* pressing something */
+  --quick: 160ms;     /* a popover, a chevron */
+  --move: 240ms;      /* a sheet, a screen */
+  --step: 22ms;       /* between staggered rows */
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper:#14180D; --surface:#1C2113; --sunk:#242A18;
+    --ink:#EEEDE3; --ink-2:#C3C6B2; --panel:#31411A; --panel-2:#3F5322;
+    --muted:#9B9C88; --border:#2B3220; --hair:#333B26;
+    --field-label:#EEEDE3;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -12px rgba(0,0,0,.7);
+  }
+}
+:root[data-theme="dark"] {
+  --paper:#14180D; --surface:#1C2113; --sunk:#242A18;
+  --ink:#EEEDE3; --ink-2:#C3C6B2; --panel:#31411A; --panel-2:#3F5322;
+  --muted:#9B9C88; --border:#2B3220; --hair:#333B26;
+  --field-label:#EEEDE3;
+  --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -12px rgba(0,0,0,.7);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html, body { margin:0; padding:0; }
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font: 15px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+.rounded { font-family: ui-rounded, "SF Pro Rounded", "Varela Round", system-ui, sans-serif; }
+button, input, select { font: inherit; color: inherit; }
+
+/* iOS Safari zooms the page whenever a focused field's text is under 16px, and
+   it never zooms back out. Sizing every control at 16px is the fix; the
+   alternative, maximum-scale=1 on the viewport, also takes pinch-zoom away
+   from anyone who needs it. */
+input, select, textarea { font-size: 16px; }
+button { background: none; border: 0; cursor: pointer;
+  /* the grey flash Safari paints is slower than our own feedback and fights it */
+  -webkit-tap-highlight-color: transparent; }
+
+/* Press feedback.
+   Without it a phone gives no sign it received the tap until the screen
+   changes, which on a slow connection is long enough to make people tap again.
+
+   Dimming rather than shrinking. A scale looks good on a plain button and is
+   quietly wrong everywhere else: `transform` is one property, so a control that
+   is centred with `translateY(-50%)` - the pin inside a field, the swap button
+   between the two - loses its own transform the moment it is pressed and jumps
+   half its height down the page. Opacity cannot collide with anything, applies
+   to every control the same way, and reads as a press on a phone. */
+button:active:not(:disabled), [role="button"]:active, summary:active {
+  opacity: .6;
+}
+button, [role="button"], summary {
+  transition: opacity var(--tap) ease, background-color var(--tap) ease,
+              border-color var(--tap) ease;
+}
+:focus-visible { outline: 3px solid var(--signal); outline-offset: 2px; border-radius: 6px; }
+/* One switch for the lot. Every animation below is written so that removing it
+   leaves the element in its resting state, never mid-fade. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation: none !important; transition: none !important;
+    scroll-behavior: auto !important;
+  }
+  button:active:not(:disabled), [role="button"]:active, summary:active {
+    opacity: 1;
+  }
+}
+
+/* placeholder while the map module downloads */
+.mapLoading { position: absolute; inset: 0; background: var(--surface); }
+
+/* while a phone search is open nothing behind it should scroll */
+body.searching { overflow: hidden; }

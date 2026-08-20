@@ -1,0 +1,258 @@
+[
+  {
+    "stop_id": 1,
+    "stop_name_ro": "Str. Țigaretei 1",
+    "stop_lat": 45.8566,
+    "stop_lon": 25.7821,
+    "direction": "Str. Țigaretei – traseu circular",
+    "distance_to_next": "312 m"
+  },
+  {
+    "stop_id": 2,
+    "stop_name_ro": "Str. Țigaretei 2",
+    "stop_lat": 45.8551,
+    "stop_lon": 25.7851,
+    "direction": "Str. Țigaretei – traseu circular",
+    "distance_to_next": "411 m"
+  },
+  {
+    "stop_id": 3,
+    "stop_name_ro": "Str. Țigaretei 3",
+    "stop_lat": 45.8543,
+    "stop_lon": 25.7903,
+    "direction": "Str. Țigaretei – traseu circular",
+    "distance_to_next": "261 m"
+  },
+  {
+    "stop_id": 4,
+    "stop_name_ro": "Comfort Residence",
+    "stop_lat": 45.8548,
+    "stop_lon": 25.7931,
+    "direction": "Str. Țigaretei – traseu circular",
+    "distance_to_next": "138 m"
+  },
+  {
+    "stop_id": 5,
+    "stop_name_ro": "Str. Fabricii 1",
+    "stop_lat": 45.8557,
+    "stop_lon": 25.7932,
+    "direction": "Str. Țigaretei – traseu circular",
+    "distance_to_next": "726 m"
+  },
+  {
+    "stop_id": 6,
+    "stop_name_ro": "Str. Fabricii 2",
+    "stop_lat": 45.8596,
+    "stop_lon": 25.7858,
+    "direction": "Str. Țigaretei – traseu circular",
+    "distance_to_next": "250 m"
+  },
+  {
+    "stop_id": 7,
+    "stop_name_ro": "Col. Mihai Viteazul",
+    "stop_lat": 45.861,
+    "stop_lon": 25.7855,
+    "direction": "Str. Țigaretei – traseu circular",
+    "distance_to_next": "295 m"
+  },
+  {
+    "stop_id": 8,
+    "stop_name_ro": "Casa cu Arcade",
+    "stop_lat": 45.8636,
+    "stop_lon": 25.7866,
+    "direction": "Str. Țigaretei – traseu circular",
+    "distance_to_next": "79 m"
+  },
+  {
+    "stop_id": 9,
+    "stop_name_ro": "Parcul Elisabeta",
+    "stop_lat": 45.8643,
+    "stop_lon": 25.7866,
+    "direction": "Str. Țigaretei – traseu circular",
+    "distance_to_next": "590 m"
+  },
+  {
+    "stop_id": 10,
+    "stop_name_ro": "Biserica Reformată",
+    "stop_lat": 45.8638,
+    "stop_lon": 25.7931,
+    "direction": "Str. Țigaretei – traseu circular",
+    "distance_to_next": "429 m"
+  },
+  {
+    "stop_id": 11,
+    "stop_name_ro": "Str. Sporturilor",
+    "stop_lat": 45.864,
+    "stop_lon": 25.7983,
+    "direction": "Str. Țigaretei – traseu circular",
+    "distance_to_next": "961 m"
+  },
+  {
+    "stop_id": 12,
+    "stop_name_ro": "Gara CFR",
+    "stop_lat": 45.8631,
+    "stop_lon": 25.8101,
+    "direction": "Str. Țigaretei – traseu circular",
+    "distance_to_next": "1068 m"
+  },
+  {
+    "stop_id": 13,
+    "stop_name_ro": "Calea Brașovului 1",
+    "stop_lat": 45.857,
+    "stop_lon": 25.8069,
+    "direction": "Str. Țigaretei – traseu circular",
+    "distance_to_next": "48 m"
+  },
+  {
+    "stop_id": 14,
+    "stop_name_ro": "Terminal",
+    "stop_lat": 45.8568,
+    "stop_lon": 25.8066,
+    "direction": "Str. Țigaretei – traseu circular",
+    "distance_to_next": "175 m"
+  },
+  {
+    "stop_id": 15,
+    "stop_name_ro": "Str. Constructorilor 1",
+    "stop_lat": 45.856,
+    "stop_lon": 25.8085,
+    "direction": "Str. Țigaretei – traseu circular",
+    "distance_to_next": "483 m"
+  },
+  {
+    "stop_id": 16,
+    "stop_name_ro": "Str. Constructorilor 2",
+    "stop_lat": 45.8557,
+    "stop_lon": 25.8147,
+    "direction": "Str. Țigaretei – traseu circular",
+    "distance_to_next": "528 m"
+  },
+  {
+    "stop_id": 17,
+    "stop_name_ro": "Str. Constructorilor 3",
+    "stop_lat": 45.8585,
+    "stop_lon": 25.8183,
+    "direction": "Str. Țigaretei – traseu circular",
+    "distance_to_next": "2583 m"
+  },
+  {
+    "stop_id": 18,
+    "stop_name_ro": "Câmpul Frumos",
+    "stop_lat": 45.8619,
+    "stop_lon": 25.841,
+    "direction": "Str. Țigaretei – traseu circular",
+    "distance_to_next": "493 m"
+  },
+  {
+    "stop_id": 19,
+    "stop_name_ro": "Multi-Trans",
+    "stop_lat": 45.8593,
+    "stop_lon": 25.8389,
+    "direction": "Str. Țigaretei – traseu circular",
+    "distance_to_next": "431 m"
+  },
+  {
+    "stop_id": 20,
+    "stop_name_ro": "Câmpul Frumos",
+    "stop_lat": 45.8619,
+    "stop_lon": 25.841,
+    "direction": "Str. Țigaretei – traseu circular",
+    "distance_to_next": "2679 m"
+  },
+  {
+    "stop_id": 21,
+    "stop_name_ro": "Str. Constructorilor 3",
+    "stop_lat": 45.8585,
+    "stop_lon": 25.8183,
+    "direction": "Str. Țigaretei – traseu circular",
+    "distance_to_next": "453 m"
+  },
+  {
+    "stop_id": 22,
+    "stop_name_ro": "Str. Constructorilor 2",
+    "stop_lat": 45.8559,
+    "stop_lon": 25.8148,
+    "direction": "Str. Țigaretei – traseu circular",
+    "distance_to_next": "501 m"
+  },
+  {
+    "stop_id": 23,
+    "stop_name_ro": "Str. Constructorilor 1",
+    "stop_lat": 45.8562,
+    "stop_lon": 25.8083,
+    "direction": "Str. Țigaretei – traseu circular",
+    "distance_to_next": "189 m"
+  },
+  {
+    "stop_id": 24,
+    "stop_name_ro": "Calea Brașovului 1",
+    "stop_lat": 45.8571,
+    "stop_lon": 25.8072,
+    "direction": "Str. Țigaretei – traseu circular",
+    "distance_to_next": "962 m"
+  },
+  {
+    "stop_id": 25,
+    "stop_name_ro": "Gara CFR",
+    "stop_lat": 45.8631,
+    "stop_lon": 25.8101,
+    "direction": "Str. Țigaretei – traseu circular",
+    "distance_to_next": "940 m"
+  },
+  {
+    "stop_id": 26,
+    "stop_name_ro": "Str. Sporturilor",
+    "stop_lat": 45.8641,
+    "stop_lon": 25.7986,
+    "direction": "Str. Țigaretei – traseu circular",
+    "distance_to_next": "556 m"
+  },
+  {
+    "stop_id": 27,
+    "stop_name_ro": "Biserica Reformată",
+    "stop_lat": 45.8643,
+    "stop_lon": 25.7919,
+    "direction": "Str. Țigaretei – traseu circular",
+    "distance_to_next": "521 m"
+  },
+  {
+    "stop_id": 28,
+    "stop_name_ro": "Parcul Elisabeta",
+    "stop_lat": 45.8643,
+    "stop_lon": 25.7866,
+    "direction": "Str. Țigaretei – traseu circular",
+    "distance_to_next": "519 m"
+  },
+  {
+    "stop_id": 29,
+    "stop_name_ro": "Col. Mihai Viteazul",
+    "stop_lat": 45.8601,
+    "stop_lon": 25.7842,
+    "direction": "Str. Țigaretei – traseu circular",
+    "distance_to_next": "191 m"
+  },
+  {
+    "stop_id": 30,
+    "stop_name_ro": "Fabrica de Țigarete",
+    "stop_lat": 45.8589,
+    "stop_lon": 25.7826,
+    "direction": "Str. Țigaretei – traseu circular",
+    "distance_to_next": "64 m"
+  },
+  {
+    "stop_id": 31,
+    "stop_name_ro": "Fabrica de Țigarete",
+    "stop_lat": 45.8584,
+    "stop_lon": 25.7822,
+    "direction": "Str. Țigaretei – traseu circular",
+    "distance_to_next": "290 m până la închiderea buclei"
+  },
+  {
+    "stop_id": 32,
+    "stop_name_ro": "Str. Țigaretei 1",
+    "stop_lat": 45.8566,
+    "stop_lon": 25.7821,
+    "direction": "Str. Țigaretei – traseu circular",
+    "distance_to_next": "0 m"
+  }
+]

@@ -1,0 +1,98 @@
+[
+  {
+    "stop_id": 1,
+    "stop_name_ro": "Centru Arcuș",
+    "stop_lat": 45.9031,
+    "stop_lon": 25.7735,
+    "direction": "Centru Arcuș → Casa cu Arcade",
+    "distance_to_next": "353 m"
+  },
+  {
+    "stop_id": 2,
+    "stop_name_ro": "Biserica Reformată Arcuș",
+    "stop_lat": 45.9009,
+    "stop_lon": 25.7725,
+    "direction": "Centru Arcuș → Casa cu Arcade",
+    "distance_to_next": "487 m"
+  },
+  {
+    "stop_id": 3,
+    "stop_name_ro": "Primăria Arcuș",
+    "stop_lat": 45.8996,
+    "stop_lon": 25.7785,
+    "direction": "Centru Arcuș → Casa cu Arcade",
+    "distance_to_next": "631 m"
+  },
+  {
+    "stop_id": 4,
+    "stop_name_ro": "Castelul Szentkereszty",
+    "stop_lat": 45.898,
+    "stop_lon": 25.7862,
+    "direction": "Centru Arcuș → Casa cu Arcade",
+    "distance_to_next": "2060 m"
+  },
+  {
+    "stop_id": 5,
+    "stop_name_ro": "Cart. Kossuth Lajos",
+    "stop_lat": 45.884,
+    "stop_lon": 25.8001,
+    "direction": "Centru Arcuș → Casa cu Arcade",
+    "distance_to_next": "617 m"
+  },
+  {
+    "stop_id": 6,
+    "stop_name_ro": "Grădinărie",
+    "stop_lat": 45.879,
+    "stop_lon": 25.797,
+    "direction": "Centru Arcuș → Casa cu Arcade",
+    "distance_to_next": "954 m"
+  },
+  {
+    "stop_id": 7,
+    "stop_name_ro": "Str. Ciucului 2",
+    "stop_lat": 45.8714,
+    "stop_lon": 25.7951,
+    "direction": "Centru Arcuș → Casa cu Arcade",
+    "distance_to_next": "279 m"
+  },
+  {
+    "stop_id": 8,
+    "stop_name_ro": "Str. Ciucului 1",
+    "stop_lat": 45.8693,
+    "stop_lon": 25.7931,
+    "direction": "Centru Arcuș → Casa cu Arcade",
+    "distance_to_next": "544 m"
+  },
+  {
+    "stop_id": 9,
+    "stop_name_ro": "Piața Kálvin",
+    "stop_lat": 45.8709,
+    "stop_lon": 25.7885,
+    "direction": "Centru Arcuș → Casa cu Arcade",
+    "distance_to_next": "268 m"
+  },
+  {
+    "stop_id": 10,
+    "stop_name_ro": "Lic. Plugor Sándor",
+    "stop_lat": 45.8689,
+    "stop_lon": 25.7868,
+    "direction": "Centru Arcuș → Casa cu Arcade",
+    "distance_to_next": "578 m"
+  },
+  {
+    "stop_id": 11,
+    "stop_name_ro": "Str. Gábor Áron",
+    "stop_lat": 45.8648,
+    "stop_lon": 25.7851,
+    "direction": "Centru Arcuș → Casa cu Arcade",
+    "distance_to_next": "571 m"
+  },
+  {
+    "stop_id": 12,
+    "stop_name_ro": "Casa cu Arcade",
+    "stop_lat": 45.8636,
+    "stop_lon": 25.7866,
+    "direction": "Centru Arcuș → Casa cu Arcade",
+    "distance_to_next": "0 m"
+  }
+]

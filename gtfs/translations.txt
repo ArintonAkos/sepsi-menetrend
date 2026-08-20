@@ -1,0 +1,172 @@
+table_name,field_name,language,record_id,translation
+stops,stop_name,hu,S0-0,Sepsi Aréna
+stops,stop_name,hu,ST1,Autoliv
+stops,stop_name,hu,S1-0,Autoliv
+stops,stop_name,hu,S1-1,Autoliv
+stops,stop_name,hu,ST2,G. Bálán sugárút 1
+stops,stop_name,hu,S2-0,G. Bálán sugárút 1
+stops,stop_name,hu,S2-1,G. Bálán sugárút 1
+stops,stop_name,hu,ST3,G. Bálán sugárút 2
+stops,stop_name,hu,S3-0,G. Bálán sugárút 2
+stops,stop_name,hu,S3-1,G. Bálán sugárút 2
+stops,stop_name,hu,ST4,N. Iorga sugárút 1
+stops,stop_name,hu,S4-0,N. Iorga sugárút 1
+stops,stop_name,hu,S4-1,N. Iorga sugárút 1
+stops,stop_name,hu,ST5,N. Iorga sugárút 2
+stops,stop_name,hu,S5-0,N. Iorga sugárút 2
+stops,stop_name,hu,S5-1,N. Iorga sugárút 2
+stops,stop_name,hu,ST6,Református Templom
+stops,stop_name,hu,S6-0,Református Templom
+stops,stop_name,hu,S6-1,Református Templom
+stops,stop_name,hu,S7-0,Árkosi Református Templom
+stops,stop_name,hu,ST8,Brassói út 1
+stops,stop_name,hu,S8-0,Brassói út 1
+stops,stop_name,hu,S8-1,Brassói út 1
+stops,stop_name,hu,ST9,Brassói út 2
+stops,stop_name,hu,S9-0,Brassói út 2
+stops,stop_name,hu,S9-1,Brassói út 2
+stops,stop_name,hu,ST10,Brassói út 3
+stops,stop_name,hu,S10-0,Brassói út 3
+stops,stop_name,hu,S10-1,Brassói út 3
+stops,stop_name,hu,ST11,Szemerja Végállomás
+stops,stop_name,hu,S11-0,Szemerja Végállomás
+stops,stop_name,hu,S11-1,Szemerja Végállomás
+stops,stop_name,hu,ST12,Kossuth Lajos negyed
+stops,stop_name,hu,S12-0,Kossuth Lajos negyed
+stops,stop_name,hu,S12-1,Kossuth Lajos negyed
+stops,stop_name,hu,ST13,Csíki negyed
+stops,stop_name,hu,S13-0,Csíki negyed
+stops,stop_name,hu,S13-1,Csíki negyed
+stops,stop_name,hu,S14-0,Lábasház
+stops,stop_name,hu,ST15,Szentkereszty kastély
+stops,stop_name,hu,S15-0,Szentkereszty kastély
+stops,stop_name,hu,S15-1,Szentkereszty kastély
+stops,stop_name,hu,S16-0,Árkos központ
+stops,stop_name,hu,ST17,Bevásárlóközpont
+stops,stop_name,hu,S17-0,Bevásárlóközpont
+stops,stop_name,hu,S17-1,Bevásárlóközpont
+stops,stop_name,hu,ST18,Kilyén
+stops,stop_name,hu,S18-0,Kilyén
+stops,stop_name,hu,S18-1,Kilyén
+stops,stop_name,hu,ST19,Vitéz Mihály Líceum
+stops,stop_name,hu,S19-0,Vitéz Mihály Líceum
+stops,stop_name,hu,S19-1,Vitéz Mihály Líceum
+stops,stop_name,hu,S20-0,Comfort Residence
+stops,stop_name,hu,ST21,Szotyor 1
+stops,stop_name,hu,S21-0,Szotyor 1
+stops,stop_name,hu,S21-1,Szotyor 1
+stops,stop_name,hu,S22-0,Szotyor 2
+stops,stop_name,hu,ST23,Szépmező
+stops,stop_name,hu,S23-0,Szépmező
+stops,stop_name,hu,S23-1,Szépmező
+stops,stop_name,hu,ST24,Debren
+stops,stop_name,hu,S24-0,Debren
+stops,stop_name,hu,S24-1,Debren
+stops,stop_name,hu,ST25,Tejgyár
+stops,stop_name,hu,S25-0,Tejgyár
+stops,stop_name,hu,S25-1,Tejgyár
+stops,stop_name,hu,ST26,Cigarettagyár
+stops,stop_name,hu,S26-0,Cigarettagyár
+stops,stop_name,hu,S26-1,Cigarettagyár
+stops,stop_name,hu,ST27,Honvéd kút
+stops,stop_name,hu,S27-0,Honvéd kút
+stops,stop_name,hu,S27-1,Honvéd kút
+stops,stop_name,hu,S28-0,Vasútállomás
+stops,stop_name,hu,ST29,Kertészet
+stops,stop_name,hu,S29-0,Kertészet
+stops,stop_name,hu,S29-1,Kertészet
+stops,stop_name,hu,ST30,Tervező Intézet
+stops,stop_name,hu,S30-0,Tervező Intézet
+stops,stop_name,hu,S30-1,Tervező Intézet
+stops,stop_name,hu,S31-0,Büdöskút
+stops,stop_name,hu,ST32,Plugor Sándor Líceum
+stops,stop_name,hu,S32-0,Plugor Sándor Líceum
+stops,stop_name,hu,S32-1,Plugor Sándor Líceum
+stops,stop_name,hu,ST33,Motel Calypso
+stops,stop_name,hu,S33-0,Motel Calypso
+stops,stop_name,hu,S33-1,Motel Calypso
+stops,stop_name,hu,S34-0,Multi-Trans
+stops,stop_name,hu,ST35,Erzsébet Park
+stops,stop_name,hu,S35-0,Erzsébet Park
+stops,stop_name,hu,S35-1,Erzsébet Park
+stops,stop_name,hu,ST36,Kálvin tér
+stops,stop_name,hu,S36-0,Kálvin tér
+stops,stop_name,hu,S36-1,Kálvin tér
+stops,stop_name,hu,ST37,Árkosi Polgármesteri Hivatal
+stops,stop_name,hu,S37-0,Árkosi Polgármesteri Hivatal
+stops,stop_name,hu,S37-1,Árkosi Polgármesteri Hivatal
+stops,stop_name,hu,ST38,Megyei Kórház
+stops,stop_name,hu,S38-0,Megyei Kórház
+stops,stop_name,hu,S38-1,Megyei Kórház
+stops,stop_name,hu,S39-0,Bartók Béla utca
+stops,stop_name,hu,ST40,Borvíz utca
+stops,stop_name,hu,S40-0,Borvíz utca
+stops,stop_name,hu,S40-1,Borvíz utca
+stops,stop_name,hu,ST41,Csíki utca 1
+stops,stop_name,hu,S41-0,Csíki utca 1
+stops,stop_name,hu,S41-1,Csíki utca 1
+stops,stop_name,hu,ST42,Csíki utca 2
+stops,stop_name,hu,S42-0,Csíki utca 2
+stops,stop_name,hu,S42-1,Csíki utca 2
+stops,stop_name,hu,ST43,Építők útja 1
+stops,stop_name,hu,S43-0,Építők útja 1
+stops,stop_name,hu,S43-1,Építők útja 1
+stops,stop_name,hu,ST44,Építők útja 2
+stops,stop_name,hu,S44-0,Építők útja 2
+stops,stop_name,hu,S44-1,Építők útja 2
+stops,stop_name,hu,ST45,Építők útja 3
+stops,stop_name,hu,S45-0,Építők útja 3
+stops,stop_name,hu,S45-1,Építők útja 3
+stops,stop_name,hu,ST46,Domb utca
+stops,stop_name,hu,S46-0,Domb utca
+stops,stop_name,hu,S46-1,Domb utca
+stops,stop_name,hu,S47-0,Dózsa György utca
+stops,stop_name,hu,S48-0,Gyár utca 1
+stops,stop_name,hu,S49-0,Gyár utca 2
+stops,stop_name,hu,S50-0,Hóvirág utca
+stops,stop_name,hu,S51-0,Gábor Áron utca
+stops,stop_name,hu,S52-0,József Attila u. 1
+stops,stop_name,hu,S53-0,József Attila u. 2
+stops,stop_name,hu,S54-0,Kós Károly utca
+stops,stop_name,hu,ST55,Gyöngyvirág utca 1
+stops,stop_name,hu,S55-0,Gyöngyvirág utca 1
+stops,stop_name,hu,S55-1,Gyöngyvirág utca 1
+stops,stop_name,hu,ST56,Gyöngyvirág utca 2
+stops,stop_name,hu,S56-0,Gyöngyvirág utca 2
+stops,stop_name,hu,S56-1,Gyöngyvirág utca 2
+stops,stop_name,hu,ST57,Sport utca
+stops,stop_name,hu,S57-0,Sport utca
+stops,stop_name,hu,S57-1,Sport utca
+stops,stop_name,hu,S58-0,Vadász utca 1
+stops,stop_name,hu,S59-0,Vadász utca 2
+stops,stop_name,hu,S60-0,Cigaretta utca 1
+stops,stop_name,hu,S61-0,Cigaretta utca 2
+stops,stop_name,hu,S62-0,Cigaretta utca 3
+stops,stop_name,hu,S63-0,Terminál
+stops,stop_name,hu,S64-0,Törvényszék
+stops,stop_name,hu,S65-0,Sugásfürdő
+fare_products,fare_product_name,hu,city_24pay,50 percig érvényes jegy a 24pay alkalmazásban
+fare_products,fare_product_name,hu,city_machine,"Egy utazásra szóló jegy, jegyautomatából"
+fare_products,fare_product_name,hu,city_two,Kétutazásos jegy
+fare_products,fare_product_name,hu,city_driver,"Jegy a buszvezetőtől, egy utazásra"
+fare_products,fare_product_name,hu,arcus_24pay,"60 percig érvényes jegy a 24pay alkalmazásban, árkosi járatokra"
+fare_products,fare_product_name,hu,monthly_all,"Havi bérlet, minden vonalra"
+fare_products,fare_product_name,hu,monthly_pension_75,"Havi bérlet, 1601–2000 lej nyugdíj (75% kedvezmény)"
+fare_products,fare_product_name,hu,monthly_pension_50,"Havi bérlet, 2001–2400 lej nyugdíj (50% kedvezmény)"
+fare_products,fare_product_name,hu,monthly_pension_free,"Ingyenes bérlet, 1600 lejig terjedő nyugdíj"
+fare_products,fare_product_name,hu,monthly_student_free,Ingyenes bérlet a sepsiszentgyörgyi tanulóknak
+fare_media,fare_media_name,hu,app,24pay alkalmazás
+fare_media,fare_media_name,hu,machine,Jegyautomata
+fare_media,fare_media_name,hu,cash,Készpénz a sofőrnél
+routes,route_long_name,hu,1,Vasútállomás – Szemerja · Református Templomon át
+routes,route_long_name,hu,1D,Szemerja – Szépmező · Tervező Intézeten át
+routes,route_long_name,hu,2,Bartók Béla – Vasútállomás · Csíki negyeden át
+routes,route_long_name,hu,2D,Bartók Béla – Szépmező · Csíki negyeden át
+routes,route_long_name,hu,3,Cigaretta utca – Szotyor · Központon át
+routes,route_long_name,hu,4,Cigaretta utca – Szépmező · Központon át
+routes,route_long_name,hu,5,Sepsi Aréna – József Attila u.
+routes,route_long_name,hu,5D,József Attila u. 2 – Szépmező · G. Bálán sugárúton át
+routes,route_long_name,hu,6,Bartók Béla u. – Sepsi Aréna · Csíki negyeden át
+routes,route_long_name,hu,7,Szemerja Végállomás – Vasútállomás · Cigaretta utcán át
+routes,route_long_name,hu,9,Vasútállomás – Sugásfürdő · Kálvin téren át
+routes,route_long_name,hu,10,Lábasház – Árkos központ · Kossuth Lajos negyeden át

@@ -1,0 +1,6 @@
+fare_id,origin_id,destination_id
+city_24pay,city,city
+city_machine,city,city
+city_two,city,city
+city_driver,city,city
+arcus_24pay,arcus,arcus

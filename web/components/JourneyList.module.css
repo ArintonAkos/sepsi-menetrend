@@ -1,0 +1,56 @@
+.list { list-style: none; margin: 0; padding: 0; }
+.list li + li { border-top: 1px solid var(--border); }
+.card {
+  display: block; width: 100%; text-align: left; padding: 13px 18px 13px 15px;
+  border-left: 3px solid transparent;
+}
+.card { transition: background-color var(--tap) ease, border-color var(--tap) ease,
+                    transform var(--tap) var(--ease); }
+.card:hover { background: var(--surface); }
+
+/* The results land one after another rather than all at once. Six steps of
+   22ms is under an eighth of a second in total - not a show, just enough for
+   the eye to read the list as arriving in order instead of blinking into
+   existence. Anything past the sixth row is below the fold anyway, so it stops
+   there rather than making the last result wait. */
+.list li { animation: riseIn var(--quick) var(--ease) both; }
+.list li:nth-child(2) { animation-delay: calc(var(--step) * 1); }
+.list li:nth-child(3) { animation-delay: calc(var(--step) * 2); }
+.list li:nth-child(4) { animation-delay: calc(var(--step) * 3); }
+.list li:nth-child(5) { animation-delay: calc(var(--step) * 4); }
+.list li:nth-child(n + 6) { animation-delay: calc(var(--step) * 5); }
+.card[aria-current="true"] { border-left-color: var(--signal); background: var(--surface); }
+.top { display: flex; align-items: flex-start; gap: 12px; }
+.modes { display: flex; flex-wrap: wrap; align-items: center; gap: 5px; flex: 1; min-width: 0; }
+.pair { display: inline-flex; align-items: center; gap: 5px; }
+.pill {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 26px; height: 24px; padding: 0 7px; border-radius: 7px;
+  font-weight: 800; font-size: 13px;
+  font-family: ui-rounded, "SF Pro Rounded", "Varela Round", system-ui, sans-serif;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .18);
+}
+.walk { display: inline-flex; align-items: center; gap: 1px;
+  font-size: 12px; font-weight: 700; color: var(--ink-2); }
+.dur { text-align: right; flex: 0 0 auto; }
+.dur b { font-size: 22px; font-weight: 700; letter-spacing: -.02em;
+  font-variant-numeric: tabular-nums; }
+.dur span { font-size: 12px; color: var(--muted); margin-left: 2px; }
+.bot { display: flex; align-items: center; gap: 10px; margin-top: 7px;
+  font-size: 13px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.bot b { color: var(--ink); font-weight: 600; }
+.dot { width: 3px; height: 3px; border-radius: 50%; background: currentColor;
+  opacity: .5; flex: 0 0 auto; }
+.tags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 8px; }
+.tag { font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 999px;
+  background: var(--sunk); color: var(--ink-2); }
+.hi { background: var(--signal); color: var(--signal-ink); }
+.empty { padding: 32px 18px; text-align: center; color: var(--muted); }
+
+/* Defined here, not in globals.css. A CSS module rewrites the keyframe name it
+   sees in an `animation` shorthand to a scoped one, so a module referring to a
+   globally declared keyframe silently animates nothing at all. */
+@keyframes riseIn {
+  from { opacity: 0; transform: translateY(7px); }
+  to   { opacity: 1; transform: none; }
+}

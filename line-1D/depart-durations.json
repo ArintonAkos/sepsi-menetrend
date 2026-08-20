@@ -1,0 +1,50 @@
+{
+  "shape_id": "1D-depart",
+  "line": "1D",
+  "direction": "depart",
+  "profile": "mapbox/driving",
+  "note": "running time only; contains no waiting or timetable information",
+  "total_seconds": 1299,
+  "legs": [
+    {
+      "seconds": 85,
+      "metres": 437
+    },
+    {
+      "seconds": 89,
+      "metres": 590
+    },
+    {
+      "seconds": 107,
+      "metres": 645
+    },
+    {
+      "seconds": 125,
+      "metres": 581
+    },
+    {
+      "seconds": 156,
+      "metres": 658
+    },
+    {
+      "seconds": 89,
+      "metres": 419
+    },
+    {
+      "seconds": 141,
+      "metres": 931
+    },
+    {
+      "seconds": 126,
+      "metres": 725
+    },
+    {
+      "seconds": 213,
+      "metres": 2144
+    },
+    {
+      "seconds": 168,
+      "metres": 420
+    }
+  ]
+}

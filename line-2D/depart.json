@@ -1,0 +1,167 @@
+{
+  "line": "2D",
+  "direction": "depart",
+  "circular": false,
+  "closes_loop_at_start": false,
+  "headsign": {
+    "ro": "Str. Bartók Béla → Câmpul Frumos",
+    "hu": "Bartók Béla utca → Szépmező"
+  },
+  "source": {
+    "ro": "https://multitrans.ro/jarat-2d.html",
+    "hu": "https://multitrans.ro/jarat-2d-hu.html"
+  },
+  "stop_count": 15,
+  "stops": [
+    {
+      "stop_sequence": 1,
+      "name": {
+        "ro": "Str. Bartók Béla",
+        "hu": "Bartók Béla utca"
+      },
+      "stop_lat": 45.8609,
+      "stop_lon": 25.7715,
+      "distance_to_next_m": 479
+    },
+    {
+      "stop_sequence": 2,
+      "name": {
+        "ro": "Str. Dealului",
+        "hu": "Domb utca"
+      },
+      "stop_lat": 45.8594,
+      "stop_lon": 25.776,
+      "distance_to_next_m": 657
+    },
+    {
+      "stop_sequence": 3,
+      "name": {
+        "ro": "Institutul de Proiectări",
+        "hu": "Tervező Intézet"
+      },
+      "stop_lat": 45.8616,
+      "stop_lon": 25.7822,
+      "distance_to_next_m": 618
+    },
+    {
+      "stop_sequence": 4,
+      "name": {
+        "ro": "Casa cu Arcade",
+        "hu": "Lábasház"
+      },
+      "stop_lat": 45.8636,
+      "stop_lon": 25.7866,
+      "distance_to_next_m": 1061
+    },
+    {
+      "stop_sequence": 5,
+      "name": {
+        "ro": "Lic. Plugor Sándor",
+        "hu": "Plugor Sándor Líceum"
+      },
+      "stop_lat": 45.8681,
+      "stop_lon": 25.7874,
+      "distance_to_next_m": 410
+    },
+    {
+      "stop_sequence": 6,
+      "name": {
+        "ro": "Piața Kálvin",
+        "hu": "Kálvin tér"
+      },
+      "stop_lat": 45.8709,
+      "stop_lon": 25.7885,
+      "distance_to_next_m": 481
+    },
+    {
+      "stop_sequence": 7,
+      "name": {
+        "ro": "Cartierul Ciucului",
+        "hu": "Csíki negyed"
+      },
+      "stop_lat": 45.8739,
+      "stop_lon": 25.792,
+      "distance_to_next_m": 493
+    },
+    {
+      "stop_sequence": 8,
+      "name": {
+        "ro": "Str. Ciucului 2",
+        "hu": "Csíki utca 2"
+      },
+      "stop_lat": 45.872,
+      "stop_lon": 25.7957,
+      "distance_to_next_m": 280
+    },
+    {
+      "stop_sequence": 9,
+      "name": {
+        "ro": "Str. Ciucului 1",
+        "hu": "Csíki utca 1"
+      },
+      "stop_lat": 45.8693,
+      "stop_lon": 25.7931,
+      "distance_to_next_m": 417
+    },
+    {
+      "stop_sequence": 10,
+      "name": {
+        "ro": "Debren",
+        "hu": "Debren"
+      },
+      "stop_lat": 45.8671,
+      "stop_lon": 25.7958,
+      "distance_to_next_m": 514
+    },
+    {
+      "stop_sequence": 11,
+      "name": {
+        "ro": "Str. Sporturilor",
+        "hu": "Sport utca"
+      },
+      "stop_lat": 45.864,
+      "stop_lon": 25.7983,
+      "distance_to_next_m": 961
+    },
+    {
+      "stop_sequence": 12,
+      "name": {
+        "ro": "Gara CFR",
+        "hu": "Vasútállomás"
+      },
+      "stop_lat": 45.8631,
+      "stop_lon": 25.8101,
+      "distance_to_next_m": 734
+    },
+    {
+      "stop_sequence": 13,
+      "name": {
+        "ro": "Autoliv",
+        "hu": "Autoliv"
+      },
+      "stop_lat": 45.8658,
+      "stop_lon": 25.8153,
+      "distance_to_next_m": 2133
+    },
+    {
+      "stop_sequence": 14,
+      "name": {
+        "ro": "Câmpul Frumos",
+        "hu": "Szépmező"
+      },
+      "stop_lat": 45.8619,
+      "stop_lon": 25.841,
+      "distance_to_next_m": 493
+    },
+    {
+      "stop_sequence": 15,
+      "name": {
+        "ro": "Multi-Trans",
+        "hu": "Multi-Trans"
+      },
+      "stop_lat": 45.8593,
+      "stop_lon": 25.8389,
+      "distance_to_next_m": null
+    }
+  ]
+}

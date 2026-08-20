@@ -1,0 +1,117 @@
+{
+  "line": "9",
+  "direction": "return",
+  "circular": false,
+  "closes_loop_at_start": false,
+  "headsign": {
+    "ro": "Șugaș Băi → Gara CFR",
+    "hu": "Sugásfürdő → Vasútállomás"
+  },
+  "source": {
+    "ro": "https://multitrans.ro/jarat-9-retur.html",
+    "hu": "https://multitrans.ro/jarat-9-retur-hu.html"
+  },
+  "stop_count": 10,
+  "stops": [
+    {
+      "stop_sequence": 1,
+      "name": {
+        "ro": "Șugaș Băi",
+        "hu": "Sugásfürdő"
+      },
+      "stop_lat": 45.8967,
+      "stop_lon": 25.7071,
+      "distance_to_next_m": 4950
+    },
+    {
+      "stop_sequence": 2,
+      "name": {
+        "ro": "Fântâna Honvéd",
+        "hu": "Honvéd kút"
+      },
+      "stop_lat": 45.8723,
+      "stop_lon": 25.7412,
+      "distance_to_next_m": 2748
+    },
+    {
+      "stop_sequence": 3,
+      "name": {
+        "ro": "Str. Borviz",
+        "hu": "Borvíz utca"
+      },
+      "stop_lat": 45.8744,
+      "stop_lon": 25.7753,
+      "distance_to_next_m": 1248
+    },
+    {
+      "stop_sequence": 4,
+      "name": {
+        "ro": "Piața Kálvin",
+        "hu": "Kálvin tér"
+      },
+      "stop_lat": 45.8709,
+      "stop_lon": 25.7885,
+      "distance_to_next_m": 279
+    },
+    {
+      "stop_sequence": 5,
+      "name": {
+        "ro": "Lic. Plugor Sándor",
+        "hu": "Plugor Sándor Líceum"
+      },
+      "stop_lat": 45.8689,
+      "stop_lon": 25.7868,
+      "distance_to_next_m": 582
+    },
+    {
+      "stop_sequence": 6,
+      "name": {
+        "ro": "Str. Gábor Áron",
+        "hu": "Gábor Áron utca"
+      },
+      "stop_lat": 45.8648,
+      "stop_lon": 25.7851,
+      "distance_to_next_m": 589
+    },
+    {
+      "stop_sequence": 7,
+      "name": {
+        "ro": "Casa cu Arcade",
+        "hu": "Lábasház"
+      },
+      "stop_lat": 45.8636,
+      "stop_lon": 25.7866,
+      "distance_to_next_m": 670
+    },
+    {
+      "stop_sequence": 8,
+      "name": {
+        "ro": "Biserica Reformată",
+        "hu": "Református Templom"
+      },
+      "stop_lat": 45.8638,
+      "stop_lon": 25.7931,
+      "distance_to_next_m": 429
+    },
+    {
+      "stop_sequence": 9,
+      "name": {
+        "ro": "Str. Sporturilor",
+        "hu": "Sport utca"
+      },
+      "stop_lat": 45.864,
+      "stop_lon": 25.7983,
+      "distance_to_next_m": 961
+    },
+    {
+      "stop_sequence": 10,
+      "name": {
+        "ro": "Gara CFR",
+        "hu": "Vasútállomás"
+      },
+      "stop_lat": 45.8631,
+      "stop_lon": 25.8101,
+      "distance_to_next_m": null
+    }
+  ]
+}

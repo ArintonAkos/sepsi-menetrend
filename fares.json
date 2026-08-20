@@ -1,0 +1,155 @@
+{
+  "sources": {
+    "confirmed": "Operator, via the project owner: the city 24pay ticket is valid 50 minutes, the Arcuș one 60 minutes and costs more.",
+    "tariff_page": "https://multitrans.ro/tarife.html — dated 01.02.2026 but OUT OF DATE: it still prints 45 minutes for the city ticket. Prices and passes below are taken from it and have not been re-confirmed.",
+    "arcus": "Multi-Trans announcement: the 24pay ticket now covers the Arcuș services, 4 lei / 60 minutes."
+  },
+  "currency": "RON",
+  "valid_from": "2026-02-01",
+  "note": "Arcuș is a separate commune, so line 10 crosses a fare boundary. Validity comes from the operator directly; the prices still come from the tariff page, which was wrong about the validity and may be stale about the amounts too. Șugaș Băi is treated as city because the resort belongs to Sfântu Gheorghe, unconfirmed.",
+  "zones": {
+    "arcus": [
+      "Centru Arcuș",
+      "Biserica Reformată Arcuș",
+      "Primăria Arcuș",
+      "Castelul Szentkereszty"
+    ]
+  },
+  "tickets": [
+    {
+      "id": "city_24pay",
+      "zone": "city",
+      "price": 2.5,
+      "minutes": 50,
+      "media": "app",
+      "name": {
+        "ro": "Bilet valabil 50 minute prin aplicația 24pay",
+        "hu": "50 percig érvényes jegy a 24pay alkalmazásban"
+      },
+      "confirmed": "validity"
+    },
+    {
+      "id": "city_machine",
+      "zone": "city",
+      "price": 2.5,
+      "journeys": 1,
+      "media": "machine",
+      "name": {
+        "ro": "Bilet o călătorie, procurat prin automate de bilete",
+        "hu": "Egy utazásra szóló jegy, jegyautomatából"
+      },
+      "confirmed": "no — from the out-of-date tariff page"
+    },
+    {
+      "id": "city_two",
+      "zone": "city",
+      "price": 5.0,
+      "journeys": 2,
+      "media": "machine",
+      "name": {
+        "ro": "Bilet 2 călătorii",
+        "hu": "Kétutazásos jegy"
+      },
+      "confirmed": "no — from the out-of-date tariff page"
+    },
+    {
+      "id": "city_driver",
+      "zone": "city",
+      "price": 5.0,
+      "journeys": 1,
+      "media": "cash",
+      "name": {
+        "ro": "Bilet de la conducătorul autobuzului, o călătorie",
+        "hu": "Jegy a buszvezetőtől, egy utazásra"
+      },
+      "confirmed": "no — from the out-of-date tariff page"
+    },
+    {
+      "id": "arcus_24pay",
+      "zone": "arcus",
+      "price": 4.0,
+      "minutes": 60,
+      "media": "app",
+      "name": {
+        "ro": "Bilet valabil 60 minute prin aplicația 24pay, cursele spre Arcuș",
+        "hu": "60 percig érvényes jegy a 24pay alkalmazásban, árkosi járatokra"
+      },
+      "confirmed": "validity and price"
+    }
+  ],
+  "passes": [
+    {
+      "id": "monthly_all",
+      "price": 84.0,
+      "days": 30,
+      "name": {
+        "ro": "Abonament lunar toate liniile",
+        "hu": "Havi bérlet, minden vonalra"
+      },
+      "confirmed": "no — from the out-of-date tariff page"
+    },
+    {
+      "id": "monthly_pension_75",
+      "price": 21.0,
+      "days": 30,
+      "name": {
+        "ro": "Abonament lunar, pensii 1601–2000 lei (reducere 75%)",
+        "hu": "Havi bérlet, 1601–2000 lej nyugdíj (75% kedvezmény)"
+      },
+      "confirmed": "no — from the out-of-date tariff page"
+    },
+    {
+      "id": "monthly_pension_50",
+      "price": 42.0,
+      "days": 30,
+      "name": {
+        "ro": "Abonament lunar, pensii 2001–2400 lei (reducere 50%)",
+        "hu": "Havi bérlet, 2001–2400 lej nyugdíj (50% kedvezmény)"
+      },
+      "confirmed": "no — from the out-of-date tariff page"
+    },
+    {
+      "id": "monthly_pension_free",
+      "price": 0.0,
+      "days": 30,
+      "name": {
+        "ro": "Abonament gratuit, pensii până la 1600 lei",
+        "hu": "Ingyenes bérlet, 1600 lejig terjedő nyugdíj"
+      },
+      "confirmed": "no — from the out-of-date tariff page"
+    },
+    {
+      "id": "monthly_student_free",
+      "price": 0.0,
+      "days": 30,
+      "name": {
+        "ro": "Abonament gratuit pentru elevii din municipiul Sfântu Gheorghe",
+        "hu": "Ingyenes bérlet a sepsiszentgyörgyi tanulóknak"
+      },
+      "confirmed": "no — from the out-of-date tariff page"
+    }
+  ],
+  "media": {
+    "app": {
+      "gtfs_type": 4,
+      "name": {
+        "ro": "Aplicația 24pay",
+        "hu": "24pay alkalmazás"
+      }
+    },
+    "machine": {
+      "gtfs_type": 1,
+      "name": {
+        "ro": "Automat de bilete",
+        "hu": "Jegyautomata"
+      }
+    },
+    "cash": {
+      "gtfs_type": 0,
+      "name": {
+        "ro": "Numerar la șofer",
+        "hu": "Készpénz a sofőrnél"
+      }
+    }
+  }
+}

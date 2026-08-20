@@ -1,0 +1,337 @@
+{
+  "line": "4",
+  "direction": "depart",
+  "circular": true,
+  "closes_loop_at_start": true,
+  "headsign": {
+    "ro": "Str. Țigaretei – traseu circular",
+    "hu": "Cigaretta utca – körjárat"
+  },
+  "source": {
+    "ro": "https://multitrans.ro/jarat-4.html",
+    "hu": "https://multitrans.ro/jarat-4-hu.html"
+  },
+  "stop_count": 32,
+  "stops": [
+    {
+      "stop_sequence": 1,
+      "name": {
+        "ro": "Str. Țigaretei 1",
+        "hu": "Cigaretta utca 1"
+      },
+      "stop_lat": 45.8566,
+      "stop_lon": 25.7821,
+      "distance_to_next_m": 312
+    },
+    {
+      "stop_sequence": 2,
+      "name": {
+        "ro": "Str. Țigaretei 2",
+        "hu": "Cigaretta utca 2"
+      },
+      "stop_lat": 45.8551,
+      "stop_lon": 25.7851,
+      "distance_to_next_m": 411
+    },
+    {
+      "stop_sequence": 3,
+      "name": {
+        "ro": "Str. Țigaretei 3",
+        "hu": "Cigaretta utca 3"
+      },
+      "stop_lat": 45.8543,
+      "stop_lon": 25.7903,
+      "distance_to_next_m": 261
+    },
+    {
+      "stop_sequence": 4,
+      "name": {
+        "ro": "Comfort Residence",
+        "hu": "Comfort Residence"
+      },
+      "stop_lat": 45.8548,
+      "stop_lon": 25.7931,
+      "distance_to_next_m": 138
+    },
+    {
+      "stop_sequence": 5,
+      "name": {
+        "ro": "Str. Fabricii 1",
+        "hu": "Gyár utca 1"
+      },
+      "stop_lat": 45.8557,
+      "stop_lon": 25.7932,
+      "distance_to_next_m": 726
+    },
+    {
+      "stop_sequence": 6,
+      "name": {
+        "ro": "Str. Fabricii 2",
+        "hu": "Gyár utca 2"
+      },
+      "stop_lat": 45.8596,
+      "stop_lon": 25.7858,
+      "distance_to_next_m": 250
+    },
+    {
+      "stop_sequence": 7,
+      "name": {
+        "ro": "Col. Mihai Viteazul",
+        "hu": "Vitéz Mihály Líceum"
+      },
+      "stop_lat": 45.861,
+      "stop_lon": 25.7855,
+      "distance_to_next_m": 295
+    },
+    {
+      "stop_sequence": 8,
+      "name": {
+        "ro": "Casa cu Arcade",
+        "hu": "Lábasház"
+      },
+      "stop_lat": 45.8636,
+      "stop_lon": 25.7866,
+      "distance_to_next_m": 79
+    },
+    {
+      "stop_sequence": 9,
+      "name": {
+        "ro": "Parcul Elisabeta",
+        "hu": "Erzsébet Park"
+      },
+      "stop_lat": 45.8643,
+      "stop_lon": 25.7866,
+      "distance_to_next_m": 590
+    },
+    {
+      "stop_sequence": 10,
+      "name": {
+        "ro": "Biserica Reformată",
+        "hu": "Református Templom"
+      },
+      "stop_lat": 45.8638,
+      "stop_lon": 25.7931,
+      "distance_to_next_m": 429
+    },
+    {
+      "stop_sequence": 11,
+      "name": {
+        "ro": "Str. Sporturilor",
+        "hu": "Sport utca"
+      },
+      "stop_lat": 45.864,
+      "stop_lon": 25.7983,
+      "distance_to_next_m": 961
+    },
+    {
+      "stop_sequence": 12,
+      "name": {
+        "ro": "Gara CFR",
+        "hu": "Vasútállomás"
+      },
+      "stop_lat": 45.8631,
+      "stop_lon": 25.8101,
+      "distance_to_next_m": 1068
+    },
+    {
+      "stop_sequence": 13,
+      "name": {
+        "ro": "Calea Brașovului 1",
+        "hu": "Brassói út 1"
+      },
+      "stop_lat": 45.857,
+      "stop_lon": 25.8069,
+      "distance_to_next_m": 48
+    },
+    {
+      "stop_sequence": 14,
+      "name": {
+        "ro": "Terminal",
+        "hu": "Terminál"
+      },
+      "stop_lat": 45.8568,
+      "stop_lon": 25.8066,
+      "distance_to_next_m": 175
+    },
+    {
+      "stop_sequence": 15,
+      "name": {
+        "ro": "Str. Constructorilor 1",
+        "hu": "Építők útja 1"
+      },
+      "stop_lat": 45.856,
+      "stop_lon": 25.8085,
+      "distance_to_next_m": 483
+    },
+    {
+      "stop_sequence": 16,
+      "name": {
+        "ro": "Str. Constructorilor 2",
+        "hu": "Építők útja 2"
+      },
+      "stop_lat": 45.8557,
+      "stop_lon": 25.8147,
+      "distance_to_next_m": 528
+    },
+    {
+      "stop_sequence": 17,
+      "name": {
+        "ro": "Str. Constructorilor 3",
+        "hu": "Építők útja 3"
+      },
+      "stop_lat": 45.8585,
+      "stop_lon": 25.8183,
+      "distance_to_next_m": 2583
+    },
+    {
+      "stop_sequence": 18,
+      "name": {
+        "ro": "Câmpul Frumos",
+        "hu": "Szépmező"
+      },
+      "stop_lat": 45.8619,
+      "stop_lon": 25.841,
+      "distance_to_next_m": 493
+    },
+    {
+      "stop_sequence": 19,
+      "name": {
+        "ro": "Multi-Trans",
+        "hu": "Multi-Trans"
+      },
+      "stop_lat": 45.8593,
+      "stop_lon": 25.8389,
+      "distance_to_next_m": 431
+    },
+    {
+      "stop_sequence": 20,
+      "name": {
+        "ro": "Câmpul Frumos",
+        "hu": "Szépmező"
+      },
+      "stop_lat": 45.8619,
+      "stop_lon": 25.841,
+      "distance_to_next_m": 2679
+    },
+    {
+      "stop_sequence": 21,
+      "name": {
+        "ro": "Str. Constructorilor 3",
+        "hu": "Építők útja 3"
+      },
+      "stop_lat": 45.8585,
+      "stop_lon": 25.8183,
+      "distance_to_next_m": 453
+    },
+    {
+      "stop_sequence": 22,
+      "name": {
+        "ro": "Str. Constructorilor 2",
+        "hu": "Építők útja 2"
+      },
+      "stop_lat": 45.8559,
+      "stop_lon": 25.8148,
+      "distance_to_next_m": 501
+    },
+    {
+      "stop_sequence": 23,
+      "name": {
+        "ro": "Str. Constructorilor 1",
+        "hu": "Építők útja 1"
+      },
+      "stop_lat": 45.8562,
+      "stop_lon": 25.8083,
+      "distance_to_next_m": 189
+    },
+    {
+      "stop_sequence": 24,
+      "name": {
+        "ro": "Calea Brașovului 1",
+        "hu": "Brassói út 1"
+      },
+      "stop_lat": 45.8571,
+      "stop_lon": 25.8072,
+      "distance_to_next_m": 962
+    },
+    {
+      "stop_sequence": 25,
+      "name": {
+        "ro": "Gara CFR",
+        "hu": "Vasútállomás"
+      },
+      "stop_lat": 45.8631,
+      "stop_lon": 25.8101,
+      "distance_to_next_m": 940
+    },
+    {
+      "stop_sequence": 26,
+      "name": {
+        "ro": "Str. Sporturilor",
+        "hu": "Sport utca"
+      },
+      "stop_lat": 45.8641,
+      "stop_lon": 25.7986,
+      "distance_to_next_m": 556
+    },
+    {
+      "stop_sequence": 27,
+      "name": {
+        "ro": "Biserica Reformată",
+        "hu": "Református Templom"
+      },
+      "stop_lat": 45.8643,
+      "stop_lon": 25.7919,
+      "distance_to_next_m": 521
+    },
+    {
+      "stop_sequence": 28,
+      "name": {
+        "ro": "Parcul Elisabeta",
+        "hu": "Erzsébet Park"
+      },
+      "stop_lat": 45.8643,
+      "stop_lon": 25.7866,
+      "distance_to_next_m": 519
+    },
+    {
+      "stop_sequence": 29,
+      "name": {
+        "ro": "Col. Mihai Viteazul",
+        "hu": "Vitéz Mihály Líceum"
+      },
+      "stop_lat": 45.8601,
+      "stop_lon": 25.7842,
+      "distance_to_next_m": 191
+    },
+    {
+      "stop_sequence": 30,
+      "name": {
+        "ro": "Fabrica de Țigarete",
+        "hu": "Cigarettagyár"
+      },
+      "stop_lat": 45.8589,
+      "stop_lon": 25.7826,
+      "distance_to_next_m": 64
+    },
+    {
+      "stop_sequence": 31,
+      "name": {
+        "ro": "Fabrica de Țigarete",
+        "hu": "Cigarettagyár"
+      },
+      "stop_lat": 45.8584,
+      "stop_lon": 25.7822,
+      "distance_to_next_m": 290
+    },
+    {
+      "stop_sequence": 32,
+      "name": {
+        "ro": "Str. Țigaretei 1",
+        "hu": "Cigaretta utca 1"
+      },
+      "stop_lat": 45.8566,
+      "stop_lon": 25.7821,
+      "distance_to_next_m": null
+    }
+  ]
+}

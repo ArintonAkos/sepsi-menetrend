@@ -1,0 +1,82 @@
+{
+  "shape_id": "2D-return",
+  "line": "2D",
+  "direction": "return",
+  "profile": "mapbox/driving",
+  "note": "running time only; contains no waiting or timetable information",
+  "total_seconds": 1799,
+  "legs": [
+    {
+      "seconds": 165,
+      "metres": 420
+    },
+    {
+      "seconds": 213,
+      "metres": 2145
+    },
+    {
+      "seconds": 134,
+      "metres": 747
+    },
+    {
+      "seconds": 149,
+      "metres": 913
+    },
+    {
+      "seconds": 113,
+      "metres": 482
+    },
+    {
+      "seconds": 91,
+      "metres": 394
+    },
+    {
+      "seconds": 57,
+      "metres": 280
+    },
+    {
+      "seconds": 76,
+      "metres": 417
+    },
+    {
+      "seconds": 98,
+      "metres": 529
+    },
+    {
+      "seconds": 63,
+      "metres": 285
+    },
+    {
+      "seconds": 114,
+      "metres": 575
+    },
+    {
+      "seconds": 78,
+      "metres": 456
+    },
+    {
+      "seconds": 99,
+      "metres": 555
+    },
+    {
+      "seconds": 94,
+      "metres": 574
+    },
+    {
+      "seconds": 65,
+      "metres": 364
+    },
+    {
+      "seconds": 51,
+      "metres": 243
+    },
+    {
+      "seconds": 72,
+      "metres": 371
+    },
+    {
+      "seconds": 67,
+      "metres": 341
+    }
+  ]
+}

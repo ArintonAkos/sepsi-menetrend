@@ -1,0 +1,66 @@
+{
+  "shape_id": "5D-depart",
+  "line": "5D",
+  "direction": "depart",
+  "profile": "mapbox/driving",
+  "note": "running time only; contains no waiting or timetable information",
+  "total_seconds": 1497,
+  "legs": [
+    {
+      "seconds": 57,
+      "metres": 388
+    },
+    {
+      "seconds": 47,
+      "metres": 263
+    },
+    {
+      "seconds": 60,
+      "metres": 393
+    },
+    {
+      "seconds": 90,
+      "metres": 384
+    },
+    {
+      "seconds": 88,
+      "metres": 302
+    },
+    {
+      "seconds": 140,
+      "metres": 551
+    },
+    {
+      "seconds": 108,
+      "metres": 518
+    },
+    {
+      "seconds": 93,
+      "metres": 471
+    },
+    {
+      "seconds": 58,
+      "metres": 236
+    },
+    {
+      "seconds": 60,
+      "metres": 241
+    },
+    {
+      "seconds": 189,
+      "metres": 1031
+    },
+    {
+      "seconds": 126,
+      "metres": 725
+    },
+    {
+      "seconds": 213,
+      "metres": 2144
+    },
+    {
+      "seconds": 168,
+      "metres": 420
+    }
+  ]
+}
