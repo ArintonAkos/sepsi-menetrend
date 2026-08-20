@@ -17,6 +17,7 @@ that do not exist in the per-line files:
 """
 
 import colorsys
+import os
 import json
 import math
 import re
@@ -26,10 +27,12 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent
 TEMPLATE = ROOT / "map.template.html"
 OUTPUT = ROOT / "map.html"
-MAPBOX_TOKEN = (
-    "REPLACE_WITH_YOUR_OWN_MAPBOX_TOKEN"
-    "."
-)
+# Read, never written down. A Mapbox pk token is public in the sense that it
+# ships to the browser, but it still bills an account - and the one that used to
+# sit here belonged to somebody else's. Set MAPBOX_TOKEN in the environment to
+# build a map.html that loads tiles; without it the page renders everything
+# except the basemap, which is enough to check the routes.
+MAPBOX_TOKEN = os.environ.get("MAPBOX_TOKEN", "")
 
 # Furthest apart two differently-named stops can be and still count as a place
 # you would walk between mid-journey.
