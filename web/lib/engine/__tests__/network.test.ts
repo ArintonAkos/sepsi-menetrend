@@ -419,6 +419,33 @@ describe("the real network", () => {
     expect(checked, "no pair produced enough options to compare").toBeGreaterThan(2);
   });
 
+  it("can change buses and still ride to the nearest stop", () => {
+    /* Reported from the live site: line 1 was two minutes away and the 6 stops
+       in front of Kaufland, so why was there no way to change between them?
+       Because one table answered two questions. RAPTOR prunes with the best
+       arrival seen at a stop across every round, and it was also using that
+       table to decide what could be built - so a two-ride chain could not end
+       at a stop a one-ride chain had already reached no later. The change was
+       either dropped entirely or left ending somewhere else with a ten-minute
+       walk, while the same bus carried on to a stop two minutes from the door.
+       The arrival was no better; the journey was. */
+    const from: LngLat = [25.7885, 45.8605];       // by the stadium
+    const to: LngLat = [25.802047, 45.869763];     // Kaufland
+    const journeys = plan(ctx, { from, to, time: 15 * 60 + 21, service: "weekday",
+                                 mode: "departAt", walkAversion: 1 }, 8);
+    const changing = journeys.filter((j) => rides(j).length > 1);
+    expect(changing.length, "not one itinerary with a change was offered")
+      .toBeGreaterThan(0);
+
+    for (const j of changing) {
+      const last = [...j.legs].reverse().find((l) => l.kind === "ride") as RideLeg;
+      const pattern = net.patterns.find((p) => p.id === last.patternId)!;
+      const off = net.stops.find((s) => s.id === pattern.stopIds[last.toIndex])!;
+      expect(metres(off.at, to),
+             `changed buses and then walked from ${off.name.ro}`).toBeLessThan(250);
+    }
+  });
+
   it("finds stops near the middle of town", () => {
     expect(stopsNear(ctx, [25.7876, 45.8636], 10).length).toBeGreaterThan(3);
   });

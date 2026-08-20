@@ -152,13 +152,24 @@ function raptor(ctx: PlanContext, origin: LngLat, departAfter: Minute, service: 
         const sid = p.stopIds[i];
         if (trip) {
           const arrival = trip.start + p.offsets[i];
-          if (arrival < (best.get(sid) ?? Infinity)) {
-            best.set(sid, arrival);
+          /* Two different questions, and they were being answered by one test.
+             `best` decides whether this is worth exploring further; the round's
+             own map decides what can be built from it. Tying them together
+             meant a two-ride chain could not end at a stop a one-ride chain had
+             already reached no later - so a rider who changed onto the 6 was
+             put off it early and left with a ten-minute walk, while the same
+             bus carried on to a stop two minutes from the door. The arrival was
+             no better, but the journey was, and it could not be expressed. */
+          const already = here.get(sid);
+          if (!already || arrival < already.arrival) {
             here.set(sid, {
               arrival, prev: p.stopIds[boardIndex], round: k,
               hop: { kind: "ride", patternId, trip, fromIndex: boardIndex, toIndex: i },
             });
-            improved.add(sid);
+          }
+          if (arrival < (best.get(sid) ?? Infinity)) {
+            best.set(sid, arrival);
+            improved.add(sid);      // only a genuine gain is worth expanding
           }
         }
         // can we board here, or catch an earlier trip than the one we are on?
