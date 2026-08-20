@@ -370,10 +370,25 @@ const signature = (ctx: PlanContext, j: Journey) =>
   [j.depart, j.arrive,
    j.legs.filter((l): l is RideLeg => l.kind === "ride").map((l) => l.lineId).join(">")].join("|");
 
+/** What a journey costs the person taking it, in minutes they mind.
+ *
+ *  The slider names a trade - sooner against less walking - so it has to move
+ *  both sides of it. Scaling only the walking term left the far end unable to
+ *  win an argument: a minute on foot was worth two and a half, but a bus half
+ *  an hour later still cost a full thirty, so the quicker itinerary came first
+ *  wherever the slider was put. At "less walking" a third of all queries still
+ *  led with something that walked further than an alternative on the same list.
+ *
+ *  Time never falls to nothing. Someone who would rather not walk still would
+ *  rather not wait an hour, and a slider that ignored the clock entirely would
+ *  answer a question nobody asked.
+ */
 export function generalisedCost(j: Journey, req: PlanRequest): number {
-  const walkWeight = 0.3 + req.walkAversion * 2.2;
+  const rather = req.walkAversion;              // 0 = get me there, 1 = spare my legs
+  const timeWeight = 1 - rather * 0.85;
+  const walkWeight = 0.3 + rather * 4.7;
   const spent = req.mode === "departAt" ? j.arrive - req.time : req.time - j.depart;
-  return spent + j.walkMinutes * walkWeight;
+  return spent * timeWeight + j.walkMinutes * walkWeight;
 }
 
 /** Drop journeys that another one beats on every count.

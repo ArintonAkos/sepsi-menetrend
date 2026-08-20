@@ -379,6 +379,46 @@ describe("the real network", () => {
     }
   });
 
+  it("lets the slider actually win the argument it names", () => {
+    /* The slider trades sooner against less walking, so it has to move both
+       sides. Scaling only the walking term left the far end powerless: a minute
+       on foot was worth two and a half, but a bus half an hour later still cost
+       a full thirty, so the quicker itinerary led the list wherever the slider
+       was put. Reported from the live site - the top result walked thirteen
+       minutes with two changes while a direct one on the same list walked
+       eight. */
+    /* Pairs where the old formula demonstrably misordered: it led with six or
+       seven minutes on foot when two were on the same list, a quarter of an
+       hour later at worst. */
+    const pairs: Array<[string, string]> = [
+      ["Arena Sepsi", "B-dul Grigore Bălan 1"], ["Arena Sepsi", "Col. Mihai Viteazul"],
+      ["Arena Sepsi", "Str. Dózsa György"], ["Arena Sepsi", "Str. Fabricii 2"],
+      ["Gara CFR", "Coșeni 2"], ["Șugaș Băi", "Str. Ciucului 1"],
+    ];
+    let checked = 0;
+    for (const [a, b] of pairs) {
+      const ask = (walkAversion: number): PlanRequest => ({
+        from: at(a), to: at(b), time: 15 * 60 + 8, service: "weekday",
+        mode: "departAt", walkAversion,
+      });
+      const easy = plan(ctx, ask(1), 8).filter((j) => rides(j).length);
+      const quick = plan(ctx, ask(0), 8).filter((j) => rides(j).length);
+      if (easy.length < 2 || quick.length < 2) continue;
+      checked++;
+
+      // at "spare my legs", nothing on the list may walk meaningfully less
+      for (const other of easy)
+        expect(other.walkMinutes, `${a}→${b}: led with ${easy[0].walkMinutes} min on `
+          + `foot when ${other.walkMinutes} was offered`)
+          .toBeGreaterThan(easy[0].walkMinutes - 3);
+
+      // and at the other end it still answers the question that end asks
+      expect(quick[0].arrive, `${a}→${b}: not the soonest arrival at "faster"`)
+        .toBe(Math.min(...quick.map((j) => j.arrive)));
+    }
+    expect(checked, "no pair produced enough options to compare").toBeGreaterThan(2);
+  });
+
   it("finds stops near the middle of town", () => {
     expect(stopsNear(ctx, [25.7876, 45.8636], 10).length).toBeGreaterThan(3);
   });
