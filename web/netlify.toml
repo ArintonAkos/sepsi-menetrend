@@ -8,6 +8,17 @@
   command = "npm run build"
   publish = "out"
 
+[build.environment]
+  # Pinned rather than inherited: a build that silently moves to a different
+  # major is a build that breaks on a Tuesday for no reason anyone can see.
+  NODE_VERSION = "22"
+
+# There is deliberately no @netlify/plugin-nextjs here. This is a plain static
+# export - `output: "export"` in next.config.ts - so the Next.js runtime has
+# nothing to run: left to install itself it looks for server routes that do not
+# exist and publishes a different directory from the one the build wrote.
+# If Netlify offers to add it during setup, decline.
+
 # The service worker decides when every other file is replaced. Cached even for
 # a minute, a stale one keeps handing out the old app long after a deploy - so
 # this is the one file that must always be fetched fresh.

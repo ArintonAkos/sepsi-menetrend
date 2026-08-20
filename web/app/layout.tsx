@@ -8,7 +8,7 @@ import ServiceWorker from "@/components/ServiceWorker";
  *  URL for the preview image, so this has to be set for a share to show
  *  anything at all. Override it at build time on the deploy that owns the
  *  domain, rather than hard-coding a host into the source. */
-const SITE = process.env.NEXT_PUBLIC_SITE_URL ?? "https://sepsibusz.netlify.app";
+const SITE = process.env.NEXT_PUBLIC_SITE_URL ?? "https://sepsi-menetrend.netlify.app";
 
 const TITLE = "Sepsi Menetrend";
 const DESCRIPTION =
