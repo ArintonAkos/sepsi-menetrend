@@ -160,7 +160,7 @@ describe("what gets deployed", () => {
     /* It decides when every other file is replaced. Held even briefly, a stale
        one keeps serving the old app long after a deploy. */
     const netlify = readFileSync(
-      resolve(import.meta.dirname, "../netlify.toml"), "utf8");
+      resolve(import.meta.dirname, "../../netlify.toml"), "utf8");
     const rule = /for = "\/sw\.js"[\s\S]*?Cache-Control = "([^"]+)"/.exec(netlify);
     expect(rule?.[1]).toMatch(/max-age=0/);
     expect(netlify).toMatch(/publish = "out"/);

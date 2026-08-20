@@ -1,5 +1,14 @@
 # Netlify deploy for the static export.
 #
+# This file has to sit at the repository root: Netlify looks for it there, and
+# only there, before it knows anything else about the project. `base` then
+# points it at the sub-directory the app actually lives in, and every path
+# below is relative to that - so `publish = "out"` means web/out.
+#
+# With this here, every field on Netlify's setup screen can be left empty.
+# Anything typed into that form overrides the file, which is how a deploy ends
+# up publishing a directory nobody chose.
+#
 # The build output is a plain directory of files; the only thing Netlify has to
 # get right is how long each kind of file may be held.
 
