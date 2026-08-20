@@ -99,16 +99,26 @@ interface Label { arrival: Minute; hop: Hop; prev: string | null; round: number 
 function raptor(ctx: PlanContext, origin: LngLat, departAfter: Minute, service: string,
                 allowed: Set<string> | undefined): Map<string, Label>[] {
   const rounds: Map<string, Label>[] = [new Map()];
+  /* Best arrival *by bus*. Deliberately not seeded with the walk from the
+     origin, though that is the textbook thing to do.
+     Pruning against those walk times is sound arithmetic and the wrong answer
+     here: this planner only ever returns journeys containing a ride, so a stop
+     you could stroll to by 00:45 had every bus to it discarded as "no
+     improvement" - and the rider was handed some worse itinerary that happened
+     to reach a different stop. Dr. Office to Kaufland was the case that showed
+     it: both kerbs at the far end sit exactly fifteen minutes' walk away, so
+     the 06:49 arrival was never recorded and the only surviving option rode ten
+     minutes further round the loop to land sixteen metres further from the
+     door. Walking really is better there - but that is an answer to offer, not
+     a reason to hide the buses. */
   const best = new Map<string, Minute>();
 
   for (const { stop, minutes, metres } of stopsNear(ctx, origin)) {
-    const arrival = departAfter + minutes;
     rounds[0].set(stop.id, {
-      arrival, prev: null, round: 0,
+      arrival: departAfter + minutes, prev: null, round: 0,
       hop: { kind: "walk", fromStopId: null, toStopId: stop.id, metres, minutes,
              path: [origin, stop.at] },
     });
-    best.set(stop.id, arrival);
   }
   let marked = new Set(rounds[0].keys());
 
@@ -263,13 +273,19 @@ function stayOn(ctx: PlanContext, chain: Hop[], destination: LngLat): Hop[] | nu
   if (!p) return null;
   const here = ctx.stops.get(p.stopIds[last.toIndex]);
   if (!here) return null;
+  /* Weighed, not just measured. Picking whichever later stop happens to be
+     nearest the door is how a rider ends up riding ten minutes further round a
+     loop to land sixteen metres closer - the minutes on the bus were never
+     counted against the metres saved. Both are minutes; compare them. */
+  const spend = (at: LngLat, extra: Minute) =>
+    extra + (metresBetween(at, destination) * DETOUR) / WALK_PACE;
   let best = last.toIndex;
-  let shortest = metresBetween(here.at, destination);
+  let cheapest = spend(here.at, 0);
   for (let i = last.toIndex + 1; i < p.stopIds.length; i++) {
     const stop = ctx.stops.get(p.stopIds[i]);
     if (!stop) continue;
-    const metres = metresBetween(stop.at, destination);
-    if (metres < shortest) { best = i; shortest = metres; }
+    const cost = spend(stop.at, p.offsets[i] - p.offsets[last.toIndex]);
+    if (cost < cheapest) { best = i; cheapest = cost; }
   }
   if (best === last.toIndex) return null;
   return [...chain.slice(0, -1), { ...last, toIndex: best }];

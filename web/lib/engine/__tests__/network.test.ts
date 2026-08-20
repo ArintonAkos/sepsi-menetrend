@@ -6,7 +6,8 @@ import { resolve } from "node:path";
 import { prepare, plan, stopsNear, nextDepartures, metresBetween as metres,
          type PlanContext } from "../plan";
 import { countTickets } from "../fares";
-import type { Network, PlanRequest, RideLeg, Stop } from "../types";
+import { formatHHMM } from "../time";
+import type { LngLat, Network, PlanRequest, RideLeg, Stop } from "../types";
 
 let net: Network, ctx: PlanContext, byName: Map<string, Stop>;
 
@@ -317,6 +318,58 @@ describe("the real network", () => {
                + `when ${later.name.ro} is ${minutes} min further on`)
           .toBeGreaterThan(walk - 100);
       }
+    }
+  });
+
+  it("does not ride past the door and come back to it", () => {
+    /* Dr. Office to Kaufland at half past midnight, reported from the live
+       site. Both kerbs at the far end are almost exactly fifteen minutes' walk
+       from the origin, so round 0 wrote them into the pruning table and every
+       bus arriving hours later counted as no improvement. The one itinerary
+       that survived rode ten minutes further round the loop - out to Sepsi
+       Arena and back - to reach the other kerb of a stop it had already passed,
+       sixteen metres further from the door. */
+    const from: LngLat = [25.792165, 45.864308];
+    const to: LngLat = [25.802047, 45.869763];
+    const five = plan(ctx, { from, to, time: 30, service: "weekday",
+                             mode: "departAt", walkAversion: 0 }, 8)
+      .find((j) => rides(j).some((r) => r.lineId === "5"));
+    expect(five, "no line 5 itinerary at all").toBeTruthy();
+    // it used to arrive at 07:01 having passed the same stop at 06:49
+    expect(formatHHMM(five!.arrive)).toBe("06:51");
+
+    const last = [...five!.legs].reverse().find((l) => l.kind === "ride") as RideLeg;
+    const pattern = net.patterns.find((p) => p.id === last.patternId)!;
+    const off = net.stops.find((s) => s.id === pattern.stopIds[last.toIndex])!;
+    const walk = metres(off.at, to);
+    for (let i = last.fromIndex + 1; i < last.toIndex; i++) {
+      const passed = net.stops.find((s) => s.id === pattern.stopIds[i])!;
+      const lost = pattern.offsets[last.toIndex] - pattern.offsets[i];
+      // staying on is only worth what it saves on foot; both sides are minutes
+      expect(metres(passed.at, to) + lost * 80,
+             `rode ${lost} min past ${passed.name.ro} to land at ${off.name.ro}`)
+        .toBeGreaterThan(walk);
+    }
+  });
+
+  it("offers the buses to a stop you could also have walked to", () => {
+    /* Pruning ride arrivals against the walk from the origin is correct
+       arithmetic and the wrong answer for a planner that only returns journeys
+       with a ride in them: it discards every bus and returns nothing, or
+       something worse that reaches a different stop. */
+    const from: LngLat = [25.792165, 45.864308];
+    // the precondition, asked of the planner rather than worked out by hand:
+    // these are the stops round 0 seeds, and so the ones the bug could hide
+    const seeded = new Set(stopsNear(ctx, from).map((n) => n.stop.id));
+    const inside = net.stops.filter((s) => seeded.has(s.id));
+    expect(inside.length, "no stop is walkable from here, so this proves nothing")
+      .toBeGreaterThan(5);
+
+    for (const stop of inside) {
+      const journeys = plan(ctx, { from, to: stop.at, time: 30, service: "weekday",
+                                   mode: "departAt", walkAversion: 0 }, 8);
+      expect(journeys.length, `no bus offered to ${stop.name.ro} (${stop.id})`)
+        .toBeGreaterThan(0);
     }
   });
 
