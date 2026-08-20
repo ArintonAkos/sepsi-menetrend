@@ -56,6 +56,10 @@ export default function JourneyDetail({
 
       <div className={styles.summary}>
         <div className={styles.modes}>
+          {/* an empty row of line badges reads as something failing to load */}
+          {rides.length === 0 && (
+            <span className={styles.afoot}><WalkIcon /> {t.noBusNeeded}</span>
+          )}
           {rides.map((r, i) => {
             const shade = shadeOf(lines.get(r.lineId), dark);
             return (

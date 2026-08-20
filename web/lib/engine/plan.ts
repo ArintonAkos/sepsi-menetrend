@@ -26,6 +26,10 @@ export const WALK_PACE = 80;
 export const DETOUR = 1.35;
 /** Furthest we will make someone walk to reach the first stop. */
 export const MAX_ACCESS_MINUTES: Minute = 15;
+/** Furthest a whole trip is worth suggesting on foot.
+ *  Past about three kilometres nobody opening a bus timetable wants to be told
+ *  to walk, and the suggestion stops being help and becomes noise. */
+export const MAX_DIRECT_WALK: Minute = 40;
 
 export interface PlanContext {
   net: Network;
@@ -391,6 +395,27 @@ function undominated(journeys: Journey[]): Journey[] {
         || other.walkMinutes < one.walkMinutes || other.transfers < one.transfers)));
 }
 
+/** Just walk.
+ *
+ *  Sometimes it is the answer, and until now the planner could not say so: it
+ *  only ever returned journeys with a bus in them, so a trip of one kilometre
+ *  at half past midnight came back as "wait four hours for the first bus".
+ *  Ranked against the rest on the same terms - the generalised cost already
+ *  weighs minutes walked against minutes saved - so it wins when it deserves to
+ *  and sits at the bottom when it does not.
+ */
+function onFootAlone(req: PlanRequest): Journey | null {
+  const metres = Math.round(metresBetween(req.from, req.to) * DETOUR);
+  const minutes = Math.max(1, Math.round(metres / WALK_PACE));
+  if (minutes > MAX_DIRECT_WALK) return null;
+  const depart = req.mode === "departAt" ? req.time : req.time - minutes;
+  return {
+    legs: [{ kind: "walk", fromStopId: null, toStopId: null, metres, minutes,
+             path: [req.from, req.to] }],
+    depart, arrive: depart + minutes, walkMinutes: minutes, transfers: 0,
+  };
+}
+
 export function plan(ctx: PlanContext, req: PlanRequest, limit = 8): Journey[] {
   const egressStops = new Map(
     stopsNear(ctx, req.to).map((e) => [e.stop.id, e]),
@@ -439,7 +464,11 @@ export function plan(ctx: PlanContext, req: PlanRequest, limit = 8): Journey[] {
     }
   }
 
+  /* Added after the sweep, not during it: it has no stop to be found at, and
+     it must not be dropped by a bus itinerary that happens to walk less. */
+  const afoot = onFootAlone(req);
   const all = undominated([...found.values()]);
+  if (afoot) all.push(afoot);
   all.sort((a, b) =>
     generalisedCost(a, req) - generalisedCost(b, req) ||
     (a.arrive - a.depart) - (b.arrive - b.depart));

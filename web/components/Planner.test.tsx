@@ -124,10 +124,12 @@ describe("Planner", () => {
   });
 
   it("says so plainly when the deadline cannot be met", async () => {
-    // asking to leave at any hour just finds the next bus, however far off, so
-    // the real empty case is an arrival deadline before the first service
+    /* Asking to leave at any hour just finds the next bus, however far off, and
+       anywhere within walking distance now gets an on-foot answer instead of
+       nothing. The genuinely empty case is a deadline before the first service
+       to somewhere too far to walk - Arcuș is five kilometres out. */
     const user = await setup();
-    await startPlanning(user);
+    await startPlanning(user, "Vasútállomás", "Centru Arcus");
     await user.click(screen.getByRole("button", { name: /Indulás/ }));
     await user.click(screen.getByRole("button", { name: "Érkezés ekkorra" }));
     fireEvent.change(screen.getByDisplayValue(/^\d{2}:\d{2}$/), { target: { value: "03:00" } });
@@ -397,6 +399,48 @@ describe("the itinerary markup", () => {
   });
 });
 
+describe("walking the whole way", () => {
+  it("is offered when there is no bus worth waiting for", async () => {
+    /* A kilometre at half past midnight used to come back as "wait four hours
+       for the first bus", because the planner could only answer with journeys
+       that had a bus in them. */
+    const user = await setup();
+    await startPlanning(user, "Vasútállomás", "Sepsi Aréna");
+    await user.click(screen.getByRole("button", { name: /Indulás|Érkezés/ }));
+    fireEvent.change(screen.getByDisplayValue(/^\d{2}:\d{2}$/), { target: { value: "00:30" } });
+    await user.keyboard("{Escape}");
+
+    const walk = await screen.findByText("végig gyalog");
+    const card = walk.closest("button")!;
+    expect(card.textContent).toMatch(/\d+\s*perc/);
+    // it is not dressed up as a bus: no line badge, no ticket
+    expect(card.querySelector("[class*='pill']")).toBeNull();
+    expect(card.textContent).not.toMatch(/lej/);
+  });
+
+  it("is not suggested for a distance nobody would walk", async () => {
+    const user = await setup();
+    await startPlanning(user, "Vasútállomás", "Centru Arcus");
+    await user.click(screen.getByRole("button", { name: /Indulás|Érkezés/ }));
+    fireEvent.change(screen.getByDisplayValue(/^\d{2}:\d{2}$/), { target: { value: "08:00" } });
+    await user.keyboard("{Escape}");
+    await screen.findAllByRole("button", { name: /perc/ });
+    expect(screen.queryByText("végig gyalog")).not.toBeInTheDocument();
+  });
+
+  it("opens as a walk, with the distance and no bus", async () => {
+    const user = await setup();
+    await startPlanning(user, "Vasútállomás", "Sepsi Aréna");
+    await user.click(screen.getByRole("button", { name: /Indulás|Érkezés/ }));
+    fireEvent.change(screen.getByDisplayValue(/^\d{2}:\d{2}$/), { target: { value: "00:30" } });
+    await user.keyboard("{Escape}");
+    await user.click((await screen.findByText("végig gyalog")).closest("button")!);
+    await screen.findByText("Az utad");
+    expect(screen.getByText("Busz nélkül")).toBeInTheDocument();
+    expect(document.body.textContent).toMatch(/\d+ m · \d+ perc gyaloglás/);
+  });
+});
+
 describe("the timetables", () => {
   it("opens on a line and gives the whole screen to it", async () => {
     /* A timetable is a document to read, not a control to work alongside the
@@ -498,8 +542,10 @@ describe("a shared link", () => {
     await setup();
     expect((screen.getByLabelText("Honnan") as HTMLInputElement).value).toBe("Vasútállomás");
     expect((screen.getByLabelText("Hová") as HTMLInputElement).value).toBe("Sepsi Aréna");
-    // and it plans, rather than just filling the boxes in
-    expect(await screen.findByRole("button", { name: /08:30/ })).toBeInTheDocument();
+    // and it plans, rather than just filling the boxes in. Named exactly: a
+    // journey that leaves at 08:30 now matches a loose /08:30/ too.
+    expect(await screen.findByRole("button", { name: /^Indulás 08:30$/ }))
+      .toBeInTheDocument();
   });
 
   it("keeps the query string out of the markup the server produces", () => {

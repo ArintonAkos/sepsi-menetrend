@@ -201,6 +201,12 @@ describe("the real network", () => {
       for (const j of plan(ctx, ask("Gara CFR", name))) {
         expect(j.arrive).toBeGreaterThan(j.depart);
         const legs = rides(j);
+        if (!legs.length) {
+          // walking the whole way is an answer too, and it has its own shape
+          expect(j.legs.every((l) => l.kind === "walk")).toBe(true);
+          expect(j.walkMinutes).toBe(j.arrive - j.depart);
+          continue;
+        }
         for (const r of legs) expect(r.alight).toBeGreaterThanOrEqual(r.board);
         for (let i = 1; i < legs.length; i++)
           expect(legs[i].board).toBeGreaterThanOrEqual(legs[i - 1].alight);

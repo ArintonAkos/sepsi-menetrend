@@ -81,7 +81,9 @@ export default function JourneyList({
                 {j === gentlest && j !== soonest && j !== shortest &&
                   <span className={styles.tag}>{t.leastWalking}</span>}
                 <span className={styles.tag}>
-                  {j.transfers === 0 ? t.direct : `${j.transfers} ${t.transfer}`}
+                  {/* "direct" is a claim about buses; with none, say what it is */}
+                  {!j.legs.some((l) => l.kind === "ride") ? t.onFootOnly
+                    : j.transfers === 0 ? t.direct : `${j.transfers} ${t.transfer}`}
                 </span>
               </div>
             </button>
