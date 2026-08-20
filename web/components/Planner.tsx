@@ -21,6 +21,8 @@ import { buildIndex } from "@/lib/engine/search";
 import { formatHHMM, minutesOfDay, serviceForDate } from "@/lib/engine/time";
 import { formatCoordinates, insideArea, reverse } from "@/lib/geocode";
 import { isStraightLine, routeOnFoot } from "@/lib/walking";
+import StopBoard from "./StopBoard";
+import Timetable from "./Timetable";
 import { Back, ShareIcon } from "./icons";
 import { decodeTrip, encodeTrip, shareLink } from "@/lib/share";
 import { useDismiss } from "./useDismiss";
@@ -134,6 +136,12 @@ export default function Planner({ network, places, reach, box, fares }: {
      exists, and a ref would not cause one. */
   const [hits, setHits] = useState<HTMLDivElement | null>(null);
   const [shareNote, setShareNote] = useState<string | null>(null);
+  /* Two ways in to the same data the planner already holds: one stop's board,
+     and the whole published timetable. Neither is part of planning a journey,
+     so neither touches the phase the panel is in. */
+  const [board, setBoard] = useState<{ stopId: string; anchor: HTMLElement | null } | null>(null);
+  const boardStop = board?.stopId || null;
+  const [timetableOpen, setTimetableOpen] = useState(false);
   const settingsRef = useRef<HTMLDivElement>(null);
   const closePanel = useCallback(() => setOpenPanel(null), []);
   useDismiss(openPanel !== null && openPanel !== "settings", closePanel, chipsRef, popRef);
@@ -370,6 +378,21 @@ export default function Planner({ network, places, reach, box, fares }: {
   const iso = new Date(date.getTime() - date.getTimezoneOffset() * 60000).toISOString().slice(0, 10);
   const isToday = new Date().toDateString() === date.toDateString();
 
+  if (timetableOpen) {
+    /* The whole screen, and nothing else on it. A timetable is a document to
+       read, not a control to operate alongside the map. */
+    return (
+      <Timetable network={network} ctx={ctx} lines={lineMap} stops={stops}
+                 lang={lang} t={t} onClose={() => setTimetableOpen(false)} />
+    );
+  }
+
+  const stopSheet = boardStop && stops.get(boardStop) ? (
+    <StopBoard stop={stops.get(boardStop)!} ctx={ctx} lines={lineMap}
+               service={serviceForDate(date)} now={minutesOfDay(new Date())}
+               lang={lang} t={t} onClose={() => setBoard(null)} />
+  ) : null;
+
   return (
     <div className={[
       styles.app,
@@ -518,10 +541,21 @@ export default function Planner({ network, places, reach, box, fares }: {
 
       </aside>
 
+      {stopSheet && (board!.anchor
+        ? createPortal(stopSheet, board!.anchor)
+        : asSheet(
+            <>
+              <div className={styles.scrim} onClick={() => setBoard(null)} aria-hidden />
+              <div className={styles.boardHolder}>{stopSheet}</div>
+            </>,
+          ))}
+
       <main className={styles.map}>
         <TransitMap network={network} patterns={patterns} lines={lineMap} lang={lang}
                     area={area} resizeKey={mapNudge}
                     covered={narrow && detail !== null ? drawer.height : 0}
+                    onStopPick={(stopId, anchor) =>
+                      setBoard(stopId ? { stopId, anchor } : null)}
                     journey={shown} visibleLines={visibleLines} dark={dark}
                     picking={picking !== null} onCentreChange={onCentreChange} />
 
@@ -557,6 +591,14 @@ export default function Planner({ network, places, reach, box, fares }: {
         )}
 
         <div className={styles.topRight} ref={gearRef}>
+          <button className={styles.round} aria-label={t.timetables}
+                  onClick={() => setTimetableOpen(true)}>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}
+                 strokeLinecap="round">
+              <rect x="3.5" y="4.5" width="17" height="16" rx="3" />
+              <path d="M3.5 9.5h17M8 3v3M16 3v3M8 13h3M8 17h3M14 13h2M14 17h2" />
+            </svg>
+          </button>
           {planning && (
             <button className={styles.round} aria-label={t.share} onClick={share}>
               <ShareIcon />
@@ -657,6 +699,11 @@ function useRoutedWalks(journey: Journey | null): Journey | null {
     if (!straight.length) return;
 
     const stop = new AbortController();
+    /* Long enough that running the pointer down the list costs nothing.
+       Hovering a card highlights it, and the highlighted journey is the one
+       drawn - so a 200ms wait meant sweeping past eight results fired up to
+       sixteen routing requests nobody asked for. Half a second only elapses
+       once the reader has actually stopped on something. */
     const timer = setTimeout(async () => {
       const found = await Promise.all(straight.map(({ leg }) => {
         const walk = leg as WalkLeg;
@@ -671,7 +718,7 @@ function useRoutedWalks(journey: Journey | null): Journey | null {
         legs[i] = { ...walk, path: path.path, metres: path.metres, minutes: path.minutes };
       });
       setRouted({ key, journey: { ...journey, legs } });
-    }, 200);
+    }, 550);
     return () => { clearTimeout(timer); stop.abort(); };
   }, [journey, key]);
 

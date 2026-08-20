@@ -6,3 +6,8 @@ web/.next/
 web/out/
 web/.env*
 !web/.env.local.example
+
+# Source artwork dropped in here while working. The logo actually used is the
+# derived web/public/aperta.png; the 1 MB original belongs to the Aperta Sync
+# repository, not to a bus timetable.
+Gemini_Generated_Image_*.jpeg

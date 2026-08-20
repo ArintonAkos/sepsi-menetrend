@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192" role="img"
+     aria-label="Sepsi Menetrend">
+  <!-- The same mark the installed app carries, redrawn as vectors so the tab,
+       the bookmark bar and a retina screen all get a sharp one. Colours and
+       proportions measured off icons/icon-192.png rather than guessed. -->
+  <rect width="192" height="192" fill="#2E3D14"/>
+  <rect x="40" y="44" width="112" height="80" rx="22" fill="#EFC913"/>
+  <g fill="#2E3D14">
+    <rect x="58" y="62" width="21" height="27" rx="8"/>
+    <rect x="85" y="62" width="21" height="27" rx="8"/>
+    <rect x="112" y="62" width="21" height="27" rx="8"/>
+  </g>
+  <circle cx="70" cy="128" r="13" fill="#FBFAF7"/>
+  <circle cx="122" cy="128" r="13" fill="#FBFAF7"/>
+</svg>

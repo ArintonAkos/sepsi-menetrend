@@ -121,3 +121,67 @@ describe("press feedback", () => {
     expect(rule?.[1]).toMatch(/translateY\(-50%\)/);
   });
 });
+
+describe("what gets deployed", () => {
+  const publicDir = (name: string) =>
+    readFileSync(resolve(import.meta.dirname, "../public", name));
+
+  it("ships no local development certificate", () => {
+    /* mkcert's root CA lived in public/ and was copied into every build.
+       It is not a secret - it is the public half - but serving a CA from your
+       own domain is an invitation to install it, and nothing about this site
+       needs one. */
+    expect(() => publicDir("rootCA.pem")).toThrow();
+  });
+
+  it("ships no leftovers from the project template", () => {
+    for (const junk of ["next.svg", "vercel.svg", "globe.svg", "window.svg", "file.svg"])
+      expect(() => publicDir(junk), `${junk} is still in public/`).toThrow();
+  });
+
+  it("has a preview image at the size every crawler expects", () => {
+    // 1200x630, read out of the PNG header rather than trusted
+    const png = publicDir("og.png");
+    expect(png.subarray(1, 4).toString()).toBe("PNG");
+    expect(png.readUInt32BE(16)).toBe(1200);
+    expect(png.readUInt32BE(20)).toBe(630);
+  });
+
+  it("points Open Graph at an absolute URL", () => {
+    // a relative image path shows nothing at all when the link is shared
+    const layout = readFileSync(
+      resolve(import.meta.dirname, "../app/layout.tsx"), "utf8");
+    expect(layout).toMatch(/metadataBase/);
+    expect(layout).toMatch(/openGraph/);
+    expect(layout).toMatch(/summary_large_image/);
+  });
+
+  it("never lets the service worker be cached", () => {
+    /* It decides when every other file is replaced. Held even briefly, a stale
+       one keeps serving the old app long after a deploy. */
+    const netlify = readFileSync(
+      resolve(import.meta.dirname, "../netlify.toml"), "utf8");
+    const rule = /for = "\/sw\.js"[\s\S]*?Cache-Control = "([^"]+)"/.exec(netlify);
+    expect(rule?.[1]).toMatch(/max-age=0/);
+    expect(netlify).toMatch(/publish = "out"/);
+  });
+
+  it("puts a favicon on the page at all", () => {
+    /* Naming `icons` in metadata overrides the app/icon file convention, so an
+       icon file sitting in app/ next to an icons block is simply ignored - and
+       the page shipped with no favicon link of any kind, which looks exactly
+       like everything working. */
+    const layout = readFileSync(
+      resolve(import.meta.dirname, "../app/layout.tsx"), "utf8");
+    expect(layout).toMatch(/icons\.svg|icon\.svg/);
+    expect(() => publicDir("icons/icon.svg")).not.toThrow();
+    expect(() => publicDir("icons/icon-64.png")).not.toThrow();
+  });
+
+  it("wears the same mark in the tab as on the home screen", () => {
+    // one logo, or the installed app and the browser tab look like two products
+    const svg = publicDir("icons/icon.svg").toString();
+    expect(svg).toContain("#2E3D14");   // the olive ground
+    expect(svg).toContain("#EFC913");   // the signal yellow
+  });
+});

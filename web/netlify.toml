@@ -1,0 +1,53 @@
+# Netlify deploy for the static export.
+#
+# The build output is a plain directory of files; the only thing Netlify has to
+# get right is how long each kind of file may be held.
+
+[build]
+  base    = "web"
+  command = "npm run build"
+  publish = "out"
+
+# The service worker decides when every other file is replaced. Cached even for
+# a minute, a stale one keeps handing out the old app long after a deploy - so
+# this is the one file that must always be fetched fresh.
+[[headers]]
+  for = "/sw.js"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+# Same for the shell: it names the hashed bundles, so a stale copy points at
+# files that no longer exist.
+[[headers]]
+  for = "/"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+[[headers]]
+  for = "/index.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+# Everything under _next/static carries a content hash in its name, so a given
+# URL can never change meaning.
+[[headers]]
+  for = "/_next/static/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# The timetable itself changes when the operator changes it, which is rarely
+# and without warning. A day, revalidated, keeps it fresh without a round trip
+# on every load - and the service worker serves it instantly meanwhile.
+[[headers]]
+  for = "/data/*"
+  [headers.values]
+    Cache-Control = "public, max-age=86400, must-revalidate"
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    # this app asks for nothing and embeds nothing; say so
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    X-Frame-Options = "SAMEORIGIN"
+    Permissions-Policy = "geolocation=(self), camera=(), microphone=(), payment=()"

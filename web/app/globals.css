@@ -95,3 +95,12 @@ button, [role="button"], summary {
 
 /* while a phone search is open nothing behind it should scroll */
 body.searching { overflow: hidden; }
+
+/* The stop board draws its own surface, so Mapbox's balloon must stop drawing
+   one underneath it - otherwise the card sits on a second white box with its
+   own padding and shadow. */
+.mapboxgl-popup.stopPopup .mapboxgl-popup-content {
+  padding: 0; background: none; box-shadow: none; border-radius: var(--radius);
+}
+.mapboxgl-popup.stopPopup .mapboxgl-popup-tip { border-top-color: var(--paper);
+  border-bottom-color: var(--paper); }

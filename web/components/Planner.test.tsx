@@ -397,6 +397,96 @@ describe("the itinerary markup", () => {
   });
 });
 
+describe("the timetables", () => {
+  it("opens on a line and gives the whole screen to it", async () => {
+    /* A timetable is a document to read, not a control to work alongside the
+       map, so it takes over rather than sharing the space. */
+    const user = await setup();
+    await user.click(screen.getByLabelText("Menetrendek"));
+    expect(await screen.findByRole("heading", { name: "Menetrendek" })).toBeInTheDocument();
+    expect(screen.queryByLabelText("Honnan")).not.toBeInTheDocument();
+
+    const grid = screen.getByRole("table");
+    // stops down the page, runs across it - the other way round puts thirty
+    // three stops across a screen four inches wide
+    const header = within(grid).getAllByRole("columnheader");
+    expect(header[0]).toHaveTextContent("Megálló");
+    expect(header.length).toBeGreaterThan(3);
+    expect(within(grid).getAllByRole("rowheader").length).toBeGreaterThan(3);
+  });
+
+  it("switches line, direction and kind of day", async () => {
+    const user = await setup();
+    await user.click(screen.getByLabelText("Menetrendek"));
+    await screen.findByRole("table");
+    const firstRow = () => within(screen.getByRole("table"))
+      .getAllByRole("rowheader")[0].textContent;
+
+    const before = firstRow();
+    await user.click(screen.getByRole("button", { name: "6", pressed: false }));
+    expect(firstRow()).not.toBe(before);
+
+    // a weekend with no service on this direction must say so, not show weekday times
+    const weekday = screen.getByRole("button", { name: "Hétköznap" });
+    const weekend = screen.getByRole("button", { name: "Hétvége" });
+    await user.click(weekend);
+    expect(weekend).toHaveAttribute("aria-pressed", "true");
+    expect(weekday).toHaveAttribute("aria-pressed", "false");
+  });
+
+  it("comes back to the planner", async () => {
+    const user = await setup();
+    await user.click(screen.getByLabelText("Menetrendek"));
+    await screen.findByRole("heading", { name: "Menetrendek" });
+    await user.click(screen.getByRole("button", { name: "Vissza" }));
+    expect(screen.getByLabelText("Honnan")).toBeInTheDocument();
+  });
+});
+
+describe("the note about the other product", () => {
+  it("sits at the very bottom of a journey, after the fare", async () => {
+    /* Anywhere among the times, a promotion costs the departures their
+       credibility. It goes below the answer the reader came for. */
+    const user = await setup();
+    await startPlanning(user);
+    await user.click(screen.getByRole("button", { name: /Indulás|Érkezés/ }));
+    fireEvent.change(screen.getByDisplayValue(/^\d{2}:\d{2}$/), { target: { value: "08:30" } });
+    await user.keyboard("{Escape}");
+    await user.click((await screen.findAllByRole("button", { name: /perc/ }))[0]);
+    await screen.findByText("Az utad");
+
+    const ad = screen.getByRole("link", { name: /Aperta Sync/ });
+    const timeline = document.querySelector("ol[class*='timeline']")!;
+    expect(timeline.compareDocumentPosition(ad) & Node.DOCUMENT_POSITION_FOLLOWING)
+      .toBeTruthy();
+    expect(ad.closest("aside")?.textContent).toMatch(/készítőtől/i);
+  });
+
+  it("says where it goes and opens it safely", async () => {
+    const user = await setup();
+    await startPlanning(user);
+    await user.click(screen.getByRole("button", { name: /Indulás|Érkezés/ }));
+    fireEvent.change(screen.getByDisplayValue(/^\d{2}:\d{2}$/), { target: { value: "08:30" } });
+    await user.keyboard("{Escape}");
+    await user.click((await screen.findAllByRole("button", { name: /perc/ }))[0]);
+    await screen.findByText("Az utad");
+
+    const ad = screen.getByRole("link", { name: /Aperta Sync/ }) as HTMLAnchorElement;
+    expect(ad.href).toMatch(/^https:\/\/aperta-sync\.com\//);
+    // nothing here counts the click, so the landing side has to be able to
+    expect(ad.href).toContain("utm_source=sepsibusz");
+    expect(ad.target).toBe("_blank");
+    // without noopener the opened page can reach back through window.opener
+    expect(ad.rel).toContain("noopener");
+  });
+
+  it("stays off the results list, where the reader is still deciding", async () => {
+    const user = await setup();
+    await startPlanning(user);
+    expect(screen.queryByRole("link", { name: /Aperta Sync/ })).not.toBeInTheDocument();
+  });
+});
+
 describe("a shared link", () => {
   const at = (query: string) => {
     window.history.replaceState(null, "", query || "/");

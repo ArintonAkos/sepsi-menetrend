@@ -6,6 +6,7 @@ import { fareFor, type FareTable } from "@/lib/engine/fares";
 import { shadeOf } from "@/lib/engine/types";
 import type { Journey, Line, Pattern, RideLeg, Stop, WalkLeg } from "@/lib/engine/types";
 import type { Lang, Strings } from "@/lib/i18n";
+import HouseAd from "./HouseAd";
 import { Back, Chevron, WalkIcon } from "./icons";
 import styles from "./JourneyDetail.module.css";
 
@@ -202,6 +203,8 @@ export default function JourneyDetail({
           <small>{lang === "hu" ? fare.ticket.name.hu : fare.ticket.name.ro}</small>
         </div>
       )}
+
+      <HouseAd t={t} />
     </div>
   );
 }

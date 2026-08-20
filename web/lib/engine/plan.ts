@@ -453,3 +453,86 @@ export function nextDepartures(
   }
   return [...times].sort((a, b) => a - b).slice(0, limit);
 }
+
+/** One line's calls at one stop, for a whole service day. */
+export interface StopBoard {
+  lineId: string;
+  patternId: string;
+  /** Where this run is headed, which is how a rider tells directions apart. */
+  headsign: { ro: string; hu: string };
+  /** Every minute of the day this line calls here, sorted. */
+  times: Minute[];
+  /** False when the operator publishes no time for this stop and we
+   *  interpolated it from its neighbours. */
+  published: boolean;
+  /** The run ends here. You can get off, but there is nothing to board. */
+  terminates: boolean;
+  /** The very next stop this run calls at.
+   *
+   *  On a circular route the headsign is the same in both directions - line 3
+   *  is signed "Str. Țigaretei – traseu circular" whichever way round it is
+   *  going - so two passes through the same stop read as two identical rows.
+   *  The stop it leaves for is the only thing that tells them apart. */
+  towards: string | null;
+}
+
+/** What a rider standing at a stop wants on a board: every line that calls
+ *  here, each with its own column of times.
+ *
+ *  Built from the patterns rather than from `callsAt`, which deliberately drops
+ *  the last stop of every run because you cannot board there. That is the right
+ *  rule for planning and the wrong one here: a terminus is exactly where
+ *  somebody waits to be collected, and the arrival is the only time it has.
+ */
+export function boardAt(ctx: PlanContext, stopId: string,
+                        service: ServiceId): StopBoard[] {
+  const boards: StopBoard[] = [];
+  for (const pattern of ctx.net.patterns) {
+    pattern.stopIds.forEach((sid, index) => {
+      if (sid !== stopId) return;
+      const times: Minute[] = [];
+      for (const trip of ctx.tripsOf.get(pattern.id) ?? []) {
+        if (trip.service === service) times.push(trip.start + pattern.offsets[index]);
+      }
+      if (!times.length) return;
+      boards.push({
+        lineId: pattern.lineId, patternId: pattern.id, headsign: pattern.headsign,
+        times: times.sort((a, b) => a - b),
+        published: pattern.published[index],
+        terminates: index === pattern.stopIds.length - 1,
+        towards: pattern.stopIds[index + 1] ?? null,
+      });
+    });
+  }
+  /* A route that doubles back calls at the same stop twice on one run, and each
+     pass is its own column - they are different times going different ways. */
+  return boards.sort((a, b) =>
+    a.lineId.localeCompare(b.lineId, "en", { numeric: true })
+    || (a.times[0] ?? 0) - (b.times[0] ?? 0));
+}
+
+/** One run's whole day, as the grid a printed timetable uses. */
+export interface Timetable {
+  patternId: string;
+  lineId: string;
+  headsign: { ro: string; hu: string };
+  stopIds: string[];
+  /** Per stop: whether the operator publishes its times or we worked them out. */
+  published: boolean[];
+  /** One row per departure, one column per stop, in the order they are called. */
+  runs: Minute[][];
+}
+
+export function timetable(ctx: PlanContext, patternId: string,
+                          service: ServiceId): Timetable | null {
+  const pattern = ctx.patterns.get(patternId);
+  if (!pattern) return null;
+  const runs = (ctx.tripsOf.get(patternId) ?? [])
+    .filter((trip) => trip.service === service)
+    .sort((a, b) => a.start - b.start)
+    .map((trip) => pattern.offsets.map((offset) => trip.start + offset));
+  return {
+    patternId, lineId: pattern.lineId, headsign: pattern.headsign,
+    stopIds: pattern.stopIds, published: pattern.published, runs,
+  };
+}

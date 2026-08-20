@@ -3,7 +3,8 @@
 import { useEffect, useRef, useState } from "react";
 import mapboxgl, { type Map as MapboxMap, type LngLatBoundsLike } from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
-import { MAPBOX_TOKEN, STYLES, labelAnchor, casingColour, networkColour } from "@/lib/mapbox";
+import { MAPBOX_TOKEN, STYLES, bottomInset, labelAnchor, casingColour, networkColour }
+  from "@/lib/mapbox";
 import type { Area } from "@/lib/geocode";
 import { shadeOf } from "@/lib/engine/types";
 import type { Journey, Line, LngLat, Network, Pattern, RideLeg, WalkLeg } from "@/lib/engine/types";
@@ -33,6 +34,10 @@ export interface TransitMapProps {
   /** Pixels of the map's bottom edge hidden behind the drawer, so a route can
    *  be centred in the part of the map that is on screen. */
   covered: number;
+  /** A stop was tapped. The map does not decide what that means - it only says
+   *  which stop, and, on a wide screen, hands over an anchored container to
+   *  draw into so the board appears at the stop rather than off to one side. */
+  onStopPick: (stopId: string, anchor: HTMLElement | null) => void;
   patterns: Map<string, Pattern>;
   lines: Map<string, Line>;
   journey: Journey | null;
@@ -62,7 +67,7 @@ function hasWebGL(): boolean {
 
 export default function TransitMap({
   network, patterns, lines, journey, visibleLines, dark, picking, lang, area, covered,
-  resizeKey, onCentreChange,
+  resizeKey, onCentreChange, onStopPick,
 }: TransitMapProps) {
   const host = useRef<HTMLDivElement>(null);
   const map = useRef<MapboxMap | null>(null);
@@ -73,6 +78,8 @@ export default function TransitMap({
   const [canDraw] = useState(hasWebGL);
   const language = useRef(lang);
   useEffect(() => { language.current = lang; }, [lang]);
+  const stopPick = useRef(onStopPick);
+  useEffect(() => { stopPick.current = onStopPick; }, [onStopPick]);
   const onMove = useRef(onCentreChange);
   // keeping the callback in a ref means the map is built once, not on every
   // parent render - but the assignment belongs in an effect, not in render
@@ -97,7 +104,8 @@ export default function TransitMap({
     m.addControl(new mapboxgl.NavigationControl({ showCompass: false }), "bottom-right");
     m.on("load", () => { ready.current = true; addLayers(m, dark, network, lines); paint(m, journey, patterns, lines, dark); });
     m.on("move", () => onMove.current?.(m.getCenter().toArray() as LngLat));
-    attachStopPopups(m, () => language.current);
+    attachStopPopups(m, () => stopPick.current,
+                     () => window.innerWidth > 860);
     map.current = m;
     return () => { m.remove(); map.current = null; ready.current = false; };
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -195,7 +203,7 @@ function addLayers(m: MapboxMap, dark: boolean, network: Network,
       data: {
         type: "FeatureCollection",
         features: network.stops.map((s) => point(s.at, {
-          hu: s.name.hu, ro: s.name.ro,
+          id: s.id, hu: s.name.hu, ro: s.name.ro,
           lines: [...(serving.get(s.id) ?? [])].join(","),
         })),
       },
@@ -243,15 +251,20 @@ function addLayers(m: MapboxMap, dark: boolean, network: Network,
     layout: { "line-cap": "round" },
     paint: { "line-color": dark ? "#E7E6DA" : "#232E10", "line-width": 3.4,
              "line-dasharray": [0.2, 1.9] } });
+  /* Visible from just under the opening view rather than just over it. The
+     threshold used to be 12.5 against a starting zoom of 12.4, so the map
+     opened with no stops on it at all - and a stop you cannot see is one you
+     will never think to press. They come in faint and reach full weight as the
+     reader zooms into a neighbourhood. */
   add({ id: "all-stops", type: "circle", source: "stops",
-    minzoom: 12.5,
+    minzoom: 12.2,
     paint: {
-      "circle-radius": ["interpolate", ["linear"], ["zoom"], 12.5, 2, 16, 4.5],
+      "circle-radius": ["interpolate", ["linear"], ["zoom"], 12.2, 2.2, 16, 4.5],
       "circle-color": dark ? "#0D1108" : "#FFFFFF",
       "circle-stroke-color": networkColour(dark),
       "circle-stroke-width": 1.6,
-      "circle-opacity": ["interpolate", ["linear"], ["zoom"], 12.5, 0, 13.5, 1],
-      "circle-stroke-opacity": ["interpolate", ["linear"], ["zoom"], 12.5, 0, 13.5, 1],
+      "circle-opacity": ["interpolate", ["linear"], ["zoom"], 12.2, .45, 13.5, 1],
+      "circle-stroke-opacity": ["interpolate", ["linear"], ["zoom"], 12.2, .45, 13.5, 1],
     } });
   add({ id: "trip-nodes", type: "circle", source: "nodes",
     paint: { "circle-radius": 4.6, "circle-color": dark ? "#0D1108" : "#FFFFFF",
@@ -383,6 +396,12 @@ function fit(m: MapboxMap, journey: Journey, patterns: Map<string, Pattern>,
     } else pts.push(...(leg as WalkLeg).path);
   }
   if (pts.length < 2) return;
+  /* A hidden map is a map with no size, and there is no transform that fits a
+     bounding box into nothing - Mapbox reports it as "failed to invert matrix".
+     The search screen takes the map off screen entirely while a journey is
+     being chosen, which is exactly when the route it should show changes. */
+  const box = m.getContainer();
+  if (!box.clientWidth || !box.clientHeight) return;
   const bounds = pts.reduce((b, p) => b.extend(p), new mapboxgl.LngLatBounds(pts[0], pts[0]));
   const narrow = window.innerWidth <= 860;
   /* While a journey is open the map runs the full height of the screen with the
@@ -390,38 +409,80 @@ function fit(m: MapboxMap, journey: Journey, patterns: Map<string, Pattern>,
      behind the drawer. Padding the covered strip puts it in the middle of what
      is left - the part anyone can see. Capped, because a drawer pulled almost
      to the top leaves no room to fit anything into. */
-  const bottom = Math.min(covered, m.getContainer().clientHeight * 0.62);
   m.fitBounds(bounds, {
-    padding: narrow ? { top: 60, bottom: Math.max(40, bottom + 24), left: 30, right: 30 }
-                    : { top: 70, bottom: 90, left: 70, right: 70 },
+    padding: narrow
+      ? { top: 60, bottom: bottomInset(covered, box.clientHeight), left: 30, right: 30 }
+      : { top: 70, bottom: 90, left: 70, right: 70 },
     duration: 600, maxZoom: 15.5,
   });
 }
 
 /** Tapping a stop says what it is and which lines call there. The old map had
  *  this and losing it made the dots look like decoration. */
-function attachStopPopups(m: MapboxMap, lang: () => "hu" | "ro") {
+/** Report a tapped stop upwards.
+ *
+ *  This used to open a Mapbox popup built from an HTML string. A popup is the
+ *  wrong container for a timetable - it cannot scroll, cannot hold a day's
+ *  worth of times, and every line of it has to be escaped by hand. The map's
+ *  job is to say which stop was pressed; what to show is the panel's business.
+ */
+function attachStopPopups(m: MapboxMap,
+                          onPick: () => (id: string, anchor: HTMLElement | null) => void,
+                          wide: () => boolean) {
   let popup: mapboxgl.Popup | null = null;
   for (const layer of ["all-stops", "trip-nodes", "trip-ends"]) {
     m.on("mouseenter", layer, () => { m.getCanvas().style.cursor = "pointer"; });
     m.on("mouseleave", layer, () => { m.getCanvas().style.cursor = ""; });
   }
   m.on("click", (event) => {
-    const hits = m.queryRenderedFeatures(event.point, {
-      layers: ["all-stops", "trip-nodes", "trip-ends"].filter((l) => m.getLayer(l)),
-    });
-    const stop = hits.find((f) => f.properties?.hu && f.geometry.type === "Point");
+    /* A stop is drawn as a circle of two to five pixels. Asking Mapbox what is
+       under the exact pixel that was pressed means only a mouse can ever hit
+       one; a finger covers about forty. Query a box around the press and take
+       the nearest, which is what every map app does and what makes the dots
+       usable on a phone at all. */
+    const reach = 14;
+    const { x, y } = event.point;
+    const layers = ["all-stops", "trip-nodes", "trip-ends"].filter((l) => m.getLayer(l));
+    if (!layers.length) return;
+    const hits = m.queryRenderedFeatures(
+      [[x - reach, y - reach], [x + reach, y + reach]], { layers });
+    const near = hits
+      .filter((f) => f.properties?.id && f.geometry.type === "Point")
+      .map((f) => {
+        const at = m.project((f.geometry as GeoJSON.Point).coordinates as [number, number]);
+        return { f, away: Math.hypot(at.x - x, at.y - y) };
+      })
+      .sort((a, b) => a.away - b.away)[0];
     popup?.remove();
-    if (!stop || stop.geometry.type !== "Point") return;
-    const props = stop.properties as { hu: string; ro: string; lines?: string };
-    const name = lang() === "hu" ? props.hu : props.ro;
-    const other = lang() === "hu" ? props.ro : props.hu;
-    const badges = (props.lines ?? "").split(",").filter(Boolean)
-      .map((id) => `<i data-line="${id}">${id}</i>`).join("");
-    popup = new mapboxgl.Popup({ offset: 12, closeButton: false, className: "stopPopup" })
-      .setLngLat(stop.geometry.coordinates as LngLat)
-      .setHTML(`<b>${name}</b>${other && other !== name ? `<span>${other}</span>` : ""}`
-               + (badges ? `<div class="lines">${badges}</div>` : ""))
-      .addTo(m);
+    popup = null;
+    if (!near) return;
+    const id = String(near.f.properties!.id);
+    if (!wide()) { onPick()(id, null); return; }
+
+    /* On a wide screen the board belongs at the stop it describes. Mapbox owns
+       the anchoring - it keeps the tip on the point through every pan and zoom,
+       and flips the balloon when it would run off an edge - so it gets an empty
+       container and React draws into that. Positioning it by hand would mean
+       re-deriving the same maths on every frame of a drag. */
+    const host = document.createElement("div");
+    const at = (near.f.geometry as GeoJSON.Point).coordinates as LngLat;
+    const balloon = new mapboxgl.Popup({
+      offset: 14, closeButton: false, maxWidth: "360px", className: "stopPopup",
+    }).setLngLat(at).setDOMContent(host).addTo(m);
+    popup = balloon;
+
+    /* Mapbox picks which way the balloon opens from the space around the point,
+       and it measures at the moment it is added - when this one is still an
+       empty div, because React fills it a tick later. Measured as nothing, it
+       decides upwards always fits, and a tall board then runs off the top of
+       the screen. Re-seating it on the same point once it has a size makes
+       Mapbox work the anchor out again against the real height. */
+    if (typeof ResizeObserver !== "undefined") {
+      const watch = new ResizeObserver(() => balloon.setLngLat(at));
+      watch.observe(host);
+      balloon.on("close", () => watch.disconnect());
+    }
+    balloon.on("close", () => onPick()("", null));
+    onPick()(id, host);
   });
 }
