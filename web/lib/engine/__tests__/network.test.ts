@@ -437,12 +437,26 @@ describe("the real network", () => {
     expect(changing.length, "not one itinerary with a change was offered")
       .toBeGreaterThan(0);
 
-    for (const j of changing) {
-      const last = [...j.legs].reverse().find((l) => l.kind === "ride") as RideLeg;
-      const pattern = net.patterns.find((p) => p.id === last.patternId)!;
-      const off = net.stops.find((s) => s.id === pattern.stopIds[last.toIndex])!;
-      expect(metres(off.at, to),
-             `changed buses and then walked from ${off.name.ro}`).toBeLessThan(250);
+    /* The best of them, not all of them: getting off a stop early to arrive two
+       minutes sooner is a real trade and belongs on the list, ranked below. */
+    const first = changing[0];
+    const last = [...first.legs].reverse().find((l) => l.kind === "ride") as RideLeg;
+    const pattern = net.patterns.find((p) => p.id === last.patternId)!;
+    const off = net.stops.find((s) => s.id === pattern.stopIds[last.toIndex])!;
+    expect(metres(off.at, to),
+           `best change put the rider down at ${off.name.ro}`).toBeLessThan(250);
+  });
+
+  it("does not spend the list on one route running four times", () => {
+    /* Reported from the live site: with the slider at "less walking" the first
+       four rows were the same line 6 between the same two stops, an hour apart
+       each. Four rows, one answer, and no other route visible at all. */
+    for (const [a, b] of pairs()) {
+      const journeys = plan(ctx, ask(a, b, { time: 15 * 60 + 21, walkAversion: 1 }));
+      const shapes = journeys.map((j) => rides(j)
+        .map((r) => `${r.patternId}:${r.fromIndex}>${r.toIndex}`).join("+"));
+      expect(new Set(shapes).size, `${a}→${b} repeats an itinerary`)
+        .toBe(shapes.length);
     }
   });
 

@@ -498,7 +498,25 @@ export function plan(ctx: PlanContext, req: PlanRequest, limit = 8): Journey[] {
   all.sort((a, b) =>
     generalisedCost(a, req) - generalisedCost(b, req) ||
     (a.arrive - a.depart) - (b.arrive - b.depart));
-  return all.slice(0, limit);
+
+  /* One row per itinerary, not per departure of it.
+     The same buses between the same stops an hour apart is one answer to the
+     question "how do I get there", and listing it four times spent the whole
+     list on it before any other route appeared. Which departure to catch is a
+     second question, and the itinerary answers it once opened - the boarding
+     stop carries the next few times of that line. Ranked first, so the one
+     kept is the one that would have led anyway. */
+  const shapes = new Set<string>();
+  const distinct: Journey[] = [];
+  for (const journey of all) {
+    const shape = journey.legs
+      .filter((l): l is RideLeg => l.kind === "ride")
+      .map((l) => `${l.patternId}:${l.fromIndex}>${l.toIndex}`).join("+") || "walk";
+    if (shapes.has(shape)) continue;
+    shapes.add(shape);
+    distinct.push(journey);
+  }
+  return distinct.slice(0, limit);
 }
 
 /** The next few departures of one line from one stop.

@@ -1,5 +1,6 @@
 import { describe, it, expect } from "vitest";
-import { prepare, plan, stopsNear, metresBetween, MIN_TRANSFER } from "../plan";
+import { prepare, plan, stopsNear, metresBetween, nextDepartures, MIN_TRANSFER }
+  from "../plan";
 import { formatHHMM } from "../time";
 import type { PlanRequest, RideLeg } from "../types";
 import { fixture, ORIGIN, NEAR_C, NEAR_D } from "./fixture";
@@ -55,10 +56,26 @@ describe("plan", () => {
     expect(best.transfers).toBe(0);
   });
 
-  it("offers more than one departure, not just the first", () => {
+  it("lists an itinerary once, however often it runs", () => {
+    /* The same buses between the same stops an hour later is one answer to
+       "how do I get there", and repeating it filled the list before any other
+       route appeared. Which departure to catch is the second question, and the
+       itinerary answers it once opened. */
     const found = plan(ctx, ask({ to: NEAR_C }));
-    const departures = new Set(found.map((j) => formatHHMM(j.depart)));
-    expect(departures.size).toBeGreaterThan(1);
+    const shapes = found.map((j) => (j.legs.filter((l) => l.kind === "ride") as RideLeg[])
+      .map((r) => `${r.patternId}:${r.fromIndex}>${r.toIndex}`).join("+"));
+    expect(new Set(shapes).size).toBe(shapes.length);
+  });
+
+  it("still knows the departures it no longer lists", () => {
+    // the second question, answered where it is asked: at the boarding stop
+    const found = plan(ctx, ask({ to: NEAR_C }));
+    const first = (found[0].legs.find((l) => l.kind === "ride") as RideLeg);
+    const pattern = ctx.patterns.get(first.patternId)!;
+    const later = nextDepartures(ctx, pattern.stopIds[first.fromIndex],
+                                 first.lineId, first.board, "weekday");
+    expect(later.length).toBeGreaterThan(0);
+    for (const at of later) expect(at).toBeGreaterThan(first.board);
   });
 
   it("never departs before the requested time", () => {
