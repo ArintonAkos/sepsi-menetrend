@@ -19,6 +19,9 @@ export interface FareResult {
   ticket: Ticket;
   count: number;
   total: number;
+  /** Sfântu Gheorghe's council funds free rides network-wide every Friday,
+   *  Arcuș included - confirmed by the operator, not something GTFS encodes. */
+  free: boolean;
   /** When each ticket has to be validated. */
   boardings: Minute[];
 }
@@ -49,6 +52,7 @@ export function fareFor(
   stops: Map<string, Stop>,
   patternStops: (patternId: string) => string[],
   table: FareTable,
+  date: Date,
 ): FareResult | null {
   const rides = journey.legs.filter((l): l is RideLeg => l.kind === "ride");
   if (!rides.length) return null;
@@ -63,10 +67,12 @@ export function fareFor(
 
   const boardings = rides.map((r) => r.board);
   const count = countTickets(boardings, ticket.validFor);
+  const free = date.getDay() === 5;
   return {
     ticket,
     count,
-    total: Math.round(count * ticket.price * 100) / 100,
+    free,
+    total: free ? 0 : Math.round(count * ticket.price * 100) / 100,
     boardings,
   };
 }

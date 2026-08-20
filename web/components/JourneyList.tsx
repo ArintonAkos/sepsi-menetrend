@@ -9,10 +9,10 @@ import { WalkIcon } from "./icons";
 import styles from "./JourneyList.module.css";
 
 export default function JourneyList({
-  journeys, lines, patterns, stops, fares, t, chosen, dark, onHover, onOpen,
+  journeys, lines, patterns, stops, fares, date, t, chosen, dark, onHover, onOpen,
 }: {
   journeys: Journey[]; lines: Map<string, Line>; patterns: Map<string, Pattern>;
-  stops: Map<string, Stop>; fares: FareTable; t: Strings; chosen: number;
+  stops: Map<string, Stop>; fares: FareTable; date: Date; t: Strings; chosen: number;
   dark: boolean; onHover: (i: number) => void; onOpen: (i: number) => void;
 }) {
   if (!journeys.length) return <p className={styles.empty}>{t.noResults}</p>;
@@ -33,7 +33,7 @@ export default function JourneyList({
   return (
     <ul className={styles.list}>
       {journeys.map((j, i) => {
-        const fare = fareFor(j, stops, (id) => patterns.get(id)?.stopIds ?? [], fares);
+        const fare = fareFor(j, stops, (id) => patterns.get(id)?.stopIds ?? [], fares, date);
         return (
           <li key={i}>
             <button className={styles.card} aria-current={i === chosen}
@@ -71,7 +71,8 @@ export default function JourneyList({
               <div className={styles.bot}>
                 <b>{formatHHMM(j.depart)} → {formatHHMM(j.arrive)}</b>
                 {fare && <><span className={styles.dot} />
-                  <span>{fare.count} × {String(fare.ticket.price).replace(".", ",")} lej</span></>}
+                  <span>{fare.free ? t.freeFriday
+                    : `${fare.count} × ${String(fare.ticket.price).replace(".", ",")} lej`}</span></>}
               </div>
               <div className={styles.tags}>
                 {j === soonest && <span className={`${styles.tag} ${styles.hi}`}>{t.soonest}</span>}

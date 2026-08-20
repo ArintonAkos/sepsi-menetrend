@@ -29,16 +29,13 @@
 .missing code { background: var(--sunk); padding: 1px 5px; border-radius: 4px; color: var(--ink); }
 
 /* stop popup */
+/* The balloon is a frame around a React card that draws its own surface, so
+   nothing here styles its contents.
+   What used to live here did: the popup was built from an HTML string, and it
+   set `display: block` on every b and span inside. Those rules outlived the
+   string by one refactor and went on matching the card's own markup - which is
+   why the line number sat in the top-left corner of its pill instead of the
+   middle. Content styling belongs to the component that renders the content. */
 .map :global(.stopPopup .mapboxgl-popup-content) {
-  background: var(--paper); color: var(--ink);
-  border: 1px solid var(--border); border-radius: 12px;
-  box-shadow: var(--shadow); padding: 9px 12px; font: inherit;
-}
-.map :global(.stopPopup .mapboxgl-popup-tip) { border-top-color: var(--paper); }
-.map :global(.stopPopup b) { display: block; font-size: 14px; font-weight: 700; }
-.map :global(.stopPopup span) { display: block; font-size: 12px; color: var(--muted); }
-.map :global(.stopPopup .lines) { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 6px; }
-.map :global(.stopPopup .lines i) {
-  font-style: normal; font-size: 11px; font-weight: 800; padding: 1px 6px;
-  border-radius: 5px; background: var(--sunk); color: var(--ink);
+  background: none; border: 0; box-shadow: none; padding: 0;
 }

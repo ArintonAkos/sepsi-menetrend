@@ -1,5 +1,6 @@
 import { describe, it, expect } from "vitest";
-import { countTickets } from "../fares";
+import { countTickets, fareFor, type FareTable, type Ticket } from "../fares";
+import type { Journey, RideLeg, Stop } from "../types";
 
 describe("countTickets", () => {
   it("charges nothing for no ride", () => expect(countTickets([], 50)).toBe(0));
@@ -30,5 +31,40 @@ describe("countTickets", () => {
     const boardings = [480, 527];                   // 47 minutes apart
     expect(countTickets(boardings, 45)).toBe(2);
     expect(countTickets(boardings, 50)).toBe(1);
+  });
+});
+
+describe("fareFor", () => {
+  const cityTicket: Ticket = {
+    id: "city_24pay", zone: "city", price: 2.5, validFor: 50,
+    name: { ro: "Bilet", hu: "Jegy" },
+  };
+  const table: FareTable = { currency: "RON", tickets: [cityTicket] };
+  const stops = new Map<string, Stop>([
+    ["A", { id: "A", name: { ro: "A", hu: "A" }, at: [0, 0], stationId: "A", zone: "city" }],
+    ["B", { id: "B", name: { ro: "B", hu: "B" }, at: [0, 0], stationId: "B", zone: "city" }],
+  ]);
+  const patternStops = () => ["A", "B"];
+
+  function journeyBoarding(board: number): Journey {
+    const ride: RideLeg = {
+      kind: "ride", lineId: "1", patternId: "P", fromIndex: 0, toIndex: 1,
+      board, alight: board + 5,
+    };
+    return { legs: [ride], depart: board, arrive: board + 5, walkMinutes: 0, transfers: 0 };
+  }
+
+  it("charges the normal fare on a weekday", () => {
+    const wednesday = new Date(2026, 7, 19);         // 2026-08-19
+    const fare = fareFor(journeyBoarding(480), stops, patternStops, table, wednesday);
+    expect(fare?.free).toBe(false);
+    expect(fare?.total).toBe(2.5);
+  });
+
+  it("is free on Fridays, per Sfântu Gheorghe council's standing promotion", () => {
+    const friday = new Date(2026, 7, 21);            // 2026-08-21
+    const fare = fareFor(journeyBoarding(480), stops, patternStops, table, friday);
+    expect(fare?.free).toBe(true);
+    expect(fare?.total).toBe(0);
   });
 });

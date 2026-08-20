@@ -15,10 +15,10 @@ import styles from "./JourneyDetail.module.css";
 const ESTIMATE = "*";
 
 export default function JourneyDetail({
-  journey, lines, patterns, stops, fares, lang, t, from, to, dark, laterBuses, onBack,
+  journey, lines, patterns, stops, fares, date, lang, t, from, to, dark, laterBuses, onBack,
 }: {
   journey: Journey; lines: Map<string, Line>; patterns: Map<string, Pattern>;
-  stops: Map<string, Stop>; fares: FareTable; lang: Lang; t: Strings;
+  stops: Map<string, Stop>; fares: FareTable; date: Date; lang: Lang; t: Strings;
   from: string; to: string; dark: boolean;
   /** The next few departures of this line from the stop you board at. */
   laterBuses: (leg: RideLeg) => string[];
@@ -28,7 +28,7 @@ export default function JourneyDetail({
     const s = stops.get(stopId);
     return s ? (lang === "hu" ? s.name.hu : s.name.ro) : stopId;
   };
-  const fare = fareFor(journey, stops, (id) => patterns.get(id)?.stopIds ?? [], fares);
+  const fare = fareFor(journey, stops, (id) => patterns.get(id)?.stopIds ?? [], fares, date);
   const rides = journey.legs.filter((l): l is RideLeg => l.kind === "ride");
   /* Minutes spent standing at a change. When both buses use the same stop there
      is no walk leg to hang this on, so the wait was invisible - and it is the
@@ -198,9 +198,11 @@ export default function JourneyDetail({
         <div className={styles.fare}>
           <div className={styles.fareRow}>
             <span>{t.ticket}</span>
-            <b>{fare.count} × {String(fare.ticket.price).replace(".", ",")} lej</b>
+            <b>{fare.free ? t.freeFriday
+              : `${fare.count} × ${String(fare.ticket.price).replace(".", ",")} lej`}</b>
           </div>
-          <small>{lang === "hu" ? fare.ticket.name.hu : fare.ticket.name.ro}</small>
+          {!fare.free &&
+            <small>{lang === "hu" ? fare.ticket.name.hu : fare.ticket.name.ro}</small>}
         </div>
       )}
 

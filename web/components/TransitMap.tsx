@@ -36,8 +36,10 @@ export interface TransitMapProps {
   covered: number;
   /** A stop was tapped. The map does not decide what that means - it only says
    *  which stop, and, on a wide screen, hands over an anchored container to
-   *  draw into so the board appears at the stop rather than off to one side. */
-  onStopPick: (stopId: string, anchor: HTMLElement | null) => void;
+   *  draw into so the board appears at the stop rather than off to one side.
+   *  `dismiss` takes the balloon away: the card's own close button empties the
+   *  container, and without this the frame stays behind over the stop. */
+  onStopPick: (stopId: string, anchor: HTMLElement | null, dismiss: () => void) => void;
   patterns: Map<string, Pattern>;
   lines: Map<string, Line>;
   journey: Journey | null;
@@ -427,7 +429,8 @@ function fit(m: MapboxMap, journey: Journey, patterns: Map<string, Pattern>,
  *  job is to say which stop was pressed; what to show is the panel's business.
  */
 function attachStopPopups(m: MapboxMap,
-                          onPick: () => (id: string, anchor: HTMLElement | null) => void,
+                          onPick: () => (id: string, anchor: HTMLElement | null,
+                                         dismiss: () => void) => void,
                           wide: () => boolean) {
   let popup: mapboxgl.Popup | null = null;
   for (const layer of ["all-stops", "trip-nodes", "trip-ends"]) {
@@ -457,7 +460,7 @@ function attachStopPopups(m: MapboxMap,
     popup = null;
     if (!near) return;
     const id = String(near.f.properties!.id);
-    if (!wide()) { onPick()(id, null); return; }
+    if (!wide()) { onPick()(id, null, () => {}); return; }
 
     /* On a wide screen the board belongs at the stop it describes. Mapbox owns
        the anchoring - it keeps the tip on the point through every pan and zoom,
@@ -482,7 +485,7 @@ function attachStopPopups(m: MapboxMap,
       watch.observe(host);
       balloon.on("close", () => watch.disconnect());
     }
-    balloon.on("close", () => onPick()("", null));
-    onPick()(id, host);
+    balloon.on("close", () => onPick()("", null, () => {}));
+    onPick()(id, host, () => balloon.remove());
   });
 }

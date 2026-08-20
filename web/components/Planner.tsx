@@ -139,7 +139,8 @@ export default function Planner({ network, places, reach, box, fares }: {
   /* Two ways in to the same data the planner already holds: one stop's board,
      and the whole published timetable. Neither is part of planning a journey,
      so neither touches the phase the panel is in. */
-  const [board, setBoard] = useState<{ stopId: string; anchor: HTMLElement | null } | null>(null);
+  const [board, setBoard] = useState<
+    { stopId: string; anchor: HTMLElement | null; dismiss: () => void } | null>(null);
   const boardStop = board?.stopId || null;
   const [timetableOpen, setTimetableOpen] = useState(false);
   const settingsRef = useRef<HTMLDivElement>(null);
@@ -390,7 +391,8 @@ export default function Planner({ network, places, reach, box, fares }: {
   const stopSheet = boardStop && stops.get(boardStop) ? (
     <StopBoard stop={stops.get(boardStop)!} ctx={ctx} lines={lineMap}
                service={serviceForDate(date)} now={minutesOfDay(new Date())}
-               lang={lang} t={t} onClose={() => setBoard(null)} />
+               lang={lang} t={t}
+               onClose={() => { board!.dismiss(); setBoard(null); }} />
   ) : null;
 
   return (
@@ -528,11 +530,11 @@ export default function Planner({ network, places, reach, box, fares }: {
         {planning && <div className={styles.scroll}>
           {detail === null ? (
             <JourneyList journeys={journeys} lines={lineMap} t={t} chosen={chosen}
-                         fares={fares} stops={stops} patterns={patterns} dark={dark}
+                         fares={fares} date={date} stops={stops} patterns={patterns} dark={dark}
                          onHover={setChosen} onOpen={setDetail} />
           ) : (
             <JourneyDetail journey={journeys[detail]} lines={lineMap} patterns={patterns}
-                           stops={stops} fares={fares} lang={lang} t={t} dark={dark}
+                           stops={stops} fares={fares} date={date} lang={lang} t={t} dark={dark}
                            from={from?.name ?? ""} to={to?.name ?? ""}
                            laterBuses={laterBuses}
                            onBack={() => setDetail(null)} />
@@ -554,8 +556,8 @@ export default function Planner({ network, places, reach, box, fares }: {
         <TransitMap network={network} patterns={patterns} lines={lineMap} lang={lang}
                     area={area} resizeKey={mapNudge}
                     covered={narrow && detail !== null ? drawer.height : 0}
-                    onStopPick={(stopId, anchor) =>
-                      setBoard(stopId ? { stopId, anchor } : null)}
+                    onStopPick={(stopId, anchor, dismiss) =>
+                      setBoard(stopId ? { stopId, anchor, dismiss } : null)}
                     journey={shown} visibleLines={visibleLines} dark={dark}
                     picking={picking !== null} onCentreChange={onCentreChange} />
 

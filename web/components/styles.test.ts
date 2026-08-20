@@ -185,3 +185,18 @@ describe("what gets deployed", () => {
     expect(svg).toContain("#EFC913");   // the signal yellow
   });
 });
+
+describe("the balloon around a stop board", () => {
+  it("styles the frame and nothing inside it", () => {
+    /* The popup used to be built from an HTML string, and its stylesheet set
+       `display: block` on every b and span within. The string went; the rules
+       stayed, and went on matching the React card that replaced it - which is
+       why a line number sat in the corner of its own pill rather than the
+       middle. Content styling belongs to whatever renders the content. */
+    const sheet = css("TransitMap.module.css");
+    const popup = sheet.slice(sheet.indexOf("stopPopup"));
+    for (const reach of ["stopPopup b)", "stopPopup span)", "stopPopup .lines"])
+      expect(popup, `TransitMap still reaches into the card with "${reach}"`)
+        .not.toContain(reach);
+  });
+});

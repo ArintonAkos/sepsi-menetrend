@@ -2,7 +2,8 @@
   "sources": {
     "confirmed": "Operator, via the project owner: the city 24pay ticket is valid 50 minutes, the Arcuș one 60 minutes and costs more.",
     "tariff_page": "https://multitrans.ro/tarife.html — dated 01.02.2026 but OUT OF DATE: it still prints 45 minutes for the city ticket. Prices and passes below are taken from it and have not been re-confirmed.",
-    "arcus": "Multi-Trans announcement: the 24pay ticket now covers the Arcuș services, 4 lei / 60 minutes."
+    "arcus": "Multi-Trans announcement: the 24pay ticket now covers the Arcuș services, 4 lei / 60 minutes.",
+    "free_friday": "Multi-Trans Facebook posts (confirmed by the operator in a reply, most recently as of 2026-08-21): every Friday, all lines are fare-free, Arcuș included, funded by the Sfântu Gheorghe city council. Standing promotion, no stated end date — reconfirm periodically. Modelled in web/lib/engine/fares.ts by day-of-week, not carried in this file."
   },
   "currency": "RON",
   "valid_from": "2026-02-01",
