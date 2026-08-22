@@ -56,6 +56,13 @@ function serverSnapshot(): Consent | "unset" {
   return "unset";
 }
 
+declare global {
+  interface Window {
+    dataLayer: unknown[];
+    gtag?: (...args: unknown[]) => void;
+  }
+}
+
 function load(gaId: string) {
   if (document.getElementById("ga-tag")) return;
   const script = document.createElement("script");
@@ -65,8 +72,13 @@ function load(gaId: string) {
   document.head.appendChild(script);
 
   window.dataLayer = window.dataLayer ?? [];
-  window.dataLayer.push(["js", new Date()]);
-  window.dataLayer.push(["config", gaId]);
+  function gtag(..._args: unknown[]) {
+    // eslint-disable-next-line prefer-rest-params
+    window.dataLayer.push(arguments);
+  }
+  window.gtag = gtag;
+  gtag("js", new Date());
+  gtag("config", gaId);
 }
 
 /** Counts visits, but only once someone has said yes.

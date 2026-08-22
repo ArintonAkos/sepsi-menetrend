@@ -42,7 +42,10 @@ describe("consent-gated analytics", () => {
     expect(screen.queryByRole("button")).not.toBeInTheDocument();
     expect(tag()?.src).toBe(`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`);
     expect(localStorage.getItem(KEY)).toBe("granted");
-    expect(window.dataLayer).toContainEqual(["config", GA_ID]);
+    const hasConfig = window.dataLayer.some(
+      (entry) => Array.from(entry as unknown[]).includes("config") && Array.from(entry as unknown[]).includes(GA_ID),
+    );
+    expect(hasConfig).toBe(true);
   });
 
   it("loads gtag immediately, with no prompt, for a returning visitor who granted", () => {
