@@ -485,6 +485,17 @@ describe("the timetables", () => {
     await user.click(screen.getByRole("button", { name: "Vissza" }));
     expect(screen.getByLabelText("Honnan")).toBeInTheDocument();
   });
+
+  it("opens a specific line and service from query parameters and syncs changes", async () => {
+    window.history.replaceState(null, "", "/?timetable=1&line=6&service=weekend");
+    const user = mount();
+    await screen.findByRole("heading", { name: "Menetrendek" });
+    expect(screen.getByRole("button", { name: "6", pressed: true })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Hétvége", pressed: true })).toBeInTheDocument();
+
+    await user.click(screen.getByRole("button", { name: "1", pressed: false }));
+    expect(window.location.search).toContain("line=1");
+  });
 });
 
 describe("the note about the other product", () => {

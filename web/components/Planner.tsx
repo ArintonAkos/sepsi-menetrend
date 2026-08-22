@@ -31,7 +31,7 @@ import { forget, read, remember, write, type Recent } from "@/lib/history";
 import { STRINGS, type Lang } from "@/lib/i18n";
 import { readLang, writeLang, LANG_CHANGE_EVENT } from "@/lib/lang";
 import type { FareTable } from "@/lib/engine/fares";
-import type { Journey, LngLat, Network, PlanMode, RideLeg, WalkLeg } from "@/lib/engine/types";
+import type { Journey, LngLat, Network, PlanMode, RideLeg, ServiceId, WalkLeg } from "@/lib/engine/types";
 import type { Place } from "@/lib/engine/search";
 import styles from "./Planner.module.css";
 
@@ -136,7 +136,17 @@ export default function Planner({ network, places, reach, box, fares }: {
   const [board, setBoard] = useState<
     { stopId: string; anchor: HTMLElement | null; dismiss: () => void } | null>(null);
   const boardStop = board?.stopId || null;
-  const [timetableOpen, setTimetableOpen] = useState(false);
+  const [timetableState, setTimetableState] = useState<{
+    open: boolean;
+    lineId: string | null;
+    service: ServiceId | null;
+    patternId: string | null;
+  }>({
+    open: false,
+    lineId: null,
+    service: null,
+    patternId: null,
+  });
 
   /* A link someone was sent carries the whole plan - but the query string is
      knowledge only the browser has. This page is prerendered without one, so
@@ -146,12 +156,32 @@ export default function Planner({ network, places, reach, box, fares }: {
      plan the default journey, paint it, and then visibly replace it. */
   const shared = useMemo(() => {
     if (typeof window === "undefined") {
-      return { trip: decodeTrip(""), timetable: false, stop: null as string | null, lang: null as string | null };
+      return {
+        trip: decodeTrip(""),
+        timetable: false,
+        timetableLine: null as string | null,
+        timetableService: null as ServiceId | null,
+        timetablePattern: null as string | null,
+        stop: null as string | null,
+        lang: null as string | null,
+      };
     }
     const params = new URLSearchParams(window.location.search);
+    const ttParam = params.get("timetable");
+    const lineParam = params.get("line");
+    const isTimetable = params.has("timetable") || params.has("line");
+    const ttLine = lineParam ?? (ttParam && ttParam !== "1" && ttParam !== "true" ? ttParam : null);
+    const serviceParam = params.get("service");
+    const ttService: ServiceId | null =
+      serviceParam === "weekend" ? "weekend" : serviceParam === "weekday" ? "weekday" : null;
+    const ttPattern = params.get("dir") ?? params.get("direction") ?? params.get("pattern");
+
     return {
       trip: decodeTrip(window.location.search),
-      timetable: params.get("timetable") === "1" || params.get("timetable") === "true",
+      timetable: isTimetable,
+      timetableLine: ttLine,
+      timetableService: ttService,
+      timetablePattern: ttPattern,
       stop: params.get("stop"),
       lang: params.get("lang"),
     };
@@ -174,7 +204,14 @@ export default function Planner({ network, places, reach, box, fares }: {
     if (shared.trip.journey !== null && shared.trip.journey !== undefined) {
       setInitJourney(shared.trip.journey);
     }
-    if (shared.timetable) setTimetableOpen(true);
+    if (shared.timetable) {
+      setTimetableState({
+        open: true,
+        lineId: shared.timetableLine,
+        service: shared.timetableService,
+        patternId: shared.timetablePattern,
+      });
+    }
     if (shared.stop && stops.has(shared.stop)) {
       setBoard({ stopId: shared.stop, anchor: null, dismiss: () => setBoard(null) });
     }
@@ -318,8 +355,11 @@ export default function Planner({ network, places, reach, box, fares }: {
   const share = async () => {
     const base = window.location.origin + window.location.pathname;
     let query = "";
-    if (timetableOpen) {
-      query = "?timetable=1";
+    if (timetableState.open) {
+      const linePart = timetableState.lineId ? `&line=${encodeURIComponent(timetableState.lineId)}` : "";
+      const servicePart = timetableState.service && timetableState.service !== "weekday" ? `&service=${timetableState.service}` : "";
+      const dirPart = timetableState.patternId ? `&dir=${encodeURIComponent(timetableState.patternId)}` : "";
+      query = `?timetable=1${linePart}${servicePart}${dirPart}`;
     } else if (boardStop) {
       query = `?stop=${encodeURIComponent(boardStop)}`;
     } else if (from || to) {
@@ -333,9 +373,13 @@ export default function Planner({ network, places, reach, box, fares }: {
     }
     const link = base + query;
     let what = t.title;
-    if (from && to) what = `${from.name} → ${to.name}`;
-    else if (timetableOpen) what = `${t.timetables} · ${t.title}`;
-    else if (boardStop) {
+    if (timetableState.open) {
+      const lineLabel = timetableState.lineId ? `${timetableState.lineId}-es vonal menetrendje` : t.timetables;
+      const dayLabel = timetableState.service === "weekend" ? t.weekendShort : t.weekdayShort;
+      what = `${lineLabel} (${dayLabel}) · ${t.title}`;
+    } else if (from && to) {
+      what = `${from.name} → ${to.name}`;
+    } else if (boardStop) {
       const s = stops.get(boardStop);
       what = `${s ? (lang === "hu" ? s.name.hu : s.name.ro) : boardStop} · ${t.title}`;
     }
@@ -396,8 +440,11 @@ export default function Planner({ network, places, reach, box, fares }: {
     const base = window.location.pathname;
     let nextQuery = "";
 
-    if (timetableOpen) {
-      nextQuery = "?timetable=1";
+    if (timetableState.open) {
+      const linePart = timetableState.lineId ? `&line=${encodeURIComponent(timetableState.lineId)}` : "";
+      const servicePart = timetableState.service && timetableState.service !== "weekday" ? `&service=${timetableState.service}` : "";
+      const dirPart = timetableState.patternId ? `&dir=${encodeURIComponent(timetableState.patternId)}` : "";
+      nextQuery = `?timetable=1${linePart}${servicePart}${dirPart}`;
     } else if (boardStop) {
       nextQuery = `?stop=${encodeURIComponent(boardStop)}`;
     } else if (from || to) {
@@ -414,7 +461,7 @@ export default function Planner({ network, places, reach, box, fares }: {
     if (currentQuery !== nextQuery) {
       window.history.replaceState(null, "", base + nextQuery);
     }
-  }, [from, to, time, mode, timeCustomized, detail, timetableOpen, boardStop, mounted, linkRead]);
+  }, [from, to, time, mode, timeCustomized, detail, timetableState, boardStop, mounted, linkRead]);
 
   /* ---- pin picking. The map reports its centre; we name it. ---- */
   const onCentreChange = useCallback((at: LngLat) => { if (picking) setPinAt(at); }, [picking, setPinAt]);
@@ -489,12 +536,17 @@ export default function Planner({ network, places, reach, box, fares }: {
   const iso = new Date(date.getTime() - date.getTimezoneOffset() * 60000).toISOString().slice(0, 10);
   const isToday = new Date().toDateString() === date.toDateString();
 
-  if (timetableOpen) {
+  if (timetableState.open) {
     /* The whole screen, and nothing else on it. A timetable is a document to
        read, not a control to operate alongside the map. */
     return (
       <Timetable network={network} ctx={ctx} lines={lineMap} stops={stops}
-                 lang={lang} t={t} onClose={() => setTimetableOpen(false)} />
+                 lang={lang} t={t}
+                 initialLine={timetableState.lineId}
+                 initialService={timetableState.service}
+                 initialPattern={timetableState.patternId}
+                 onChange={(info) => setTimetableState({ open: true, ...info })}
+                 onClose={() => setTimetableState((s) => ({ ...s, open: false }))} />
     );
   }
 
@@ -704,7 +756,11 @@ export default function Planner({ network, places, reach, box, fares }: {
 
         <div className={styles.topRight} ref={gearRef}>
           <button className={styles.round} aria-label={t.timetables}
-                  onClick={() => setTimetableOpen(true)}>
+                  onClick={() => setTimetableState((s) => ({
+                    ...s,
+                    open: true,
+                    lineId: s.lineId ?? network.lines[0]?.id ?? null,
+                  }))}>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}
                  strokeLinecap="round">
               <rect x="3.5" y="4.5" width="17" height="16" rx="3" />

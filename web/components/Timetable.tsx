@@ -20,32 +20,58 @@ import styles from "./Timetable.module.css";
  *  are set and the only arrangement that fits thirty departures on a phone -
  *  the alternative puts thirty-three stops across a screen four inches wide.
  */
-export default function Timetable({
-  network, ctx, lines, stops, lang, t, onClose,
-}: {
+export interface TimetableProps {
   network: Network;
   ctx: PlanContext;
   lines: Map<string, Line>;
   stops: Map<string, Stop>;
   lang: Lang;
   t: Strings;
+  initialLine?: string | null;
+  initialService?: ServiceId | null;
+  initialPattern?: string | null;
+  onChange?: (state: { lineId: string; service: ServiceId; patternId: string | null }) => void;
   onClose: () => void;
-}) {
+}
+
+export default function Timetable({
+  network, ctx, lines, stops, lang, t,
+  initialLine, initialService, initialPattern, onChange, onClose,
+}: TimetableProps) {
   const ordered = network.lines;
-  const [lineId, setLineId] = useState(ordered[0]?.id ?? "");
-  const [service, setService] = useState<ServiceId>("weekday");
+  const validInitialLine = initialLine && ordered.some((l) => l.id === initialLine)
+    ? initialLine
+    : (ordered[0]?.id ?? "");
+  const [lineId, setLineId] = useState(validInitialLine);
+  const [service, setService] = useState<ServiceId>(initialService ?? "weekday");
 
   /* A line can run more than one shape - the 3 loops one way, the 3D another -
      and they are separate timetables however the operator numbers them. */
   const directions = useMemo(
     () => network.patterns.filter((p) => p.lineId === lineId),
     [network.patterns, lineId]);
-  const [patternId, setPatternId] = useState<string | null>(null);
+  const [patternId, setPatternId] = useState<string | null>(initialPattern ?? null);
   const chosen = directions.find((p) => p.id === patternId) ?? directions[0];
 
   const grid = useMemo(
     () => (chosen ? timetable(ctx, chosen.id, service) : null),
     [ctx, chosen, service]);
+
+  const selectLine = (id: string) => {
+    setLineId(id);
+    setPatternId(null);
+    onChange?.({ lineId: id, service, patternId: null });
+  };
+
+  const selectService = (day: ServiceId) => {
+    setService(day);
+    onChange?.({ lineId, service: day, patternId: chosen?.id ?? null });
+  };
+
+  const selectPattern = (pId: string) => {
+    setPatternId(pId);
+    onChange?.({ lineId, service, patternId: pId });
+  };
 
   const shade = shadeOf(lines.get(lineId), false);
   const stopName = (id: string) => {
@@ -68,7 +94,7 @@ export default function Timetable({
               <button key={line.id} className={styles.linePick}
                       aria-pressed={line.id === lineId}
                       style={{ background: tone.fill, color: tone.text }}
-                      onClick={() => { setLineId(line.id); setPatternId(null); }}>
+                      onClick={() => selectLine(line.id)}>
                 {line.id}
               </button>
             );
@@ -79,7 +105,7 @@ export default function Timetable({
           <div className={styles.seg}>
             {directions.map((p) => (
               <button key={p.id} aria-pressed={p.id === chosen?.id}
-                      onClick={() => setPatternId(p.id)}>
+                      onClick={() => selectPattern(p.id)}>
                 → {lang === "hu" ? p.headsign.hu : p.headsign.ro}
               </button>
             ))}
@@ -89,7 +115,7 @@ export default function Timetable({
         <div className={styles.seg}>
           {(["weekday", "weekend"] as ServiceId[]).map((day) => (
             <button key={day} aria-pressed={service === day}
-                    onClick={() => setService(day)}>
+                    onClick={() => selectService(day)}>
               {day === "weekday" ? t.weekdayShort : t.weekendShort}
             </button>
           ))}
