@@ -18,6 +18,7 @@ export interface Trip {
   to: Endpoint | null;
   time: string | null;
   mode: PlanMode | null;
+  journey?: number | null;
 }
 
 /** Six decimals is about 10 cm - past the point where a bus stop moves. */
@@ -42,6 +43,9 @@ export function encodeTrip(trip: Trip): string {
   if (trip.to) params.set("to", place(trip.to));
   if (trip.time) params.set("at", trip.time);
   if (trip.mode && trip.mode !== "departAt") params.set("mode", trip.mode);
+  if (trip.journey !== null && trip.journey !== undefined && trip.journey >= 0) {
+    params.set("journey", String(trip.journey + 1));
+  }
   const query = params.toString();
   return query ? `?${query}` : "";
 }
@@ -56,15 +60,24 @@ function readTime(raw: string | null): string | null {
   return `${String(hours).padStart(2, "0")}:${parts[2]}`;
 }
 
+function readJourney(raw: string | null): number | null {
+  if (!raw) return null;
+  const n = parseInt(raw, 10);
+  if (isNaN(n) || n < 1) return null;
+  return n - 1;
+}
+
 export function decodeTrip(search: string): Trip {
   const params = new URLSearchParams(search);
   const at = params.get("at");
   const mode = params.get("mode");
+  const journeyParam = params.get("journey") ?? params.get("trip") ?? params.get("detail");
   return {
     from: readPlace(params.get("from")),
     to: readPlace(params.get("to")),
     time: readTime(at),
     mode: mode === "arriveBy" ? "arriveBy" : mode === "departAt" ? "departAt" : null,
+    journey: readJourney(journeyParam),
   };
 }
 

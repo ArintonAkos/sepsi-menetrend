@@ -29,6 +29,7 @@ import { useDismiss } from "./useDismiss";
 import { useDrawer } from "./useDrawer";
 import { forget, read, remember, write, type Recent } from "@/lib/history";
 import { STRINGS, type Lang } from "@/lib/i18n";
+import { readLang, writeLang, LANG_CHANGE_EVENT } from "@/lib/lang";
 import type { FareTable } from "@/lib/engine/fares";
 import type { Journey, LngLat, Network, PlanMode, RideLeg, WalkLeg } from "@/lib/engine/types";
 import type { Place } from "@/lib/engine/search";
@@ -74,8 +75,34 @@ export default function Planner({ network, places, reach, box, fares }: {
     () => ({ box, reach, stops: network.stops.map((s) => s.at) }),
     [box, reach, network]);
 
-  const [lang, setLang] = useState<Lang>("hu");
-  const [theme, setTheme] = useState<Theme>("auto");
+  const [lang, setLangState] = useState<Lang>("hu");
+  const setLang = useCallback((l: Lang) => {
+    setLangState(l);
+    writeLang(globalThis.localStorage ?? null, l);
+  }, []);
+
+  useEffect(() => {
+    const handleLang = () => {
+      setLangState(readLang(globalThis.localStorage ?? null));
+    };
+    window.addEventListener(LANG_CHANGE_EVENT, handleLang);
+    return () => window.removeEventListener(LANG_CHANGE_EVENT, handleLang);
+  }, []);
+
+  const [theme, setThemeState] = useState<Theme>(() => {
+    if (typeof window === "undefined") return "auto";
+    try {
+      const saved = localStorage.getItem("sepsi.theme");
+      return saved === "light" || saved === "dark" || saved === "auto" ? saved : "auto";
+    } catch {
+      return "auto";
+    }
+  });
+  const setTheme = useCallback((th: Theme) => {
+    setThemeState(th);
+    try { localStorage.setItem("sepsi.theme", th); } catch {}
+  }, []);
+
   const prefersDark = useSyncExternalStore(subscribeToScheme, schemeIsDark, () => false);
   const t = STRINGS[lang];
 
@@ -84,6 +111,7 @@ export default function Planner({ network, places, reach, box, fares }: {
   const [mode, setMode] = useState<PlanMode>("departAt");
   const [date, setDate] = useState(() => new Date());
   const [time, setTime] = useState(() => formatHHMM(minutesOfDay(new Date())));
+  const [timeCustomized, setTimeCustomized] = useState(false);
   const [aversion, setAversion] = useState(0.35);
   /* Planning costs tens of milliseconds. Deferring it keeps the slider itself
      responsive - the thumb moves now, the list catches up. */
@@ -102,21 +130,60 @@ export default function Planner({ network, places, reach, box, fares }: {
   const asSheet = (node: React.ReactNode) =>
     narrow && mounted ? createPortal(node, document.body) : node;
 
+  /* Two ways in to the same data the planner already holds: one stop's board,
+     and the whole published timetable. Neither is part of planning a journey,
+     so neither touches the phase the panel is in. */
+  const [board, setBoard] = useState<
+    { stopId: string; anchor: HTMLElement | null; dismiss: () => void } | null>(null);
+  const boardStop = board?.stopId || null;
+  const [timetableOpen, setTimetableOpen] = useState(false);
+
   /* A link someone was sent carries the whole plan - but the query string is
      knowledge only the browser has. This page is prerendered without one, so
      reading it while the first render is still being matched against that HTML
      makes the two trees differ and hydration fails. Applied instead on the
      first render after hydration, as a render-phase update: an effect would
      plan the default journey, paint it, and then visibly replace it. */
-  const shared = useMemo(
-    () => decodeTrip(typeof window === "undefined" ? "" : window.location.search), []);
+  const shared = useMemo(() => {
+    if (typeof window === "undefined") {
+      return { trip: decodeTrip(""), timetable: false, stop: null as string | null, lang: null as string | null };
+    }
+    const params = new URLSearchParams(window.location.search);
+    return {
+      trip: decodeTrip(window.location.search),
+      timetable: params.get("timetable") === "1" || params.get("timetable") === "true",
+      stop: params.get("stop"),
+      lang: params.get("lang"),
+    };
+  }, []);
+
   const [linkRead, setLinkRead] = useState(false);
+  const [initJourney, setInitJourney] = useState<number | null>(null);
   if (mounted && !linkRead) {
     setLinkRead(true);
-    if (shared.from) setFrom(shared.from);
-    if (shared.to) setTo(shared.to);
-    if (shared.time) setTime(shared.time);
-    if (shared.mode) setMode(shared.mode);
+    if (shared.trip.from) setFrom(shared.trip.from);
+    if (shared.trip.to) setTo(shared.trip.to);
+    if (shared.trip.time) {
+      setTime(shared.trip.time);
+      setTimeCustomized(true);
+    }
+    if (shared.trip.mode) {
+      setMode(shared.trip.mode);
+      setTimeCustomized(true);
+    }
+    if (shared.trip.journey !== null && shared.trip.journey !== undefined) {
+      setInitJourney(shared.trip.journey);
+    }
+    if (shared.timetable) setTimetableOpen(true);
+    if (shared.stop && stops.has(shared.stop)) {
+      setBoard({ stopId: shared.stop, anchor: null, dismiss: () => setBoard(null) });
+    }
+    const initialLang = shared.lang === "hu" || shared.lang === "ro"
+      ? shared.lang
+      : readLang(globalThis.localStorage ?? null);
+    if (initialLang !== "hu") {
+      setLangState(initialLang);
+    }
   }
 
   const drawer = useDrawer();
@@ -136,13 +203,6 @@ export default function Planner({ network, places, reach, box, fares }: {
      exists, and a ref would not cause one. */
   const [hits, setHits] = useState<HTMLDivElement | null>(null);
   const [shareNote, setShareNote] = useState<string | null>(null);
-  /* Two ways in to the same data the planner already holds: one stop's board,
-     and the whole published timetable. Neither is part of planning a journey,
-     so neither touches the phase the panel is in. */
-  const [board, setBoard] = useState<
-    { stopId: string; anchor: HTMLElement | null; dismiss: () => void } | null>(null);
-  const boardStop = board?.stopId || null;
-  const [timetableOpen, setTimetableOpen] = useState(false);
   const settingsRef = useRef<HTMLDivElement>(null);
   const closePanel = useCallback(() => setOpenPanel(null), []);
   useDismiss(openPanel !== null && openPanel !== "settings", closePanel, chipsRef, popRef);
@@ -257,12 +317,29 @@ export default function Planner({ network, places, reach, box, fares }: {
      end, so it still works tomorrow and can be adjusted by whoever opens it. */
   const share = async () => {
     const base = window.location.origin + window.location.pathname;
-    const link = base + encodeTrip({
-      from: from && { name: from.name, at: from.at },
-      to: to && { name: to.name, at: to.at },
-      time, mode,
-    });
-    const what = from && to ? `${from.name} → ${to.name}` : t.title;
+    let query = "";
+    if (timetableOpen) {
+      query = "?timetable=1";
+    } else if (boardStop) {
+      query = `?stop=${encodeURIComponent(boardStop)}`;
+    } else if (from || to) {
+      query = encodeTrip({
+        from: from && { name: from.name, at: from.at },
+        to: to && { name: to.name, at: to.at },
+        time: timeCustomized ? time : null,
+        mode: mode !== "departAt" ? mode : null,
+        journey: detail,
+      });
+    }
+    const link = base + query;
+    let what = t.title;
+    if (from && to) what = `${from.name} → ${to.name}`;
+    else if (timetableOpen) what = `${t.timetables} · ${t.title}`;
+    else if (boardStop) {
+      const s = stops.get(boardStop);
+      what = `${s ? (lang === "hu" ? s.name.hu : s.name.ro) : boardStop} · ${t.title}`;
+    }
+
     const how = await shareLink(link, t.title, what);
     if (how === "shared") return;                    // the sheet said its piece
     setShareNote(how === "copied" ? t.copied : t.shareFailed);
@@ -301,13 +378,46 @@ export default function Planner({ network, places, reach, box, fares }: {
                    settledAversion, [...visibleLines].sort().join(",")].join("|");
   const [selection, setSelection] = useState({ key: planKey, chosen: 0,
                                                detail: null as number | null });
-  if (selection.key !== planKey) setSelection({ key: planKey, chosen: 0, detail: null });
+  if (selection.key !== planKey) {
+    const nextDetail = initJourney !== null && initJourney >= 0
+      ? (journeys.length > 0 ? Math.min(initJourney, journeys.length - 1) : initJourney)
+      : null;
+    if (initJourney !== null && (journeys.length > 0 || !planning)) {
+      setInitJourney(null);
+    }
+    setSelection({ key: planKey, chosen: nextDetail ?? 0, detail: nextDetail });
+  }
   const { chosen, detail } = selection;
   const setChosen = (i: number) => setSelection((s) => ({ ...s, chosen: i }));
-  const setDetail = (i: number | null) => setSelection((s) => ({ ...s, detail: i }));
+  const setDetail = (i: number | null) => setSelection((s) => ({ ...s, detail: i, chosen: i ?? s.chosen }));
+
+  useEffect(() => {
+    if (!mounted || !linkRead) return;
+    const base = window.location.pathname;
+    let nextQuery = "";
+
+    if (timetableOpen) {
+      nextQuery = "?timetable=1";
+    } else if (boardStop) {
+      nextQuery = `?stop=${encodeURIComponent(boardStop)}`;
+    } else if (from || to) {
+      nextQuery = encodeTrip({
+        from: from && { name: from.name, at: from.at },
+        to: to && { name: to.name, at: to.at },
+        time: timeCustomized ? time : null,
+        mode: mode !== "departAt" ? mode : null,
+        journey: detail,
+      });
+    }
+
+    const currentQuery = window.location.search;
+    if (currentQuery !== nextQuery) {
+      window.history.replaceState(null, "", base + nextQuery);
+    }
+  }, [from, to, time, mode, timeCustomized, detail, timetableOpen, boardStop, mounted, linkRead]);
 
   /* ---- pin picking. The map reports its centre; we name it. ---- */
-  const onCentreChange = useCallback((at: LngLat) => { if (picking) setPinAt(at); }, [picking]);
+  const onCentreChange = useCallback((at: LngLat) => { if (picking) setPinAt(at); }, [picking, setPinAt]);
 
   /* Naming the pinned point is two different jobs. Whether it is outside the
      area, and whether something named sits within 60 m, are facts about the
@@ -487,7 +597,7 @@ export default function Planner({ network, places, reach, box, fares }: {
             <div className={styles.pop} ref={popRef}>
               <div className={styles.modes}>
                 {(["departAt", "arriveBy"] as PlanMode[]).map((m) => (
-                  <button key={m} aria-pressed={mode === m} onClick={() => setMode(m)}>
+                  <button key={m} aria-pressed={mode === m} onClick={() => { setMode(m); setTimeCustomized(true); }}>
                     {t[`${m}Long` as const]}
                   </button>
                 ))}
@@ -495,7 +605,7 @@ export default function Planner({ network, places, reach, box, fares }: {
               <label className={styles.popTime}>
                 <span>{mode === "departAt" ? t.departAt : t.arriveBy}</span>
                 <input type="time" value={time} step={300}
-                       onChange={(e) => setTime(e.target.value)} />
+                       onChange={(e) => { setTime(e.target.value); setTimeCustomized(true); }} />
               </label>
               <button className={styles.sheetDone} onClick={closePanel}>{t.done}</button>
             </div>
@@ -670,6 +780,18 @@ export default function Planner({ network, places, reach, box, fares }: {
               <div className={styles.setRow}>
                 <span>{t.source}</span>
                 <p className={styles.setNote}>{t.disclaimer}</p>
+                <div className={styles.legalLinks}>
+                  <a href="/terms/" target="_blank" rel="noopener noreferrer">{t.terms}</a>
+                  <span>·</span>
+                  <a href="/privacy/" target="_blank" rel="noopener noreferrer">{t.privacy}</a>
+                </div>
+                <button className={styles.cookieReset} onClick={() => {
+                  try { localStorage.removeItem("sepsi.consent"); } catch {}
+                  window.dispatchEvent(new Event("sepsi:consent"));
+                  closePanel();
+                }}>
+                  {t.cookieSettings}
+                </button>
               </div>
               <button className={styles.sheetDone} onClick={closePanel}>{t.done}</button>
             </div>

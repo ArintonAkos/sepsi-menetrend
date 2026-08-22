@@ -9,7 +9,11 @@ import { cleanup } from "@testing-library/react";
 
 // without globals enabled, Testing Library does not unmount between tests and
 // every query then finds two of everything
-afterEach(cleanup);
+afterEach(() => {
+  cleanup();
+  localStorage.clear();
+  window.history.replaceState(null, "", "/");
+});
 
 /** jsdom has no WebGL, so Mapbox cannot start. The map is not what these tests
  *  are checking - the panel around it is. */

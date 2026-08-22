@@ -44,6 +44,18 @@ describe("a plan in a link", () => {
     expect(encodeTrip({ from: gara, to: null, time: null, mode: null })).toMatch(/^\?/);
     expect(encodeTrip({ from: null, to: null, time: null, mode: null })).toBe("");
   });
+
+  it("encodes and decodes the chosen specific journey index", () => {
+    const link = encodeTrip({ from: gara, to: arena, time: "08:30", mode: "departAt", journey: 0 });
+    expect(link).toContain("journey=1");
+    const back = decodeTrip(link);
+    expect(back.journey).toBe(0);
+
+    // handles 1-based index from query
+    expect(decodeTrip("?from=25.7876,45.8636&to=25.8012,45.8598&journey=2").journey).toBe(1);
+    expect(decodeTrip("?from=25.7876,45.8636&to=25.8012,45.8598&trip=3").journey).toBe(2);
+    expect(decodeTrip("?from=25.7876,45.8636&to=25.8012,45.8598&journey=0").journey).toBeNull();
+  });
 });
 
 describe("handing the link over", () => {

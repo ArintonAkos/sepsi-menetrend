@@ -2,6 +2,7 @@
 
 import { useEffect, useSyncExternalStore } from "react";
 import { read, write, type Consent } from "@/lib/consent";
+import { readLang, LANG_CHANGE_EVENT } from "@/lib/lang";
 import styles from "./Analytics.module.css";
 
 declare global {
@@ -10,12 +11,24 @@ declare global {
 
 const TEXT = {
   hu: {
-    message: "Ez az oldal a Google Analytics segítségével méri a látogatottságot.",
-    accept: "Elfogadom", decline: "Elutasítom",
+    title: "Süti (Cookie) hozzájárulás",
+    message: "Ez az oldal a Google Analytics segítségével névtelen látogatottsági statisztikákat gyűjt a szolgáltatás minőségének javítása érdekében. Az oldal használatához kérjük, válaszd ki a kívánt beállítást.",
+    privacyLink: "Adatkezelési és süti tájékoztatót",
+    termsLink: "Felhasználási feltételeket",
+    more: "További részletekért olvasd el az",
+    and: "és a",
+    accept: "Elfogadom",
+    decline: "Elutasítom",
   },
   ro: {
-    message: "Acest site folosește Google Analytics pentru a măsura vizitele.",
-    accept: "Accept", decline: "Refuz",
+    title: "Consimțământ cookie-uri",
+    message: "Acest site folosește Google Analytics pentru a măsura traficul în mod anonim în scopul îmbunătățirii calității serviciului. Pentru a utiliza site-ul, vă rugăm să alegeți opțiunea dorită.",
+    privacyLink: "Politica de confidențialitate și cookie-uri",
+    termsLink: "Termenii și condițiile",
+    more: "Pentru mai multe detalii, consultați",
+    and: "și",
+    accept: "Accept",
+    decline: "Refuz",
   },
 };
 
@@ -27,9 +40,11 @@ const CHANGE_EVENT = "sepsi:consent";
 function subscribe(onChange: () => void) {
   window.addEventListener("storage", onChange);
   window.addEventListener(CHANGE_EVENT, onChange);
+  window.addEventListener(LANG_CHANGE_EVENT, onChange);
   return () => {
     window.removeEventListener("storage", onChange);
     window.removeEventListener(CHANGE_EVENT, onChange);
+    window.removeEventListener(LANG_CHANGE_EVENT, onChange);
   };
 }
 
@@ -37,10 +52,6 @@ function snapshot(): Consent | "unset" {
   return read(globalThis.localStorage ?? null) ?? "unset";
 }
 
-// The static export has no window at build time; "unset" is what a fresh
-// visitor's very first paint would show anyway, so hydration has nothing to
-// correct for anyone but a returning visitor, and that correction happens on
-// the next tick regardless.
 function serverSnapshot(): Consent | "unset" {
   return "unset";
 }
@@ -66,14 +77,28 @@ function load(gaId: string) {
  */
 export default function Analytics({ gaId }: { gaId?: string }) {
   const consent = useSyncExternalStore(subscribe, snapshot, serverSnapshot);
+  const lang = useSyncExternalStore<"hu" | "ro">(
+    subscribe,
+    () => readLang(globalThis.localStorage ?? null),
+    () => "hu",
+  );
 
   useEffect(() => {
     if (gaId && consent === "granted") load(gaId);
   }, [gaId, consent]);
 
+  useEffect(() => {
+    if (gaId && consent === "unset") {
+      const originalOverflow = document.body.style.overflow;
+      document.body.style.overflow = "hidden";
+      return () => {
+        document.body.style.overflow = originalOverflow;
+      };
+    }
+  }, [gaId, consent]);
+
   if (!gaId || consent !== "unset") return null;
 
-  const lang = navigator.language.toLowerCase().startsWith("ro") ? "ro" : "hu";
   const t = TEXT[lang];
 
   const choose = (value: Consent) => {
@@ -82,11 +107,20 @@ export default function Analytics({ gaId }: { gaId?: string }) {
   };
 
   return (
-    <div className={styles.bar} role="region" aria-label={t.message}>
-      <p className={styles.message}>{t.message}</p>
-      <div className={styles.actions}>
-        <button className={styles.decline} onClick={() => choose("denied")}>{t.decline}</button>
-        <button className={styles.accept} onClick={() => choose("granted")}>{t.accept}</button>
+    <div className={styles.overlay} role="dialog" aria-modal="true" aria-labelledby="consent-title">
+      <div className={styles.card}>
+        <h2 id="consent-title" className={styles.title}>{t.title}</h2>
+        <p className={styles.message}>
+          {t.message}{" "}
+          <span className={styles.legalLinks}>
+            {t.more} <a href="/privacy/" target="_blank" rel="noopener noreferrer">{t.privacyLink}</a> {t.and}{" "}
+            <a href="/terms/" target="_blank" rel="noopener noreferrer">{t.termsLink}</a>.
+          </span>
+        </p>
+        <div className={styles.actions}>
+          <button className={styles.decline} onClick={() => choose("denied")}>{t.decline}</button>
+          <button className={styles.accept} onClick={() => choose("granted")}>{t.accept}</button>
+        </div>
       </div>
     </div>
   );

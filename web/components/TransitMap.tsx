@@ -104,7 +104,13 @@ export default function TransitMap({
       return;               // the note below is already on screen
     }
     m.addControl(new mapboxgl.NavigationControl({ showCompass: false }), "bottom-right");
-    m.on("load", () => { ready.current = true; addLayers(m, dark, network, lines); paint(m, journey, patterns, lines, dark); });
+    m.on("load", () => {
+      ready.current = true;
+      addLayers(m, dark, network, lines);
+      applyNetFilter(m, journey, visibleLines);
+      paint(m, journey, patterns, lines, dark);
+      if (journey) fit(m, journey, patterns, picking, covered);
+    });
     m.on("move", () => onMove.current?.(m.getCenter().toArray() as LngLat));
     attachStopPopups(m, () => stopPick.current,
                      () => window.innerWidth > 860);
@@ -121,7 +127,9 @@ export default function TransitMap({
     m.once("styledata", () => {
       ready.current = true;
       addLayers(m, dark, network, lines);
+      applyNetFilter(m, journey, visibleLines);
       paint(m, journey, patterns, lines, dark);
+      if (journey) fit(m, journey, patterns, picking, covered);
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dark]);
@@ -139,15 +147,7 @@ export default function TransitMap({
   useEffect(() => {
     const m = map.current;
     if (!m || !ready.current || !m.getLayer("net-line")) return;
-    /* Every line at once is the right picture of the town and the wrong one of
-       a journey: twelve routes crossing the one you are being told to take. So
-       once a journey is on screen, the rest of the network steps aside. */
-    const shown = journey
-      ? ["in", ["get", "line"], ["literal", []]]
-      : ["in", ["get", "line"], ["literal", [...visibleLines]]];
-    for (const id of ["net-case", "net-line"]) {
-      if (m.getLayer(id)) m.setFilter(id, shown as never);
-    }
+    applyNetFilter(m, journey, visibleLines);
   }, [visibleLines, journey]);
 
   useEffect(() => { map.current?.resize(); }, [picking, resizeKey]);
@@ -187,6 +187,18 @@ export default function TransitMap({
     );
   }
   return <div ref={host} className={styles.map} />;
+}
+
+function applyNetFilter(m: MapboxMap, journey: Journey | null, visibleLines: Set<string>) {
+  /* Every line at once is the right picture of the town and the wrong one of
+     a journey: twelve routes crossing the one you are being told to take. So
+     once a journey is on screen, the rest of the network steps aside. */
+  const shown = journey
+    ? ["in", ["get", "line"], ["literal", []]]
+    : ["in", ["get", "line"], ["literal", [...visibleLines]]];
+  for (const id of ["net-case", "net-line"]) {
+    if (m.getLayer(id)) m.setFilter(id, shown as never);
+  }
 }
 
 function addLayers(m: MapboxMap, dark: boolean, network: Network,
