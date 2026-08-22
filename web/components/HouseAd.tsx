@@ -6,9 +6,10 @@ import styles from "./HouseAd.module.css";
 /** Where it points. One place, so a typo cannot ship half-working.
  *
  *  The campaign tag is the only way anyone will ever know whether this block
- *  did anything: nothing here counts a click, and it should not - the whole
- *  app runs without tracking of any kind and needs no consent banner because
- *  of it. Attribution belongs on the other end, where the visitor lands. */
+ *  did anything: nothing here counts a click itself. Attribution belongs on
+ *  the other end, where the visitor lands - Analytics (components/Analytics.tsx)
+ *  may separately see it as an outbound click, but only for a visitor who has
+ *  already agreed to the consent prompt it shows first. */
 const HREF = "https://aperta-sync.com/"
   + "?utm_source=sepsibusz&utm_medium=app&utm_campaign=journey-detail";
 

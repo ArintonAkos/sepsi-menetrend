@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
+import Analytics from "@/components/Analytics";
 import ServiceWorker from "@/components/ServiceWorker";
 
 /** Where the site is served from.
@@ -66,7 +67,11 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="hu">
-      <body>{children}<ServiceWorker /></body>
+      <body>
+        {children}
+        <ServiceWorker />
+        <Analytics gaId={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID} />
+      </body>
     </html>
   );
 }
