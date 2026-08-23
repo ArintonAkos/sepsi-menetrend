@@ -634,15 +634,20 @@ export default function Planner({ network, places, reach, box, fares }: {
                aria-label={t.journey}><i /></div>
         )}
         <div className={styles.panel}>
+          {!narrow && planning && (
+            <div className={styles.desktopHead}>
+              <button type="button" onClick={() => { setFrom(null); setTo(null); setDetail(null); setSearching(null); }}
+                      className={styles.desktopBack} aria-label={t.back}>
+                <Back />
+                <span>{t.back}</span>
+              </button>
+            </div>
+          )}
           <div className={styles.searchHead}>
             <button onClick={closeSearching} aria-label={t.back}><Back /></button>
             <h2>{t.whereTo}</h2>
           </div>
-          {/* the results screen swallowed the map with no way out; this is it.
-              Not while searching: that screen has its own header, and two back
-              buttons is a puzzle rather than a way out - hiding one in CSS
-              would still leave it in the page for a screen reader to find. */}
-          {!searching && (
+          {narrow && !searching && (
             <div className={styles.listHead}>
               <button onClick={() => { setTo(null); setSearching(null); }}
                       aria-label={t.back}><Back /></button>

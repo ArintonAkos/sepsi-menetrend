@@ -965,4 +965,16 @@ describe("pin picking and mobile search workflow edge cases", () => {
     await user.keyboard("{Escape}");
     expect(screen.queryByRole("listbox")).not.toBeInTheDocument();
   });
+
+  it("allows returning to idle search-free view via desktop back button", async () => {
+    const user = await setup();
+    await startPlanning(user);
+
+    const backBtn = screen.getByText("Vissza");
+    await user.click(backBtn);
+
+    expect(screen.queryByText(/Gyorsabb/i)).not.toBeInTheDocument();
+    expect((screen.getByLabelText("Honnan") as HTMLInputElement).value).toBe("");
+    expect((screen.getByLabelText("Hová") as HTMLInputElement).value).toBe("");
+  });
 });

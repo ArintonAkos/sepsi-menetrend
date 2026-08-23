@@ -466,6 +466,40 @@
   .app.idle:not(.searching) .panel { padding: 12px; }
 }
 
+.desktopHead {
+  display: flex;
+  align-items: center;
+  margin-bottom: 6px;
+}
+.desktopBack {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #fff;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  padding: 4px 8px 4px 4px;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 8px;
+  font-family: inherit;
+  transition: background var(--tap) var(--ease), opacity var(--tap) var(--ease);
+}
+.desktopBack:hover {
+  background: rgba(255, 255, 255, 0.14);
+}
+.desktopBack:active {
+  background: rgba(255, 255, 255, 0.22);
+}
+.desktopBack svg {
+  width: 18px;
+  height: 18px;
+}
+@media (max-width: 860px) {
+  .desktopHead { display: none !important; }
+}
+
 .listHead { display: none; }
 @media (max-width: 860px) {
   .app.listing .listHead {
