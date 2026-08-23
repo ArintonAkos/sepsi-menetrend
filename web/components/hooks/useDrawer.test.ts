@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeAll } from "vitest";
+import { describe, it, expect, beforeAll, vi } from "vitest";
 import { SNAPS } from "./useDrawer";
 
 beforeAll(() => Object.defineProperty(window, "innerHeight", { value: 800, configurable: true }));
@@ -39,3 +39,37 @@ describe("the drawer's resting heights", () => {
     expect(nearest(between + 20)).toBe(1);
   });
 });
+
+import { renderHook, act } from "@testing-library/react";
+import { useDrawer } from "./useDrawer";
+
+describe("useDrawer hook", () => {
+  it("dismisses when dragged down past lowest threshold if onDismiss is provided", () => {
+    const onDismiss = vi.fn();
+    const { result } = renderHook(() => useDrawer(0, onDismiss));
+
+    const mockTarget = { setPointerCapture: vi.fn() } as any;
+
+    act(() => {
+      result.current.handlers.onPointerDown({
+        pointerId: 1,
+        currentTarget: mockTarget,
+        clientY: 100,
+      } as any);
+    });
+
+    act(() => {
+      result.current.handlers.onPointerMove({
+        clientY: 350, // moved down 250px
+      } as any);
+    });
+
+    act(() => {
+      result.current.handlers.onPointerUp();
+    });
+
+    expect(onDismiss).toHaveBeenCalledTimes(1);
+  });
+});
+
+

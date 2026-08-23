@@ -14,7 +14,7 @@ import { useCallback, useRef, useState } from "react";
  */
 export const SNAPS = [0.42, 0.72, 0.94] as const;
 
-export function useDrawer(initial = 1) {
+export function useDrawer(initial = 1, onDismiss?: () => void) {
   const [snap, setSnap] = useState(initial);
   const [live, setLive] = useState<number | null>(null);   // while dragging
   const start = useRef<{ y: number; height: number } | null>(null);
@@ -31,13 +31,18 @@ export function useDrawer(initial = 1) {
     if (!start.current) return;
     const moved = start.current.y - event.clientY;      // up is taller
     const lowest = SNAPS[0] * viewport(), highest = SNAPS[SNAPS.length - 1] * viewport();
-    setLive(Math.max(lowest - 60, Math.min(highest, start.current.height + moved)));
-  }, []);
+    setLive(Math.max(onDismiss ? 0 : lowest - 60, Math.min(highest, start.current.height + moved)));
+  }, [onDismiss]);
 
   const onPointerUp = useCallback(() => {
     if (!start.current) return;
     const settled = live ?? start.current.height;
     start.current = null;
+    if (onDismiss && settled < (SNAPS[0] - 0.12) * viewport()) {
+      setLive(null);
+      onDismiss();
+      return;
+    }
     // snap to whichever resting height the drawer ended up nearest
     let nearest = 0, best = Infinity;
     SNAPS.forEach((fraction, i) => {
@@ -46,7 +51,7 @@ export function useDrawer(initial = 1) {
     });
     setSnap(nearest);
     setLive(null);
-  }, [live]);
+  }, [live, onDismiss]);
 
   return {
     height, dragging: live !== null, snap, setSnap,
