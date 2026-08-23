@@ -109,8 +109,13 @@
 
 /* while picking, the panel is out of the way and the map controls move up so
    the bar never covers Mapbox's attribution, which has to stay visible */
-.picking .rail { display: none; }
-.picking.app { grid-template-columns: minmax(0, 1fr); grid-template-rows: minmax(0, 1fr); }
+.picking .rail { display: none !important; }
+.picking.app {
+  grid-template-columns: minmax(0, 1fr) !important;
+  grid-template-rows: minmax(0, 1fr) !important;
+  height: 100dvh !important;
+}
+.picking .map { display: block !important; }
 .picking .map :global(.mapboxgl-ctrl-bottom-left),
 .picking .map :global(.mapboxgl-ctrl-bottom-right) { transform: translateY(-62px); }
 
@@ -194,10 +199,24 @@
   /* Reading a list of journeys is not a map task, so the list gets the screen.
      The map comes back the moment one of them is chosen. */
   .app.listing { grid-template-rows: minmax(0, 1fr); }
-  .app.listing .map { display: none; }
+  .app.listing:not(.picking) .map { display: none; }
   .app.listing .rail {
     border-radius: 0; margin-top: 0; box-shadow: none;
     animation: listArrive var(--move) var(--ease-out);
+  }
+  .app.picking {
+    display: grid !important;
+    height: 100dvh !important;
+    grid-template-columns: 1fr !important;
+    grid-template-rows: 1fr !important;
+  }
+  .app.picking .map {
+    display: block !important;
+    position: absolute !important;
+    inset: 0 !important;
+    height: 100% !important;
+    order: 0 !important;
+    border: 0 !important;
   }
   @keyframes listArrive {
     from { opacity: 0; transform: translateY(30px); }
