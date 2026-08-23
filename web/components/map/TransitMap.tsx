@@ -8,7 +8,7 @@ import { MAPBOX_TOKEN, STYLES, bottomInset, labelAnchor, casingColour, networkCo
 import type { Area } from "@/lib/geocode";
 import { shadeOf } from "@/lib/engine/types";
 import type { Journey, Line, LngLat, Network, Pattern, RideLeg, WalkLeg } from "@/lib/engine/types";
-import { stopAt } from "./stopLookup";
+import { stopAt } from "../stops/stopLookup";
 import styles from "./TransitMap.module.css";
 
 const CENTRE: LngLat = [25.7876, 45.8636];
@@ -98,11 +98,21 @@ export default function TransitMap({
     try {
       m = new mapboxgl.Map({
         container: host.current, style: STYLES[dark ? "dark" : "light"],
-        center: CENTRE, zoom: 12.4, maxBounds: limitsFor(area), attributionControl: true,
+        center: CENTRE, zoom: 12.4, maxBounds: limitsFor(area), attributionControl: false,
       });
     } catch {
       return;               // the note below is already on screen
     }
+    m.addControl(new mapboxgl.AttributionControl({ compact: false }), "bottom-left");
+    m.addControl(
+      new mapboxgl.GeolocateControl({
+        positionOptions: { enableHighAccuracy: true },
+        trackUserLocation: true,
+        showUserHeading: true,
+        showAccuracyCircle: true,
+      }),
+      "bottom-right"
+    );
     m.addControl(new mapboxgl.NavigationControl({ showCompass: false }), "bottom-right");
     m.on("load", () => {
       ready.current = true;
@@ -418,15 +428,16 @@ function fit(m: MapboxMap, journey: Journey, patterns: Map<string, Pattern>,
   if (!box.clientWidth || !box.clientHeight) return;
   const bounds = pts.reduce((b, p) => b.extend(p), new mapboxgl.LngLatBounds(pts[0], pts[0]));
   const narrow = window.innerWidth <= 860;
-  /* While a journey is open the map runs the full height of the screen with the
-     drawer lying over its bottom half, so centring in the map centres the route
-     behind the drawer. Padding the covered strip puts it in the middle of what
-     is left - the part anyone can see. Capped, because a drawer pulled almost
-     to the top leaves no room to fit anything into. */
+  const bottom = narrow ? bottomInset(covered, box.clientHeight) : 90;
+  const top = narrow ? 60 : 70;
+  const left = narrow ? 30 : 70;
+  const right = narrow ? 30 : 70;
+  if (top + bottom >= box.clientHeight || left + right >= box.clientWidth) {
+    m.fitBounds(bounds, { padding: 20, duration: 600, maxZoom: 15.5 });
+    return;
+  }
   m.fitBounds(bounds, {
-    padding: narrow
-      ? { top: 60, bottom: bottomInset(covered, box.clientHeight), left: 30, right: 30 }
-      : { top: 70, bottom: 90, left: 70, right: 70 },
+    padding: { top, bottom, left, right },
     duration: 600, maxZoom: 15.5,
   });
 }
