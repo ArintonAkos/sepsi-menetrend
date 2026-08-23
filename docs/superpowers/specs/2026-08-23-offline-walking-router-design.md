@@ -28,6 +28,11 @@ ways; and represents permitted directional travel.  Every edge stores real
 length in metres.  Every stop and shipped searchable place is connected to
 its nearest walkable edge by a short connector.
 
+The mandatory coverage is the full Multi-Trans served area: Sfântu Gheorghe,
+Coșeni/Szotyor, Chilieni/Kilyén, Arcuș/Árkos, Șugaș Băi/Sugásfürdő, and
+Câmpul Frumos/Szépmező.  The extract boundary is derived from this complete
+set of served stops with a walking margin, rather than from the city boundary.
+
 The artifact is published as `/data/walking-graph.<version>.json` initially;
 the binary encoding may replace JSON only after measuring the uncompressed and
 gzip sizes.  Its version is included in `network.json` and is an input to all
