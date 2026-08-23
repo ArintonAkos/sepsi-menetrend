@@ -65,7 +65,14 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="hu">
+    <html lang="hu" suppressHydrationWarning>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var t=localStorage.getItem('sepsi.theme');if(t&&t!=='auto'){document.documentElement.dataset.theme=t;}var l=localStorage.getItem('sepsi.lang');if(l==='ro'||l==='hu'){document.documentElement.lang=l;}}catch(e){}})();`,
+          }}
+        />
+      </head>
       <body>
         {children}
         <ServiceWorker />

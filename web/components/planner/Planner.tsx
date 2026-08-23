@@ -76,7 +76,8 @@ export default function Planner({ network, places, reach, box, fares }: {
     () => ({ box, reach, stops: network.stops.map((s) => s.at) }),
     [box, reach, network]);
 
-  const [lang, setLangState] = useState<Lang>("hu");
+  const [lang, setLangState] = useState<Lang>(() =>
+    readLang(typeof window === "undefined" ? null : globalThis.localStorage ?? null));
   const setLang = useCallback((l: Lang) => {
     setLangState(l);
     writeLang(globalThis.localStorage ?? null, l);

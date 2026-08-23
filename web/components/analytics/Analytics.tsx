@@ -56,7 +56,7 @@ function snapshot(): Consent | "unset" {
 }
 
 function serverSnapshot(): Consent | "unset" {
-  return "unset";
+  return "granted";
 }
 
 
