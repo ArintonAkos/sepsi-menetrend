@@ -4,29 +4,30 @@ import { useCallback, useDeferredValue, useEffect, useMemo, useRef, useState,
          useSyncExternalStore } from "react";
 import { createPortal } from "react-dom";
 import dynamic from "next/dynamic";
-import { primeStops } from "./stopLookup";
+import { primeStops } from "../stops/stopLookup";
 
 /* Mapbox GL is by far the heaviest thing here and the panel does not need it.
    Loading it after hydration lets the planner answer before the map arrives -
    and it never runs on the server, where there is no WebGL. */
-const TransitMap = dynamic(() => import("./TransitMap"), {
+const TransitMap = dynamic(() => import("../map/TransitMap"), {
   ssr: false,
   loading: () => <div className="mapLoading" />,
 });
 import PlaceInput, { type Chosen } from "./PlaceInput";
-import JourneyList from "./JourneyList";
-import JourneyDetail from "./JourneyDetail";
+import JourneyList from "../journey/JourneyList";
+import JourneyDetail from "../journey/JourneyDetail";
 import { prepare, plan, metresBetween, nextDepartures } from "@/lib/engine/plan";
 import { buildIndex } from "@/lib/engine/search";
 import { formatHHMM, minutesOfDay, serviceForDate } from "@/lib/engine/time";
 import { formatCoordinates, insideArea, reverse } from "@/lib/geocode";
 import { isStraightLine, routeOnFoot } from "@/lib/walking";
-import StopBoard from "./StopBoard";
-import Timetable from "./Timetable";
-import { Back, ShareIcon } from "./icons";
+import StopBoard from "../stops/StopBoard";
+import Timetable from "../timetable/Timetable";
+import { Back, ShareIcon } from "../common/icons";
 import { decodeTrip, encodeTrip, shareLink } from "@/lib/share";
-import { useDismiss } from "./useDismiss";
-import { useDrawer } from "./useDrawer";
+import { useDismiss } from "../hooks/useDismiss";
+import { useDrawer } from "../hooks/useDrawer";
+import { usePullToDismiss } from "../hooks/usePullToDismiss";
 import { forget, read, remember, write, type Recent } from "@/lib/history";
 import { STRINGS, type Lang } from "@/lib/i18n";
 import { readLang, writeLang, LANG_CHANGE_EVENT } from "@/lib/lang";
@@ -135,7 +136,19 @@ export default function Planner({ network, places, reach, box, fares }: {
      so neither touches the phase the panel is in. */
   const [board, setBoard] = useState<
     { stopId: string; anchor: HTMLElement | null; dismiss: () => void } | null>(null);
+  const [closingBoard, setClosingBoard] = useState(false);
   const boardStop = board?.stopId || null;
+
+  const closeBoard = useCallback(() => {
+    if (!board) return;
+    if (closingBoard) return;
+    setClosingBoard(true);
+    setTimeout(() => {
+      board.dismiss?.();
+      setBoard(null);
+      setClosingBoard(false);
+    }, 220);
+  }, [board, closingBoard]);
   const [timetableState, setTimetableState] = useState<{
     open: boolean;
     lineId: string | null;
@@ -241,7 +254,19 @@ export default function Planner({ network, places, reach, box, fares }: {
   const [hits, setHits] = useState<HTMLDivElement | null>(null);
   const [shareNote, setShareNote] = useState<string | null>(null);
   const settingsRef = useRef<HTMLDivElement>(null);
-  const closePanel = useCallback(() => setOpenPanel(null), []);
+  const [closingPanel, setClosingPanel] = useState<"when" | "day" | "lines" | "settings" | null>(null);
+  const closePanel = useCallback(() => {
+    if (!openPanel || closingPanel) return;
+    const current = openPanel;
+    setClosingPanel(current);
+    setOpenPanel(null);
+    setTimeout(() => {
+      setClosingPanel(null);
+    }, 220);
+  }, [openPanel, closingPanel]);
+  const showingPanel = openPanel ?? closingPanel;
+  const pullDismiss = usePullToDismiss(closePanel);
+  const settingsDrawer = useDrawer(1, closePanel);
   useDismiss(openPanel !== null && openPanel !== "settings", closePanel, chipsRef, popRef);
   useDismiss(openPanel === "settings", closePanel, gearRef, settingsRef);
 
@@ -255,6 +280,20 @@ export default function Planner({ network, places, reach, box, fares }: {
      screen with both fields in a header and the results below - the way every
      transit app people already use does it. */
   const [searching, setSearching] = useState<"from" | "to" | null>(null);
+  const [closingSearch, setClosingSearch] = useState(false);
+
+  const closeSearching = useCallback(() => {
+    if (closingSearch) return;
+    if (narrow) {
+      setClosingSearch(true);
+      setTimeout(() => {
+        setSearching(null);
+        setClosingSearch(false);
+      }, 240);
+    } else {
+      setSearching(null);
+    }
+  }, [closingSearch, narrow]);
 
   /* Where you have been before. On the device only - this is a list of where
      somebody goes, which is about as personal as this app gets. */
@@ -396,6 +435,16 @@ export default function Planner({ network, places, reach, box, fares }: {
   const pinJob = useRef<AbortController | null>(null);
 
   useEffect(() => {
+    const isHere = (name: string) => name === "A helyzetem" || name === "Locația mea";
+    if (from && isHere(from.name) && from.name !== t.hereName) {
+      setFrom((f) => f ? { ...f, name: t.hereName } : null);
+    }
+    if (to && isHere(to.name) && to.name !== t.hereName) {
+      setTo((top) => top ? { ...top, name: t.hereName } : null);
+    }
+  }, [t.hereName, from, to]);
+
+  useEffect(() => {
     const root = document.documentElement;
     if (theme === "auto") delete root.dataset.theme; else root.dataset.theme = theme;
   }, [theme]);
@@ -512,8 +561,12 @@ export default function Planner({ network, places, reach, box, fares }: {
     ?? { name: pinAt ? t.searching : t.dragMap, detail: "" };
 
   const confirmPin = () => {
-    if (pinAt && picking) {
-      const chosenPlace = { name: pinLabel.name || formatCoordinates(pinAt), at: pinAt };
+    const at = pinAt ?? [25.7876, 45.8636];
+    if (picking) {
+      const resolvedName =
+        (localLabel?.name || (remote?.at === pinKey && remote.name ? remote.name : null))
+        || formatCoordinates(at);
+      const chosenPlace = { name: resolvedName, at };
       (picking === "from" ? chooseFrom : chooseTo)(chosenPlace);
     }
     setPicking(null);
@@ -554,7 +607,7 @@ export default function Planner({ network, places, reach, box, fares }: {
     <StopBoard stop={stops.get(boardStop)!} ctx={ctx} lines={lineMap}
                service={serviceForDate(date)} now={minutesOfDay(new Date())}
                lang={lang} t={t}
-               onClose={() => { board!.dismiss(); setBoard(null); }} />
+               onClose={closeBoard} />
   ) : null;
 
   return (
@@ -566,6 +619,7 @@ export default function Planner({ network, places, reach, box, fares }: {
       // have chosen. Wide screens keep both side by side throughout.
       !planning ? styles.idle : detail === null ? styles.listing : styles.reading,
       searching ? styles.searching : "",
+      closingSearch ? styles.closingSearch : "",
     ].filter(Boolean).join(" ")}>
       <aside className={styles.rail}
              style={narrow && detail !== null
@@ -580,7 +634,7 @@ export default function Planner({ network, places, reach, box, fares }: {
         )}
         <div className={styles.panel}>
           <div className={styles.searchHead}>
-            <button onClick={() => setSearching(null)} aria-label={t.back}><Back /></button>
+            <button onClick={closeSearching} aria-label={t.back}><Back /></button>
             <h2>{t.whereTo}</h2>
           </div>
           {/* the results screen swallowed the map with no way out; this is it.
@@ -613,7 +667,7 @@ export default function Planner({ network, places, reach, box, fares }: {
                         into={narrow ? hits : null}
                         onActivate={(open) => setSearching(open ? "from" : null)}
                         onChoose={chooseFrom} onForget={drop}
-                        onPick={() => setPicking("from")}
+                        onPick={() => { setSearching(null); setPicking("from"); }}
                         onLocate={() => locate()} />
             <PlaceInput label={t.to} value={to} index={index} pairs={pairs}
                         area={area} lang={lang} t={t} locating={locating}
@@ -621,7 +675,7 @@ export default function Planner({ network, places, reach, box, fares }: {
                         into={narrow ? hits : null}
                         onActivate={(open) => setSearching(open ? "to" : null)}
                         onChoose={chooseTo} onForget={drop}
-                        onPick={() => setPicking("to")}
+                        onPick={() => { setSearching(null); setPicking("to"); }}
                         onLocate={() => locate()} />
             <button type="button" className={styles.swap} title={t.swap} aria-label={t.swap}
                     onClick={() => { const a = from; setFrom(to); setTo(a); }}>⇅</button>
@@ -635,18 +689,22 @@ export default function Planner({ network, places, reach, box, fares }: {
           <div className={styles.chipRow}>
           <div className={styles.chips} ref={chipsRef}>
             <button className={styles.chip} aria-expanded={openPanel === "when"}
-                    onClick={() => setOpenPanel(openPanel === "when" ? null : "when")}>
+                    onClick={() => { if (openPanel === "when") closePanel(); else setOpenPanel("when"); }}>
               {t[mode]} <small>{time}</small>
             </button>
             <button className={styles.chip} aria-expanded={openPanel === "day"}
-                    onClick={() => setOpenPanel(openPanel === "day" ? null : "day")}>
+                    onClick={() => { if (openPanel === "day") closePanel(); else setOpenPanel("day"); }}>
               {isToday ? `${t.today}, ` : ""}{t.days[date.getDay()]}
             </button>
           </div>
 
-          {openPanel === "when" && asSheet(<>
-            <div className={styles.scrim} onClick={closePanel} aria-hidden />
-            <div className={styles.pop} ref={popRef}>
+          {showingPanel === "when" && asSheet(<>
+            <div className={`${styles.scrim} ${closingPanel ? styles.closingScrim : ""}`}
+                 onClick={closePanel} aria-hidden />
+            <div className={`${styles.pop} ${styles.popWhen} ${closingPanel ? styles.closingPop : ""}`}
+                 ref={popRef}
+                 style={pullDismiss.style}
+                 {...pullDismiss.handlers}>
               <div className={styles.modes}>
                 {(["departAt", "arriveBy"] as PlanMode[]).map((m) => (
                   <button key={m} aria-pressed={mode === m} onClick={() => { setMode(m); setTimeCustomized(true); }}>
@@ -662,15 +720,19 @@ export default function Planner({ network, places, reach, box, fares }: {
               <button className={styles.sheetDone} onClick={closePanel}>{t.done}</button>
             </div>
           </>)}
-          {openPanel === "day" && asSheet(<>
-            <div className={styles.scrim} onClick={closePanel} aria-hidden />
-            <div className={styles.pop} ref={popRef}>
+          {showingPanel === "day" && asSheet(<>
+            <div className={`${styles.scrim} ${closingPanel ? styles.closingScrim : ""}`}
+                 onClick={closePanel} aria-hidden />
+            <div className={`${styles.pop} ${styles.popDay} ${closingPanel ? styles.closingPop : ""}`}
+                 ref={popRef}
+                 style={pullDismiss.style}
+                 {...pullDismiss.handlers}>
               <label className={styles.popTime}>
                 <span>{t.today}</span>
                 <input type="date" value={iso} onChange={(e) => {
                   const [y, m, d] = e.target.value.split("-").map(Number);
                   setDate(new Date(y, m - 1, d));
-                  setOpenPanel(null);
+                  closePanel();
                 }} />
               </label>
               <p className={styles.popNote}>
@@ -709,8 +771,11 @@ export default function Planner({ network, places, reach, box, fares }: {
         ? createPortal(stopSheet, board!.anchor)
         : asSheet(
             <>
-              <div className={styles.scrim} onClick={() => setBoard(null)} aria-hidden />
-              <div className={styles.boardHolder}>{stopSheet}</div>
+              <div className={`${styles.scrim} ${closingBoard ? styles.closingScrim : ""}`}
+                   onClick={closeBoard} aria-hidden />
+              <div className={`${styles.boardHolder} ${closingBoard ? styles.closingBoard : ""}`}>
+                {stopSheet}
+              </div>
             </>,
           ))}
 
@@ -775,81 +840,94 @@ export default function Planner({ network, places, reach, box, fares }: {
           {shareNote && <p className={styles.note} role="status">{shareNote}</p>}
           <button className={styles.gear} aria-label={t.settings}
                   aria-expanded={openPanel === "settings"}
-                  onClick={() => setOpenPanel(openPanel === "settings" ? null : "settings")}>
+                  onClick={() => { if (openPanel === "settings") closePanel(); else setOpenPanel("settings"); }}>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.9}>
               <circle cx="12" cy="12" r="3.1" />
               <path d="M19.5 12a8 8 0 0 0-.15-1.5l2-1.5-2-3.5-2.4 1a8 8 0 0 0-2.6-1.5L14 2h-4l-.35 3a8 8 0 0 0-2.6 1.5l-2.4-1-2 3.5 2 1.5A8 8 0 0 0 4.5 12a8 8 0 0 0 .15 1.5l-2 1.5 2 3.5 2.4-1a8 8 0 0 0 2.6 1.5l.35 3h4l.35-3a8 8 0 0 0 2.6-1.5l2.4 1 2-3.5-2-1.5A8 8 0 0 0 19.5 12z" />
             </svg>
           </button>
-          {openPanel === "settings" && asSheet(<>
-            <div className={styles.scrim} onClick={closePanel} aria-hidden />
-            <div className={styles.settings} ref={settingsRef}>
-              <div className={styles.setRow}>
-                <span>{t.language}</span>
-                <div className={styles.seg}>
-                  <button aria-pressed={lang === "hu"} onClick={() => setLang("hu")}>Magyar</button>
-                  <button aria-pressed={lang === "ro"} onClick={() => setLang("ro")}>Română</button>
-                </div>
-              </div>
-              <div className={styles.setRow}>
-                <span>{t.theme}</span>
-                <div className={styles.seg}>
-                  {(["light", "dark", "auto"] as Theme[]).map((th) => (
-                    <button key={th} aria-pressed={theme === th}
-                            onClick={() => setTheme(th)}>{t[th]}</button>
-                  ))}
-                </div>
-              </div>
-              {recent.length > 0 && (
-                <div className={styles.setRow}>
-                  <span>{t.recent}</span>
-                  <button className={styles.clear} onClick={() => {
-                    setRecent([]);
-                    write(globalThis.localStorage ?? null, []);
-                  }}>{t.clearHistory}</button>
-                  <p className={styles.setNote}>{t.historyNote}</p>
+          {showingPanel === "settings" && asSheet(<>
+            <div className={`${styles.scrim} ${closingPanel ? styles.closingScrim : ""}`}
+                 onClick={closePanel} aria-hidden />
+            <div className={`${styles.settings} ${closingPanel ? styles.closingPop : ""}`}
+                 ref={settingsRef}
+                 style={narrow ? {
+                   height: `${Math.round(settingsDrawer.height)}px`,
+                   transition: settingsDrawer.dragging ? "none" : "height .22s cubic-bezier(.2,.8,.3,1)",
+                 } : undefined}>
+              {narrow && (
+                <div className={styles.grip} {...settingsDrawer.handlers} role="separator" aria-label={t.settings}>
+                  <i />
                 </div>
               )}
-              <div className={styles.setRow}>
-                <span>{t.lines}</span>
-                <div className={styles.lineGrid}>
-                  {network.lines.map((l) => (
-                    <button key={l.id} aria-pressed={visibleLines.has(l.id)}
-                            className={styles.lineToggle}
-                            onClick={() => setVisibleLines((prev) => {
-                              const next = new Set(prev);
-                              if (next.has(l.id)) next.delete(l.id); else next.add(l.id);
-                              return next;
-                            })}>
-                      <span className={styles.linePill}
-                            style={{ background: dark ? l.dark : l.light,
-                                     color: dark ? l.darkText : l.lightText }}>{l.id}</span>
-                    </button>
-                  ))}
+              <div className={styles.setScroll}>
+                <div className={styles.setRow}>
+                  <span>{t.language}</span>
+                  <div className={styles.seg}>
+                    <button aria-pressed={lang === "hu"} onClick={() => setLang("hu")}>Magyar</button>
+                    <button aria-pressed={lang === "ro"} onClick={() => setLang("ro")}>Română</button>
+                  </div>
                 </div>
-                <div className={styles.popActions}>
-                  <button onClick={() => setVisibleLines(new Set(network.lines.map((l) => l.id)))}>
-                    {t.allLines}</button>
-                  <button onClick={() => setVisibleLines(new Set())}>{t.noLines}</button>
+                <div className={styles.setRow}>
+                  <span>{t.theme}</span>
+                  <div className={styles.seg}>
+                    {(["light", "dark", "auto"] as Theme[]).map((th) => (
+                      <button key={th} aria-pressed={theme === th}
+                              onClick={() => setTheme(th)}>{t[th]}</button>
+                    ))}
+                  </div>
                 </div>
+                {recent.length > 0 && (
+                  <div className={styles.setRow}>
+                    <span>{t.recent}</span>
+                    <button className={styles.clear} onClick={() => {
+                      setRecent([]);
+                      write(globalThis.localStorage ?? null, []);
+                    }}>{t.clearHistory}</button>
+                    <p className={styles.setNote}>{t.historyNote}</p>
+                  </div>
+                )}
+                <div className={styles.setRow}>
+                  <span>{t.lines}</span>
+                  <div className={styles.lineGrid}>
+                    {network.lines.map((l) => (
+                      <button key={l.id} aria-pressed={visibleLines.has(l.id)}
+                              className={styles.lineToggle}
+                              onClick={() => setVisibleLines((prev) => {
+                                const next = new Set(prev);
+                                if (next.has(l.id)) next.delete(l.id); else next.add(l.id);
+                                return next;
+                              })}>
+                        <span className={styles.linePill}
+                              style={{ background: dark ? l.dark : l.light,
+                                       color: dark ? l.darkText : l.lightText }}>{l.id}</span>
+                      </button>
+                    ))}
+                  </div>
+                  <div className={styles.popActions}>
+                    <button onClick={() => setVisibleLines(new Set(network.lines.map((l) => l.id)))}>
+                      {t.allLines}</button>
+                    <button onClick={() => setVisibleLines(new Set())}>{t.noLines}</button>
+                  </div>
+                </div>
+                <div className={styles.setRow}>
+                  <span>{t.source}</span>
+                  <p className={styles.setNote}>{t.disclaimer}</p>
+                  <div className={styles.legalLinks}>
+                    <a href="/terms/" target="_blank" rel="noopener noreferrer">{t.terms}</a>
+                    <span>·</span>
+                    <a href="/privacy/" target="_blank" rel="noopener noreferrer">{t.privacy}</a>
+                  </div>
+                  <button className={styles.cookieReset} onClick={() => {
+                    try { localStorage.removeItem("sepsi.consent"); } catch {}
+                    window.dispatchEvent(new Event("sepsi:consent"));
+                    closePanel();
+                  }}>
+                    {t.cookieSettings}
+                  </button>
+                </div>
+                <button className={styles.sheetDone} onClick={closePanel}>{t.done}</button>
               </div>
-              <div className={styles.setRow}>
-                <span>{t.source}</span>
-                <p className={styles.setNote}>{t.disclaimer}</p>
-                <div className={styles.legalLinks}>
-                  <a href="/terms/" target="_blank" rel="noopener noreferrer">{t.terms}</a>
-                  <span>·</span>
-                  <a href="/privacy/" target="_blank" rel="noopener noreferrer">{t.privacy}</a>
-                </div>
-                <button className={styles.cookieReset} onClick={() => {
-                  try { localStorage.removeItem("sepsi.consent"); } catch {}
-                  window.dispatchEvent(new Event("sepsi:consent"));
-                  closePanel();
-                }}>
-                  {t.cookieSettings}
-                </button>
-              </div>
-              <button className={styles.sheetDone} onClick={closePanel}>{t.done}</button>
             </div>
           </>)}
         </div>

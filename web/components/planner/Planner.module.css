@@ -61,7 +61,8 @@
   border-radius: 10px; background: var(--surface); color: var(--ink); }
 .popActions button:hover { background: var(--sunk); }
 
-.scroll { flex: 1; min-height: 0; overflow-y: auto; overscroll-behavior: contain; }
+.scroll { flex: 1; min-height: 0; overflow-y: auto; overscroll-behavior: contain;
+  scrollbar-gutter: stable; }
 
 .map { position: relative; background: var(--surface); min-height: 0; min-width: 0; }
 
@@ -131,8 +132,19 @@
 .gear[aria-expanded="true"] { background: var(--ink); color: var(--paper); }
 .settings { background: var(--paper); border: 1px solid var(--border);
   border-radius: var(--radius); box-shadow: var(--shadow); padding: 14px;
-  width: 270px; display: grid; gap: 12px;
+  width: 270px;
   transform-origin: top right; animation: drop .16s cubic-bezier(.2, .8, .3, 1); }
+.setScroll { display: flex; flex-direction: column; gap: 12px; }
+.sheetDone { display: none; }
+.pop.closingPop,
+.settings.closingPop {
+  animation: dropOut .18s var(--ease-out) forwards;
+  pointer-events: none;
+}
+@keyframes dropOut {
+  from { opacity: 1; transform: none; }
+  to   { opacity: 0; transform: translateY(-6px) scale(.98); }
+}
 .setRow { display: grid; gap: 6px; }
 .setRow > span { font-size: 11px; font-weight: 700; letter-spacing: .06em;
   text-transform: uppercase; color: var(--muted); }
@@ -183,7 +195,14 @@
      The map comes back the moment one of them is chosen. */
   .app.listing { grid-template-rows: minmax(0, 1fr); }
   .app.listing .map { display: none; }
-  .app.listing .rail { border-radius: 0; margin-top: 0; box-shadow: none; }
+  .app.listing .rail {
+    border-radius: 0; margin-top: 0; box-shadow: none;
+    animation: listArrive var(--move) var(--ease-out);
+  }
+  @keyframes listArrive {
+    from { opacity: 0; transform: translateY(30px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
 
   /* With a journey open the map is worth seeing again - but it should not hold
      a fixed slice of the screen while you read past it. The whole thing scrolls
@@ -208,6 +227,11 @@
     width: calc(100% - 20px); margin: 0 0 calc(12px + env(safe-area-inset-bottom));
     border-radius: 20px;
     box-shadow: 0 6px 28px -10px rgba(35, 46, 16, .45);
+    animation: idleRise var(--move) var(--ease-out);
+  }
+  @keyframes idleRise {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: none; }
   }
 
   /* A filter panel is a decision, and on a phone a decision gets the bottom of
@@ -216,29 +240,64 @@
   .pop, .settings {
     position: fixed; left: 0; right: 0; bottom: 0; top: auto; width: auto;
     z-index: 60; border-radius: 20px 20px 0 0; border-bottom: 0;
-    padding: 8px 18px calc(18px + env(safe-area-inset-bottom));
     box-shadow: 0 -8px 32px -12px rgba(35, 46, 16, .4);
     animation: sheet .2s cubic-bezier(.2, .8, .3, 1);
-    max-height: 76vh; overflow-y: auto;
+    max-height: 94vh;
   }
-  .pop::before, .settings::before {
+  .pop {
+    padding: 8px 18px calc(18px + env(safe-area-inset-bottom));
+    overflow-y: auto; max-height: 76vh; gap: 8px;
+  }
+  .pop::before {
     content: ""; display: block; width: 38px; height: 4px; border-radius: 99px;
     background: var(--hair); margin: 4px auto 10px;
   }
-  .pop { gap: 8px; }
+  .settings {
+    padding: 0 18px calc(18px + env(safe-area-inset-bottom));
+    display: flex; flex-direction: column; overflow: hidden;
+  }
+  .settings::before { display: none !important; }
+  .settings .grip {
+    display: flex; align-items: center; justify-content: center;
+    height: 32px; flex: 0 0 auto; touch-action: none !important;
+    cursor: grab;
+  }
+  .settings .grip i {
+    width: 40px; height: 5px; border-radius: 99px; background: var(--hair);
+  }
+  .setScroll {
+    overflow-y: auto; flex: 1; min-height: 0; overscroll-behavior: contain;
+    display: flex; flex-direction: column; gap: 14px;
+    padding: 4px 0 16px;
+  }
   .modes button, .popActions button, .seg button { padding: 13px 14px; font-size: 15px; }
   .popTime { padding: 13px 14px; }
   .popTime input { font-size: 17px; }
   .lineToggle { padding: 5px; }
   .sheetDone {
-    margin-top: 4px; background: var(--signal); color: var(--signal-ink);
-    font-weight: 800; font-size: 15px; padding: 14px; border-radius: 999px;
+    display: block; width: 100%; margin-top: 8px;
+    background: var(--signal); color: var(--signal-ink);
+    font-weight: 800; font-size: 16px; padding: 14px; border-radius: 999px;
     font-family: ui-rounded, "SF Pro Rounded", "Varela Round", system-ui, sans-serif;
+    border: 0; text-align: center; cursor: pointer; flex: 0 0 auto;
+  }
+  .pop.closingPop,
+  .settings.closingPop {
+    animation: sheetDown var(--move) var(--ease-out) forwards;
+    pointer-events: none;
   }
   .scrim {
     position: fixed; inset: 0; z-index: 55;
     background: color-mix(in srgb, var(--ink) 38%, transparent);
     animation: fade .2s ease;
+  }
+  .closingScrim {
+    animation: fadeOut .22s ease forwards;
+    pointer-events: none;
+  }
+  @keyframes fadeOut {
+    from { opacity: 1; }
+    to   { opacity: 0; }
   }
   @keyframes sheet {
     from { transform: translateY(100%); }
@@ -246,11 +305,12 @@
   }
   @keyframes fade { from { opacity: 0; } to { opacity: 1; } }
   @media (prefers-reduced-motion: reduce) {
-    .pop, .settings, .scrim { animation: none; }
+    .pop, .settings, .scrim, .app.listing .rail, .app.idle .rail { animation: none; }
   }
   .map { order: -1; border-bottom: 1px solid var(--border); }
   .rail { border-right: 0; border-radius: 18px 18px 0 0; margin-top: -18px;
     box-shadow: 0 -6px 24px -10px rgba(35, 46, 16, .28); }
+  .topLeft { left: 10px; top: 10px; }
   .topRight { right: 10px; top: 10px; }
 }
 .sheetDone, .scrim { display: none; }
@@ -289,36 +349,52 @@
      want to change is where you are starting from. */
   .app.searching .panel {
     position: fixed; inset: 0; z-index: 70;
-    border-radius: 0; overflow-y: auto;
-    padding: max(10px, env(safe-area-inset-top)) 14px
-             calc(14px + env(safe-area-inset-bottom));
-    display: grid; grid-template-rows: auto auto 1fr; gap: 10px;
-    align-content: start;
+    border-radius: 0; overflow: hidden;
+    padding: max(10px, env(safe-area-inset-top)) 0 0;
+    display: flex; flex-direction: column; gap: 10px;
+    background: var(--panel);
     /* it takes the whole screen, so it should be seen to arrive - appearing
        instantly reads as a page load rather than a layer opening */
     animation: takeover var(--move) var(--ease-out);
   }
+  .app.searching.closingSearch .panel {
+    animation: takeoverOut var(--move) var(--ease-out) forwards;
+  }
   @keyframes takeover {
-    from { opacity: 0; transform: translateY(10px); }
+    from { opacity: 0; transform: translateY(100%); }
     to   { opacity: 1; transform: none; }
+  }
+  @keyframes takeoverOut {
+    from { opacity: 1; transform: none; }
+    to   { opacity: 0; transform: translateY(100%); }
   }
 
   .app.searching .searchHead {
     display: flex; align-items: center; gap: 10px; color: #fff;
+    flex: 0 0 auto; padding: 0 14px;
   }
   .app.searching .searchHead button { display: grid; place-items: center;
     width: 28px; height: 28px; margin-left: -4px; color: #fff; }
   .app.searching .searchHead h2 { margin: 0; font-size: 17px;
     font-family: ui-rounded, "SF Pro Rounded", "Varela Round", system-ui, sans-serif; }
-  .app.searching .map,
+  .app.searching .fields { flex: 0 0 auto; padding: 0 14px; }
+  .app.searching .map {
+    display: none !important;
+  }
   .app.searching .controls,
   .app.searching .scroll { display: none; }
   .app.searching .rail { position: static; }
   /* the suggestions, in their own section under both fields */
   /* the list scrolls inside this, so the two fields stay put while it moves */
   .app.searching .hits {
-    min-height: 0; overflow-y: auto; -webkit-overflow-scrolling: touch;
-    padding-bottom: 12px;
+    flex: 1; min-height: 0; width: 100%;
+    background: var(--paper);
+    border-radius: 20px 20px 0 0;
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, .14);
+    overflow-y: auto; -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+    touch-action: pan-y;
+    display: flex; flex-direction: column;
   }
 }
 
@@ -341,6 +417,11 @@
     border-radius: 20px 20px 0 0; margin: 0; border: 0;
     box-shadow: 0 -8px 30px -12px rgba(35, 46, 16, .45);
     background: var(--paper);
+    animation: drawerSlideUp var(--move) var(--ease-out);
+  }
+  @keyframes drawerSlideUp {
+    from { transform: translateY(100%); opacity: 0.6; }
+    to   { transform: translateY(0); opacity: 1; }
   }
   .app.reading .scroll { overflow-y: auto; flex: 1; overscroll-behavior: contain; }
   .grip {
@@ -357,7 +438,7 @@
   .app.idle:not(.searching) .oneBar {
     display: flex; align-items: center; gap: 10px; width: 100%;
     background: var(--paper); color: var(--muted);
-    border-radius: 999px; padding: 14px 18px;
+    border-radius: var(--radius); padding: 14px 18px;
     font-size: 15px; text-align: left;
   }
   .app.idle:not(.searching) .oneBar svg { width: 18px; height: 18px; flex: 0 0 auto; }
@@ -385,11 +466,22 @@
 .boardHolder { position: absolute; left: 50%; bottom: 22px; transform: translateX(-50%);
   width: min(420px, calc(100% - 28px)); z-index: 60;
   animation: rise var(--quick) var(--ease); }
+.boardHolder.closingBoard {
+  animation: riseOut .22s var(--ease) forwards;
+}
+@keyframes riseOut {
+  from { opacity: 1; transform: translate(-50%, 0); }
+  to   { opacity: 0; transform: translate(-50%, 10px); }
+}
 @media (max-width: 860px) {
   .boardHolder {
     position: fixed; left: 0; right: 0; bottom: 0; transform: none;
     width: auto; z-index: 80; padding: 0 8px calc(8px + env(safe-area-inset-bottom));
     animation: sheetUp var(--move) var(--ease-out);
   }
+  .boardHolder.closingBoard {
+    animation: sheetDown var(--move) var(--ease-out) forwards;
+  }
   @keyframes sheetUp { from { transform: translateY(100%); } to { transform: none; } }
+  @keyframes sheetDown { from { transform: none; } to { transform: translateY(100%); } }
 }

@@ -18,7 +18,7 @@ function ruleFor(sheet: string, selector: string): string {
 }
 
 describe("the suggestion list on the phone search screen", () => {
-  const rule = ruleFor(css("PlaceInput.module.css"), ".inPage");
+  const rule = ruleFor(css("planner/PlaceInput.module.css"), ".inPage");
 
   it("brings its own background", () => {
     /* The search screen's own ground is the dark olive. A list that drops its
@@ -41,7 +41,7 @@ describe("form controls", () => {
     // pinch-zoom away from everyone, which is not a fix
     expect(css("../app/globals.css"))
       .toMatch(/input,\s*select,\s*textarea\s*\{[^}]*font-size:\s*16px/);
-    for (const file of ["PlaceInput.module.css", "Planner.module.css"]) {
+    for (const file of ["planner/PlaceInput.module.css", "planner/Planner.module.css"]) {
       for (const [, size] of css(file).matchAll(/input[^{}]*\{[^}]*font-size:\s*(\d+)px/g))
         expect(Number(size), `${file} has an input under 16px`).toBeGreaterThanOrEqual(16);
     }
@@ -56,8 +56,9 @@ describe("every animation a module asks for is one it can reach", () => {
      twice: once here, and once as :global(.searching), which named a hashed class
      the same way. Nothing about either failure is visible to a DOM test. */
   const modules = [
-    "JourneyList.module.css", "JourneyDetail.module.css",
-    "PlaceInput.module.css", "Planner.module.css",
+    "journey/JourneyList.module.css", "journey/JourneyDetail.module.css",
+    "planner/PlaceInput.module.css", "planner/Planner.module.css",
+    "timetable/Timetable.module.css",
   ];
   for (const file of modules) {
     it(file, () => {
@@ -93,8 +94,9 @@ describe("global stylesheet", () => {
 
 function modulesUsing(): string[] {
   const out = new Set<string>();
-  for (const file of ["JourneyList.module.css", "JourneyDetail.module.css",
-                      "PlaceInput.module.css", "Planner.module.css"])
+  for (const file of ["journey/JourneyList.module.css", "journey/JourneyDetail.module.css",
+                      "planner/PlaceInput.module.css", "planner/Planner.module.css",
+                      "timetable/Timetable.module.css"])
     for (const [, value] of css(file).matchAll(/animation(?:-name)?:\s*([^;}]+)/g))
       for (const word of value.split(/[\s,]+/))
         if (/^[A-Za-z][\w-]*$/.test(word) && !/^(none|both|ease|linear|infinite|forwards|normal|alternate|reverse|running|paused|backwards)$/.test(word))
@@ -117,7 +119,7 @@ describe("press feedback", () => {
 
   it("keeps a control's own transform whole where one is used", () => {
     // the swap button rotates on press, and has to restate its centring
-    const rule = /\.swap:active\s*\{([^}]*)\}/.exec(css("Planner.module.css"));
+    const rule = /\.swap:active\s*\{([^}]*)\}/.exec(css("planner/Planner.module.css"));
     expect(rule?.[1]).toMatch(/translateY\(-50%\)/);
   });
 });
@@ -193,7 +195,7 @@ describe("the balloon around a stop board", () => {
        stayed, and went on matching the React card that replaced it - which is
        why a line number sat in the corner of its own pill rather than the
        middle. Content styling belongs to whatever renders the content. */
-    const sheet = css("TransitMap.module.css");
+    const sheet = css("map/TransitMap.module.css");
     const popup = sheet.slice(sheet.indexOf("stopPopup"));
     for (const reach of ["stopPopup b)", "stopPopup span)", "stopPopup .lines"])
       expect(popup, `TransitMap still reaches into the card with "${reach}"`)

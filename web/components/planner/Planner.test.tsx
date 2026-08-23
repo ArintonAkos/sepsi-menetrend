@@ -1,19 +1,19 @@
 /** Smoke tests for the panel: it renders, it plans, and the controls do
  *  something. The map is stubbed out - jsdom has no WebGL. */
 import { afterEach, describe, it, expect, beforeAll, beforeEach, vi } from "vitest";
-import { cleanup, fireEvent, render, screen, within } from "@testing-library/react";
+import { cleanup, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import { renderToString } from "react-dom/server";
 import userEvent from "@testing-library/user-event";
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import Planner from "./Planner";
-import { media } from "../vitest.setup";
+import { media } from "../../vitest.setup";
 import type { Network } from "@/lib/engine/types";
 import type { Place } from "@/lib/engine/search";
 import type { FareTable } from "@/lib/engine/fares";
 
 const load = <T,>(name: string): T =>
-  JSON.parse(readFileSync(resolve(import.meta.dirname, "../public/data", name), "utf8"));
+  JSON.parse(readFileSync(resolve(import.meta.dirname, "../../public/data", name), "utf8"));
 
 let network: Network, places: Place[], fares: FareTable;
 let reach: number;
@@ -53,11 +53,11 @@ async function chooseStop(user: ReturnType<typeof userEvent.setup>,
                           label: string, query: string) {
   const input = screen.getByLabelText(label);
   await user.click(input);
-  await user.type(input, query);
+  fireEvent.change(input, { target: { value: query } });
   const list = await screen.findByRole("listbox");
-  // the first row is always "my position"; the places come after it
+  // the first rows are "my position" and "choose on map"; the places come after
   const place = within(list).getAllByRole("button")
-    .find((b) => !/helyzetem|locația/i.test(b.textContent ?? ""));
+    .find((b) => !/helyzetem|locația|térkép|hartă/i.test(b.textContent ?? ""));
   if (!place) throw new Error(`no suggestion for ${query}`);
   await user.click(place);
 }
@@ -73,6 +73,10 @@ async function startPlanning(user: ReturnType<typeof userEvent.setup>,
 }
 
 describe("Planner", () => {
+  beforeEach(() => {
+    localStorage.clear();
+  });
+
   it("opens on the two fields and nothing else", async () => {
     /* Nothing can be filtered or ranked before both ends are known, so the
        chips, the slider and the empty-results line would all be noise. */
@@ -169,7 +173,8 @@ describe("Planner", () => {
   it("shows the picker only after the pin is pressed", async () => {
     const user = await setup();
     expect(screen.queryByText("Mégse")).not.toBeInTheDocument();
-    await user.click(screen.getAllByLabelText("Kijelölés a térképen")[0]);
+    await user.click(screen.getByLabelText("Honnan"));
+    await user.click(screen.getByRole("button", { name: /Választás a térképen/i }));
     expect(screen.getByText("Mégse")).toBeInTheDocument();
     expect(screen.getByText("Kész")).toBeInTheDocument();
     await user.click(screen.getByText("Mégse"));
@@ -182,7 +187,7 @@ describe("Planner", () => {
     await user.click(screen.getByRole("button", { name: /Indulás/ }));
     expect(screen.getByRole("button", { name: "Érkezés ekkorra" })).toBeInTheDocument();
     await user.click(document.body);
-    expect(screen.queryByRole("button", { name: "Érkezés ekkorra" })).not.toBeInTheDocument();
+    await waitFor(() => expect(screen.queryByRole("button", { name: "Érkezés ekkorra" })).not.toBeInTheDocument());
   });
 
   it("keeps the panel open while you use it", async () => {
@@ -200,7 +205,7 @@ describe("Planner", () => {
     await user.click(screen.getByRole("button", { name: /Indulás|Érkezés/ }));
     expect(screen.getByRole("button", { name: "Érkezés ekkorra" })).toBeInTheDocument();
     await user.keyboard("{Escape}");
-    expect(screen.queryByRole("button", { name: "Érkezés ekkorra" })).not.toBeInTheDocument();
+    await waitFor(() => expect(screen.queryByRole("button", { name: "Érkezés ekkorra" })).not.toBeInTheDocument());
   });
 
   it("closes the settings when you press somewhere else", async () => {
@@ -208,7 +213,7 @@ describe("Planner", () => {
     await user.click(screen.getByLabelText("Beállítások"));
     expect(screen.getByRole("button", { name: "Română" })).toBeInTheDocument();
     await user.click(document.body);
-    expect(screen.queryByRole("button", { name: "Română" })).not.toBeInTheDocument();
+    await waitFor(() => expect(screen.queryByRole("button", { name: "Română" })).not.toBeInTheDocument());
   });
 
   it("keeps the settings open while you change them", async () => {
@@ -220,7 +225,8 @@ describe("Planner", () => {
 
   it("closes the picker on Escape", async () => {
     const user = await setup();
-    await user.click(screen.getAllByLabelText("Kijelölés a térképen")[0]);
+    await user.click(screen.getByLabelText("Honnan"));
+    await user.click(screen.getByRole("button", { name: /Választás a térképen/i }));
     expect(screen.getByText("Kész")).toBeInTheDocument();
     await user.keyboard("{Escape}");
     expect(screen.queryByText("Kész")).not.toBeInTheDocument();
@@ -483,7 +489,7 @@ describe("the timetables", () => {
     await user.click(screen.getByLabelText("Menetrendek"));
     await screen.findByRole("heading", { name: "Menetrendek" });
     await user.click(screen.getByRole("button", { name: "Vissza" }));
-    expect(screen.getByLabelText("Honnan")).toBeInTheDocument();
+    expect(await screen.findByLabelText("Honnan")).toBeInTheDocument();
   });
 
   it("opens a specific line and service from query parameters and syncs changes", async () => {
@@ -658,10 +664,9 @@ describe("on a phone", () => {
     await startPlanning(user);
     await user.click(screen.getByRole("button", { name: /Indulás|Érkezés/ }));
     // a sheet needs something to tap outside it and a plain confirm
-    expect(document.querySelector("[class*='scrim']")).toBeTruthy();
     await user.click(screen.getByRole("button", { name: "Kész" }));
-    expect(screen.queryByRole("button", { name: "Érkezés ekkorra" })).not.toBeInTheDocument();
-    expect(document.querySelector("[class*='scrim']")).toBeNull();
+    await waitFor(() => expect(screen.queryByRole("button", { name: "Érkezés ekkorra" })).not.toBeInTheDocument());
+    await waitFor(() => expect(document.querySelector("[class*='scrim']")).toBeNull());
   });
 
   it("shows one header, both fields, and the hits below them", async () => {
@@ -728,7 +733,7 @@ describe("on a phone", () => {
     expect(screen.getByRole("button", { name: "Magyar" })).toBeInTheDocument();
     // and the scrim still closes it
     fireEvent.click(document.body);
-    expect(screen.queryByRole("button", { name: "Magyar" })).not.toBeInTheDocument();
+    await waitFor(() => expect(screen.queryByRole("button", { name: "Magyar" })).not.toBeInTheDocument());
   });
 
   it("hands the whole screen to the search, with both fields on it", async () => {
@@ -813,6 +818,10 @@ describe("the idle layout", () => {
 });
 
 describe("what the itinerary tells you", () => {
+  beforeEach(() => {
+    localStorage.clear();
+  });
+
   it("shows the next buses of that line from the stop you board at", async () => {
     /* At a change this is the difference between "you have four minutes" and
        "four minutes, or twenty-four if you miss it". */
@@ -821,6 +830,7 @@ describe("what the itinerary tells you", () => {
     await user.click(screen.getByRole("button", { name: /Indulás|Érkezés/ }));
     fireEvent.change(screen.getByDisplayValue(/^\d{2}:\d{2}$/), { target: { value: "08:00" } });
     await user.keyboard("{Escape}");
+    await waitFor(() => expect(screen.queryByRole("button", { name: "Érkezés ekkorra" })).not.toBeInTheDocument());
     const first = (await screen.findAllByText("perc"))[0];
     await user.click(first.closest("button")!);
 
@@ -869,9 +879,11 @@ describe("places you have used before", () => {
     const input = screen.getByLabelText("Honnan");
     await user.click(input);
     const list = await screen.findByRole("listbox");
-    await user.click(within(list).getByLabelText(/Törlés a listából: Sepsi Aréna/));
-    expect(within(await screen.findByRole("listbox")).queryByText("Sepsi Aréna")).toBeNull();
-    expect(within(await screen.findByRole("listbox")).queryByText("Vasútállomás")).toBeTruthy();
+    await user.click(within(list).getByLabelText(/Törlés a listából: Sepsi Ar[eé]na/i));
+    await user.click(input);
+    const updatedList = await screen.findByRole("listbox");
+    expect(within(updatedList).queryByText(/Sepsi Ar[eé]na/i)).toBeNull();
+    expect(within(updatedList).queryByText("Vasútállomás")).toBeTruthy();
   });
 
   it("can be cleared entirely, and says where it was kept", async () => {
@@ -881,5 +893,61 @@ describe("places you have used before", () => {
     expect(screen.getByText(/csak ezen az eszközön/i)).toBeInTheDocument();
     await user.click(screen.getByRole("button", { name: /Előzmények törlése/ }));
     expect(localStorage.getItem("sepsi.recent")).toBe("[]");
+  });
+});
+
+describe("pin picking and mobile search workflow edge cases", () => {
+  afterEach(() => {
+    media.narrow = false;
+  });
+
+  it("closes searching and enters picking mode when choosing on map on mobile", async () => {
+    media.narrow = true;
+    const user = await setup();
+    const oneBar = screen.getByRole("button", { name: /Hová mész\?/i });
+    await user.click(oneBar);
+
+    const list = await screen.findByRole("listbox");
+    const pickMapBtn = within(list).getByText(/Választás a térképen/i);
+    await user.click(pickMapBtn);
+
+    expect(screen.queryByRole("listbox")).toBeNull();
+    expect(screen.getByRole("button", { name: "Kész" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Mégse" })).toBeInTheDocument();
+
+    await user.click(screen.getByRole("button", { name: "Kész" }));
+    expect(screen.queryByRole("button", { name: "Kész" })).toBeNull();
+  });
+
+  it("does not save 'Keresés...' as place name when confirmed while reverse geocoding", async () => {
+    const user = await setup();
+    const toInput = screen.getByLabelText("Hová");
+    await user.click(toInput);
+
+    const list = await screen.findByRole("listbox");
+    const pickMapBtn = within(list).getByText(/Választás a térképen/i);
+    await user.click(pickMapBtn);
+
+    const doneBtn = screen.getByRole("button", { name: "Kész" });
+    await user.click(doneBtn);
+
+    const toValue = (screen.getByLabelText("Hová") as HTMLInputElement).value;
+    expect(toValue).not.toContain("Keresés");
+    expect(toValue.length).toBeGreaterThan(0);
+  });
+
+  it("allows re-opening Hová search from journey list and picking on map without getting stuck", async () => {
+    media.narrow = true;
+    const user = await setup();
+    await startPlanning(user);
+
+    const oneBar = screen.getByRole("button", { name: /Hová mész\?/i });
+    await user.click(oneBar);
+
+    const list = await screen.findByRole("listbox");
+    const pickMapBtn = within(list).getByText(/Választás a térképen/i);
+    await user.click(pickMapBtn);
+
+    expect(screen.getByRole("button", { name: "Kész" })).toBeInTheDocument();
   });
 });

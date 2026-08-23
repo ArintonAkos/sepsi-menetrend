@@ -1,0 +1,122 @@
+.wrap { position: relative; }
+.field {
+  display: flex; align-items: center; gap: 10px;
+  background: var(--paper); border: 2px solid transparent; border-radius: var(--radius);
+  padding: 10px 46px 10px 16px;
+}
+.field:focus-within { border-color: var(--signal); }
+.label { font-weight: 700; font-size: 13px; color: var(--field-label); min-width: 52px; }
+.field input { flex: 1; min-width: 0; border: 0; background: none; outline: none;
+  font-size: 16px; }   /* under 16 and iOS zooms in on focus */
+.field input::placeholder { color: var(--muted); }
+
+.list {
+  position: absolute; left: 0; right: 0; top: calc(100% + 8px); z-index: 20;
+  margin: 0; padding: 0; list-style: none; overflow: hidden;
+  background: var(--paper); border: 1px solid var(--border);
+  border-radius: var(--radius); box-shadow: var(--shadow);
+  transform-origin: top center; animation: suggest var(--quick) var(--ease);
+}
+@keyframes suggest {
+  from { opacity: 0; transform: translateY(-5px); }
+  to   { opacity: 1; transform: none; }
+}
+@media (prefers-reduced-motion: reduce) { .list { animation: none; } }
+.list li + li { border-top: 1px solid var(--border); }
+.rowBtn {
+  display: flex; width: 100%; gap: 11px; align-items: center;
+  padding: 10px 15px; text-align: left; min-height: 52px;
+  background: none; border: 0; cursor: pointer;
+  touch-action: pan-y;
+}
+.rowBtn:hover { background: var(--surface); }
+.icon {
+  width: 28px; height: 28px; border-radius: 8px; display: grid; place-items: center;
+  background: var(--sunk); font-size: 13px; flex: 0 0 28px;
+}
+.text { flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: center; gap: 2px; }
+.name { display: block; font-weight: 600; font-size: 14px; white-space: nowrap;
+  overflow: hidden; text-overflow: ellipsis; }
+.detail { display: block; font-size: 12px; color: var(--muted); white-space: nowrap;
+  overflow: hidden; text-overflow: ellipsis; }
+.alias {
+  flex: 0 0 auto; font-size: 11px; font-weight: 700;
+  color: var(--signal-ink); background: var(--signal); border-radius: 5px; padding: 1px 5px;
+}
+
+.back { display: none; }
+
+.locate { color: var(--ink); }
+.locate .icon { background: var(--signal); color: var(--signal-ink); }
+.locate svg { width: 16px; height: 16px; }
+
+.pickMap { color: var(--ink); }
+.pickMap .icon { background: var(--signal); color: var(--signal-ink); }
+.pickMap svg { width: 16px; height: 16px; }
+
+/* Rendered into the search screen's own section rather than hanging off the
+   field, so it is the page, not a dropdown. */
+.inPage {
+  position: static; margin: 0; animation: riseIn var(--quick) var(--ease);
+  box-shadow: none;
+  background: var(--paper);
+  border: 0;
+  border-radius: 20px 20px 0 0;
+  width: 100%;
+  overflow: visible !important;
+  touch-action: pan-y;
+  padding-bottom: calc(34px + env(safe-area-inset-bottom));
+}
+.inPage .rowBtn {
+  padding: 13px 18px; min-height: 56px;
+  touch-action: pan-y;
+}
+.inPage li + li { border-top: 1px solid var(--border); }
+
+/* a used-before row carries its own way out, so the list stays yours */
+.recentRow {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+.recentRow > .rowBtn {
+  flex: 1;
+  min-width: 0;
+  padding-right: 48px;
+}
+.forget {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--muted);
+  font-size: 16px;
+  line-height: 1;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  z-index: 2;
+  transition: background-color var(--tap) ease, color var(--tap) ease;
+}
+.forget:hover {
+  color: var(--ink);
+  background: var(--sunk);
+}
+.inPage .forget {
+  right: 14px;
+}
+
+/* Local, because a module scopes the keyframe names it references and cannot
+   reach one declared in the global stylesheet. */
+@keyframes riseIn {
+  from { opacity: 0; transform: translateY(7px); }
+  to   { opacity: 1; transform: none; }
+}

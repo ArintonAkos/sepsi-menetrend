@@ -1,16 +1,16 @@
 import { describe, it, expect, beforeAll } from "vitest";
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import Planner from "./Planner";
-import { media } from "../vitest.setup";
+import { media } from "../../vitest.setup";
 import type { Network } from "@/lib/engine/types";
 import type { Place } from "@/lib/engine/search";
 import type { FareTable } from "@/lib/engine/fares";
 
 const load = <T,>(name: string): T =>
-  JSON.parse(readFileSync(resolve(import.meta.dirname, "../public/data", name), "utf8"));
+  JSON.parse(readFileSync(resolve(import.meta.dirname, "../../public/data", name), "utf8"));
 let network: Network, index: { places: Place[]; reach: number;
   bbox: [number, number, number, number] }, fares: FareTable;
 beforeAll(() => {
@@ -61,7 +61,7 @@ describe("what the phone shows at each step", () => {
     await user.type(input, query);
     const list = await screen.findByRole("listbox");
     const place = [...list.querySelectorAll("button")]
-      .find((b) => !/helyzetem/i.test(b.textContent ?? ""))!;
+      .find((b) => !/helyzetem|térkép|hartă/i.test(b.textContent ?? ""))!;
     await user.click(place);
   };
 
@@ -77,6 +77,7 @@ describe("what the phone shows at each step", () => {
     await user.click(screen.getByRole("button", { name: /Indulás|Érkezés/ }));
     fireEvent.change(screen.getByDisplayValue(/^\d{2}:\d{2}$/), { target: { value: "08:30" } });
     await user.keyboard("{Escape}");
+    await waitFor(() => expect(screen.queryByRole("button", { name: "Érkezés ekkorra" })).not.toBeInTheDocument());
     const first = (await screen.findAllByText("perc"))[0];
     await user.click(first.closest("button")!);
     expect(app().className).toMatch(/reading/);     // map again, with the route
@@ -102,13 +103,14 @@ describe("reading a journey on a phone", () => {
       await user.type(input, query);
       const list = await screen.findByRole("listbox");
       await user.click([...list.querySelectorAll("button")]
-        .find((b) => !/helyzetem/i.test(b.textContent ?? ""))!);
+        .find((b) => !/helyzetem|térkép|hartă/i.test(b.textContent ?? ""))!);
     };
     await pick("Honnan", "Vasútállomás");
     await pick("Hová", "Sepsi Aréna");
     await user.click(screen.getByRole("button", { name: /Indulás|Érkezés/ }));
     fireEvent.change(screen.getByDisplayValue(/^\d{2}:\d{2}$/), { target: { value: "08:30" } });
     await user.keyboard("{Escape}");
+    await waitFor(() => expect(screen.queryByRole("button", { name: "Érkezés ekkorra" })).not.toBeInTheDocument());
     await user.click((await screen.findAllByText("perc"))[0].closest("button")!);
 
     const app = document.querySelector("div[class*='app']")!;
@@ -150,7 +152,7 @@ describe("the phone entry screen", () => {
     await user.type(to, "Sepsi Aréna");
     const list = await screen.findByRole("listbox");
     await user.click([...list.querySelectorAll("button")]
-      .find((b) => !/helyzetem/i.test(b.textContent ?? ""))!);
+      .find((b) => !/helyzetem|térkép|hartă/i.test(b.textContent ?? ""))!);
 
     const app = document.querySelector("div[class*='app']")!;
     expect(app.className).toMatch(/searching/);          // still here

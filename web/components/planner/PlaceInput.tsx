@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useId, useMemo, useState } from "react";
+import { useEffect, useId, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { search, type IndexedPlace, type Place } from "@/lib/engine/search";
 import { forward, type Area, type NamePair } from "@/lib/geocode";
@@ -48,8 +48,11 @@ export default function PlaceInput({
   onPick: () => void;
   onLocate: () => void;
 }) {
+  const isHereName = (n: string) => n === "A helyzetem" || n === "Locația mea";
+  const displayName = (n: string) => isHereName(n) ? t.hereName : n;
+
   const id = useId();
-  const [text, setText] = useState(value?.name ?? "");
+  const [text, setText] = useState(displayName(value?.name ?? ""));
   const [remote, setRemote] = useState<{ query: string; hits: Place[] }>(
     { query: "", hits: [] });
   /* Whether this field is being searched is the parent's business: on a phone
@@ -62,9 +65,11 @@ export default function PlaceInput({
   // without an effect. Whether the search should close is the parent's call,
   // so this does not touch it: closing here overrode that decision.
   const [lastValue, setLastValue] = useState(value);
-  if (value !== lastValue) {
+  const [lastLang, setLastLang] = useState(lang);
+  if (value !== lastValue || lang !== lastLang) {
     setLastValue(value);
-    setText(value?.name ?? "");
+    setLastLang(lang);
+    setText(displayName(value?.name ?? ""));
   }
 
   const query = text.trim();
@@ -114,27 +119,18 @@ export default function PlaceInput({
           id={id} value={text} autoComplete="off" placeholder={t.placeholder}
           onChange={(e) => { setText(e.target.value); setOpen(true); }}
           onFocus={(e) => { setOpen(true); e.currentTarget.select(); }}
-          onBlur={() => { if (!keepOpen) setTimeout(() => setOpen(false), 150); }}
         />
       </label>
-      {/* the pin sits outside the label on purpose: inside it, a tap near the
-          right edge of the field opens the picker by accident */}
-      <button type="button" className={styles.pin} title={t.pickOnMap} aria-label={t.pickOnMap}
-              onClick={(e) => { e.stopPropagation(); setOpen(false); onPick(); }}>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
-          <path d="M12 21s7-6.3 7-11a7 7 0 1 0-14 0c0 4.7 7 11 7 11z" />
-          <circle cx="12" cy="10" r="2.4" />
-        </svg>
-      </button>
-      {/* always open once focused: an empty query still offers "my position",
-          which is otherwise unreachable now the button is gone */}
+      {/* always open once focused: options for "my position" and "choose on map",
+          followed by recent entries and search suggestions */}
       {open && hoist(
         <ul className={`${styles.list} ${into ? styles.inPage : ""}`} role="listbox">
           <li>
-            <button type="button" className={styles.locate}
+            <button type="button" className={`${styles.rowBtn} ${styles.locate}`}
                     /* stays open: if locating fails, this row is where the
                        reason has to appear */
-                    onMouseDown={(e) => { e.preventDefault(); onLocate(); }}>
+                    onMouseDown={(e) => { e.preventDefault(); onLocate(); }}
+                    onClick={() => onLocate()}>
               <span className={styles.icon}>
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.2}>
                   <circle cx="12" cy="12" r="3.4" />
@@ -145,38 +141,57 @@ export default function PlaceInput({
                 <span className={styles.name}>
                   {locating === "busy" ? t.locating : t.myLocation}
                 </span>
-                {locating && locating !== "busy" &&
-                  <span className={styles.detail}>{locating}</span>}
+                <span className={styles.detail}>
+                  {locating && locating !== "busy" ? locating : t.currentGps}
+                </span>
               </span>
             </button>
           </li>
-          {untouched && recent.map((entry) => (
-            <li key={`r-${entry.at.join()}`} className={styles.recentRow}>
-              <button type="button" onMouseDown={(e) => {
-                e.preventDefault();
-                onChoose({ name: entry.name, at: entry.at });
-              }}>
-                <span className={styles.icon}>◷</span>
-                <span className={styles.text}>
-                  <span className={styles.name}>{entry.name}</span>
-                  <span className={styles.detail}>{t.recent}</span>
-                </span>
-              </button>
-              <button type="button" className={styles.forget} title={t.forgetOne}
-                      aria-label={`${t.forgetOne}: ${entry.name}`}
-                      onMouseDown={(e) => { e.preventDefault(); onForget(entry); }}>×</button>
-            </li>
-          ))}
+          <li>
+            <button type="button" className={`${styles.rowBtn} ${styles.pickMap}`}
+                    onMouseDown={(e) => { e.preventDefault(); setOpen(false); onPick(); }}
+                    onClick={() => { setOpen(false); onPick(); }}>
+              <span className={styles.icon}>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+                  <path d="M12 21s7-6.3 7-11a7 7 0 1 0-14 0c0 4.7 7 11 7 11z" />
+                  <circle cx="12" cy="10" r="2.4" />
+                </svg>
+              </span>
+              <span className={styles.text}>
+                <span className={styles.name}>{t.pickOnMap}</span>
+                <span className={styles.detail}>{t.pickOnMapDetail}</span>
+              </span>
+            </button>
+          </li>
+          {untouched && recent.map((entry) => {
+            const entryName = displayName(entry.name);
+            return (
+              <li key={`r-${entry.at.join()}`} className={styles.recentRow}>
+                <button type="button" className={styles.rowBtn}
+                        onMouseDown={(e) => { e.preventDefault(); onChoose({ name: entryName, at: entry.at }); }}
+                        onClick={() => onChoose({ name: entryName, at: entry.at })}>
+                  <span className={styles.icon}>◷</span>
+                  <span className={styles.text}>
+                    <span className={styles.name}>{entryName}</span>
+                    <span className={styles.detail}>{t.recent}</span>
+                  </span>
+                </button>
+                <button type="button" className={styles.forget} title={t.forgetOne}
+                        aria-label={`${t.forgetOne}: ${entryName}`}
+                        onMouseDown={(e) => { e.preventDefault(); onForget(entry); }}
+                        onClick={() => onForget(entry)}>×</button>
+              </li>
+            );
+          })}
           {hits.map((p, i) => (
             <li key={`${p.ro}-${i}`}>
-              <button type="button" onMouseDown={(e) => {
-                e.preventDefault();
-                onChoose({ name: name(p), at: p.at });
-              }}>
+              <button type="button" className={styles.rowBtn}
+                      onMouseDown={(e) => { e.preventDefault(); onChoose({ name: name(p), at: p.at }); }}
+                      onClick={() => onChoose({ name: name(p), at: p.at })}>
                 <span className={styles.icon}>{ICON[p.kind] ?? "◎"}</span>
                 <span className={styles.text}>
                   <span className={styles.name}>{name(p)}</span>
-                  <span className={styles.detail}>{under(p)}</span>
+                  {under(p) && <span className={styles.detail}>{under(p)}</span>}
                 </span>
                 {p.aliases?.length ? <span className={styles.alias}>{p.aliases[0]}</span> : null}
               </button>
