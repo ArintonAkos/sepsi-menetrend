@@ -1,0 +1,189 @@
+[
+  {
+    "id": "13",
+    "name": "13. Grigore Bălan",
+    "address": "Bd. General Grigore Bălan",
+    "lat": 45.85824,
+    "lng": 25.79678,
+    "availableBikes": 10,
+    "freeDocks": 8,
+    "totalCapacity": 18,
+    "status": "Online"
+  },
+  {
+    "id": "10",
+    "name": "10. Primărie",
+    "address": "Strada 1 Decembrie 1918",
+    "lat": 45.86608,
+    "lng": 25.78859,
+    "availableBikes": 8,
+    "freeDocks": 7,
+    "totalCapacity": 15,
+    "status": "Online"
+  },
+  {
+    "id": "04",
+    "name": "04. Daczó",
+    "address": "Str. Ciucului",
+    "lat": 45.86974,
+    "lng": 25.79349,
+    "availableBikes": 0,
+    "freeDocks": 5,
+    "totalCapacity": 5,
+    "status": "Subpopulated"
+  },
+  {
+    "id": "06",
+    "name": "06. Sepsi Aréna",
+    "address": "Sepsi Aréna",
+    "lat": 45.88173,
+    "lng": 25.80662,
+    "availableBikes": 11,
+    "freeDocks": 17,
+    "totalCapacity": 28,
+    "status": "Online"
+  },
+  {
+    "id": "08",
+    "name": "08. Stadionului",
+    "address": "Strada Stadionului",
+    "lat": 45.86317,
+    "lng": 25.77788,
+    "availableBikes": 5,
+    "freeDocks": 11,
+    "totalCapacity": 16,
+    "status": "Online"
+  },
+  {
+    "id": "02",
+    "name": "02. Parcul Central",
+    "address": "Piața Libertății",
+    "lat": 45.86627,
+    "lng": 25.78651,
+    "availableBikes": 10,
+    "freeDocks": 5,
+    "totalCapacity": 15,
+    "status": "Online"
+  },
+  {
+    "id": "03",
+    "name": "03. Biserica Reformată",
+    "address": "Strada Cetății",
+    "lat": 45.8725,
+    "lng": 25.78713,
+    "availableBikes": 4,
+    "freeDocks": 1,
+    "totalCapacity": 5,
+    "status": "Online"
+  },
+  {
+    "id": "01",
+    "name": "01. Universitatea Babeș-Bolyai",
+    "address": "Strada Vasile Goldiș",
+    "lat": 45.85942,
+    "lng": 25.77549,
+    "availableBikes": 6,
+    "freeDocks": 11,
+    "totalCapacity": 17,
+    "status": "Online"
+  },
+  {
+    "id": "14",
+    "name": "14. Ștrand",
+    "address": "Strada Sportivilor",
+    "lat": 45.86524,
+    "lng": 25.79933,
+    "availableBikes": 3,
+    "freeDocks": 3,
+    "totalCapacity": 6,
+    "status": "Online"
+  },
+  {
+    "id": "09",
+    "name": "09. Nicolae Iorga",
+    "address": "Strada Nicolae Iorga",
+    "lat": 45.86022,
+    "lng": 25.79072,
+    "availableBikes": 5,
+    "freeDocks": 4,
+    "totalCapacity": 9,
+    "status": "Online"
+  },
+  {
+    "id": "15",
+    "name": "15. Gara Sfântu Gheorghe",
+    "address": "Strada 1 Decembrie 1918",
+    "lat": 45.86325,
+    "lng": 25.80867,
+    "availableBikes": 4,
+    "freeDocks": 13,
+    "totalCapacity": 17,
+    "status": "Online"
+  },
+  {
+    "id": "12",
+    "name": "12. Blocurile ANL",
+    "address": "Strada General Grigore Bălan",
+    "lat": 45.8557,
+    "lng": 25.79462,
+    "availableBikes": 5,
+    "freeDocks": 5,
+    "totalCapacity": 10,
+    "status": "Online"
+  },
+  {
+    "id": "05",
+    "name": "05. Kaufland",
+    "address": "Strada Lunca Oltului",
+    "lat": 45.87025,
+    "lng": 25.80086,
+    "availableBikes": 4,
+    "freeDocks": 5,
+    "totalCapacity": 9,
+    "status": "Online"
+  },
+  {
+    "id": "16",
+    "name": "16. Centru Sugaș",
+    "address": "Piața Mihai Viteazul",
+    "lat": 45.86434,
+    "lng": 25.79071,
+    "availableBikes": 2,
+    "freeDocks": 11,
+    "totalCapacity": 13,
+    "status": "Online"
+  },
+  {
+    "id": "07",
+    "name": "07. AutoLiv",
+    "address": "Strada Fabricii / AutoLiv",
+    "lat": 45.86548,
+    "lng": 25.81762,
+    "availableBikes": 3,
+    "freeDocks": 14,
+    "totalCapacity": 17,
+    "status": "Online"
+  },
+  {
+    "id": "11",
+    "name": "11. Strada Fabricii",
+    "address": "Strada Fabricii",
+    "lat": 45.85719,
+    "lng": 25.78979,
+    "availableBikes": 6,
+    "freeDocks": 4,
+    "totalCapacity": 10,
+    "status": "Online"
+  },
+  {
+    "id": "17",
+    "name": "17. Locotenent Păiuș David",
+    "address": "Strada Locotenent Păiuș David",
+    "lat": 45.85684,
+    "lng": 25.80682,
+    "availableBikes": 2,
+    "freeDocks": 6,
+    "totalCapacity": 8,
+    "status": "Online"
+  }
+]

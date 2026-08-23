@@ -24,7 +24,6 @@ describe("geometry", () => {
     expect(near).toEqual(["A"]);
   });
 });
-
 describe("plan", () => {
   it("finds the change at C for a trip the buses cannot do directly", () => {
     const [best] = plan(ctx, ask({}));
@@ -215,5 +214,23 @@ describe("dominated journeys", () => {
     // slower but less walking is a choice, not a dominated option
     const found = plan(ctx, ask({ to: NEAR_C }));
     expect(found.length).toBeGreaterThan(0);
+  });
+
+  it("never returns journeys with station loops or redundant transfers", () => {
+    const found = plan(ctx, ask({ to: NEAR_D }));
+    for (const j of found) {
+      const visited = new Set<string>();
+      for (const l of j.legs) {
+        if (l.kind === "ride") {
+          const p = ctx.patterns.get(l.patternId)!;
+          const fromStn = ctx.stops.get(p.stopIds[l.fromIndex])?.stationId ?? p.stopIds[l.fromIndex];
+          const toStn = ctx.stops.get(p.stopIds[l.toIndex])?.stationId ?? p.stopIds[l.toIndex];
+          expect(fromStn).not.toBe(toStn);
+          expect(visited.has(toStn)).toBe(false);
+          visited.add(fromStn);
+          visited.add(toStn);
+        }
+      }
+    }
   });
 });

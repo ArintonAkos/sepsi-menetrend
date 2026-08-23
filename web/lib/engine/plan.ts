@@ -179,9 +179,18 @@ function raptor(ctx: PlanContext, origin: LngLat, departAfter: Minute, service: 
         const candidate = ctx.tripsOf.get(patternId)
           ?.filter((t) => t.service === service)
           .find((t) => t.start + p.offsets[i] >= ready) ?? null;
-        if (candidate && (!trip || candidate.start < trip.start)) {
-          trip = candidate;
-          boardIndex = i;
+        if (candidate) {
+          if (!trip || candidate.start < trip.start) {
+            trip = candidate;
+            boardIndex = i;
+          } else if (candidate.start === trip.start) {
+            const curPrior = rounds[k - 1].get(p.stopIds[boardIndex]);
+            const curIsWalk = curPrior?.hop.kind === "walk" && curPrior?.hop.fromStopId !== null;
+            const newIsRide = prior.hop.kind === "ride";
+            if (curIsWalk && newIsRide) {
+              boardIndex = i;
+            }
+          }
         }
       }
     }
@@ -341,6 +350,21 @@ function toJourney(ctx: PlanContext, chain: Hop[], destination: LngLat,
     }
   }
   if (!legs.some((l) => l.kind === "ride")) return null;
+
+  // Discard journeys with loops (visiting the same station multiple times across rides)
+  const visitedStations = new Set<string>();
+  for (const leg of legs) {
+    if (leg.kind === "ride") {
+      const p = ctx.patterns.get(leg.patternId)!;
+      const fromStop = ctx.stops.get(p.stopIds[leg.fromIndex]);
+      const toStop = ctx.stops.get(p.stopIds[leg.toIndex]);
+      const fromStn = fromStop?.stationId ?? p.stopIds[leg.fromIndex];
+      const toStn = toStop?.stationId ?? p.stopIds[leg.toIndex];
+      if (fromStn === toStn || visitedStations.has(toStn)) return null;
+      visitedStations.add(fromStn);
+      visitedStations.add(toStn);
+    }
+  }
 
   /* A chain can end with a transfer walk that no ride follows: the search
      reached the egress stop on foot from wherever the bus actually dropped the
