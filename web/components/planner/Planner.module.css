@@ -79,8 +79,46 @@
   border: 1px solid var(--border); border-right: 1px solid var(--border);
   border-radius: 20px; overflow: visible;
   box-shadow: var(--shadow); background: transparent;
+  animation: floatIn 0.24s cubic-bezier(0.2, 0.8, 0.3, 1);
 }
-.app.idle .panel { border-radius: 19px; }
+.app.idle .panel {
+  border-radius: 19px;
+  animation: panelIdle 0.24s cubic-bezier(0.2, 0.8, 0.3, 1);
+}
+.app:not(.idle):not(.searching) .rail {
+  animation: sidebarIn 0.24s cubic-bezier(0.2, 0.8, 0.3, 1);
+}
+
+@keyframes floatIn {
+  from {
+    opacity: 0.6;
+    transform: translateY(-8px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes panelIdle {
+  from {
+    border-radius: 0;
+  }
+  to {
+    border-radius: 19px;
+  }
+}
+
+@keyframes sidebarIn {
+  from {
+    opacity: 0.7;
+    transform: translateX(-14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
 
 .crosshair { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -100%);
   pointer-events: none; z-index: 5; display: grid; justify-items: center; }
@@ -241,6 +279,8 @@
      bottom of a full-height map rather than the top */
   /* An explicit width rather than stretch-with-margins: the stretched box kept
      its left margin and lost the right one, so the card ran off the screen. */
+  .app:not(.idle):not(.searching) .rail { animation: none; }
+  .app.idle .panel { animation: none; }
   .app.idle .rail {
     align-self: end; justify-self: center;
     width: calc(100% - 20px); margin: 0 0 calc(12px + env(safe-area-inset-bottom));
