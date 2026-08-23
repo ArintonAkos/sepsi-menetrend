@@ -6,6 +6,7 @@ web/.next/
 web/out/
 web/.env*
 !web/.env.local.example
+.worktrees/
 
 # Source artwork dropped in here while working. The logo actually used is the
 # derived web/public/aperta.png; the 1 MB original belongs to the Aperta Sync
