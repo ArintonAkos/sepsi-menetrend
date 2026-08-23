@@ -99,26 +99,28 @@ export class WalkingRouter {
     const { distance, previous } = this.dijkstra(finish.vertex, this.reverseEdges, this.reverseMetres);
     return origins.map((from) => {
       const start = this.nearest(from);
-      return start ? this.pathFromSearch(from, destination, start, finish, distance, previous) : null;
+      return start ? this.pathFromSearch(from, destination, start, finish, distance, previous, true) : null;
     });
   }
 
   private pathFromSearch(from: LngLat, to: LngLat,
                          start: { vertex: number; metres: number },
                          finish: { vertex: number; metres: number },
-                         distance: Float64Array, previous: Int32Array): FootPath | null {
-    if (!Number.isFinite(distance[finish.vertex])) return null;
+                         distance: Float64Array, previous: Int32Array,
+                         reverseSearch = false): FootPath | null {
+    const reached = reverseSearch ? start.vertex : finish.vertex;
+    if (!Number.isFinite(distance[reached])) return null;
 
     const vertices: number[] = [];
-    for (let node = finish.vertex; node !== -1; node = previous[node]) vertices.push(node);
-    vertices.reverse();
+    for (let node = reached; node !== -1; node = previous[node]) vertices.push(node);
+    if (!reverseSearch) vertices.reverse();
     const path: LngLat[] = [from];
     for (const node of vertices) {
       const point = this.graph.vertices[node];
       if (point[0] !== path[path.length - 1][0] || point[1] !== path[path.length - 1][1]) path.push(point);
     }
     if (to[0] !== path[path.length - 1][0] || to[1] !== path[path.length - 1][1]) path.push(to);
-    const metres = Math.round(start.metres + distance[finish.vertex] + finish.metres);
+    const metres = Math.round(start.metres + distance[reached] + finish.metres);
     return { path, metres, minutes: Math.max(1, Math.ceil(metres / WALKING_METRES_PER_MINUTE)) };
   }
 

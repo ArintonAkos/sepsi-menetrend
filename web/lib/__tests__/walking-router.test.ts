@@ -35,12 +35,36 @@ describe("WalkingRouter", () => {
     expect(routes.map((route) => route?.metres)).toEqual([190, 270]);
   });
 
+  it("reconstructs egress walks from the stop, not as a diagonal to the destination", () => {
+    const router = new WalkingRouter(graph);
+
+    const [route] = router.routesTo([25.76, 45.861], [[25.76, 45.86]]);
+
+    expect(route?.metres).toBe(270);
+    expect(route?.path).toEqual([
+      [25.76, 45.86], [25.761, 45.86], [25.761, 45.861], [25.76, 45.861],
+    ]);
+  });
+
   it("has a real pedestrian route from the centre to Sepsi Arena", () => {
     const router = new WalkingRouter(realGraph as WalkingGraph);
     const from: [number, number] = [25.7866, 45.8636]; // Casa cu Arcade / Lábasház
     const to: [number, number] = [25.8071, 45.8822];   // Arena Sepsi
 
     const route = router.route(from, to);
+
+    expect(route).not.toBeNull();
+    expect(route!.metres).toBeGreaterThan(2_500);
+    expect(route!.path.length).toBeGreaterThan(20);
+  });
+
+  it("does not turn the N. Iorga to Sepsi Arena egress into a 29 metre diagonal", () => {
+    const router = new WalkingRouter(realGraph as WalkingGraph);
+
+    const [route] = router.routesTo(
+      [25.8071, 45.8822],
+      [[25.7948, 45.8580]], // N. Iorga sugárút 1
+    );
 
     expect(route).not.toBeNull();
     expect(route!.metres).toBeGreaterThan(2_500);
