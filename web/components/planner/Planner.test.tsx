@@ -950,4 +950,19 @@ describe("pin picking and mobile search workflow edge cases", () => {
 
     expect(screen.getByRole("button", { name: "Kész" })).toBeInTheDocument();
   });
+
+  it("dismisses search dropdown on desktop when clicking outside or pressing escape", async () => {
+    const user = await setup();
+    const toInput = screen.getByLabelText("Hová");
+    await user.click(toInput);
+    expect(await screen.findByRole("listbox")).toBeInTheDocument();
+
+    await user.click(document.body);
+    expect(screen.queryByRole("listbox")).not.toBeInTheDocument();
+
+    await user.click(toInput);
+    expect(await screen.findByRole("listbox")).toBeInTheDocument();
+    await user.keyboard("{Escape}");
+    expect(screen.queryByRole("listbox")).not.toBeInTheDocument();
+  });
 });

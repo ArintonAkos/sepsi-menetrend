@@ -7,6 +7,7 @@ import { forward, type Area, type NamePair } from "@/lib/geocode";
 import type { Recent } from "@/lib/history";
 import type { Lang, Strings } from "@/lib/i18n";
 import type { LngLat } from "@/lib/engine/types";
+import { useDismiss } from "../hooks/useDismiss";
 import styles from "./PlaceInput.module.css";
 
 export interface Chosen { name: string; at: LngLat }
@@ -111,8 +112,11 @@ export default function PlaceInput({
     p.approximate ? t.noHouseNumber : null,
   ].filter(Boolean).join(" · ");
 
+  const wrapRef = useRef<HTMLDivElement>(null);
+  useDismiss(open && !keepOpen, () => setOpen(false), wrapRef);
+
   return (
-    <div className={styles.wrap}>
+    <div className={styles.wrap} ref={wrapRef}>
       <label className={styles.field} htmlFor={id}>
         <span className={styles.label}>{label}</span>
         <input
