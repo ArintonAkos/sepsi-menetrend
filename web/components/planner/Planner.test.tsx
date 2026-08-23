@@ -643,16 +643,21 @@ describe("journey detail", () => {
     await user.click(screen.getByRole("button", { name: /Indulás|Érkezés/ }));
     fireEvent.change(screen.getByDisplayValue(/^\d{2}:\d{2}$/), { target: { value: "13:00" } });
     await user.keyboard("{Escape}");
-    const cards = await screen.findAllByRole("button", { name: /perc/ });
-    for (const card of cards) {
-      await user.click(card);
+    const cardCount = (await screen.findAllByRole("button", { name: /perc/ })).length;
+    for (let index = 0; index < cardCount; index++) {
+      // Re-query after returning from the detail view: React has replaced the
+      // card nodes, so retaining the old element can only click a detached DOM.
+      await user.click((await screen.findAllByRole("button", { name: /perc/ }))[index]);
       await screen.findByText("Az utad");
-      const pills = screen.getAllByText(/^\d+$|^\d+D$/);
-      if (pills.length > 2) {              // a change is on screen
+      // Departure suggestions are numbers too; only line badges inside the
+      // journey timeline prove that this particular card contains a change.
+      const pills = document.querySelectorAll("ol[class*='timeline'] [class*='pill']");
+      if (pills.length > 1) {
         expect(document.body.textContent).toMatch(/\d+ perc várakozás/);
         return;
       }
-      await user.click(screen.getByRole("button", { name: "Vissza" }));
+      const detailHead = screen.getByText("Az utad").closest("div")!;
+      await user.click(detailHead.querySelector("button")!);
     }
   });
 });

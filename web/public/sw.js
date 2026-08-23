@@ -15,6 +15,7 @@ const SHELL = [
   "/data/network.json",
   "/data/places.json",
   "/data/fares.json",
+  "/data/walking-graph.json",
   "/icons/icon-192.png",
   "/icons/icon-512.png",
   "/manifest.webmanifest",

@@ -6,6 +6,8 @@ configure({ asyncUtilTimeout: 8_000 });
 
 import { afterEach, vi } from "vitest";
 import { cleanup } from "@testing-library/react";
+import graph from "./public/data/walking-graph.json";
+import { WalkingRouter, type FootPath, type WalkingGraph } from "./lib/walking-router";
 
 // without globals enabled, Testing Library does not unmount between tests and
 // every query then finds two of everything
@@ -14,6 +16,33 @@ afterEach(() => {
   localStorage.clear();
   window.history.replaceState(null, "", "/");
 });
+
+/** jsdom has no Worker.  The production worker is deliberately a thin shell
+ * over this pure router, so emulate its message protocol rather than making
+ * the planner fall back to the old straight-line algorithm in tests. */
+class FakeWalkingWorker {
+  private listener: ((event: MessageEvent) => void) | null = null;
+  private readonly router = new WalkingRouter(graph as WalkingGraph);
+
+  addEventListener(type: string, listener: (event: MessageEvent) => void) {
+    if (type === "message") this.listener = listener;
+  }
+
+  postMessage(request: { id: number; type: string; from?: [number, number]; to?: [number, number];
+                         destinations?: [number, number][]; destination?: [number, number];
+                         origins?: [number, number][] }) {
+    let routes: Array<FootPath | null> = [];
+    if (request.type === "route" && request.from && request.to)
+      routes = [this.router.route(request.from, request.to)];
+    if (request.type === "from" && request.from && request.destinations)
+      routes = this.router.routesFrom(request.from, request.destinations);
+    if (request.type === "to" && request.destination && request.origins)
+      routes = this.router.routesTo(request.destination, request.origins);
+    queueMicrotask(() => this.listener?.({ data: { id: request.id, routes } } as MessageEvent));
+  }
+}
+
+Object.defineProperty(globalThis, "Worker", { writable: true, value: FakeWalkingWorker });
 
 /** jsdom has no WebGL, so Mapbox cannot start. The map is not what these tests
  *  are checking - the panel around it is. */

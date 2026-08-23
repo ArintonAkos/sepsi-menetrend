@@ -16,11 +16,11 @@ const TransitMap = dynamic(() => import("../map/TransitMap"), {
 import PlaceInput, { type Chosen } from "./PlaceInput";
 import JourneyList from "../journey/JourneyList";
 import JourneyDetail from "../journey/JourneyDetail";
-import { prepare, plan, metresBetween, nextDepartures } from "@/lib/engine/plan";
+import { prepare, planWithWalking, metresBetween, nextDepartures } from "@/lib/engine/plan";
 import { buildIndex } from "@/lib/engine/search";
 import { formatHHMM, minutesOfDay, serviceForDate } from "@/lib/engine/time";
 import { formatCoordinates, insideArea, reverse } from "@/lib/geocode";
-import { isStraightLine, routeOnFoot } from "@/lib/walking";
+import { isStraightLine, routeOnFoot, walkingContext } from "@/lib/walking";
 import StopBoard from "../stops/StopBoard";
 import Timetable from "../timetable/Timetable";
 import { Back, ShareIcon } from "../common/icons";
@@ -32,7 +32,7 @@ import { forget, read, remember, write, type Recent } from "@/lib/history";
 import { STRINGS, type Lang } from "@/lib/i18n";
 import { readLang, writeLang, LANG_CHANGE_EVENT } from "@/lib/lang";
 import type { FareTable } from "@/lib/engine/fares";
-import type { Journey, LngLat, Network, PlanMode, RideLeg, ServiceId, WalkLeg } from "@/lib/engine/types";
+import type { Journey, LngLat, Network, PlanMode, RideLeg, ServiceId, WalkingContext, WalkLeg } from "@/lib/engine/types";
 import type { Place } from "@/lib/engine/search";
 import styles from "./Planner.module.css";
 
@@ -416,6 +416,20 @@ export default function Planner({ network, places, reach, box, fares }: {
      so the entry screen is the two fields and nothing else. */
   const planning = from !== null && to !== null;
 
+  /* A route is not allowed to enter the transit planner until both access and
+     egress walks have been measured on OSM paths.  This prevents a visually
+     corrected journey from keeping a timetable it could never actually meet. */
+  const walkingKey = from && to ? `${from.at.join(",")}>${to.at.join(",")}` : "";
+  const [walking, setWalking] = useState<{ key: string; value: WalkingContext } | null>(null);
+  useEffect(() => {
+    if (!from || !to) return;
+    let cancelled = false;
+    walkingContext(from.at, to.at, network.stops).then((value) => {
+      if (!cancelled) setWalking({ key: walkingKey, value });
+    });
+    return () => { cancelled = true; };
+  }, [from, to, network.stops, walkingKey]);
+
 
 
   /* Sharing sends the plan, not a picture of it: the link re-plans on the other
@@ -487,14 +501,14 @@ export default function Planner({ network, places, reach, box, fares }: {
   }, [picking]);
 
   const journeys: Journey[] = useMemo(() => {
-    if (!from || !to) return [];
+    if (!from || !to || walking?.key !== walkingKey) return [];
     if (metresBetween(from.at, to.at) < 150) return [];
     const [h, m] = time.split(":").map(Number);
-    return plan(ctx, {
+    return planWithWalking(ctx, {
       from: from.at, to: to.at, time: h * 60 + m, service: serviceForDate(date),
       mode, walkAversion: settledAversion, lines: visibleLines,
-    });
-  }, [ctx, from, to, time, date, mode, settledAversion, visibleLines]);
+    }, walking.value);
+  }, [ctx, from, to, time, date, mode, settledAversion, visibleLines, walking, walkingKey]);
 
   const planKey = [from?.name, to?.name, time, date.toDateString(), mode,
                    settledAversion, [...visibleLines].sort().join(",")].join("|");
