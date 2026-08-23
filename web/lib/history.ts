@@ -13,7 +13,7 @@ export interface Recent {
 }
 
 export const KEY = "sepsi.recent";
-export const LIMIT = 8;
+export const LIMIT = 15;
 
 /** Same place, whatever the spelling: names differ between languages, so the
  *  coordinate decides. Five decimals is about a metre. */
