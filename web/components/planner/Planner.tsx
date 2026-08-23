@@ -237,6 +237,34 @@ export default function Planner({ network, places, reach, box, fares }: {
     }
   }
 
+  const resetPlanning = useCallback(() => {
+    setFrom(null);
+    setTo(null);
+    setDetail(null);
+    setSearching(null);
+    try {
+      const url = new URL(window.location.href);
+      url.searchParams.delete("from");
+      url.searchParams.delete("to");
+      url.searchParams.delete("time");
+      url.searchParams.delete("mode");
+      url.searchParams.delete("date");
+      url.searchParams.delete("j");
+      const query = url.searchParams.toString();
+      window.history.replaceState(null, "", url.pathname + (query ? `?${query}` : ""));
+    } catch {}
+  }, []);
+
+  const backFromDetail = useCallback(() => {
+    setDetail(null);
+    try {
+      const url = new URL(window.location.href);
+      url.searchParams.delete("j");
+      const query = url.searchParams.toString();
+      window.history.replaceState(null, "", url.pathname + (query ? `?${query}` : ""));
+    } catch {}
+  }, []);
+
   const drawer = useDrawer();
   /* Mapbox measures its container once and caches it; a drawer sliding over it
      changes how much map there is to see, and without this the canvas keeps
@@ -634,22 +662,13 @@ export default function Planner({ network, places, reach, box, fares }: {
                aria-label={t.journey}><i /></div>
         )}
         <div className={styles.panel}>
-          {!narrow && planning && (
-            <div className={styles.desktopHead}>
-              <button type="button" onClick={() => { setFrom(null); setTo(null); setDetail(null); setSearching(null); }}
-                      className={styles.desktopBack} aria-label={t.back}>
-                <Back />
-                <span>{t.back}</span>
-              </button>
-            </div>
-          )}
           <div className={styles.searchHead}>
             <button onClick={closeSearching} aria-label={t.back}><Back /></button>
             <h2>{t.whereTo}</h2>
           </div>
           {narrow && !searching && (
             <div className={styles.listHead}>
-              <button onClick={() => { setTo(null); setSearching(null); }}
+              <button onClick={resetPlanning}
                       aria-label={t.back}><Back /></button>
               <h2>{t.journeys}</h2>
             </div>
@@ -767,7 +786,7 @@ export default function Planner({ network, places, reach, box, fares }: {
                            stops={stops} fares={fares} date={date} lang={lang} t={t} dark={dark}
                            from={from?.name ?? ""} to={to?.name ?? ""}
                            laterBuses={laterBuses}
-                           onBack={() => setDetail(null)} />
+                           onBack={backFromDetail} />
           )}
         </div>}
 
@@ -818,10 +837,13 @@ export default function Planner({ network, places, reach, box, fares }: {
         {/* Over the map rather than in the drawer, the way every map app puts
             it - and the drawer keeps its own, because the sheet can be pulled
             up over this one. */}
-        {detail !== null && (
+        {(detail !== null || (!narrow && planning)) && (
           <div className={styles.topLeft}>
             <button className={styles.round} aria-label={t.back}
-                    onClick={() => setDetail(null)}><Back /></button>
+                    onClick={() => {
+                      if (detail !== null) backFromDetail();
+                      else resetPlanning();
+                    }}><Back /></button>
           </div>
         )}
 
