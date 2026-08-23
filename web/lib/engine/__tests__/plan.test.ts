@@ -1,4 +1,5 @@
 import { describe, it, expect } from "vitest";
+import * as engine from "../plan";
 import { prepare, plan, stopsNear, metresBetween, nextDepartures, MIN_TRANSFER }
   from "../plan";
 import { formatHHMM } from "../time";
@@ -25,6 +26,22 @@ describe("geometry", () => {
   });
 });
 describe("plan", () => {
+  it("uses an exact pedestrian detour when choosing when to leave", () => {
+    const planWithWalking = (engine as typeof engine & {
+      planWithWalking?: (context: typeof ctx, request: PlanRequest, walking: unknown) => ReturnType<typeof plan>;
+    }).planWithWalking;
+    expect(planWithWalking).toBeTypeOf("function");
+
+    const [best] = planWithWalking!(ctx, ask({}), {
+      access: new Map([["A", { metres: 2160, minutes: 27, path: [ORIGIN, [25.760, 45.86]] }]]),
+      egress: new Map([["D", { metres: 80, minutes: 1, path: [[25.820, 45.86], NEAR_D] }]]),
+      direct: null,
+    });
+
+    expect(best.depart).toBe(8 * 60 + 3); // catch the 08:30 bus after a real 27-minute walk
+    expect(best.legs[0]).toMatchObject({ kind: "walk", metres: 2160, minutes: 27 });
+  });
+
   it("finds the change at C for a trip the buses cannot do directly", () => {
     const [best] = plan(ctx, ask({}));
     expect(lines(best)).toBe("1+2");

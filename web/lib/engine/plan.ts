@@ -13,7 +13,7 @@
  */
 import type {
   Journey, Leg, LngLat, Minute, Network, Pattern, PlanRequest, RideLeg, ServiceId,
-  Stop, Trip, Walk,
+  Stop, Trip, Walk, WalkingContext, WalkingLeg,
 } from "./types";
 
 /** Minutes a rider needs between alighting and boarding at the same place. */
@@ -101,7 +101,8 @@ interface Label { arrival: Minute; hop: Hop; prev: string | null; round: number 
 
 /** One forward search. Returns the best label per stop per round. */
 function raptor(ctx: PlanContext, origin: LngLat, departAfter: Minute, service: string,
-                allowed: Set<string> | undefined): Map<string, Label>[] {
+                allowed: Set<string> | undefined,
+                exactAccess?: ReadonlyMap<string, WalkingLeg>): Map<string, Label>[] {
   const rounds: Map<string, Label>[] = [new Map()];
   /* Best arrival *by bus*. Deliberately not seeded with the walk from the
      origin, though that is the textbook thing to do.
@@ -117,12 +118,22 @@ function raptor(ctx: PlanContext, origin: LngLat, departAfter: Minute, service: 
      a reason to hide the buses. */
   const best = new Map<string, Minute>();
 
-  for (const { stop, minutes, metres } of stopsNear(ctx, origin)) {
-    rounds[0].set(stop.id, {
-      arrival: departAfter + minutes, prev: null, round: 0,
-      hop: { kind: "walk", fromStopId: null, toStopId: stop.id, metres, minutes,
-             path: [origin, stop.at] },
-    });
+  if (exactAccess) {
+    for (const [stopId, walk] of exactAccess) {
+      if (!ctx.stops.has(stopId)) continue;
+      rounds[0].set(stopId, {
+        arrival: departAfter + walk.minutes, prev: null, round: 0,
+        hop: { kind: "walk", fromStopId: null, toStopId: stopId, ...walk },
+      });
+    }
+  } else {
+    for (const { stop, minutes, metres } of stopsNear(ctx, origin)) {
+      rounds[0].set(stop.id, {
+        arrival: departAfter + minutes, prev: null, round: 0,
+        hop: { kind: "walk", fromStopId: null, toStopId: stop.id, metres, minutes,
+               path: [origin, stop.at] },
+      });
+    }
   }
   let marked = new Set(rounds[0].keys());
 
@@ -316,7 +327,9 @@ function stayOn(ctx: PlanContext, chain: Hop[], destination: LngLat): Hop[] | nu
 }
 
 function toJourney(ctx: PlanContext, chain: Hop[], destination: LngLat,
-                   egress: { minutes: Minute; metres: number }, at: LngLat): Journey | null {
+                   egress: WalkingLeg, at: LngLat,
+                   exactEgress?: ReadonlyMap<string, WalkingLeg>,
+                   preserveExactAccess = false): Journey | null {
   const legs: Leg[] = [];
   let depart = Infinity;
   let arrive = 0;
@@ -332,7 +345,7 @@ function toJourney(ctx: PlanContext, chain: Hop[], destination: LngLat,
       let fromIndex = boardLate(p, hop.fromIndex, hop.toIndex);
       const access = legs.length === 1 && legs[0].kind === "walk"
         && legs[0].fromStopId === null ? legs[0] : null;
-      if (access) {
+      if (access && !preserveExactAccess) {
         fromIndex = boardNearest(ctx, p, hop.fromIndex, hop.toIndex, access.path[0]);
         const stop = ctx.stops.get(p.stopIds[fromIndex])!;
         const metres = Math.round(metresBetween(access.path[0], stop.at) * DETOUR);
@@ -382,15 +395,20 @@ function toJourney(ctx: PlanContext, chain: Hop[], destination: LngLat,
     legs.pop();                       // a ride is guaranteed, so this terminates
     walkMinutes -= tail.minutes;
     off = dropped.at;
-    const metres = Math.round(metresBetween(off, destination) * DETOUR);
-    door = { metres, minutes: Math.max(1, Math.round(metres / WALK_PACE)) };
+    const exact = exactEgress?.get(tail.fromStopId);
+    if (exact) door = exact;
+    else {
+      const metres = Math.round(metresBetween(off, destination) * DETOUR);
+      door = { metres, minutes: Math.max(1, Math.round(metres / WALK_PACE)),
+               path: [off, destination] };
+    }
   }
 
   // the access walk has to finish before the first bus, not start at it
   const access = legs[0].kind === "walk" ? legs[0].minutes : 0;
   walkMinutes += door.minutes;
   legs.push({ kind: "walk", fromStopId: null, toStopId: null, metres: door.metres,
-              minutes: door.minutes, path: [off, destination] });
+              minutes: door.minutes, path: door.path });
 
   return {
     legs,
@@ -468,7 +486,9 @@ function onFootAlone(req: PlanRequest): Journey | null {
 
 export function plan(ctx: PlanContext, req: PlanRequest, limit = 8): Journey[] {
   const egressStops = new Map(
-    stopsNear(ctx, req.to).map((e) => [e.stop.id, e]),
+    stopsNear(ctx, req.to).map((e) => [e.stop.id, {
+      metres: e.metres, minutes: e.minutes, path: [e.stop.at, req.to],
+    }]),
   );
   if (!egressStops.size) return [];
 
@@ -491,14 +511,15 @@ export function plan(ctx: PlanContext, req: PlanRequest, limit = 8): Journey[] {
         const chain = rebuild(rounds, sid, k);
         if (!chain) continue;
         const further = stayOn(ctx, chain, req.to);
-        const options: Array<[Hop[], { minutes: Minute; metres: number }, LngLat]> =
+        const options: Array<[Hop[], WalkingLeg, LngLat]> =
           [[chain, eg, ctx.stops.get(sid)!.at]];
         if (further) {
           const end = further[further.length - 1];
           if (end.kind === "ride") {
             const at = ctx.stops.get(
               ctx.patterns.get(end.patternId)!.stopIds[end.toIndex])!.at;
-            const walk = onFoot(at, req.to);
+            const estimated = onFoot(at, req.to);
+            const walk: WalkingLeg = { ...estimated, path: [at, req.to] };
             if (walk.minutes <= MAX_ACCESS_MINUTES) options.push([further, walk, at]);
           }
         }
@@ -541,6 +562,63 @@ export function plan(ctx: PlanContext, req: PlanRequest, limit = 8): Journey[] {
     distinct.push(journey);
   }
   return distinct.slice(0, limit);
+}
+
+/** Plan only from pedestrian routes that have already been found on a real
+ * walkable network.  Unlike the legacy `plan` entry point, this function never
+ * measures a straight line or mutates a walk after choosing an itinerary. */
+export function planWithWalking(ctx: PlanContext, req: PlanRequest,
+                                walking: WalkingContext, limit = 8): Journey[] {
+  if (!walking.access.size || !walking.egress.size) return [];
+
+  const step = 10, span = 120;
+  const starts: Minute[] = req.mode === "departAt"
+    ? Array.from({ length: span / step + 1 }, (_, i) => req.time + i * step)
+    : Array.from({ length: span / step + 1 }, (_, i) => req.time - span + i * step)
+        .filter((m) => m >= 0);
+
+  const found = new Map<string, Journey>();
+  for (const start of starts) {
+    const rounds = raptor(ctx, req.from, start, req.service, req.lines, walking.access);
+    for (let k = 1; k < rounds.length; k++) {
+      for (const sid of rounds[k].keys()) {
+        const egress = walking.egress.get(sid);
+        const stop = ctx.stops.get(sid);
+        if (!egress || !stop) continue;
+        const chain = rebuild(rounds, sid, k);
+        if (!chain) continue;
+        const journey = toJourney(ctx, chain, req.to, egress, stop.at,
+                                  walking.egress, true);
+        if (!journey) continue;
+        if (req.mode !== "departAt" && journey.arrive > req.time) continue;
+        const key = signature(ctx, journey);
+        const previous = found.get(key);
+        if (!previous || journey.walkMinutes < previous.walkMinutes) found.set(key, journey);
+      }
+    }
+  }
+
+  const all = undominated([...found.values()]);
+  if (walking.direct && walking.direct.minutes <= MAX_DIRECT_WALK) {
+    const depart = req.mode === "departAt" ? req.time : req.time - walking.direct.minutes;
+    all.push({
+      legs: [{ kind: "walk", fromStopId: null, toStopId: null, ...walking.direct }],
+      depart, arrive: depart + walking.direct.minutes,
+      walkMinutes: walking.direct.minutes, transfers: 0,
+    });
+  }
+  all.sort((a, b) =>
+    generalisedCost(a, req) - generalisedCost(b, req) ||
+    (a.arrive - a.depart) - (b.arrive - b.depart));
+
+  const shapes = new Set<string>();
+  return all.filter((journey) => {
+    const shape = journey.legs.filter((l): l is RideLeg => l.kind === "ride")
+      .map((l) => `${l.patternId}:${l.fromIndex}>${l.toIndex}`).join("+") || "walk";
+    if (shapes.has(shape)) return false;
+    shapes.add(shape);
+    return true;
+  }).slice(0, limit);
 }
 
 /** The next few departures of one line from one stop.

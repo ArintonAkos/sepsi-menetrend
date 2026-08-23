@@ -118,6 +118,24 @@ export interface WalkLeg {
   path: LngLat[];
 }
 
+/** A pedestrian route found on the walkable network before transit is planned. */
+export interface WalkingLeg {
+  metres: number;
+  minutes: Minute;
+  path: LngLat[];
+}
+
+/** Exact pedestrian reachability for one origin/destination query.
+ *
+ * The transit engine intentionally knows nothing about how these routes were
+ * obtained.  A browser worker can use the offline OSM graph while a fixture
+ * can supply the same contract in a unit test. */
+export interface WalkingContext {
+  access: ReadonlyMap<string, WalkingLeg>;
+  egress: ReadonlyMap<string, WalkingLeg>;
+  direct: WalkingLeg | null;
+}
+
 export type Leg = RideLeg | WalkLeg;
 
 export interface Journey {
