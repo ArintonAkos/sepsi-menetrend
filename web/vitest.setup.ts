@@ -38,9 +38,10 @@ vi.mock("mapbox-gl", () => {
     extend() { return this; }
   }
   return {
-    default: { Map: FakeMap, NavigationControl: class {}, LngLatBounds: FakeBounds,
-               accessToken: "" },
-    Map: FakeMap, NavigationControl: class {}, LngLatBounds: FakeBounds,
+    default: { Map: FakeMap, NavigationControl: class {}, GeolocateControl: class {},
+               AttributionControl: class {}, LngLatBounds: FakeBounds, accessToken: "" },
+    Map: FakeMap, NavigationControl: class {}, GeolocateControl: class {},
+    AttributionControl: class {}, LngLatBounds: FakeBounds,
   };
 });
 

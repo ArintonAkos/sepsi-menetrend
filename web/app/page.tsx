@@ -1,6 +1,6 @@
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
-import Planner from "@/components/Planner";
+import { Planner } from "@/components";
 import type { FareTable } from "@/lib/engine/fares";
 import type { Place } from "@/lib/engine/search";
 import type { Network } from "@/lib/engine/types";

@@ -6,7 +6,7 @@ import { formatHHMM } from "@/lib/engine/time";
 import { shadeOf } from "@/lib/engine/types";
 import type { Line, Network, ServiceId, Stop } from "@/lib/engine/types";
 import type { Lang, Strings } from "@/lib/i18n";
-import { Back } from "./icons";
+import { Back } from "../common/icons";
 import styles from "./Timetable.module.css";
 
 /**
@@ -79,10 +79,20 @@ export default function Timetable({
     return stop ? (lang === "hu" ? stop.name.hu : stop.name.ro) : id;
   };
 
+  const [closing, setClosing] = useState(false);
+
+  const handleClose = () => {
+    if (closing) return;
+    setClosing(true);
+    setTimeout(() => {
+      onClose();
+    }, 220);
+  };
+
   return (
-    <div className={styles.screen}>
+    <div className={`${styles.screen} ${closing ? styles.closing : ""}`}>
       <div className={styles.head}>
-        <button onClick={onClose} aria-label={t.back}><Back /></button>
+        <button onClick={handleClose} aria-label={t.back}><Back /></button>
         <h2>{t.timetables}</h2>
       </div>
 

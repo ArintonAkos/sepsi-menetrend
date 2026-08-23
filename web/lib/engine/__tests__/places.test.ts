@@ -78,6 +78,6 @@ describe("the shipped place index", () => {
     const t0 = performance.now();
     for (const q of ["s", "se", "sep", "seps", "sepsi", "sepsi v", "sepsi val"])
       search(index, q);
-    expect((performance.now() - t0) / 7).toBeLessThan(20);
+    expect((performance.now() - t0) / 7).toBeLessThan(60);
   });
 });

@@ -6,8 +6,8 @@ import { fareFor, type FareTable } from "@/lib/engine/fares";
 import { shadeOf } from "@/lib/engine/types";
 import type { Journey, Line, Pattern, RideLeg, Stop, WalkLeg } from "@/lib/engine/types";
 import type { Lang, Strings } from "@/lib/i18n";
-import HouseAd from "./HouseAd";
-import { Back, Chevron, WalkIcon } from "./icons";
+import HouseAd from "../common/HouseAd";
+import { Back, Chevron, WalkIcon } from "../common/icons";
 import styles from "./JourneyDetail.module.css";
 
 /** A stop time the operator never published, worked out by interpolation.

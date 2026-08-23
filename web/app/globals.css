@@ -42,6 +42,7 @@
 
 *, *::before, *::after { box-sizing: border-box; }
 html, body { margin:0; padding:0; }
+html { scrollbar-gutter: stable; }
 body {
   background: var(--paper);
   color: var(--ink);
@@ -77,13 +78,24 @@ button, [role="button"], summary {
   transition: opacity var(--tap) ease, background-color var(--tap) ease,
               border-color var(--tap) ease;
 }
-:focus-visible { outline: 3px solid var(--signal); outline-offset: 2px; border-radius: 6px; }
+/* View Transitions API for seamless screen morphing */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: var(--move);
+  animation-timing-function: var(--ease-out);
+}
+
 /* One switch for the lot. Every animation below is written so that removing it
    leaves the element in its resting state, never mid-fade. */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation: none !important; transition: none !important;
     scroll-behavior: auto !important;
+  }
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
   }
   button:active:not(:disabled), [role="button"]:active, summary:active {
     opacity: 1;

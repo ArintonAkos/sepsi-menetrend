@@ -6,7 +6,10 @@ import { readLang, LANG_CHANGE_EVENT } from "@/lib/lang";
 import styles from "./Analytics.module.css";
 
 declare global {
-  interface Window { dataLayer: unknown[][] }
+  interface Window {
+    dataLayer: (unknown[] | IArguments)[];
+    gtag?: (...args: unknown[]) => void;
+  }
 }
 
 const TEXT = {
@@ -56,12 +59,6 @@ function serverSnapshot(): Consent | "unset" {
   return "unset";
 }
 
-declare global {
-  interface Window {
-    dataLayer: unknown[];
-    gtag?: (...args: unknown[]) => void;
-  }
-}
 
 function load(gaId: string) {
   if (document.getElementById("ga-tag")) return;

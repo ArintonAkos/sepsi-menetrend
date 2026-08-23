@@ -1,7 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
-import Analytics from "@/components/Analytics";
-import ServiceWorker from "@/components/ServiceWorker";
+import { Analytics, ServiceWorker } from "@/components";
 
 /** Where the site is served from.
  *

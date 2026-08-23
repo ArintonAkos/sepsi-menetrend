@@ -12,7 +12,7 @@ let net: Network, ctx: PlanContext, byName: Map<string, Stop>;
 
 beforeAll(() => {
   net = JSON.parse(readFileSync(
-    resolve(import.meta.dirname, "../public/data/network.json"), "utf8"));
+    resolve(import.meta.dirname, "../../public/data/network.json"), "utf8"));
   ctx = prepare(net);
   byName = new Map();
   for (const s of net.stops) if (!byName.has(s.name.ro)) byName.set(s.name.ro, s);

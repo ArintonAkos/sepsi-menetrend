@@ -1,7 +1,7 @@
 export type Lang = "hu" | "ro";
 
 const hu = {
-  from: "Honnan", to: "Hová", swap: "Csere", pickOnMap: "Kijelölés a térképen",
+  from: "Honnan", to: "Hová", swap: "Csere", pickOnMap: "Választás a térképen",
   placeholder: "megálló, cím, üzlet…", myLocation: "A helyzetem",
   departAt: "Indulás", arriveBy: "Érkezés",
   departAtLong: "Indulás ekkor", arriveByLong: "Érkezés ekkorra",
@@ -45,6 +45,8 @@ const hu = {
   locateFar: "Túl messze vagy a hálózattól",
   locateVague: "A helymeghatározás pontatlan",
   hereName: "A helyzetem",
+  currentGps: "Jelenlegi pozíció",
+  pickOnMapDetail: "Kijelölés gombostűvel",
   laterToday: "Következő:",
   whereTo: "Hová mész?",
   journeys: "Útvonalak",
@@ -104,6 +106,8 @@ const ro: Strings = {
   locateFar: "Ești prea departe de rețea",
   locateVague: "Locația este prea imprecisă",
   hereName: "Locația mea",
+  currentGps: "Poziția curentă",
+  pickOnMapDetail: "Selectează cu un pin",
   laterToday: "Următoarele:",
   whereTo: "Unde mergi?",
   journeys: "Trasee",

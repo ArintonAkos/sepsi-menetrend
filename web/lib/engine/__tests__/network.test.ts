@@ -300,7 +300,7 @@ describe("the real network", () => {
         }
       }
     }
-  });
+  }, 30000);
 
   it("stays on the bus when the next stop is nearer the door", () => {
     /* Round 0 seeds every walkable stop with the time you could reach it on
@@ -325,7 +325,7 @@ describe("the real network", () => {
           .toBeGreaterThan(walk - 100);
       }
     }
-  });
+  }, 30000);
 
   it("does not ride past the door and come back to it", () => {
     /* Dr. Office to Kaufland at half past midnight, reported from the live

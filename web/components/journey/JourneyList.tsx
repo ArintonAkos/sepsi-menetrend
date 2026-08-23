@@ -5,7 +5,7 @@ import { fareFor, type FareTable } from "@/lib/engine/fares";
 import { shadeOf } from "@/lib/engine/types";
 import type { Journey, Line, Pattern, RideLeg, Stop, WalkLeg } from "@/lib/engine/types";
 import type { Strings } from "@/lib/i18n";
-import { WalkIcon } from "./icons";
+import { WalkIcon } from "../common/icons";
 import styles from "./JourneyList.module.css";
 
 export default function JourneyList({

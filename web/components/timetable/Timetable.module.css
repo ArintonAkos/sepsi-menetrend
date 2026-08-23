@@ -1,7 +1,15 @@
 .screen { position: fixed; inset: 0; z-index: 80; background: var(--paper);
   display: grid; grid-template-rows: auto auto minmax(0, 1fr);
   animation: arrive var(--move) var(--ease-out); }
-@keyframes arrive { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; } }
+.screen.closing {
+  animation: leave var(--move) var(--ease-out) forwards;
+}
+@keyframes arrive { from { opacity: 0; transform: translateY(100%); } to { opacity: 1; transform: none; } }
+@keyframes leave { from { opacity: 1; transform: none; } to { opacity: 0; transform: translateY(100%); } }
+@media (min-width: 861px) {
+  @keyframes arrive { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: none; } }
+  @keyframes leave { from { opacity: 1; transform: none; } to { opacity: 0; transform: translateY(20px); } }
+}
 .head { display: flex; align-items: center; gap: 10px;
   padding: max(12px, env(safe-area-inset-top)) 16px 12px;
   border-bottom: 1px solid var(--border); }

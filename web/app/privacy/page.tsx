@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import LegalPage from "@/components/LegalPage";
+import { LegalPage } from "@/components";
 
 export const metadata: Metadata = {
   title: "Adatkezelési és Süti Tájékoztató · Confidențialitate și Cookie-uri",

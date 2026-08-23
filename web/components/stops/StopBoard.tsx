@@ -6,6 +6,7 @@ import { formatHHMM } from "@/lib/engine/time";
 import { shadeOf } from "@/lib/engine/types";
 import type { Line, ServiceId, Stop } from "@/lib/engine/types";
 import type { Lang, Strings } from "@/lib/i18n";
+import { usePullToDismiss } from "../hooks/usePullToDismiss";
 import styles from "./StopBoard.module.css";
 
 /**
@@ -30,6 +31,7 @@ export default function StopBoard({
   t: Strings;
   onClose: () => void;
 }) {
+  const pullDismiss = usePullToDismiss(onClose);
   const board = useMemo(() => boardAt(ctx, stop.id, service), [ctx, stop.id, service]);
   /* Buses that finish here are worth listing - somebody is being collected -
      but they are not something you board, so they go last under their own
@@ -42,7 +44,7 @@ export default function StopBoard({
   const estimated = board.some((column) => !column.published);
 
   return (
-    <section className={styles.sheet} aria-label={name}>
+    <section className={styles.sheet} aria-label={name} style={pullDismiss.style} {...pullDismiss.handlers}>
       <div className={styles.head}>
         <span className={styles.title}>
           <b>{name}</b>

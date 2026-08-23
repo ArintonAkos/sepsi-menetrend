@@ -4,7 +4,7 @@ import { useEffect, useSyncExternalStore } from "react";
 import Link from "next/link";
 import { readLang, writeLang, LANG_CHANGE_EVENT } from "@/lib/lang";
 import type { Lang } from "@/lib/i18n";
-import { Back } from "./icons";
+import { Back } from "../common/icons";
 import styles from "./LegalPage.module.css";
 
 function subscribeLang(onChange: () => void) {
