@@ -1,4 +1,4 @@
-import { normaliseBikeStations, type BikeAvailability, type BikeStation } from "../../lib/sepsibike";
+import { normaliseBikeStations, type BikeAvailability, type BikeStation } from "../../lib/sepsibike-contract.ts";
 
 const SOURCE_URL = "https://sepsibike.ro/harta-statii-biciclete";
 const CACHE_HEADERS = {
@@ -7,6 +7,13 @@ const CACHE_HEADERS = {
   "Netlify-CDN-Cache-Control": "public, max-age=60, stale-while-revalidate=300",
   "Access-Control-Allow-Origin": "*",
 };
+const LIVE_TTL_MS = 60_000;
+
+/* Netlify's CDN is the cross-instance cache in production. This small cache
+   also keeps repeated requests cheap in one Edge isolate and makes Netlify Dev
+   behave sensibly, where CDN caching is deliberately not emulated. */
+let liveCache: BikeAvailability | null = null;
+let liveCacheUntil = 0;
 
 type Snapshot = { snapshotAt: string; stations: BikeStation[] };
 
@@ -25,6 +32,7 @@ async function snapshot(request: Request): Promise<BikeAvailability> {
 
 export default async function handler(request: Request) {
   try {
+    if (liveCache && Date.now() < liveCacheUntil) return json(liveCache);
     const response = await fetch(SOURCE_URL, {
       headers: {
         "User-Agent": "Sepsi-Menetrend/1.0 (+https://sepsi-menetrend.netlify.app)",
@@ -35,7 +43,9 @@ export default async function handler(request: Request) {
     const match = (await response.text()).match(/var items = (\[[\s\S]*?\]);/);
     if (!match) throw new Error("station items not found");
     const stations = normaliseBikeStations(JSON.parse(match[1]));
-    return json({ stations, source: "live", fetchedAt: new Date().toISOString(), stale: false });
+    liveCache = { stations, source: "live", fetchedAt: new Date().toISOString(), stale: false };
+    liveCacheUntil = Date.now() + LIVE_TTL_MS;
+    return json(liveCache);
   } catch {
     try {
       return json(await snapshot(request));
