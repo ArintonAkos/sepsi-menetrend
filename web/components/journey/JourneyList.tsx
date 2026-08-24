@@ -6,7 +6,7 @@ import { shadeOf } from "@/lib/engine/types";
 import type { Line, Pattern, RideLeg, Stop, WalkLeg } from "@/lib/engine/types";
 import type { Strings } from "@/lib/i18n";
 import { plannerOptionTimes, type PlannerOption } from "@/lib/planner-options";
-import { WalkIcon } from "../common/icons";
+import { BikeIcon, WalkIcon } from "../common/icons";
 import styles from "./JourneyList.module.css";
 
 export default function JourneyList({
@@ -48,7 +48,7 @@ export default function JourneyList({
                       onMouseEnter={() => onHover(i)} onClick={() => onOpen(i)}>
                 <div className={styles.top}>
                   <div className={styles.modes}>
-                    <span className={styles.bikePill}>🚲 {t.bike}</span>
+                    <span className={styles.bikePill}><BikeIcon /> {t.bike}</span>
                     <span className={styles.walk}><WalkIcon />{j.access.minutes + j.egress.minutes}</span>
                   </div>
                   <div className={`${styles.dur} rounded`}>
@@ -59,10 +59,6 @@ export default function JourneyList({
                   <b>{formatHHMM(j.depart)} → {formatHHMM(j.arrive)}</b>
                   <span className={styles.dot} /><span>{j.fareLei} RON</span>
                 </div>
-                <div className={styles.bikeSummary}>
-                  {j.access.minutes} {t.walk} · {j.ride.minutes} {t.bikeRide} · {j.egress.minutes} {t.walk}
-                </div>
-                <div className={styles.bikeSummary}>{j.start.name} → {j.finish.name}</div>
                 <div className={styles.tags}>
                   {option === soonest && <span className={`${styles.tag} ${styles.hi}`}>{t.soonest}</span>}
                   {option === shortest && option !== soonest && <span className={styles.tag}>{t.shortest}</span>}

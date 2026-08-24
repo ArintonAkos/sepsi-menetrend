@@ -186,6 +186,23 @@ describe("Planner", () => {
     await waitFor(() => expect(screen.queryByRole("button", { name: /SepsiBike/ })).not.toBeInTheDocument());
   });
 
+  it("lets the rider hide SepsiBike suggestions from settings", async () => {
+    const user = userEvent.setup();
+    render(<Planner network={network} places={places} reach={reach} box={box} fares={fares}
+                    bikeStations={bikeStations} bikeSnapshotAt="2026-08-23T12:53:56.000Z" />);
+    await screen.findByText(/Nincs Mapbox token/);
+    await startPlanning(user, "Nicolae Iorga", "Sepsi Aréna");
+    await user.click(screen.getByRole("button", { name: /Indulás|Érkezés/ }));
+    fireEvent.change(screen.getByDisplayValue(/^\d{2}:\d{2}$/), { target: { value: "09:00" } });
+    await user.keyboard("{Escape}");
+    await screen.findByRole("button", { name: /SepsiBike/ });
+
+    await user.click(screen.getByLabelText("Beállítások"));
+    await user.click(screen.getByRole("checkbox", { name: "SepsiBike javaslatok" }));
+
+    expect(screen.queryByRole("button", { name: /SepsiBike/ })).not.toBeInTheDocument();
+  });
+
   it("opens the time panel and offers the two questions worth asking", async () => {
     const user = await setup();
     await startPlanning(user);

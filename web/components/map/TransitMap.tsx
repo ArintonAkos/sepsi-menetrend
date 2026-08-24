@@ -126,10 +126,10 @@ export default function TransitMap({
     m.on("load", () => {
       ready.current = true;
       addLayers(m, dark, network, lines);
-      applyNetFilter(m, journey, visibleLines);
+      applyNetFilter(m, Boolean(journey || bikeJourney), visibleLines);
       paint(m, journey, patterns, lines, dark);
       paintBikes(m, bikeStations, bikeJourney);
-      if (journey) fit(m, journey, patterns, picking, covered);
+      if (journey) fit(m, journey, patterns, picking, covered); else if (bikeJourney) fitBike(m, bikeJourney, picking, covered);
     });
     m.on("move", () => onMove.current?.(m.getCenter().toArray() as LngLat));
     attachStopPopups(m, () => stopPick.current,
@@ -149,10 +149,10 @@ export default function TransitMap({
     m.once("styledata", () => {
       ready.current = true;
       addLayers(m, dark, network, lines);
-      applyNetFilter(m, journey, visibleLines);
+      applyNetFilter(m, Boolean(journey || bikeJourney), visibleLines);
       paint(m, journey, patterns, lines, dark);
       paintBikes(m, bikeStations, bikeJourney);
-      if (journey) fit(m, journey, patterns, picking, covered);
+      if (journey) fit(m, journey, patterns, picking, covered); else if (bikeJourney) fitBike(m, bikeJourney, picking, covered);
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dark]);
@@ -161,11 +161,11 @@ export default function TransitMap({
     const m = map.current;
     if (!m || !ready.current) return;
     paint(m, journey, patterns, lines, dark);
-    if (journey) fit(m, journey, patterns, picking, covered);
+    if (journey) fit(m, journey, patterns, picking, covered); else if (bikeJourney) fitBike(m, bikeJourney, picking, covered);
     // `covered` deliberately absent: the drawer settling re-fits through
     // resizeKey, and re-fitting on every dragged pixel would fight the finger
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [journey, patterns, lines, picking, dark]);
+  }, [journey, bikeJourney, patterns, lines, picking, dark]);
 
   useEffect(() => {
     const m = map.current;
@@ -176,8 +176,8 @@ export default function TransitMap({
   useEffect(() => {
     const m = map.current;
     if (!m || !ready.current || !m.getLayer("net-line")) return;
-    applyNetFilter(m, journey, visibleLines);
-  }, [visibleLines, journey]);
+    applyNetFilter(m, Boolean(journey || bikeJourney), visibleLines);
+  }, [visibleLines, journey, bikeJourney]);
 
   useEffect(() => { map.current?.resize(); }, [picking, resizeKey]);
 
@@ -218,11 +218,11 @@ export default function TransitMap({
   return <div ref={host} className={styles.map} />;
 }
 
-function applyNetFilter(m: MapboxMap, journey: Journey | null, visibleLines: Set<string>) {
+function applyNetFilter(m: MapboxMap, selectedRoute: boolean, visibleLines: Set<string>) {
   /* Every line at once is the right picture of the town and the wrong one of
      a journey: twelve routes crossing the one you are being told to take. So
      once a journey is on screen, the rest of the network steps aside. */
-  const shown = journey
+  const shown = selectedRoute
     ? ["in", ["get", "line"], ["literal", []]]
     : ["in", ["get", "line"], ["literal", [...visibleLines]]];
   for (const id of ["net-case", "net-line"]) {
@@ -454,6 +454,7 @@ function paint(m: MapboxMap, journey: Journey | null,
 function paintBikes(m: MapboxMap, stations: BikeStation[], journey: BikeJourneyOption | null) {
   const docks = m.getSource("bike-stations") as mapboxgl.GeoJSONSource | undefined;
   const route = m.getSource("bike-route") as mapboxgl.GeoJSONSource | undefined;
+  const door = m.getSource("door") as mapboxgl.GeoJSONSource | undefined;
   if (!docks || !route) return;
   docks.setData({
     type: "FeatureCollection",
@@ -469,6 +470,21 @@ function paintBikes(m: MapboxMap, stations: BikeStation[], journey: BikeJourneyO
       line(journey.egress.path, { kind: "walk" }),
     ] : [],
   });
+  if (door) door.setData({ type: "FeatureCollection", features: journey ? [
+    point(journey.access.path[0], { icon: "origin", colour: "#2674d9" }),
+    point(journey.egress.path[journey.egress.path.length - 1], { icon: "dest", colour: "#2674d9" }),
+  ] : [] });
+}
+
+function fitBike(m: MapboxMap, journey: BikeJourneyOption, picking: boolean, covered: number) {
+  if (picking) return;
+  const pts = [...journey.access.path, ...journey.ride.path, ...journey.egress.path];
+  if (pts.length < 2) return;
+  const box = m.getContainer();
+  if (!box.clientWidth || !box.clientHeight) return;
+  const bounds = pts.reduce((b, p) => b.extend(p), new mapboxgl.LngLatBounds(pts[0], pts[0]));
+  const narrow = window.innerWidth <= 860;
+  m.fitBounds(bounds, { padding: { top: narrow ? 60 : 70, bottom: narrow ? bottomInset(covered, box.clientHeight) : 90, left: 50, right: 50 }, duration: 600, maxZoom: 15.5 });
 }
 
 /** The map positions the frame; React owns the accessible bike-station card. */

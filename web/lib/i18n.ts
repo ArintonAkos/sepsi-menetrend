@@ -65,6 +65,7 @@ const hu = {
   bikePickupWindow: "06:00–22:00 között lehet biciklit felvenni.",
   bikeReturnAfterHours: "22:00 után csak a leadás lehetséges.",
   bikeSupport: "Ügyfélszolgálat",
+  bikeOptions: "SepsiBike javaslatok",
   installApp: "Alkalmazás telepítése", installIos: "Megosztás → Főképernyőhöz adás",
   days: ["vasárnap", "hétfő", "kedd", "szerda", "csütörtök", "péntek", "szombat"],
 };
@@ -134,6 +135,7 @@ const ro: Strings = {
   bikePickupWindow: "Bicicletele pot fi ridicate între 06:00 și 22:00.",
   bikeReturnAfterHours: "După 22:00 este posibilă doar returnarea.",
   bikeSupport: "Serviciu clienți",
+  bikeOptions: "Sugestii SepsiBike",
   installApp: "Instalează aplicația", installIos: "Partajează → Adaugă pe ecranul principal",
   days: ["duminică", "luni", "marți", "miercuri", "joi", "vineri", "sâmbătă"],
 };
@@ -203,6 +205,7 @@ const en: Strings = {
   bikePickupWindow: "Bikes can be picked up from 06:00 to 22:00.",
   bikeReturnAfterHours: "After 22:00, only returns are possible.",
   bikeSupport: "Customer service",
+  bikeOptions: "SepsiBike suggestions",
   installApp: "Install app", installIos: "Share → Add to Home Screen",
   days: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
 };

@@ -11,6 +11,14 @@ export function WalkIcon() {
   );
 }
 
+export function BikeIcon() {
+  return <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}
+    strokeLinecap="round" strokeLinejoin="round" width={16} height={16} aria-hidden>
+    <circle cx="6" cy="17" r="3.5" /><circle cx="18" cy="17" r="3.5" />
+    <path d="m6 17 4-9h4l4 9M8.5 12h7M12 8 10.5 5H14" /><circle cx="15" cy="4" r="1" fill="currentColor" />
+  </svg>;
+}
+
 /** A real chevron. The "⌄" character sits on the text baseline and drifts with
  *  the font, which is why the summary row looked crooked. */
 export function Chevron() {

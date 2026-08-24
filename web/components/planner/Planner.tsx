@@ -134,6 +134,8 @@ export default function Planner({ network, places, reach, box, fares, bikeStatio
     stations: bikeStations, source: "snapshot", fetchedAt: bikeSnapshotAt, stale: true,
   }));
   const [bikeOption, setBikeOption] = useState<{ key: string; value: BikeJourneyOption | null } | null>(null);
+  const [showBikeOptions, setShowBikeOptions] = useState(() =>
+    typeof window === "undefined" || globalThis.localStorage?.getItem("sepsibike-options") !== "off");
   const [bikeBoard, setBikeBoard] = useState<
     { stationId: string; anchor: HTMLElement | null; dismiss: () => void } | null>(null);
   const [closingBikeBoard, setClosingBikeBoard] = useState(false);
@@ -572,9 +574,10 @@ export default function Planner({ network, places, reach, box, fares, bikeStatio
     return base ? timeBikeJourney(base, requestedMinute, mode) : null;
   }, [bikeOption, bikeKey, requestedMinute, mode]);
   const options = useMemo(
-    () => mergePlannerOptions(journeys, timedBike, mode),
-    [journeys, timedBike, mode],
+    () => mergePlannerOptions(journeys, showBikeOptions ? timedBike : null, mode),
+    [journeys, timedBike, mode, showBikeOptions],
   );
+  useEffect(() => { globalThis.localStorage?.setItem("sepsibike-options", showBikeOptions ? "on" : "off"); }, [showBikeOptions]);
 
   const planKey = [from?.name, to?.name, time, date.toDateString(), mode,
                    settledAversion, [...visibleLines].sort().join(","),
@@ -1020,6 +1023,11 @@ export default function Planner({ network, places, reach, box, fares, bikeStatio
                     ))}
                   </div>
                 </div>
+                <label className={styles.setRow}>
+                  <span>{t.bikeOptions}</span>
+                  <input type="checkbox" checked={showBikeOptions}
+                         onChange={(event) => setShowBikeOptions(event.target.checked)} />
+                </label>
                 <div className={styles.setRow}>
                   <InstallApp t={t} />
                 </div>
