@@ -44,7 +44,9 @@ export interface TransitMapProps {
   onStopPick: (stopId: string, anchor: HTMLElement | null, dismiss: () => void) => void;
   bikeStations?: BikeStation[];
   bikeJourney?: BikeJourneyOption | null;
-  onBikeStationPick?: (stationId: string) => void;
+  /** The bike equivalent of a stop board: a map anchor on a wide screen and a
+   *  sheet on a phone, both rendered by React rather than an HTML string. */
+  onBikeStationPick?: (stationId: string, anchor: HTMLElement | null, dismiss: () => void) => void;
   patterns: Map<string, Pattern>;
   lines: Map<string, Line>;
   journey: Journey | null;
@@ -132,7 +134,8 @@ export default function TransitMap({
     m.on("move", () => onMove.current?.(m.getCenter().toArray() as LngLat));
     attachStopPopups(m, () => stopPick.current,
                      () => window.innerWidth > 860);
-    attachBikeStations(m, () => bikePick.current);
+    attachBikeStations(m, () => bikePick.current,
+                       () => window.innerWidth > 860);
     map.current = m;
     return () => { m.remove(); map.current = null; ready.current = false; };
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -313,24 +316,17 @@ function addLayers(m: MapboxMap, dark: boolean, network: Network,
       "circle-opacity": ["interpolate", ["linear"], ["zoom"], 12.2, .45, 13.5, 1],
       "circle-stroke-opacity": ["interpolate", ["linear"], ["zoom"], 12.2, .45, 13.5, 1],
     } });
-  /* One large invisible hit area makes the marker as forgiving to tap as a
-     bus stop, while the visible parts can stay compact and legible. */
+  /* A bike dock is useful at neighbourhood level, not as noise over the whole
+     town. It follows precisely the same threshold as a bus stop. */
   add({ id: "bike-station-hit", type: "circle", source: "bike-stations",
-    paint: { "circle-radius": ["interpolate", ["linear"], ["zoom"], 10, 12, 16, 20],
+    minzoom: 12.2,
+    paint: { "circle-radius": ["interpolate", ["linear"], ["zoom"], 12.2, 12, 16, 20],
              "circle-opacity": 0, "circle-stroke-opacity": 0 } });
   add({ id: "bike-station-icon", type: "symbol", source: "bike-stations",
+    minzoom: 12.2,
     layout: { "icon-image": "bike-station",
-              "icon-size": ["interpolate", ["linear"], ["zoom"], 10, 0.42, 16, 0.82],
+              "icon-size": ["interpolate", ["linear"], ["zoom"], 12.2, 0.48, 16, 0.82],
               "icon-allow-overlap": true, "icon-ignore-placement": true } });
-  add({ id: "bike-station-count-badge", type: "circle", source: "bike-stations",
-    paint: { "circle-radius": ["interpolate", ["linear"], ["zoom"], 10, 5.4, 16, 8.4],
-             "circle-color": "#1269A8", "circle-stroke-color": "#FBFAF7", "circle-stroke-width": 1.5,
-             "circle-translate": ["interpolate", ["linear"], ["zoom"], 10, [6, -6], 16, [11, -11]] } });
-  add({ id: "bike-station-count", type: "symbol", source: "bike-stations",
-    layout: { "text-field": ["to-string", ["get", "bikes"]],
-              "text-size": ["interpolate", ["linear"], ["zoom"], 10, 8, 16, 11],
-              "text-offset": [0.75, -0.75], "text-font": ["Open Sans Bold"], "text-allow-overlap": true },
-    paint: { "text-color": "#ffffff" } });
   add({ id: "trip-nodes", type: "circle", source: "nodes",
     paint: { "circle-radius": 4.6, "circle-color": dark ? "#0D1108" : "#FFFFFF",
              "circle-stroke-color": ["get", "colour"], "circle-stroke-width": 2.6 } });
@@ -475,15 +471,36 @@ function paintBikes(m: MapboxMap, stations: BikeStation[], journey: BikeJourneyO
   });
 }
 
-/** The map identifies a dock; React owns the accessible station card. */
-function attachBikeStations(m: MapboxMap, onPick: () => ((stationId: string) => void) | undefined) {
-  for (const layer of ["bike-station-hit", "bike-station-icon", "bike-station-count-badge", "bike-station-count"]) {
+/** The map positions the frame; React owns the accessible bike-station card. */
+function attachBikeStations(m: MapboxMap,
+                            onPick: () => ((stationId: string, anchor: HTMLElement | null,
+                                             dismiss: () => void) => void) | undefined,
+                            wide: () => boolean) {
+  let popup: mapboxgl.Popup | null = null;
+  for (const layer of ["bike-station-hit", "bike-station-icon"]) {
     m.on("mouseenter", layer, () => { m.getCanvas().style.cursor = "pointer"; });
     m.on("mouseleave", layer, () => { m.getCanvas().style.cursor = ""; });
   }
   m.on("click", "bike-station-hit", (event) => {
     const id = event.features?.[0]?.properties?.id;
-    if (id) onPick()?.(String(id));
+    const feature = event.features?.[0];
+    if (!id || !feature || feature.geometry.type !== "Point") return;
+    popup?.remove();
+    popup = null;
+    if (!wide()) { onPick()?.(String(id), null, () => {}); return; }
+    const host = document.createElement("div");
+    const at = feature.geometry.coordinates as LngLat;
+    const balloon = new mapboxgl.Popup({
+      offset: 14, closeButton: false, maxWidth: "300px", className: "stopPopup",
+    }).setLngLat(at).setDOMContent(host).addTo(m);
+    popup = balloon;
+    if (typeof ResizeObserver !== "undefined") {
+      const watch = new ResizeObserver(() => balloon.setLngLat(at));
+      watch.observe(host);
+      balloon.on("close", () => watch.disconnect());
+    }
+    balloon.on("close", () => onPick()?.("", null, () => {}));
+    onPick()?.(String(id), host, () => balloon.remove());
   });
 }
 
@@ -546,6 +563,10 @@ function attachStopPopups(m: MapboxMap,
        one; a finger covers about forty. Query a box around the press and take
        the nearest, which is what every map app does and what makes the dots
        usable on a phone at all. */
+    /* A dock can sit beside a bus stop. In that overlap its own marker owns
+       the press rather than opening both cards at once. */
+    if (m.getLayer("bike-station-hit")
+        && m.queryRenderedFeatures(event.point, { layers: ["bike-station-hit"] }).length) return;
     const reach = 14;
     const { x, y } = event.point;
     const layers = ["all-stops", "trip-nodes", "trip-ends"].filter((l) => m.getLayer(l));

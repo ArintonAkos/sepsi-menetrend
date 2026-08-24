@@ -25,6 +25,7 @@ import { formatCoordinates, insideArea, reverse } from "@/lib/geocode";
 import { isStraightLine, routeOnFoot, walkingContext } from "@/lib/walking";
 import { routeByBike } from "@/lib/bicycle";
 import StopBoard from "../stops/StopBoard";
+import BikeStationBoard from "../bike/BikeStationBoard";
 import Timetable from "../timetable/Timetable";
 import { Back, ShareIcon } from "../common/icons";
 import InstallApp from "../common/InstallApp";
@@ -131,7 +132,9 @@ export default function Planner({ network, places, reach, box, fares, bikeStatio
   }));
   const [bikeOption, setBikeOption] = useState<{ key: string; value: BikeJourneyOption | null } | null>(null);
   const [bikeSelectedKey, setBikeSelectedKey] = useState<string | null>(null);
-  const [selectedBikeStationId, setSelectedBikeStationId] = useState<string | null>(null);
+  const [bikeBoard, setBikeBoard] = useState<
+    { stationId: string; anchor: HTMLElement | null; dismiss: () => void } | null>(null);
+  const [closingBikeBoard, setClosingBikeBoard] = useState(false);
 
   /* On a phone the panels are sheets pinned to the bottom of the screen, and a
      sheet cannot be a child of the panel it belongs to: any ancestor with a
@@ -162,6 +165,15 @@ export default function Planner({ network, places, reach, box, fares, bikeStatio
       setClosingBoard(false);
     }, 220);
   }, [board, closingBoard]);
+  const closeBikeBoard = useCallback(() => {
+    if (!bikeBoard || closingBikeBoard) return;
+    setClosingBikeBoard(true);
+    setTimeout(() => {
+      bikeBoard.dismiss?.();
+      setBikeBoard(null);
+      setClosingBikeBoard(false);
+    }, 220);
+  }, [bikeBoard, closingBikeBoard]);
   const [timetableState, setTimetableState] = useState<{
     open: boolean;
     lineId: string | null;
@@ -658,8 +670,8 @@ export default function Planner({ network, places, reach, box, fares, bikeStatio
   const shown = useRoutedWalks(picked);
   const shownBike = bikeOption?.key === bikeKey ? bikeOption.value : null;
   const bikeSelected = bikeSelectedKey === bikeKey;
-  const selectedBikeStation = selectedBikeStationId
-    ? bikeAvailability.stations.find((station) => station.id === selectedBikeStationId) ?? null : null;
+  const bikeBoardStation = bikeBoard
+    ? bikeAvailability.stations.find((station) => station.id === bikeBoard.stationId) ?? null : null;
 
   /* What comes after the bus you are being shown. At a change this is the
      difference between "you have four minutes" and "you have four minutes or
@@ -694,6 +706,10 @@ export default function Planner({ network, places, reach, box, fares, bikeStatio
                service={serviceForDate(date)} now={minutesOfDay(new Date())}
                lang={lang} t={t}
                onClose={closeBoard} />
+  ) : null;
+  const bikeSheet = bikeBoardStation ? (
+    <BikeStationBoard station={bikeBoardStation} stale={bikeAvailability.stale}
+                      fetchedAt={bikeAvailability.fetchedAt} t={t} onClose={closeBikeBoard} />
   ) : null;
 
   return (
@@ -836,16 +852,6 @@ export default function Planner({ network, places, reach, box, fares, bikeStatio
         {planning && <div className={styles.scroll}>
           {detail === null ? (
             <>
-              {selectedBikeStation && <section className={styles.stationCard} aria-label={selectedBikeStation.name}>
-                <strong>{selectedBikeStation.name}</strong>
-                <span>{selectedBikeStation.address}</span>
-                <div className={styles.stationCounts}>
-                  <b>{selectedBikeStation.availableBikes} {t.bikes}</b>
-                  <b>{selectedBikeStation.freeDocks} {t.freeDocks}</b>
-                </div>
-                <progress value={selectedBikeStation.availableBikes} max={selectedBikeStation.totalCapacity} />
-                <small>{bikeAvailability.stale ? t.lastKnown : bikeAvailability.fetchedAt}</small>
-              </section>}
               {shownBike && <button className={styles.bikeCard} aria-pressed={bikeSelected}
                                     onClick={() => setBikeSelectedKey(bikeSelected ? null : bikeKey)}>
                 <span className={styles.bikeTitle}>🚲 {t.bike}</span>
@@ -882,6 +888,18 @@ export default function Planner({ network, places, reach, box, fares, bikeStatio
             </>,
           ))}
 
+      {bikeSheet && (bikeBoard!.anchor
+        ? createPortal(bikeSheet, bikeBoard!.anchor)
+        : asSheet(
+            <>
+              <div className={`${styles.scrim} ${closingBikeBoard ? styles.closingScrim : ""}`}
+                   onClick={closeBikeBoard} aria-hidden />
+              <div className={`${styles.boardHolder} ${closingBikeBoard ? styles.closingBoard : ""}`}>
+                {bikeSheet}
+              </div>
+            </>,
+          ))}
+
       <main className={styles.map}>
         <TransitMap network={network} patterns={patterns} lines={lineMap} lang={lang}
                     area={area} resizeKey={mapNudge}
@@ -890,7 +908,8 @@ export default function Planner({ network, places, reach, box, fares, bikeStatio
                       setBoard(stopId ? { stopId, anchor, dismiss } : null)}
                     bikeStations={bikeAvailability.stations}
                     bikeJourney={bikeSelected ? shownBike : null}
-                    onBikeStationPick={setSelectedBikeStationId}
+                    onBikeStationPick={(stationId, anchor, dismiss) =>
+                      setBikeBoard(stationId ? { stationId, anchor, dismiss } : null)}
                     journey={shown} visibleLines={visibleLines} dark={dark}
                     picking={picking !== null} onCentreChange={onCentreChange} />
 

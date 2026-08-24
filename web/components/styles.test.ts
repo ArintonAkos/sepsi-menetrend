@@ -201,6 +201,12 @@ describe("the balloon around a stop board", () => {
       expect(popup, `TransitMap still reaches into the card with "${reach}"`)
         .not.toContain(reach);
   });
+
+  it("keeps its close control centred and clips its inner scrollbar to the rounded frame", () => {
+    const sheet = css("stops/StopBoard.module.css");
+    expect(ruleFor(sheet, ".head")).toMatch(/align-items:\s*center/);
+    expect(ruleFor(sheet, ".sheet")).toMatch(/overflow:\s*hidden/);
+  });
 });
 
 describe("the SepsiBike map layer", () => {
@@ -211,11 +217,21 @@ describe("the SepsiBike map layer", () => {
     expect(map).not.toContain("bikePopup");
   });
 
-  it("uses a blue bicycle pictogram that scales with map zoom", () => {
+  it("uses a blue bicycle pictogram that follows the stop visibility threshold", () => {
     const map = css("map/TransitMap.tsx");
     expect(map).toContain('"bike-station-icon"');
     expect(map).toContain('"icon-image": "bike-station"');
     expect(map).toMatch(/bike-station-icon[\s\S]*?"icon-size": \["interpolate", \["linear"\], \["zoom"\]/);
-    expect(map).toMatch(/bike-station-count-badge[\s\S]*?"circle-radius": \["interpolate", \["linear"\], \["zoom"\]/);
+    expect(map).toMatch(/bike-station-icon[\s\S]*?minzoom:\s*12\.2/);
+    expect(map).not.toContain('"bike-station-count-badge"');
+    expect(map).not.toContain('"bike-station-count"');
+  });
+
+  it("opens a React-owned popup when a bicycle station is pressed", () => {
+    const map = css("map/TransitMap.tsx");
+    const clickHandling = map.slice(map.indexOf("function attachBikeStations"));
+    expect(clickHandling).toContain("new mapboxgl.Popup");
+    expect(clickHandling).toContain("setDOMContent(host)");
+    expect(clickHandling).toContain("onPick()?.(String(id), host");
   });
 });

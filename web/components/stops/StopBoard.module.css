@@ -1,7 +1,7 @@
 .sheet { background: var(--paper); border: 1px solid var(--border);
   border-radius: var(--radius); box-shadow: var(--shadow);
-  display: grid; grid-template-rows: auto minmax(0, 1fr); max-height: 70vh; }
-.head { display: flex; align-items: flex-start; gap: 10px; padding: 14px 16px 12px;
+  display: grid; grid-template-rows: auto minmax(0, 1fr); max-height: 70vh; overflow: hidden; }
+.head { display: flex; align-items: center; gap: 10px; padding: 14px 16px 12px;
   border-bottom: 1px solid var(--border); }
 .title { flex: 1; min-width: 0; }
 .title b { display: block; font-size: 16px; line-height: 1.25;
