@@ -202,3 +202,12 @@ describe("the balloon around a stop board", () => {
         .not.toContain(reach);
   });
 });
+
+describe("the SepsiBike map layer", () => {
+  it("uses shared GeoJSON sources for docks and the selected bike route", () => {
+    const map = css("map/TransitMap.tsx");
+    expect(map).toContain('"bike-stations"');
+    expect(map).toContain('"bike-route"');
+    expect(map).not.toContain("bikePopup");
+  });
+});

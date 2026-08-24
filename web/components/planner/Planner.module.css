@@ -71,6 +71,12 @@
 .bikeCard > strong { font-size: 20px; font-variant-numeric: tabular-nums; }
 .bikeCard > span:not(.bikeTitle), .bikeCard > small { grid-column: 1 / -1; font-size: 12px; color: var(--ink-2); }
 .bikeCard > small { font-weight: 600; }
+.stationCard { display: grid; gap: 6px; padding: 14px 18px; border-bottom: 1px solid var(--border);
+  background: var(--paper); }
+.stationCard > strong { font-size: 16px; }
+.stationCard > span, .stationCard > small { font-size: 12px; color: var(--muted); }
+.stationCounts { display: flex; gap: 12px; font-size: 13px; color: #27651d; }
+.stationCard progress { width: 100%; accent-color: #3d8c27; }
 
 .map { position: relative; background: var(--surface); min-height: 0; min-width: 0; }
 

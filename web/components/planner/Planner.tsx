@@ -130,6 +130,7 @@ export default function Planner({ network, places, reach, box, fares, bikeStatio
   }));
   const [bikeOption, setBikeOption] = useState<{ key: string; value: BikeJourneyOption | null } | null>(null);
   const [bikeSelected, setBikeSelected] = useState(false);
+  const [selectedBikeStationId, setSelectedBikeStationId] = useState<string | null>(null);
 
   /* On a phone the panels are sheets pinned to the bottom of the screen, and a
      sheet cannot be a child of the panel it belongs to: any ancestor with a
@@ -655,6 +656,8 @@ export default function Planner({ network, places, reach, box, fares, bikeStatio
   const picked = journeys[detail ?? chosen] ?? journeys[0] ?? null;
   const shown = useRoutedWalks(picked);
   const shownBike = bikeOption?.key === bikeKey ? bikeOption.value : null;
+  const selectedBikeStation = selectedBikeStationId
+    ? bikeAvailability.stations.find((station) => station.id === selectedBikeStationId) ?? null : null;
 
   /* What comes after the bus you are being shown. At a change this is the
      difference between "you have four minutes" and "you have four minutes or
@@ -831,6 +834,16 @@ export default function Planner({ network, places, reach, box, fares, bikeStatio
         {planning && <div className={styles.scroll}>
           {detail === null ? (
             <>
+              {selectedBikeStation && <section className={styles.stationCard} aria-label={selectedBikeStation.name}>
+                <strong>{selectedBikeStation.name}</strong>
+                <span>{selectedBikeStation.address}</span>
+                <div className={styles.stationCounts}>
+                  <b>{selectedBikeStation.availableBikes} {t.bikes}</b>
+                  <b>{selectedBikeStation.freeDocks} {t.freeDocks}</b>
+                </div>
+                <progress value={selectedBikeStation.availableBikes} max={selectedBikeStation.totalCapacity} />
+                <small>{bikeAvailability.stale ? t.lastKnown : bikeAvailability.fetchedAt}</small>
+              </section>}
               {shownBike && <button className={styles.bikeCard} aria-pressed={bikeSelected}
                                     onClick={() => setBikeSelected((selected) => !selected)}>
                 <span className={styles.bikeTitle}>🚲 {t.bike}</span>
@@ -873,6 +886,9 @@ export default function Planner({ network, places, reach, box, fares, bikeStatio
                     covered={narrow && detail !== null ? drawer.height : 0}
                     onStopPick={(stopId, anchor, dismiss) =>
                       setBoard(stopId ? { stopId, anchor, dismiss } : null)}
+                    bikeStations={bikeAvailability.stations}
+                    bikeJourney={bikeSelected ? shownBike : null}
+                    onBikeStationPick={setSelectedBikeStationId}
                     journey={shown} visibleLines={visibleLines} dark={dark}
                     picking={picking !== null} onCentreChange={onCentreChange} />
 
