@@ -60,6 +60,25 @@ class WalkingGraphBuildTests(unittest.TestCase):
         self.assertEqual(graph["vertices"], [[25.76, 45.86], [25.761, 45.86]])
         self.assertEqual(graph["edges"], [[1], []])
 
+    def test_bicycle_graph_prices_uphill_and_downhill_edges_differently(self):
+        osm = {
+            "elements": [
+                {"type": "node", "id": 1, "lat": 45.86, "lon": 25.76},
+                {"type": "node", "id": 2, "lat": 45.86, "lon": 25.7613},
+                {"type": "way", "id": 10, "nodes": [1, 2],
+                 "tags": {"highway": "residential"}},
+            ],
+        }
+        elevations = {(25.76, 45.86): 100, (25.7613, 45.86): 110}
+        graph = build_graph(osm, mode="bicycle", elevation_at=lambda point: elevations[point])
+
+        self.assertEqual(graph["version"], 2)
+        self.assertEqual(graph["elevationMetres"], [100, 110])
+        self.assertEqual(len(graph["seconds"][0]), len(graph["edges"][0]))
+        self.assertEqual(len(graph["seconds"][1]), len(graph["edges"][1]))
+        self.assertGreater(graph["seconds"][0][0], graph["seconds"][1][0])
+        self.assertGreater(graph["seconds"][1][0], 0)
+
 
 if __name__ == "__main__":
     unittest.main()

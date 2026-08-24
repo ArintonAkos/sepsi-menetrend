@@ -1,0 +1,8 @@
+{
+  "url": "https://s3.amazonaws.com/elevation-tiles-prod/skadi/N45/N45E025.hgt.gz",
+  "tile": "N45E025.hgt",
+  "sha256": "c26c03cdb5658f0103962de96b0a27801d8aa1e7d777b5f659d9e615a5dd9c62",
+  "retrievedAt": "2026-08-24T23:09:11.918254+00:00",
+  "attribution": "AWS Open Data Terrain Tiles; SRTM elevation data",
+  "rasterSize": 3601
+}

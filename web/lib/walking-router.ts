@@ -1,7 +1,7 @@
 import type { LngLat } from "./engine/types";
 
 export interface WalkingGraph {
-  version: 1;
+  version: number;
   vertices: LngLat[];
   edges: number[][];
   metres: number[][];
@@ -59,7 +59,7 @@ export class WalkingRouter {
   private readonly reverseEdges: number[][];
   private readonly reverseMetres: number[][];
 
-  constructor(private readonly graph: WalkingGraph,
+  constructor(protected readonly graph: WalkingGraph,
               private readonly metresPerMinute = WALKING_METRES_PER_MINUTE) {
     if (graph.vertices.length !== graph.edges.length || graph.edges.length !== graph.metres.length)
       throw new Error("walking graph has mismatched vertex and edge arrays");
@@ -104,7 +104,7 @@ export class WalkingRouter {
     });
   }
 
-  private pathFromSearch(from: LngLat, to: LngLat,
+  protected pathFromSearch(from: LngLat, to: LngLat,
                          start: { vertex: number; metres: number },
                          finish: { vertex: number; metres: number },
                          distance: Float64Array, previous: Int32Array,
@@ -125,7 +125,7 @@ export class WalkingRouter {
     return { path, metres, minutes: Math.max(1, Math.ceil(metres / this.metresPerMinute)) };
   }
 
-  private nearest(point: LngLat): { vertex: number; metres: number } | null {
+  protected nearest(point: LngLat): { vertex: number; metres: number } | null {
     let bestVertex = -1;
     let bestMetres = Infinity;
     for (let i = 0; i < this.graph.vertices.length; i++) {
@@ -135,7 +135,7 @@ export class WalkingRouter {
     return bestMetres <= MAX_SNAP_METRES ? { vertex: bestVertex, metres: bestMetres } : null;
   }
 
-  private dijkstra(source: number, edges = this.graph.edges, lengths = this.graph.metres) {
+  protected dijkstra(source: number, edges = this.graph.edges, lengths = this.graph.metres) {
     const distance = new Float64Array(this.graph.vertices.length);
     distance.fill(Infinity);
     const previous = new Int32Array(this.graph.vertices.length);

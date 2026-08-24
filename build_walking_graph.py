@@ -13,6 +13,8 @@ import math
 from pathlib import Path
 from typing import Any
 
+from fetch_elevation import HgtTile, TILE_PATH
+
 ROOT = Path(__file__).resolve().parent
 OUT = ROOT / "web" / "public" / "data" / "walking-graph.json"
 BIKE_OUT = ROOT / "web" / "public" / "data" / "bicycle-graph.json"
@@ -28,6 +30,19 @@ BIKEABLE_HIGHWAYS = {
     "tertiary", "tertiary_link", "secondary", "secondary_link", "primary",
     "primary_link", "unclassified", "track",
 }
+FLAT_BICYCLE_METRES_PER_MINUTE = 250
+MIN_BICYCLE_METRES_PER_MINUTE = 70
+MAX_BICYCLE_METRES_PER_MINUTE = 300
+
+
+def bicycle_seconds(metres: int, from_elevation: int, to_elevation: int) -> int:
+    """A deliberately comfortable city-bike time, bounded in both directions."""
+    grade = max(-0.12, min(0.12, (to_elevation - from_elevation) / metres))
+    speed = FLAT_BICYCLE_METRES_PER_MINUTE * (
+        1 - 4.0 * max(grade, 0) + 1.1 * max(-grade, 0)
+    )
+    speed = min(MAX_BICYCLE_METRES_PER_MINUTE, max(MIN_BICYCLE_METRES_PER_MINUTE, speed))
+    return max(1, round(60 * metres / speed))
 
 
 def walkable(tags: dict[str, str]) -> bool:
@@ -84,7 +99,7 @@ def bicycle_direction(tags: dict[str, str]) -> int:
     return 0
 
 
-def build_graph(osm: dict[str, Any], mode: str = "walking") -> dict[str, Any]:
+def build_graph(osm: dict[str, Any], mode: str = "walking", elevation_at=None) -> dict[str, Any]:
     """Build bidirectional pedestrian adjacency from OSM nodes and ways.
 
     Pedestrian one-way tagging is added when compiling the real extract; this
@@ -104,6 +119,8 @@ def build_graph(osm: dict[str, Any], mode: str = "walking") -> dict[str, Any]:
     order = sorted(used)
     index = {node_id: i for i, node_id in enumerate(order)}
     edges: list[dict[int, int]] = [{} for _ in order]
+    points = [nodes[node_id] for node_id in order]
+    elevations = [round(elevation_at(point)) if elevation_at else 0 for point in points]
 
     for way in accepted:
         route = way.get("nodes", [])
@@ -121,12 +138,21 @@ def build_graph(osm: dict[str, Any], mode: str = "walking") -> dict[str, Any]:
             if direction <= 0:
                 edges[b][a] = min(edges[b].get(a, distance), distance)
 
-    return {
+    graph = {
         "version": 1,
-        "vertices": [[round(nodes[node_id][0], 6), round(nodes[node_id][1], 6)] for node_id in order],
+        "vertices": [[round(point[0], 6), round(point[1], 6)] for point in points],
         "edges": [sorted(neighbours) for neighbours in edges],
         "metres": [[neighbours[neighbour] for neighbour in sorted(neighbours)] for neighbours in edges],
     }
+    if mode == "bicycle":
+        graph["version"] = 2
+        graph["elevationMetres"] = elevations
+        graph["seconds"] = [
+            [bicycle_seconds(neighbours[neighbour], elevations[index], elevations[neighbour])
+             for neighbour in sorted(neighbours)]
+            for index, neighbours in enumerate(edges)
+        ]
+    return graph
 
 
 def main() -> int:
@@ -135,7 +161,10 @@ def main() -> int:
         raise SystemExit("missing osm/pedestrian.json; run fetch_pedestrian_osm.py first")
     osm = json.loads(source.read_text(encoding="utf-8"))
     graph = build_graph(osm)
-    bicycle = build_graph(osm, mode="bicycle")
+    if not TILE_PATH.exists():
+        raise SystemExit("missing terrain/N45E025.hgt; run fetch_elevation.py first")
+    elevation = HgtTile()
+    bicycle = build_graph(osm, mode="bicycle", elevation_at=elevation.sample)
     OUT.parent.mkdir(parents=True, exist_ok=True)
     OUT.write_text(json.dumps(graph, separators=(",", ":")), encoding="utf-8")
     BIKE_OUT.write_text(json.dumps(bicycle, separators=(",", ":")), encoding="utf-8")
