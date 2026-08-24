@@ -423,6 +423,67 @@ function toJourney(ctx: PlanContext, chain: Hop[], destination: LngLat,
   };
 }
 
+/** Remove a physically pointless same-line reversal from an already valid trip.
+ *
+ * A route may first reach a platform travelling away from the useful direction,
+ * cross at the next stop, then catch the same line back through a platform the
+ * rider could have reached directly.  That is timetable-valid, but it is not a
+ * useful itinerary: entering the second vehicle at that later platform keeps
+ * every downstream call and drops a bus ride and a transfer.  Platform IDs and
+ * measured OSM access paths are the proof; display names play no part here.
+ */
+export function removeNoProgressLoops(ctx: PlanContext, journey: Journey,
+                                      request: PlanRequest,
+                                      walking: WalkingContext): Journey {
+  for (let firstIndex = 0; firstIndex < journey.legs.length; firstIndex++) {
+    const first = journey.legs[firstIndex];
+    if (first.kind !== "ride") continue;
+
+    let secondIndex = firstIndex + 1;
+    while (journey.legs[secondIndex]?.kind === "walk") secondIndex++;
+    const second = journey.legs[secondIndex];
+    if (second?.kind !== "ride" || second.lineId !== first.lineId) continue;
+
+    const pattern = ctx.patterns.get(second.patternId);
+    if (!pattern) continue;
+    const tripStart = second.board - pattern.offsets[second.fromIndex];
+    const candidates: Array<{ index: number; board: Minute; depart: Minute;
+                              access: WalkingLeg }> = [];
+    for (let index = second.fromIndex; index < second.toIndex; index++) {
+      const access = walking.access.get(pattern.stopIds[index]);
+      if (!access) continue;
+      const board = tripStart + pattern.offsets[index];
+      const depart = board - access.minutes;
+      if (request.mode === "departAt" && depart < request.time) continue;
+      if (request.mode === "arriveBy" && depart < 0) continue;
+      // This is a normalization only when it is demonstrably no worse: same
+      // downstream vehicle, and the door can be left at least as late.
+      if (depart < journey.depart) continue;
+      candidates.push({ index, board, depart, access });
+    }
+    candidates.sort((a, b) => b.depart - a.depart || a.access.minutes - b.access.minutes);
+    const chosen = candidates[0];
+    if (!chosen) continue;
+
+    const legs: Leg[] = [
+      { kind: "walk", fromStopId: null, toStopId: pattern.stopIds[chosen.index],
+        metres: chosen.access.metres, minutes: chosen.access.minutes,
+        path: chosen.access.path },
+      { ...second, fromIndex: chosen.index, board: chosen.board },
+      ...journey.legs.slice(secondIndex + 1),
+    ];
+    const rides = legs.filter((leg): leg is RideLeg => leg.kind === "ride");
+    return {
+      legs,
+      depart: chosen.depart,
+      arrive: journey.arrive,
+      walkMinutes: legs.reduce((total, leg) => total + (leg.kind === "walk" ? leg.minutes : 0), 0),
+      transfers: rides.length - 1,
+    };
+  }
+  return journey;
+}
+
 const signature = (ctx: PlanContext, j: Journey) =>
   [j.depart, j.arrive,
    j.legs.filter((l): l is RideLeg => l.kind === "ride").map((l) => l.lineId).join(">")].join("|");
@@ -591,9 +652,10 @@ export function planWithWalking(ctx: PlanContext, req: PlanRequest,
         if (!egress || !stop) continue;
         const chain = rebuild(rounds, sid, k);
         if (!chain) continue;
-        const journey = toJourney(ctx, chain, req.to, egress, stop.at,
-                                  walking.egress, true);
-        if (!journey) continue;
+        const candidate = toJourney(ctx, chain, req.to, egress, stop.at,
+                                    walking.egress, true);
+        if (!candidate) continue;
+        const journey = removeNoProgressLoops(ctx, candidate, req, walking);
         if (req.mode !== "departAt" && journey.arrive > req.time) continue;
         const key = signature(ctx, journey);
         const previous = found.get(key);

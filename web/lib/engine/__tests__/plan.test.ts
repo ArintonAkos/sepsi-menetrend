@@ -3,7 +3,7 @@ import * as engine from "../plan";
 import { prepare, plan, stopsNear, metresBetween, nextDepartures, MIN_TRANSFER }
   from "../plan";
 import { formatHHMM } from "../time";
-import type { PlanRequest, RideLeg } from "../types";
+import type { Journey, PlanRequest, RideLeg, WalkingContext } from "../types";
 import { fixture, ORIGIN, NEAR_C, NEAR_D } from "./fixture";
 
 const ctx = prepare(fixture());
@@ -162,6 +162,59 @@ describe("plan", () => {
     const found = plan(ctx, ask({ to: NEAR_C }));
     const keys = found.map((j) => `${show(j)}|${lines(j)}`);
     expect(new Set(keys).size).toBe(keys.length);
+  });
+});
+
+describe("no-progress transit reversals", () => {
+  it("replaces a same-line return through a directly reachable later platform", () => {
+    const net = fixture();
+    net.stops.push(
+      { id: "H", name: { ro: "H", hu: "H" }, at: [25.765, 45.86], stationId: "H", zone: "city" },
+      { id: "R", name: { ro: "R", hu: "R" }, at: [25.766, 45.86], stationId: "R", zone: "city" },
+      { id: "A2", name: { ro: "A2", hu: "A2" }, at: [25.761, 45.86], stationId: "A2", zone: "city" },
+    );
+    net.patterns = [
+      { ...net.patterns[0], id: "out", lineId: "1", stopIds: ["A", "H"],
+        offsets: [0, 4], published: [true, true], shapeIndex: [0, 1] },
+      { ...net.patterns[0], id: "back", lineId: "1", stopIds: ["R", "A2", "C"],
+        offsets: [0, 2, 8], published: [true, true, true], shapeIndex: [0, 0, 1] },
+    ];
+    const local = prepare(net);
+    const journey: Journey = {
+      legs: [
+        { kind: "walk", fromStopId: null, toStopId: "A", metres: 80, minutes: 1,
+          path: [ORIGIN, [25.760, 45.86]] },
+        { kind: "ride", lineId: "1", patternId: "out", fromIndex: 0, toIndex: 1,
+          board: 480, alight: 484 },
+        { kind: "walk", fromStopId: "H", toStopId: "R", metres: 80, minutes: 1,
+          path: [[25.765, 45.86], [25.766, 45.86]] },
+        { kind: "ride", lineId: "1", patternId: "back", fromIndex: 0, toIndex: 2,
+          board: 486, alight: 494 },
+        { kind: "walk", fromStopId: null, toStopId: null, metres: 80, minutes: 1,
+          path: [[25.800, 45.86], NEAR_C] },
+      ],
+      depart: 479, arrive: 495, walkMinutes: 3, transfers: 1,
+    };
+    const walking: WalkingContext = {
+      access: new Map([["A", {
+        metres: 80, minutes: 1, path: [ORIGIN, [25.760, 45.86]],
+      }], ["A2", {
+        metres: 240, minutes: 3, path: [ORIGIN, [25.761, 45.86]],
+      }]]),
+      egress: new Map(), direct: null,
+    };
+    const removeNoProgressLoops = (engine as typeof engine & {
+      removeNoProgressLoops?: (context: ReturnType<typeof prepare>, journey: Journey,
+        request: PlanRequest, walking: WalkingContext) => Journey;
+    }).removeNoProgressLoops;
+    expect(removeNoProgressLoops).toBeTypeOf("function");
+
+    const result = removeNoProgressLoops!(local, journey, ask({ time: 480 }), walking);
+    const rides = result.legs.filter((leg): leg is RideLeg => leg.kind === "ride");
+
+    expect(rides).toEqual([expect.objectContaining({ patternId: "back", fromIndex: 1, board: 488 })]);
+    expect(result.depart).toBe(485);
+    expect(result.transfers).toBe(0);
   });
 });
 
