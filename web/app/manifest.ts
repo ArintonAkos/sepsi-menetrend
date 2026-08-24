@@ -8,8 +8,7 @@ export default function manifest(): MetadataRoute.Manifest {
     name: "Sepsi Menetrend",
     short_name: "Sepsi Menetrend",
     description:
-      "Sepsiszentgyörgyi autóbusz-járattervező. Nem hivatalos oldal, "
-      + "a Multi-Trans közzétett menetrendje alapján.",
+      "Sepsiszentgyörgyi busz- és SepsiBike útvonaltervező. Nem hivatalos oldal.",
     lang: "hu",
     start_url: "/",
     scope: "/",

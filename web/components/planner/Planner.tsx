@@ -27,6 +27,7 @@ import { routeByBike } from "@/lib/bicycle";
 import StopBoard from "../stops/StopBoard";
 import Timetable from "../timetable/Timetable";
 import { Back, ShareIcon } from "../common/icons";
+import InstallApp from "../common/InstallApp";
 import { decodeTrip, encodeTrip, shareLink } from "@/lib/share";
 import { useDismiss } from "../hooks/useDismiss";
 import { useDrawer } from "../hooks/useDrawer";
@@ -984,6 +985,9 @@ export default function Planner({ network, places, reach, box, fares, bikeStatio
                               onClick={() => setTheme(th)}>{t[th]}</button>
                     ))}
                   </div>
+                </div>
+                <div className={styles.setRow}>
+                  <InstallApp lang={lang} t={t} />
                 </div>
                 {recent.length > 0 && (
                   <div className={styles.setRow}>

@@ -61,6 +61,7 @@ const hu = {
   bike: "SepsiBike", bikeRide: "kerékpározás", bikes: "kerékpár", freeDocks: "szabad dokk",
   lastKnown: "utoljára ismert elérhetőség", bikeAccount: "SepsiBike / GloBikes fiók szükséges",
   estimatedFree: "várhatóan 0 RON", bikeUnavailable: "Nincs használható SepsiBike útvonal.",
+  installApp: "Alkalmazás telepítése", installIos: "Megosztás → Főképernyőhöz adás",
   days: ["vasárnap", "hétfő", "kedd", "szerda", "csütörtök", "péntek", "szombat"],
 };
 
@@ -125,6 +126,7 @@ const ro: Strings = {
   bike: "SepsiBike", bikeRide: "cu bicicleta", bikes: "biciclete", freeDocks: "locuri libere",
   lastKnown: "disponibilitate cunoscută ultima dată", bikeAccount: "Este necesar un cont SepsiBike / GloBikes",
   estimatedFree: "probabil 0 RON", bikeUnavailable: "Nu există o rută SepsiBike disponibilă.",
+  installApp: "Instalează aplicația", installIos: "Partajează → Adaugă pe ecranul principal",
   days: ["duminică", "luni", "marți", "miercuri", "joi", "vineri", "sâmbătă"],
 };
 
@@ -189,6 +191,7 @@ const en: Strings = {
   bike: "SepsiBike", bikeRide: "cycling", bikes: "bikes", freeDocks: "free docks",
   lastKnown: "last known availability", bikeAccount: "A SepsiBike / GloBikes account is required",
   estimatedFree: "estimated 0 RON", bikeUnavailable: "No usable SepsiBike route is available.",
+  installApp: "Install app", installIos: "Share → Add to Home Screen",
   days: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
 };
 

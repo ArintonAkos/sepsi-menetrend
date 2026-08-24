@@ -1,6 +1,7 @@
 export { default as Analytics } from "./analytics/Analytics";
 export { default as HouseAd } from "./common/HouseAd";
 export { default as ServiceWorker } from "./common/ServiceWorker";
+export { default as InstallApp } from "./common/InstallApp";
 export { default as JourneyDetail } from "./journey/JourneyDetail";
 export { default as JourneyList } from "./journey/JourneyList";
 export { default as LegalPage } from "./legal/LegalPage";
