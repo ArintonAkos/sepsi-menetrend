@@ -16,16 +16,15 @@ const TransitMap = dynamic(() => import("../map/TransitMap"), {
 import PlaceInput, { type Chosen } from "./PlaceInput";
 import JourneyList from "../journey/JourneyList";
 import JourneyDetail from "../journey/JourneyDetail";
-import BikeJourneyDetail from "../journey/BikeJourneyDetail";
 import { prepare, planWithWalking, metresBetween, nextDepartures } from "@/lib/engine/plan";
+import { planMultimodal } from "@/lib/engine/multimodal";
 import { buildIndex } from "@/lib/engine/search";
-import { bikeStationsToPlaces, findBikeOption, type BikeAvailability, type BikeJourneyOption,
+import { bikeStationsToPlaces, type BikeAvailability,
          type BikeStation } from "@/lib/sepsibike";
 import { mergePlannerOptions } from "@/lib/planner-options";
-import { timeBikeJourney } from "@/lib/sepsibike-timing";
 import { formatHHMM, minutesOfDay, serviceForDate } from "@/lib/engine/time";
 import { formatCoordinates, insideArea, reverse } from "@/lib/geocode";
-import { isStraightLine, routeOnFoot, walkingContext } from "@/lib/walking";
+import { isStraightLine, routeOnFoot, routesFrom, walkingContext } from "@/lib/walking";
 import { routeByBike } from "@/lib/bicycle";
 import StopBoard from "../stops/StopBoard";
 import BikeStationBoard from "../bike/BikeStationBoard";
@@ -133,7 +132,6 @@ export default function Planner({ network, places, reach, box, fares, bikeStatio
   const [bikeAvailability, setBikeAvailability] = useState<BikeAvailability>(() => ({
     stations: bikeStations, source: "snapshot", fetchedAt: bikeSnapshotAt, stale: true,
   }));
-  const [bikeOption, setBikeOption] = useState<{ key: string; value: BikeJourneyOption | null } | null>(null);
   const [showBikeOptions, setShowBikeOptions] = useState(() =>
     typeof window === "undefined" || globalThis.localStorage?.getItem("sepsibike-options") !== "off");
   const [bikeBoard, setBikeBoard] = useState<
@@ -476,16 +474,6 @@ export default function Planner({ network, places, reach, box, fares, bikeStatio
     return () => controller.abort();
   }, []);
 
-  const bikeKey = from && to ? `${from.at.join(",")}>${to.at.join(",")}>${bikeAvailability.fetchedAt}` : "";
-  useEffect(() => {
-    if (!from || !to) return;
-    let cancelled = false;
-    findBikeOption(from.at, to.at, bikeAvailability, { walk: routeOnFoot, ride: routeByBike })
-      .then((value) => { if (!cancelled) setBikeOption({ key: bikeKey, value }); });
-    return () => { cancelled = true; };
-  }, [from, to, bikeAvailability, bikeKey]);
-
-
 
   /* Sharing sends the plan, not a picture of it: the link re-plans on the other
      end, so it still works tomorrow and can be adjusted by whoever opens it. */
@@ -555,41 +543,38 @@ export default function Planner({ network, places, reach, box, fares, bikeStatio
     return () => window.removeEventListener("keydown", onKey);
   }, [picking]);
 
-  const journeys: Journey[] = useMemo(() => {
-    if (!from || !to || walking?.key !== walkingKey) return [];
-    if (metresBetween(from.at, to.at) < 150) return [];
-    const [h, m] = time.split(":").map(Number);
-    return planWithWalking(ctx, {
-      from: from.at, to: to.at, time: h * 60 + m, service: serviceForDate(date),
-      mode, walkAversion: settledAversion, lines: visibleLines,
-    }, walking.value);
-  }, [ctx, from, to, time, date, mode, settledAversion, visibleLines, walking, walkingKey]);
-
-  const requestedMinute = useMemo(() => {
+  const multimodalKey = [from?.at.join(","), to?.at.join(","), time, date.toDateString(), mode,
+    settledAversion, [...visibleLines].sort().join(","), showBikeOptions, bikeAvailability.fetchedAt].join("|");
+  const [planned, setPlanned] = useState<{ key: string; journeys: Journey[] } | null>(null);
+  useEffect(() => {
+    if (!from || !to || walking?.key !== walkingKey || metresBetween(from.at, to.at) < 150) {
+      setPlanned({ key: multimodalKey, journeys: [] });
+      return;
+    }
+    let cancelled = false;
     const [hours, minutes] = time.split(":").map(Number);
-    return hours * 60 + minutes;
-  }, [time]);
-  const timedBike = useMemo(() => {
-    const base = bikeOption?.key === bikeKey ? bikeOption.value : null;
-    return base ? timeBikeJourney(base, requestedMinute, mode) : null;
-  }, [bikeOption, bikeKey, requestedMinute, mode]);
-  const options = useMemo(
-    () => mergePlannerOptions(journeys, showBikeOptions ? timedBike : null, mode),
-    [journeys, timedBike, mode, showBikeOptions],
-  );
+    const request = { from: from.at, to: to.at, time: hours * 60 + minutes, service: serviceForDate(date),
+      mode, walkAversion: settledAversion, lines: visibleLines } as const;
+    const result = showBikeOptions
+      ? planMultimodal(ctx, request, walking.value, { availability: bikeAvailability,
+        routes: { walk: routeOnFoot, ride: routeByBike }, walkFrom: routesFrom })
+      : Promise.resolve(planWithWalking(ctx, request, walking.value));
+    result.then((journeys) => { if (!cancelled) setPlanned({ key: multimodalKey, journeys }); });
+    return () => { cancelled = true; };
+  }, [ctx, from, to, time, date, mode, settledAversion, visibleLines, walking, walkingKey,
+    multimodalKey, showBikeOptions, bikeAvailability]);
+  const journeys = planned?.key === multimodalKey ? planned.journeys : [];
+  const options = useMemo(() => mergePlannerOptions(journeys, mode), [journeys, mode]);
   useEffect(() => { globalThis.localStorage?.setItem("sepsibike-options", showBikeOptions ? "on" : "off"); }, [showBikeOptions]);
 
   const planKey = [from?.name, to?.name, time, date.toDateString(), mode,
                    settledAversion, [...visibleLines].sort().join(","),
-                   timedBike ? `${timedBike.start.id}-${timedBike.finish.id}-${timedBike.depart}` : ""].join("|");
+                   showBikeOptions, bikeAvailability.fetchedAt].join("|");
   const [selection, setSelection] = useState({ key: planKey, chosen: 0,
                                                detail: null as number | null });
   if (selection.key !== planKey) {
-    const restoredTransit = initJourney !== null && initJourney >= 0
-      ? options.findIndex((option) => option.kind === "transit"
-        && options.filter((candidate) => candidate.kind === "transit").indexOf(option) === initJourney)
-      : -1;
-    const nextDetail = restoredTransit >= 0 ? restoredTransit : null;
+    const restoredJourney = initJourney !== null && initJourney >= 0 ? initJourney : -1;
+    const nextDetail = restoredJourney >= 0 && restoredJourney < options.length ? restoredJourney : null;
     if (initJourney !== null && (options.length > 0 || !planning)) {
       setInitJourney(null);
     }
@@ -598,9 +583,7 @@ export default function Planner({ network, places, reach, box, fares, bikeStatio
   const { chosen, detail } = selection;
   const setChosen = (i: number) => setSelection((s) => ({ ...s, chosen: i }));
   const setDetail = (i: number | null) => setSelection((s) => ({ ...s, detail: i, chosen: i ?? s.chosen }));
-  const sharedJourney = detail !== null && options[detail]?.kind === "transit"
-    ? options.slice(0, detail + 1).filter((option) => option.kind === "transit").length - 1
-    : null;
+  const sharedJourney = detail;
 
   useEffect(() => {
     if (!mounted || !linkRead) return;
@@ -691,8 +674,7 @@ export default function Planner({ network, places, reach, box, fares, bikeStatio
   };
 
   const picked = options[detail ?? chosen] ?? options[0] ?? null;
-  const shown = useRoutedWalks(picked?.kind === "transit" ? picked.journey : null);
-  const shownBike = picked?.kind === "bike" ? picked.journey : null;
+  const shown = useRoutedWalks(picked?.journey ?? null);
   const bikeBoardStation = bikeBoard
     ? bikeAvailability.stations.find((station) => station.id === bikeBoard.stationId) ?? null : null;
 
@@ -878,14 +860,11 @@ export default function Planner({ network, places, reach, box, fares, bikeStatio
                          fares={fares} date={date} stops={stops} patterns={patterns} dark={dark}
                          onHover={setChosen} onOpen={setDetail} />
           ) : (
-            picked?.kind === "bike" ? (
-              <BikeJourneyDetail journey={picked.journey} from={from?.name ?? ""} to={to?.name ?? ""}
-                                 t={t} onBack={backFromDetail} />
-            ) : picked?.kind === "transit" ? (
+            picked ? (
               <JourneyDetail journey={picked.journey} lines={lineMap} patterns={patterns}
                              stops={stops} fares={fares} date={date} lang={lang} t={t} dark={dark}
                              from={from?.name ?? ""} to={to?.name ?? ""}
-                             laterBuses={laterBuses}
+                             laterBuses={laterBuses} bikeStations={bikeAvailability.stations}
                              onBack={backFromDetail} />
             ) : null
           )}
@@ -924,7 +903,6 @@ export default function Planner({ network, places, reach, box, fares, bikeStatio
                     onStopPick={(stopId, anchor, dismiss) =>
                       setBoard(stopId ? { stopId, anchor, dismiss } : null)}
                     bikeStations={bikeAvailability.stations}
-                    bikeJourney={shownBike}
                     onBikeStationPick={(stationId, anchor, dismiss) =>
                       setBikeBoard(stationId ? { stationId, anchor, dismiss } : null)}
                     journey={shown} visibleLines={visibleLines} dark={dark}
@@ -1023,11 +1001,11 @@ export default function Planner({ network, places, reach, box, fares, bikeStatio
                     ))}
                   </div>
                 </div>
-                <label className={styles.setRow}>
-                  <span>{t.bikeOptions}</span>
-                  <input type="checkbox" checked={showBikeOptions}
-                         onChange={(event) => setShowBikeOptions(event.target.checked)} />
-                </label>
+                <button type="button" role="switch" aria-checked={showBikeOptions}
+                        className={styles.optionSwitch}
+                        onClick={() => setShowBikeOptions((value) => !value)}>
+                  <span>{t.bikeOptions}</span><i aria-hidden />
+                </button>
                 <div className={styles.setRow}>
                   <InstallApp t={t} />
                 </div>

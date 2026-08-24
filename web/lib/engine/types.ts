@@ -132,6 +132,25 @@ export interface WalkLeg {
   path: LngLat[];
 }
 
+/** A completed SepsiBike rental. The bicycle is docked before any later
+ * pedestrian or bus leg, so this shared journey model never carries a bike on
+ * a bus implicitly. */
+export interface BikeLeg {
+  kind: "bike";
+  startStationId: string;
+  finishStationId: string;
+  depart: Minute;
+  arrive: Minute;
+  metres: number;
+  minutes: Minute;
+  seconds: number;
+  ascentMetres: number;
+  descentMetres: number;
+  path: LngLat[];
+  costLei: number;
+  stale: boolean;
+}
+
 /** A pedestrian route found on the walkable network before transit is planned. */
 export interface WalkingLeg {
   metres: number;
@@ -150,7 +169,7 @@ export interface WalkingContext {
   direct: WalkingLeg | null;
 }
 
-export type Leg = RideLeg | WalkLeg;
+export type Leg = RideLeg | WalkLeg | BikeLeg;
 
 export interface Journey {
   legs: Leg[];

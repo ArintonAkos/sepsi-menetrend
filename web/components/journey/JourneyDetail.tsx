@@ -4,10 +4,11 @@ import { Fragment } from "react";
 import { formatHHMM } from "@/lib/engine/time";
 import { fareFor, type FareTable } from "@/lib/engine/fares";
 import { shadeOf } from "@/lib/engine/types";
-import type { Journey, Line, Pattern, RideLeg, Stop, WalkLeg } from "@/lib/engine/types";
+import type { BikeLeg, Journey, Line, Pattern, RideLeg, Stop, WalkLeg } from "@/lib/engine/types";
 import type { Lang, Strings } from "@/lib/i18n";
+import type { BikeStation } from "@/lib/sepsibike";
 import HouseAd from "../common/HouseAd";
-import { Back, Chevron, WalkIcon } from "../common/icons";
+import { Back, BikeIcon, Chevron, WalkIcon } from "../common/icons";
 import styles from "./JourneyDetail.module.css";
 
 /** A stop time the operator never published, worked out by interpolation.
@@ -15,7 +16,7 @@ import styles from "./JourneyDetail.module.css";
 const ESTIMATE = "*";
 
 export default function JourneyDetail({
-  journey, lines, patterns, stops, fares, date, lang, t, from, to, dark, laterBuses, onBack,
+  journey, lines, patterns, stops, fares, date, lang, t, from, to, dark, laterBuses, onBack, bikeStations = [],
 }: {
   journey: Journey; lines: Map<string, Line>; patterns: Map<string, Pattern>;
   stops: Map<string, Stop>; fares: FareTable; date: Date; lang: Lang; t: Strings;
@@ -23,6 +24,7 @@ export default function JourneyDetail({
   /** The next few departures of this line from the stop you board at. */
   laterBuses: (leg: RideLeg) => string[];
   onBack: () => void;
+  bikeStations?: BikeStation[];
 }) {
   const name = (stopId: string) => {
     const s = stops.get(stopId);
@@ -30,6 +32,8 @@ export default function JourneyDetail({
   };
   const fare = fareFor(journey, stops, (id) => patterns.get(id)?.stopIds ?? [], fares, date);
   const rides = journey.legs.filter((l): l is RideLeg => l.kind === "ride");
+  const bikes = journey.legs.filter((l): l is BikeLeg => l.kind === "bike");
+  const bikeStation = (id: string) => bikeStations.find((station) => station.id === id)?.name ?? id;
   /* Minutes spent standing at a change. When both buses use the same stop there
      is no walk leg to hang this on, so the wait was invisible - and it is the
      part of a transfer people actually feel. */
@@ -57,9 +61,12 @@ export default function JourneyDetail({
       <div className={styles.summary}>
         <div className={styles.modes}>
           {/* an empty row of line badges reads as something failing to load */}
-          {rides.length === 0 && (
+          {rides.length === 0 && bikes.length === 0 && (
             <span className={styles.afoot}><WalkIcon /> {t.noBusNeeded}</span>
           )}
+          {bikes.length > 0 && <span className={styles.pill} style={{ background: "#2d5bd1", color: "#fff" }}>
+            <BikeIcon /> {t.bike}
+          </span>}
           {rides.map((r, i) => {
             const shade = shadeOf(lines.get(r.lineId), dark);
             return (
@@ -86,6 +93,7 @@ export default function JourneyDetail({
         {journey.legs.map((leg, i) => {
           if (leg.kind === "walk") {
             const walk = leg as WalkLeg;
+            const nextLeg = journey.legs[i + 1];
             /* Every walk is a step of its own, including the first and the
                last. Folded into the origin and arrival lines they said how far
                you walk but never where to, which is the half a rider standing
@@ -102,16 +110,39 @@ export default function JourneyDetail({
                       ? `${walk.metres} m · ${walk.minutes} ${t.minutes} ${t.walk}`
                       : t.sameStop}</span>
                   </div>
-                  <div className={styles.sub}>
-                    {walk.toStopId ? name(walk.toStopId) : to}
-                  </div>
+                  <div className={styles.sub}>{walk.toStopId ? name(walk.toStopId)
+                    : nextLeg?.kind === "bike" ? bikeStation(nextLeg.startStationId) : to}</div>
                 </div>
                 <span className={styles.time} />
               </li>
             );
           }
 
-          const ride = leg as RideLeg;
+          if (leg.kind === "bike") {
+            const bike = leg;
+            return (
+              <Fragment key={i}>
+                <Node colour="#2d5bd1" bar="#2d5bd1" title={bikeStation(bike.startStationId)}
+                      time={formatHHMM(bike.depart)} />
+                <li className={styles.node} style={{ ["--bar" as string]: "#2d5bd1" }}>
+                  <span className={styles.rail}><i className={styles.pip} style={{ borderColor: "#2d5bd1" }} /></span>
+                  <div className={styles.body}>
+                    <div className={styles.rideHead}><span className={styles.pill} style={{ background: "#2d5bd1", color: "#fff" }}>
+                      <BikeIcon /> {t.bike}
+                    </span><span className={styles.sub}>→ {bikeStation(bike.finishStationId)}</span></div>
+                    <div className={styles.sub}>{bike.metres} m · {bike.minutes} {t.minutes} {t.bikeRide}</div>
+                    <div className={styles.sub}>↑ {bike.ascentMetres} m · ↓ {bike.descentMetres} m · {bike.costLei} RON</div>
+                    {bike.stale && <div className={styles.wait}>{t.lastKnown}</div>}
+                  </div>
+                  <span className={styles.time} />
+                </li>
+                <Node colour="#2d5bd1" bar={undefined} title={bikeStation(bike.finishStationId)}
+                      time={formatHHMM(bike.arrive)} />
+              </Fragment>
+            );
+          }
+
+          const ride = leg;
           const pattern = patterns.get(ride.patternId);
           const shade = shadeOf(lines.get(ride.lineId), dark);
           if (!pattern) return null;
@@ -207,6 +238,15 @@ export default function JourneyDetail({
           </div>
           {!fare.free &&
             <small>{lang === "hu" ? fare.ticket.name.hu : fare.ticket.name.ro}</small>}
+        </div>
+      )}
+
+      {bikes.length > 0 && (
+        <div className={styles.fare}>
+          <div className={styles.fareRow}><span>{t.bikeFare}</span>
+            <b>{bikes.reduce((sum, bike) => sum + bike.costLei, 0)} RON</b></div>
+          <small>{t.bikeFareNote}</small>
+          <small>{t.bike} · {t.bikePickupWindow} {t.bikeReturnAfterHours}</small>
         </div>
       )}
 

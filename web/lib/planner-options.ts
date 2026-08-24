@@ -1,27 +1,20 @@
 import type { Journey, Minute, PlanMode } from "./engine/types";
-import type { TimedBikeJourney } from "./sepsibike-timing";
 
-/** A directly comparable route choice shown by the planner. */
-export type PlannerOption =
-  | { kind: "transit"; journey: Journey }
-  | { kind: "bike"; journey: TimedBikeJourney };
+/** Every visible option uses the same timeline, regardless of its legs. */
+export type PlannerOption = { kind: "journey"; journey: Journey };
 
 export function plannerOptionTimes(option: PlannerOption): { depart: Minute; arrive: Minute } {
   return { depart: option.journey.depart, arrive: option.journey.arrive };
 }
 
 /**
- * Keep direct bus and bike alternatives in one ordered list. Mixed bus-bike
- * journeys deliberately stay out of this model until they are planned as a
- * dedicated multimodal feature.
+ * One chronological list for walking, bus-only, direct-bike and mixed routes.
  */
 export function mergePlannerOptions(
   journeys: Journey[],
-  bike: TimedBikeJourney | null,
   mode: PlanMode,
 ): PlannerOption[] {
-  const options: PlannerOption[] = journeys.map((journey) => ({ kind: "transit", journey }));
-  if (bike) options.push({ kind: "bike", journey: bike });
+  const options: PlannerOption[] = journeys.map((journey) => ({ kind: "journey", journey }));
 
   return options.sort((a, b) => {
     const left = plannerOptionTimes(a);

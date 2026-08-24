@@ -151,7 +151,7 @@ describe("Planner", () => {
     expect(screen.getByText(/Nu este site-ul oficial/)).toBeInTheDocument();
   });
 
-  it("presents SepsiBike as a selectable direct option with its own detail", async () => {
+  it("presents SepsiBike on the same journey timeline as transit", async () => {
     const user = userEvent.setup();
     render(<Planner network={network} places={places} reach={reach} box={box} fares={fares}
                     bikeStations={bikeStations} bikeSnapshotAt="2026-08-23T12:53:56.000Z" />);
@@ -160,11 +160,11 @@ describe("Planner", () => {
     await user.click(screen.getByRole("button", { name: /Indulás|Érkezés/ }));
     fireEvent.change(screen.getByDisplayValue(/^\d{2}:\d{2}$/), { target: { value: "09:00" } });
     await user.keyboard("{Escape}");
-    const bike = await screen.findByRole("button", { name: /SepsiBike/ });
+    const [bike] = await screen.findAllByRole("button", { name: /SepsiBike/ });
     expect(bike.closest("li")).not.toBeNull();
     await user.click(bike);
-    expect(await screen.findByText("06:00–22:00 között lehet biciklit felvenni.")).toBeInTheDocument();
-    expect(screen.getAllByText(/szabad dokk/).length).toBeGreaterThanOrEqual(2);
+    expect(await screen.findByText(/SepsiBike.*06:00–22:00 között lehet biciklit felvenni/)).toBeInTheDocument();
+    expect(screen.getByText(/↑ \d+ m · ↓ \d+ m/)).toBeInTheDocument();
   });
 
   it("hides SepsiBike when the pickup would be at 22:00", async () => {
@@ -177,13 +177,13 @@ describe("Planner", () => {
     fireEvent.change(screen.getByDisplayValue(/^\d{2}:\d{2}$/), { target: { value: "09:00" } });
     await user.keyboard("{Escape}");
     await waitFor(() => expect(screen.queryByRole("button", { name: "Érkezés ekkorra" })).not.toBeInTheDocument());
-    await screen.findByRole("button", { name: /SepsiBike/ });
+    expect((await screen.findAllByRole("button", { name: /SepsiBike/ })).length).toBeGreaterThan(0);
 
     await user.click(screen.getByRole("button", { name: /^Indulás 09:00$/ }));
     fireEvent.change(screen.getByDisplayValue(/^\d{2}:\d{2}$/), { target: { value: "22:00" } });
     await user.keyboard("{Escape}");
     await waitFor(() => expect(screen.queryByRole("button", { name: "Érkezés ekkorra" })).not.toBeInTheDocument());
-    await waitFor(() => expect(screen.queryByRole("button", { name: /SepsiBike/ })).not.toBeInTheDocument());
+    await waitFor(() => expect(screen.queryAllByRole("button", { name: /SepsiBike/ })).toHaveLength(0));
   });
 
   it("lets the rider hide SepsiBike suggestions from settings", async () => {
@@ -195,12 +195,15 @@ describe("Planner", () => {
     await user.click(screen.getByRole("button", { name: /Indulás|Érkezés/ }));
     fireEvent.change(screen.getByDisplayValue(/^\d{2}:\d{2}$/), { target: { value: "09:00" } });
     await user.keyboard("{Escape}");
-    await screen.findByRole("button", { name: /SepsiBike/ });
+    expect((await screen.findAllByRole("button", { name: /SepsiBike/ })).length).toBeGreaterThan(0);
 
     await user.click(screen.getByLabelText("Beállítások"));
-    await user.click(screen.getByRole("checkbox", { name: "SepsiBike javaslatok" }));
+    const toggle = screen.getByRole("switch", { name: "SepsiBike javaslatok" });
+    expect(toggle).toHaveAttribute("aria-checked", "true");
+    expect(screen.queryByRole("checkbox", { name: "SepsiBike javaslatok" })).not.toBeInTheDocument();
+    await user.click(toggle);
 
-    expect(screen.queryByRole("button", { name: /SepsiBike/ })).not.toBeInTheDocument();
+    expect(screen.queryAllByRole("button", { name: /SepsiBike/ })).toHaveLength(0);
   });
 
   it("opens the time panel and offers the two questions worth asking", async () => {

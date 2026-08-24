@@ -9,7 +9,7 @@ import type { Area } from "@/lib/geocode";
 import { shadeOf } from "@/lib/engine/types";
 import type { Journey, Line, LngLat, Network, Pattern, RideLeg, WalkLeg } from "@/lib/engine/types";
 import type { Lang } from "@/lib/i18n";
-import type { BikeJourneyOption, BikeStation } from "@/lib/sepsibike";
+import type { BikeStation } from "@/lib/sepsibike";
 import { stopAt } from "../stops/stopLookup";
 import styles from "./TransitMap.module.css";
 
@@ -43,7 +43,6 @@ export interface TransitMapProps {
    *  container, and without this the frame stays behind over the stop. */
   onStopPick: (stopId: string, anchor: HTMLElement | null, dismiss: () => void) => void;
   bikeStations?: BikeStation[];
-  bikeJourney?: BikeJourneyOption | null;
   /** The bike equivalent of a stop board: a map anchor on a wide screen and a
    *  sheet on a phone, both rendered by React rather than an HTML string. */
   onBikeStationPick?: (stationId: string, anchor: HTMLElement | null, dismiss: () => void) => void;
@@ -76,7 +75,7 @@ function hasWebGL(): boolean {
 
 export default function TransitMap({
   network, patterns, lines, journey, visibleLines, dark, picking, lang, area, covered,
-  resizeKey, onCentreChange, onStopPick, bikeStations = [], bikeJourney = null, onBikeStationPick,
+  resizeKey, onCentreChange, onStopPick, bikeStations = [], onBikeStationPick,
 }: TransitMapProps) {
   const host = useRef<HTMLDivElement>(null);
   const map = useRef<MapboxMap | null>(null);
@@ -126,10 +125,10 @@ export default function TransitMap({
     m.on("load", () => {
       ready.current = true;
       addLayers(m, dark, network, lines);
-      applyNetFilter(m, Boolean(journey || bikeJourney), visibleLines);
+      applyNetFilter(m, Boolean(journey), visibleLines);
       paint(m, journey, patterns, lines, dark);
-      paintBikes(m, bikeStations, bikeJourney);
-      if (journey) fit(m, journey, patterns, picking, covered); else if (bikeJourney) fitBike(m, bikeJourney, picking, covered);
+      paintBikes(m, bikeStations);
+      if (journey) fit(m, journey, patterns, picking, covered);
     });
     m.on("move", () => onMove.current?.(m.getCenter().toArray() as LngLat));
     attachStopPopups(m, () => stopPick.current,
@@ -149,10 +148,10 @@ export default function TransitMap({
     m.once("styledata", () => {
       ready.current = true;
       addLayers(m, dark, network, lines);
-      applyNetFilter(m, Boolean(journey || bikeJourney), visibleLines);
+      applyNetFilter(m, Boolean(journey), visibleLines);
       paint(m, journey, patterns, lines, dark);
-      paintBikes(m, bikeStations, bikeJourney);
-      if (journey) fit(m, journey, patterns, picking, covered); else if (bikeJourney) fitBike(m, bikeJourney, picking, covered);
+      paintBikes(m, bikeStations);
+      if (journey) fit(m, journey, patterns, picking, covered);
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dark]);
@@ -161,23 +160,23 @@ export default function TransitMap({
     const m = map.current;
     if (!m || !ready.current) return;
     paint(m, journey, patterns, lines, dark);
-    if (journey) fit(m, journey, patterns, picking, covered); else if (bikeJourney) fitBike(m, bikeJourney, picking, covered);
+    if (journey) fit(m, journey, patterns, picking, covered);
     // `covered` deliberately absent: the drawer settling re-fits through
     // resizeKey, and re-fitting on every dragged pixel would fight the finger
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [journey, bikeJourney, patterns, lines, picking, dark]);
+  }, [journey, patterns, lines, picking, dark]);
 
   useEffect(() => {
     const m = map.current;
     if (!m || !ready.current) return;
-    paintBikes(m, bikeStations, bikeJourney);
-  }, [bikeStations, bikeJourney]);
+    paintBikes(m, bikeStations);
+  }, [bikeStations]);
 
   useEffect(() => {
     const m = map.current;
     if (!m || !ready.current || !m.getLayer("net-line")) return;
-    applyNetFilter(m, Boolean(journey || bikeJourney), visibleLines);
-  }, [visibleLines, journey, bikeJourney]);
+    applyNetFilter(m, Boolean(journey), visibleLines);
+  }, [visibleLines, journey]);
 
   useEffect(() => { map.current?.resize(); }, [picking, resizeKey]);
 
@@ -265,7 +264,7 @@ function addLayers(m: MapboxMap, dark: boolean, network: Network,
       },
     });
   }
-  for (const id of ["trip", "nodes", "ends", "door", "bike-stations", "bike-route"]) {
+  for (const id of ["trip", "nodes", "ends", "door", "bike-stations"]) {
     // the default tolerance (0.375) straightens curves the source data has
     if (!m.getSource(id)) m.addSource(id, { type: "geojson", tolerance: 0.05, data: empty });
   }
@@ -294,13 +293,9 @@ function addLayers(m: MapboxMap, dark: boolean, network: Network,
     layout: { "line-cap": "round" },
     paint: { "line-color": dark ? "#E7E6DA" : "#232E10", "line-width": 3.4,
              "line-dasharray": [0.2, 1.9] } });
-  add({ id: "bike-route-walk", type: "line", source: "bike-route", filter: ["==", ["get", "kind"], "walk"],
-    layout: { "line-cap": "round" },
-    paint: { "line-color": dark ? "#E7E6DA" : "#232E10", "line-width": 3.4,
-             "line-dasharray": [0.2, 1.9] } });
-  add({ id: "bike-route-ride", type: "line", source: "bike-route", filter: ["==", ["get", "kind"], "ride"],
+  add({ id: "trip-bike", type: "line", source: "trip", filter: ["==", ["get", "kind"], "bike"],
     layout: { "line-cap": "round", "line-join": "round" },
-    paint: { "line-color": "#3d8c27", "line-width": 5.5 } });
+    paint: { "line-color": "#2d5bd1", "line-width": 5.5 } });
   /* Visible from just under the opening view rather than just over it. The
      threshold used to be 12.5 against a starting zoom of 12.4, so the map
      opened with no stops on it at all - and a stop you cannot see is one you
@@ -420,7 +415,9 @@ function paint(m: MapboxMap, journey: Journey | null,
         const at = stopAt(stop);
         if (at) marks.push(point(at, { colour }));
       }
-    } else if ((leg as WalkLeg).metres > 0) {
+    } else if (leg.kind === "bike") {
+      shapes.push(line(leg.path, { kind: "bike" }));
+    } else if (leg.metres > 0) {
       shapes.push(line((leg as WalkLeg).path, { kind: "walk" }));
     }
   }
@@ -439,7 +436,8 @@ function paint(m: MapboxMap, journey: Journey | null,
      request: a walk of no distance leaves no path, in which case the boarding
      stop already is the door and is marked as one. */
   const first = journey.legs[0], last = journey.legs[journey.legs.length - 1];
-  const startShade = shadeOf(lines.get(rides[0]?.lineId ?? ""), dark).fill;
+  const startShade = journey.legs.find((leg) => leg.kind === "bike") ? "#2d5bd1"
+    : shadeOf(lines.get(rides[0]?.lineId ?? ""), dark).fill;
   if (first?.kind === "walk" && first.metres > 0 && first.path.length)
     doors.push(point(first.path[0], { colour: startShade, icon: "origin" }));
   if (last?.kind === "walk" && last.metres > 0 && last.path.length)
@@ -451,40 +449,15 @@ function paint(m: MapboxMap, journey: Journey | null,
   door.setData({ type: "FeatureCollection", features: doors });
 }
 
-function paintBikes(m: MapboxMap, stations: BikeStation[], journey: BikeJourneyOption | null) {
+function paintBikes(m: MapboxMap, stations: BikeStation[]) {
   const docks = m.getSource("bike-stations") as mapboxgl.GeoJSONSource | undefined;
-  const route = m.getSource("bike-route") as mapboxgl.GeoJSONSource | undefined;
-  const door = m.getSource("door") as mapboxgl.GeoJSONSource | undefined;
-  if (!docks || !route) return;
+  if (!docks) return;
   docks.setData({
     type: "FeatureCollection",
     features: stations.map((station) => point([station.lng, station.lat], {
       id: station.id, bikes: station.availableBikes, docks: station.freeDocks, status: station.status,
     })),
   });
-  route.setData({
-    type: "FeatureCollection",
-    features: journey ? [
-      line(journey.access.path, { kind: "walk" }),
-      line(journey.ride.path, { kind: "ride" }),
-      line(journey.egress.path, { kind: "walk" }),
-    ] : [],
-  });
-  if (door) door.setData({ type: "FeatureCollection", features: journey ? [
-    point(journey.access.path[0], { icon: "origin", colour: "#2674d9" }),
-    point(journey.egress.path[journey.egress.path.length - 1], { icon: "dest", colour: "#2674d9" }),
-  ] : [] });
-}
-
-function fitBike(m: MapboxMap, journey: BikeJourneyOption, picking: boolean, covered: number) {
-  if (picking) return;
-  const pts = [...journey.access.path, ...journey.ride.path, ...journey.egress.path];
-  if (pts.length < 2) return;
-  const box = m.getContainer();
-  if (!box.clientWidth || !box.clientHeight) return;
-  const bounds = pts.reduce((b, p) => b.extend(p), new mapboxgl.LngLatBounds(pts[0], pts[0]));
-  const narrow = window.innerWidth <= 860;
-  m.fitBounds(bounds, { padding: { top: narrow ? 60 : 70, bottom: narrow ? bottomInset(covered, box.clientHeight) : 90, left: 50, right: 50 }, duration: 600, maxZoom: 15.5 });
 }
 
 /** The map positions the frame; React owns the accessible bike-station card. */
@@ -530,7 +503,7 @@ function fit(m: MapboxMap, journey: Journey, patterns: Map<string, Pattern>,
       if (p) pts.push(...p.shape.slice(
         Math.min(p.shapeIndex[leg.fromIndex], p.shapeIndex[leg.toIndex]),
         Math.max(p.shapeIndex[leg.fromIndex], p.shapeIndex[leg.toIndex]) + 1));
-    } else pts.push(...(leg as WalkLeg).path);
+    } else pts.push(...leg.path);
   }
   if (pts.length < 2) return;
   /* A hidden map is a map with no size, and there is no transform that fits a
