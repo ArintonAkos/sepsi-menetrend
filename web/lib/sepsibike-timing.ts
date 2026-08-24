@@ -9,19 +9,25 @@ export interface TimedBikeJourney extends BikeJourneyOption {
   fareLei: number;
 }
 
-const RENTAL_OPENS_AT = 6 * 60;
-const LAST_PICKUP_AT = 22 * 60;
+export const RENTAL_OPENS_AT = 6 * 60;
+export const LAST_PICKUP_AT = 22 * 60;
 
 /**
  * The published tariff applies to the time between unlocking and docking the
  * bicycle. Walking to or from a station is deliberately not charged.
  */
-export function estimatedBikeFare(rideMinutes: number): number {
+export function bikeFare(rideMinutes: number): number {
   if (rideMinutes <= 30) return 0;
   if (rideMinutes <= 90) return 2;
   if (rideMinutes <= 150) return 4;
   return 6 * Math.ceil((rideMinutes - 150) / 60);
 }
+
+/** @deprecated use bikeFare so all journey modes share one tariff function. */
+export const estimatedBikeFare = bikeFare;
+
+export const canStartBikeRide = (pickup: Minute) =>
+  pickup >= RENTAL_OPENS_AT && pickup < LAST_PICKUP_AT;
 
 /**
  * SepsiBike rents bicycles daily between 06:00 and 22:00. The official rules
@@ -38,7 +44,7 @@ export function timeBikeJourney(
   const returnAt = pickup + base.ride.minutes;
   const arrive = returnAt + base.egress.minutes;
 
-  if (pickup < RENTAL_OPENS_AT || pickup >= LAST_PICKUP_AT) return null;
+  if (!canStartBikeRide(pickup)) return null;
 
   return {
     ...base,
@@ -46,6 +52,6 @@ export function timeBikeJourney(
     pickup,
     returnAt,
     arrive,
-    fareLei: estimatedBikeFare(base.ride.minutes),
+    fareLei: bikeFare(base.ride.minutes),
   };
 }

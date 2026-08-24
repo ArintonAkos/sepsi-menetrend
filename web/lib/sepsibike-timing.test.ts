@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import type { BikeJourneyOption, BikeStation } from "./sepsibike";
-import { estimatedBikeFare, timeBikeJourney } from "./sepsibike-timing";
+import { bikeFare, canStartBikeRide, estimatedBikeFare, timeBikeJourney } from "./sepsibike-timing";
 
 const station = (id: string): BikeStation => ({
   id, name: id, address: id, lat: 45.86, lng: 25.78,
@@ -33,5 +33,12 @@ describe("SepsiBike time and fare rules", () => {
 
   it("prices only the rental segment", () => {
     expect([30, 31, 91, 151, 211].map(estimatedBikeFare)).toEqual([0, 2, 4, 6, 12]);
+    expect([30, 31, 91, 151, 211].map(bikeFare)).toEqual([0, 2, 4, 6, 12]);
+  });
+
+  it("shares the exact pickup-window rule with multimodal planning", () => {
+    expect(canStartBikeRide(6 * 60)).toBe(true);
+    expect(canStartBikeRide(22 * 60 - 1)).toBe(true);
+    expect(canStartBikeRide(22 * 60)).toBe(false);
   });
 });
