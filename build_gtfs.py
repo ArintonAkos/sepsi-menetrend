@@ -204,7 +204,8 @@ def fare_tables(fares, stations, stop_id):
 def write(name, fields, rows):
     path = OUT / name
     with path.open("w", encoding="utf-8", newline="") as fh:
-        writer = csv.DictWriter(fh, fieldnames=fields, extrasaction="ignore")
+        writer = csv.DictWriter(fh, fieldnames=fields, extrasaction="ignore",
+                                lineterminator="\n")
         writer.writeheader()
         writer.writerows(rows)
     return len(rows)

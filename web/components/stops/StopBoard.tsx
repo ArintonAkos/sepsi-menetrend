@@ -4,6 +4,7 @@ import { Fragment, useMemo } from "react";
 import { boardAt, type PlanContext } from "@/lib/engine/plan";
 import { formatHHMM } from "@/lib/engine/time";
 import { shadeOf } from "@/lib/engine/types";
+import { officialBoardAt } from "@/lib/official-board";
 import type { Line, ServiceId, Stop } from "@/lib/engine/types";
 import type { Lang, Strings } from "@/lib/i18n";
 import { usePullToDismiss } from "../hooks/usePullToDismiss";
@@ -32,6 +33,10 @@ export default function StopBoard({
   onClose: () => void;
 }) {
   const pullDismiss = usePullToDismiss(onClose);
+  const official = useMemo(
+    () => officialBoardAt(ctx.net.officialBoards ?? [], stop.name.ro, service),
+    [ctx.net.officialBoards, stop.name.ro, service],
+  );
   const board = useMemo(() => boardAt(ctx, stop.id, service), [ctx, stop.id, service]);
   /* Buses that finish here are worth listing - somebody is being collected -
      but they are not something you board, so they go last under their own
@@ -41,7 +46,7 @@ export default function StopBoard({
   const stops = ctx.stops;
   const name = lang === "hu" ? stop.name.hu : stop.name.ro;
   const other = lang === "hu" ? stop.name.ro : stop.name.hu;
-  const estimated = board.some((column) => !column.published);
+  const estimated = official.length === 0 && board.some((column) => !column.published);
 
   return (
     <section className={styles.sheet} aria-label={name} style={pullDismiss.style} {...pullDismiss.handlers}>
@@ -54,6 +59,32 @@ export default function StopBoard({
       </div>
 
       <div className={styles.body}>
+        {official.length > 0 ? official.map((column, i) => {
+          const shade = shadeOf(lines.get(column.lineId), false);
+          const times = column[service];
+          const next = times.find((at) => at >= now);
+          const dimPast = next !== undefined;
+          return (
+            <div className={styles.row} key={`${column.lineId}-${column.destination}-${i}`}>
+              <span className={styles.pill}
+                    style={{ background: shade.fill, color: shade.text }}>
+                {column.lineId}
+              </span>
+              <div>
+                <div className={styles.where}><b>→ {column.destination}</b></div>
+                <div className={styles.times}>
+                  {times.map((at) => (
+                    <span key={at}
+                          className={`${styles.time} ${at === next ? styles.soon : ""}`
+                                     + `${dimPast && at < now ? " " + styles.past : ""}`}>
+                      {formatHHMM(at)}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </div>
+          );
+        }) : <>
         {board.length === 0 && <p className={styles.empty}>{t.noService}</p>}
         {[...leaving, ...ending].map((column, i) => {
           const first = column.terminates && i === leaving.length;
@@ -101,6 +132,7 @@ export default function StopBoard({
             </Fragment>
           );
         })}
+        </>}
         {estimated && <p className={styles.note}>{t.estimated}</p>}
       </div>
     </section>

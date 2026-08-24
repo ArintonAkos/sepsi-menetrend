@@ -65,6 +65,35 @@ def seconds(text):
     return h * 3600 + m * 60 + s
 
 
+def official_boards(timetable):
+    """Keep the operator's stop boards separate from generated trip estimates.
+
+    A board is a literal published column at one station. It is deliberately
+    not folded into a route pattern here: the operator publishes several
+    special D services whose stop-board order is richer than the older route
+    geometry pages. The popup can therefore remain exact without claiming a
+    false trip topology.
+    """
+    out = []
+    for entry in timetable.get("timepoints", []):
+        services = {}
+        for service in ("weekday", "weekend"):
+            minutes = []
+            for text in entry.get("times", {}).get(service, []):
+                hour, minute = (int(part) for part in text.split(":"))
+                # The operator's 00:xx departures are the end of this service
+                # day, not buses before its 04:00 opening.
+                if hour < 4:
+                    hour += 24
+                minutes.append(hour * 60 + minute)
+            services[service] = sorted(minutes)
+        out.append({
+            "stopRo": entry["stop_ro"], "lineId": entry["line"],
+            "destination": entry["destination"], **services,
+        })
+    return sorted(out, key=lambda b: (b["stopRo"], b["lineId"], b["destination"]))
+
+
 K = math.cos(math.radians(LAT0))
 project = lambda lon, lat: (lon * K * 111320, lat * 111320)
 
@@ -307,6 +336,7 @@ def main():
     routes = {r["route_id"]: r for r in read("routes.txt")}
     trips_raw = {t["trip_id"]: t for t in read("trips.txt")}
     feed = read("feed_info.txt")[0] if (GTFS / "feed_info.txt").exists() else {}
+    timetable = json.loads((ROOT / "timetable.json").read_text(encoding="utf-8"))
 
     hu = {}
     for path in sorted(ROOT.glob("line-*/*.json")):
@@ -440,6 +470,7 @@ def main():
         "validFrom": feed.get("feed_start_date", ""),
         "lines": lines, "stops": stops, "stations": station_list,
         "patterns": list(patterns.values()), "trips": trips, "walks": walks,
+        "officialBoards": official_boards(timetable),
     }
     broken = [p["id"] for p in network["patterns"]
               if any(b < a for a, b in zip(p["shapeIndex"], p["shapeIndex"][1:]))]

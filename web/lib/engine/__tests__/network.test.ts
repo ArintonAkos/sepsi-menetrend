@@ -337,12 +337,15 @@ describe("the real network", () => {
        sixteen metres further from the door. */
     const from: LngLat = [25.792165, 45.864308];
     const to: LngLat = [25.802047, 45.869763];
-    const five = plan(ctx, { from, to, time: 30, service: "weekday",
-                             mode: "departAt", walkAversion: 0 }, 8)
+    /* The current official service has several earlier alternatives, so this
+       regression check must inspect enough candidates to reach the later 5. */
+    const options = plan(ctx, { from, to, time: 30, service: "weekday",
+                               mode: "departAt", walkAversion: 0 }, 100);
+    const five = options
       .find((j) => rides(j).some((r) => r.lineId === "5"));
     expect(five, "no line 5 itinerary at all").toBeTruthy();
     // it used to arrive at 07:01 having passed the same stop at 06:49
-    expect(formatHHMM(five!.arrive)).toBe("06:51");
+    expect(formatHHMM(five!.arrive)).toBe("06:45");
 
     const last = [...five!.legs].reverse().find((l) => l.kind === "ride") as RideLeg;
     const pattern = net.patterns.find((p) => p.id === last.patternId)!;
@@ -480,12 +483,14 @@ describe("line colours", () => {
     expect(ten.colour.toUpperCase()).toBe("#000000");
   });
 
-  it("tells a line apart from its D variant", () => {
+  it("keeps a line distinguishable from its D variant", () => {
     for (const id of ["1", "2", "5"]) {
       const base = net.lines.find((l) => l.id === id)!;
       const variant = net.lines.find((l) => l.id === `${id}D`)!;
-      expect(base.colour).toBe(variant.colour);         // the operator's doing
-      expect(base.light).not.toBe(variant.light);       // ours, so a map can cope
+      /* The operator may choose the same official colour, or a different one
+         (the current 5/5D pair does). Either way the rendered light tones
+         must not collapse into one indistinguishable line on the map. */
+      expect(base.light).not.toBe(variant.light);
     }
   });
 
