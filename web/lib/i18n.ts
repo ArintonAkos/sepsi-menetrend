@@ -61,6 +61,10 @@ const hu = {
   bike: "SepsiBike", bikeRide: "kerékpározás", bikes: "kerékpár", freeDocks: "szabad dokk",
   lastKnown: "utoljára ismert elérhetőség", bikeAccount: "SepsiBike / GloBikes fiók szükséges",
   estimatedFree: "várhatóan 0 RON", bikeUnavailable: "Nincs használható SepsiBike útvonal.",
+  bikeFare: "Biciklidíj", bikeFareNote: "0–30 perc között ingyenes",
+  bikePickupWindow: "06:00–22:00 között lehet biciklit felvenni.",
+  bikeReturnAfterHours: "22:00 után csak a leadás lehetséges.",
+  bikeSupport: "Ügyfélszolgálat",
   installApp: "Alkalmazás telepítése", installIos: "Megosztás → Főképernyőhöz adás",
   days: ["vasárnap", "hétfő", "kedd", "szerda", "csütörtök", "péntek", "szombat"],
 };
@@ -126,6 +130,10 @@ const ro: Strings = {
   bike: "SepsiBike", bikeRide: "cu bicicleta", bikes: "biciclete", freeDocks: "locuri libere",
   lastKnown: "disponibilitate cunoscută ultima dată", bikeAccount: "Este necesar un cont SepsiBike / GloBikes",
   estimatedFree: "probabil 0 RON", bikeUnavailable: "Nu există o rută SepsiBike disponibilă.",
+  bikeFare: "Tarif bicicletă", bikeFareNote: "gratuit între 0 și 30 de minute",
+  bikePickupWindow: "Bicicletele pot fi ridicate între 06:00 și 22:00.",
+  bikeReturnAfterHours: "După 22:00 este posibilă doar returnarea.",
+  bikeSupport: "Serviciu clienți",
   installApp: "Instalează aplicația", installIos: "Partajează → Adaugă pe ecranul principal",
   days: ["duminică", "luni", "marți", "miercuri", "joi", "vineri", "sâmbătă"],
 };
@@ -191,6 +199,10 @@ const en: Strings = {
   bike: "SepsiBike", bikeRide: "cycling", bikes: "bikes", freeDocks: "free docks",
   lastKnown: "last known availability", bikeAccount: "A SepsiBike / GloBikes account is required",
   estimatedFree: "estimated 0 RON", bikeUnavailable: "No usable SepsiBike route is available.",
+  bikeFare: "Bike fare", bikeFareNote: "free for the first 30 minutes",
+  bikePickupWindow: "Bikes can be picked up from 06:00 to 22:00.",
+  bikeReturnAfterHours: "After 22:00, only returns are possible.",
+  bikeSupport: "Customer service",
   installApp: "Install app", installIos: "Share → Add to Home Screen",
   days: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
 };
