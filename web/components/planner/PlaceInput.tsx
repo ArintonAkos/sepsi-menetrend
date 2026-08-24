@@ -100,14 +100,14 @@ export default function PlaceInput({
     return () => { clearTimeout(timer); stop.abort(); };
   }, [open, untouched, query, lang, local.length, pairs, area]);
 
-  const known = new Set(local.map((p) => (lang === "hu" ? p.hu : p.ro).toLowerCase()));
+  const known = new Set(local.map((p) => (lang === "ro" ? p.ro : p.hu).toLowerCase()));
   const fresh = remote.query === query ? remote.hits : [];
   const hits: Place[] = [...local, ...fresh.filter((r) => !known.has(r.ro.toLowerCase()))];
 
   const hoist = (node: React.ReactNode) => (into ? createPortal(node, into) : node);
-  const name = (p: Place) => (lang === "hu" ? p.hu || p.ro : p.ro || p.hu);
+  const name = (p: Place) => (lang === "ro" ? p.ro || p.hu : p.hu || p.ro);
   const under = (p: Place) => [
-    p.detail || (lang === "hu" ? p.ro : p.hu),
+    p.detail || (lang === "ro" ? p.hu : p.ro),
     p.remote ? "Mapbox" : null,
     p.approximate ? t.noHouseNumber : null,
   ].filter(Boolean).join(" · ");

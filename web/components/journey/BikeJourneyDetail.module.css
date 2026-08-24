@@ -1,0 +1,34 @@
+.head { display: flex; align-items: center; gap: 10px; padding: 11px 16px;
+  background: var(--paper); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 4; }
+.head button { display: grid; place-items: center; width: 28px; height: 28px; margin-left: -4px; color: var(--ink); }
+.head b { font-family: ui-rounded, "SF Pro Rounded", "Varela Round", system-ui, sans-serif; font-size: 16px; }
+.summary { display: flex; align-items: center; gap: 12px; padding: 12px 18px; border-bottom: 1px solid var(--border); }
+.mode { flex: 1; font-weight: 800; color: #145ecc; }
+.duration { text-align: right; }
+.duration b { font-size: 24px; font-variant-numeric: tabular-nums; }
+.duration span { font-size: 12px; color: var(--muted); margin-left: 2px; }
+.timeline { list-style: none; margin: 0; padding: 12px 18px 14px; }
+.timeline li { list-style: none; }
+.point, .segment { display: grid; grid-template-columns: 26px 1fr auto; gap: 0 12px; align-items: stretch; }
+.rail { position: relative; display: flex; justify-content: center; padding-top: 4px; }
+.rail::before { content: ""; position: absolute; inset: 0 auto 0; width: 4px; border-radius: 2px; background: #2674d9; }
+.point:last-child .rail::before { display: none; }
+.rail i { position: relative; z-index: 1; width: 13px; height: 13px; margin-top: 3px; border: 3.5px solid #2674d9; border-radius: 50%; background: var(--paper); }
+.rail .filled { background: var(--ink); border-color: var(--ink); box-shadow: 0 0 0 3px var(--paper); }
+.rail .bikePin { background: #2674d9; box-shadow: 0 0 0 3px var(--paper); }
+.walkRail::before { background-image: linear-gradient(var(--ink-2) 55%, transparent 0); background-size: 4px 10px; background-repeat: repeat-y; opacity: .55; }
+.body { min-width: 0; padding-bottom: 16px; }
+.name { font-weight: 700; font-size: 15px; }
+.sub { margin-top: 2px; color: var(--muted); font-size: 13px; }
+.time { align-self: start; padding-top: 1px; font-size: 14px; font-weight: 600; font-variant-numeric: tabular-nums; }
+.walk, .ride { display: flex; align-items: center; gap: 7px; padding-top: 2px; color: var(--ink-2); font-size: 13px; font-weight: 600; }
+.ride { color: #145ecc; }
+.stale { margin: 0 18px 12px; font-size: 12px; color: var(--muted); }
+.info, .rules { margin: 4px 18px 14px; padding: 14px 16px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); }
+.info { display: grid; gap: 6px; }
+.infoRow { display: flex; justify-content: space-between; align-items: baseline; }
+.infoRow b { font-size: 19px; }
+.info small { color: var(--muted); font-size: 12px; }
+.rules { display: grid; gap: 7px; font-size: 12px; line-height: 1.4; color: var(--ink-2); }
+.rules p { margin: 0; }
+.rules a { color: inherit; font-weight: 700; text-decoration: underline; }

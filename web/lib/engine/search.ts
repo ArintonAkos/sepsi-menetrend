@@ -10,7 +10,7 @@
  */
 import type { LngLat } from "./types";
 
-export type PlaceKind = "stop" | "street" | "shop" | "poi" | "place" | "address";
+export type PlaceKind = "stop" | "street" | "shop" | "poi" | "place" | "address" | "bikeStation";
 
 export interface Place {
   kind: PlaceKind;
@@ -62,7 +62,7 @@ export function editDistance(a: string, b: string): number {
 
 /** Stops win ties: someone typing into a transit planner usually wants one. */
 const KIND_BIAS: Record<PlaceKind, number> = {
-  stop: -0.6, place: -0.2, shop: 0, poi: 0, address: 0.1, street: 0.35,
+  stop: -0.6, bikeStation: -0.35, place: -0.2, shop: 0, poi: 0, address: 0.1, street: 0.35,
 };
 
 export function buildIndex(places: Place[]): IndexedPlace[] {

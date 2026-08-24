@@ -65,6 +65,43 @@ def seconds(text):
     return h * 3600 + m * 60 + s
 
 
+def pattern_key(trip, rows):
+    """Identify a reusable pattern, including its published call-time shape."""
+    base = seconds(rows[0]["departure_time"])
+    offsets = tuple((seconds(row["departure_time"]) - base) // 60 for row in rows)
+    return (trip["route_id"], trip["shape_id"],
+            tuple(row["stop_id"] for row in rows), offsets)
+
+
+def official_boards(timetable):
+    """Keep the operator's stop boards separate from generated trip estimates.
+
+    A board is a literal published column at one station. It is deliberately
+    not folded into a route pattern here: the operator publishes several
+    special D services whose stop-board order is richer than the older route
+    geometry pages. The popup can therefore remain exact without claiming a
+    false trip topology.
+    """
+    out = []
+    for entry in timetable.get("timepoints", []):
+        services = {}
+        for service in ("weekday", "weekend"):
+            minutes = []
+            for text in entry.get("times", {}).get(service, []):
+                hour, minute = (int(part) for part in text.split(":"))
+                # The operator's 00:xx departures are the end of this service
+                # day, not buses before its 04:00 opening.
+                if hour < 4:
+                    hour += 24
+                minutes.append(hour * 60 + minute)
+            services[service] = sorted(minutes)
+        out.append({
+            "stopRo": entry["stop_ro"], "lineId": entry["line"],
+            "destination": entry["destination"], **services,
+        })
+    return sorted(out, key=lambda b: (b["stopRo"], b["lineId"], b["destination"]))
+
+
 K = math.cos(math.radians(LAT0))
 project = lambda lon, lat: (lon * K * 111320, lat * 111320)
 
@@ -307,6 +344,7 @@ def main():
     routes = {r["route_id"]: r for r in read("routes.txt")}
     trips_raw = {t["trip_id"]: t for t in read("trips.txt")}
     feed = read("feed_info.txt")[0] if (GTFS / "feed_info.txt").exists() else {}
+    timetable = json.loads((ROOT / "timetable.json").read_text(encoding="utf-8"))
 
     hu = {}
     for path in sorted(ROOT.glob("line-*/*.json")):
@@ -326,7 +364,9 @@ def main():
             "id": r["stop_id"],
             "name": {"ro": name, "hu": hu.get(name, name)},
             "at": [round(float(r["stop_lon"]), 6), round(float(r["stop_lat"]), 6)],
-            "stationId": r.get("parent_station") or f"ST-{name}",
+            # A physical platform is the planning identity.  Equal labels do
+            # not prove that two kerbs are interchangeable or even nearby.
+            "stationId": r.get("parent_station") or r["stop_id"],
             "zone": r.get("zone_id") or "city",
         }
         if r.get("platform_code"):
@@ -361,7 +401,7 @@ def main():
     patterns, pattern_id, trips = {}, {}, []
     for tid, rows in times.items():
         trip = trips_raw[tid]
-        key = (trip["route_id"], trip["shape_id"], tuple(r["stop_id"] for r in rows))
+        key = pattern_key(trip, rows)
         base = seconds(rows[0]["departure_time"])
         if key not in pattern_id:
             pid = f"P{len(pattern_id) + 1}"
@@ -388,18 +428,43 @@ def main():
                       "start": base // 60})
 
     # walks.json is keyed by coordinates; map them back onto stop ids
-    coord_to_stop = {}
+    def walk_key_coord(lat, lon):
+        # Match the f"{value:.5f}" representation used by fetch_walks.key.
+        # Python's `round` has a different tie-breaking rule for e.g.
+        # 25.795895, which would silently lose an otherwise exact endpoint.
+        return float(f"{lat:.5f}"), float(f"{lon:.5f}")
+
+    # The GTFS text has already rounded latitude/longitude to six decimals.
+    # The walking cache is created from the original platform evidence, so use
+    # that evidence for the primary lookup too (rather than rounding a rounded
+    # value for a second time).  GTFS assigns P1… in this same sorted order.
+    topology = json.loads((ROOT / "platforms.json").read_text(encoding="utf-8"))
+    coord_to_stop = {
+        walk_key_coord(*platform["point"]): f"P{index}"
+        for index, platform in enumerate(topology["platforms"], 1)
+    }
     for r in stops_raw:
         if r.get("location_type") != "1":
-            coord_to_stop[(round(float(r["stop_lat"]), 5), round(float(r["stop_lon"]), 5))] = r["stop_id"]
+            # Compatibility for an existing cache made from a prior GTFS
+            # version; canonical platform evidence above always wins.
+            coord_to_stop.setdefault(
+                walk_key_coord(float(r["stop_lat"]), float(r["stop_lon"])), r["stop_id"]
+            )
 
     def nearest(lat, lon):
-        best, bd = None, 1e9
+        # `walks.json` deliberately keys the endpoint at five decimals.  Check
+        # that canonical coordinate first: opposite physical platforms can be
+        # only a few metres apart, so a generic nearest-within-25m rule would
+        # otherwise call an exact endpoint ambiguous and drop its real walk.
+        exact = coord_to_stop.get(walk_key_coord(lat, lon))
+        if exact:
+            return exact
+        candidates = []
         for (a, b), sid in coord_to_stop.items():
             d = math.hypot((a - lat) * 111320, (b - lon) * 111320 * K)
-            if d < bd:
-                bd, best = d, sid
-        return best if bd < 25 else None
+            if d < 25:
+                candidates.append((d, sid))
+        return candidates[0][1] if len(candidates) == 1 else None
 
     walks, dropped = [], 0
     raw_walks = json.loads((ROOT / "walks.json").read_text(encoding="utf-8"))["walks"]
@@ -440,6 +505,7 @@ def main():
         "validFrom": feed.get("feed_start_date", ""),
         "lines": lines, "stops": stops, "stations": station_list,
         "patterns": list(patterns.values()), "trips": trips, "walks": walks,
+        "officialBoards": official_boards(timetable),
     }
     broken = [p["id"] for p in network["patterns"]
               if any(b < a for a, b in zip(p["shapeIndex"], p["shapeIndex"][1:]))]

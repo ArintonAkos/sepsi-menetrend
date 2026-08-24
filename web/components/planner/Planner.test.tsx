@@ -11,11 +11,12 @@ import { media } from "../../vitest.setup";
 import type { Network } from "@/lib/engine/types";
 import type { Place } from "@/lib/engine/search";
 import type { FareTable } from "@/lib/engine/fares";
+import type { BikeSnapshot, BikeStation } from "@/lib/sepsibike";
 
 const load = <T,>(name: string): T =>
   JSON.parse(readFileSync(resolve(import.meta.dirname, "../../public/data", name), "utf8"));
 
-let network: Network, places: Place[], fares: FareTable;
+let network: Network, places: Place[], fares: FareTable, bikeStations: BikeStation[];
 let reach: number;
 let box: [number, number, number, number];
 
@@ -27,6 +28,7 @@ beforeAll(() => {
   reach = index.reach;
   box = index.bbox;
   fares = load<FareTable>("fares.json");
+  bikeStations = load<BikeSnapshot>("sepsibike.json").stations;
 });
 
 /** Render the planner. Synchronous, so a test can assert what is on screen
@@ -147,6 +149,41 @@ describe("Planner", () => {
     await user.click(screen.getByRole("button", { name: "Română" }));
     expect(screen.getByLabelText("De la")).toBeInTheDocument();
     expect(screen.getByText(/Nu este site-ul oficial/)).toBeInTheDocument();
+  });
+
+  it("presents SepsiBike as a selectable direct option with its own detail", async () => {
+    const user = userEvent.setup();
+    render(<Planner network={network} places={places} reach={reach} box={box} fares={fares}
+                    bikeStations={bikeStations} bikeSnapshotAt="2026-08-23T12:53:56.000Z" />);
+    await screen.findByText(/Nincs Mapbox token/);
+    await startPlanning(user, "Nicolae Iorga", "Sepsi Aréna");
+    await user.click(screen.getByRole("button", { name: /Indulás|Érkezés/ }));
+    fireEvent.change(screen.getByDisplayValue(/^\d{2}:\d{2}$/), { target: { value: "09:00" } });
+    await user.keyboard("{Escape}");
+    const bike = await screen.findByRole("button", { name: /SepsiBike/ });
+    expect(bike.closest("li")).not.toBeNull();
+    await user.click(bike);
+    expect(await screen.findByText("06:00–22:00 között lehet biciklit felvenni.")).toBeInTheDocument();
+    expect(screen.getAllByText(/szabad dokk/).length).toBeGreaterThanOrEqual(2);
+  });
+
+  it("hides SepsiBike when the pickup would be at 22:00", async () => {
+    const user = userEvent.setup();
+    render(<Planner network={network} places={places} reach={reach} box={box} fares={fares}
+                    bikeStations={bikeStations} bikeSnapshotAt="2026-08-23T12:53:56.000Z" />);
+    await screen.findByText(/Nincs Mapbox token/);
+    await startPlanning(user, "Nicolae Iorga", "Sepsi Aréna");
+    await user.click(screen.getByRole("button", { name: /Indulás|Érkezés/ }));
+    fireEvent.change(screen.getByDisplayValue(/^\d{2}:\d{2}$/), { target: { value: "09:00" } });
+    await user.keyboard("{Escape}");
+    await waitFor(() => expect(screen.queryByRole("button", { name: "Érkezés ekkorra" })).not.toBeInTheDocument());
+    await screen.findByRole("button", { name: /SepsiBike/ });
+
+    await user.click(screen.getByRole("button", { name: /^Indulás 09:00$/ }));
+    fireEvent.change(screen.getByDisplayValue(/^\d{2}:\d{2}$/), { target: { value: "22:00" } });
+    await user.keyboard("{Escape}");
+    await waitFor(() => expect(screen.queryByRole("button", { name: "Érkezés ekkorra" })).not.toBeInTheDocument());
+    await waitFor(() => expect(screen.queryByRole("button", { name: /SepsiBike/ })).not.toBeInTheDocument());
   });
 
   it("opens the time panel and offers the two questions worth asking", async () => {

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Compile an OSM pedestrian extract into a compact directed graph.
+"""Compile one OSM extract into compact walking and bicycle graphs.
 
 The browser router consumes the JSON emitted by this module.  Keeping the
 compiler dependency-free makes the data build reproducible in CI and keeps the
@@ -15,6 +15,7 @@ from typing import Any
 
 ROOT = Path(__file__).resolve().parent
 OUT = ROOT / "web" / "public" / "data" / "walking-graph.json"
+BIKE_OUT = ROOT / "web" / "public" / "data" / "bicycle-graph.json"
 
 WALKABLE_HIGHWAYS = {
     "footway", "path", "pedestrian", "steps", "cycleway", "living_street",
@@ -22,6 +23,11 @@ WALKABLE_HIGHWAYS = {
     "secondary_link", "primary", "primary_link", "unclassified", "track",
 }
 BLOCKED_ACCESS = {"no", "private"}
+BIKEABLE_HIGHWAYS = {
+    "cycleway", "path", "pedestrian", "living_street", "residential", "service",
+    "tertiary", "tertiary_link", "secondary", "secondary_link", "primary",
+    "primary_link", "unclassified", "track",
+}
 
 
 def walkable(tags: dict[str, str]) -> bool:
@@ -32,6 +38,22 @@ def walkable(tags: dict[str, str]) -> bool:
         return False
     # Explicit pedestrian permission is more precise than the broad access tag.
     if tags.get("access") in BLOCKED_ACCESS and tags.get("foot") != "yes":
+        return False
+    return True
+
+
+def bikeable(tags: dict[str, str]) -> bool:
+    """Whether a way is a public, bicycle-permitted part of the road graph."""
+    highway = tags.get("highway")
+    if highway == "footway":
+        # A footway is not a cycleway merely because it is connected on the map.
+        if tags.get("bicycle") not in {"yes", "designated", "permissive"}:
+            return False
+    elif highway not in BIKEABLE_HIGHWAYS:
+        return False
+    if tags.get("area") == "yes" or tags.get("bicycle") in BLOCKED_ACCESS:
+        return False
+    if tags.get("access") in BLOCKED_ACCESS and tags.get("bicycle") != "yes":
         return False
     return True
 
@@ -52,19 +74,32 @@ def one_way_for_foot(tags: dict[str, str]) -> bool:
     return tags.get("oneway:foot") in {"yes", "1", "true"}
 
 
-def build_graph(osm: dict[str, Any]) -> dict[str, Any]:
+def bicycle_direction(tags: dict[str, str]) -> int:
+    """1 normal, -1 reverse, 0 bidirectional for bicycle traffic."""
+    value = tags.get("oneway:bicycle", tags.get("oneway", "")).lower()
+    if value in {"yes", "1", "true"}:
+        return 1
+    if value == "-1":
+        return -1
+    return 0
+
+
+def build_graph(osm: dict[str, Any], mode: str = "walking") -> dict[str, Any]:
     """Build bidirectional pedestrian adjacency from OSM nodes and ways.
 
     Pedestrian one-way tagging is added when compiling the real extract; this
     minimal public function first establishes correct path/access filtering and
     stable vertex ordering for unit tests.
     """
+    if mode not in {"walking", "bicycle"}:
+        raise ValueError(f"unknown graph mode: {mode}")
+    allowed = walkable if mode == "walking" else bikeable
     nodes = {
         element["id"]: (element["lon"], element["lat"])
         for element in osm.get("elements", []) if element.get("type") == "node"
     }
     accepted = [element for element in osm.get("elements", [])
-                if element.get("type") == "way" and walkable(element.get("tags", {}))]
+                if element.get("type") == "way" and allowed(element.get("tags", {}))]
     used = {node_id for way in accepted for node_id in way.get("nodes", []) if node_id in nodes}
     order = sorted(used)
     index = {node_id: i for i, node_id in enumerate(order)}
@@ -77,8 +112,13 @@ def build_graph(osm: dict[str, Any]) -> dict[str, Any]:
                 continue
             a, b = index[left], index[right]
             distance = metres_between(nodes[left], nodes[right])
-            edges[a][b] = min(edges[a].get(b, distance), distance)
-            if not one_way_for_foot(way.get("tags", {})):
+            tags = way.get("tags", {})
+            direction = 0 if mode == "walking" else bicycle_direction(tags)
+            if mode == "walking" and one_way_for_foot(tags):
+                direction = 1
+            if direction >= 0:
+                edges[a][b] = min(edges[a].get(b, distance), distance)
+            if direction <= 0:
                 edges[b][a] = min(edges[b].get(a, distance), distance)
 
     return {
@@ -93,10 +133,14 @@ def main() -> int:
     source = ROOT / "osm" / "pedestrian.json"
     if not source.exists():
         raise SystemExit("missing osm/pedestrian.json; run fetch_pedestrian_osm.py first")
-    graph = build_graph(json.loads(source.read_text(encoding="utf-8")))
+    osm = json.loads(source.read_text(encoding="utf-8"))
+    graph = build_graph(osm)
+    bicycle = build_graph(osm, mode="bicycle")
     OUT.parent.mkdir(parents=True, exist_ok=True)
     OUT.write_text(json.dumps(graph, separators=(",", ":")), encoding="utf-8")
-    print(f"{len(graph['vertices'])} vertices, {sum(map(len, graph['edges']))} directed edges")
+    BIKE_OUT.write_text(json.dumps(bicycle, separators=(",", ":")), encoding="utf-8")
+    print(f"walking: {len(graph['vertices'])} vertices, {sum(map(len, graph['edges']))} directed edges")
+    print(f"bicycle: {len(bicycle['vertices'])} vertices, {sum(map(len, bicycle['edges']))} directed edges")
     return 0
 
 

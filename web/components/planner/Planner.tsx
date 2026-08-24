@@ -16,14 +16,22 @@ const TransitMap = dynamic(() => import("../map/TransitMap"), {
 import PlaceInput, { type Chosen } from "./PlaceInput";
 import JourneyList from "../journey/JourneyList";
 import JourneyDetail from "../journey/JourneyDetail";
+import BikeJourneyDetail from "../journey/BikeJourneyDetail";
 import { prepare, planWithWalking, metresBetween, nextDepartures } from "@/lib/engine/plan";
 import { buildIndex } from "@/lib/engine/search";
+import { bikeStationsToPlaces, findBikeOption, type BikeAvailability, type BikeJourneyOption,
+         type BikeStation } from "@/lib/sepsibike";
+import { mergePlannerOptions } from "@/lib/planner-options";
+import { timeBikeJourney } from "@/lib/sepsibike-timing";
 import { formatHHMM, minutesOfDay, serviceForDate } from "@/lib/engine/time";
 import { formatCoordinates, insideArea, reverse } from "@/lib/geocode";
 import { isStraightLine, routeOnFoot, walkingContext } from "@/lib/walking";
+import { routeByBike } from "@/lib/bicycle";
 import StopBoard from "../stops/StopBoard";
+import BikeStationBoard from "../bike/BikeStationBoard";
 import Timetable from "../timetable/Timetable";
 import { Back, ShareIcon } from "../common/icons";
+import InstallApp from "../common/InstallApp";
 import { decodeTrip, encodeTrip, shareLink } from "@/lib/share";
 import { useDismiss } from "../hooks/useDismiss";
 import { useDrawer } from "../hooks/useDrawer";
@@ -56,19 +64,21 @@ const subscribeToWidth = (notify: () => void) => {
 };
 const isNarrow = () => widthQuery()?.matches ?? false;
 
-export default function Planner({ network, places, reach, box, fares }: {
+export default function Planner({ network, places, reach, box, fares, bikeStations = [], bikeSnapshotAt = "" }: {
   network: Network; places: Place[]; reach: number;
-  box: [number, number, number, number]; fares: FareTable;
+  box: [number, number, number, number]; fares: FareTable; bikeStations?: BikeStation[];
+  bikeSnapshotAt?: string;
 }) {
   const ctx = useMemo(() => { primeStops(network); return prepare(network); }, [network]);
-  const index = useMemo(() => buildIndex(places), [places]);
+  const allPlaces = useMemo(() => [...places, ...bikeStationsToPlaces(bikeStations)], [places, bikeStations]);
+  const index = useMemo(() => buildIndex(allPlaces), [allPlaces]);
   /* Villages are indexed by Mapbox under their Romanian names only, so the
      search needs to know that Szotyor is Coșeni before it asks. */
   const pairs = useMemo(() => {
     const seen = new Map<string, string>();
-    for (const p of places) if (p.hu && p.ro && p.hu !== p.ro) seen.set(p.hu, p.ro);
+    for (const p of allPlaces) if (p.hu && p.ro && p.hu !== p.ro) seen.set(p.hu, p.ro);
     return [...seen].map(([hu, ro]) => ({ hu, ro }));
-  }, [places]);
+  }, [allPlaces]);
   const patterns = useMemo(() => new Map(network.patterns.map((p) => [p.id, p])), [network]);
   const lineMap = useMemo(() => new Map(network.lines.map((l) => [l.id, l])), [network]);
   const stops = useMemo(() => new Map(network.stops.map((s) => [s.id, s])), [network]);
@@ -120,6 +130,13 @@ export default function Planner({ network, places, reach, box, fares }: {
   const settledAversion = useDeferredValue(aversion);
   const [visibleLines, setVisibleLines] = useState(() => new Set(network.lines.map((l) => l.id)));
   const [openPanel, setOpenPanel] = useState<"when" | "day" | "lines" | "settings" | null>(null);
+  const [bikeAvailability, setBikeAvailability] = useState<BikeAvailability>(() => ({
+    stations: bikeStations, source: "snapshot", fetchedAt: bikeSnapshotAt, stale: true,
+  }));
+  const [bikeOption, setBikeOption] = useState<{ key: string; value: BikeJourneyOption | null } | null>(null);
+  const [bikeBoard, setBikeBoard] = useState<
+    { stationId: string; anchor: HTMLElement | null; dismiss: () => void } | null>(null);
+  const [closingBikeBoard, setClosingBikeBoard] = useState(false);
 
   /* On a phone the panels are sheets pinned to the bottom of the screen, and a
      sheet cannot be a child of the panel it belongs to: any ancestor with a
@@ -150,6 +167,15 @@ export default function Planner({ network, places, reach, box, fares }: {
       setClosingBoard(false);
     }, 220);
   }, [board, closingBoard]);
+  const closeBikeBoard = useCallback(() => {
+    if (!bikeBoard || closingBikeBoard) return;
+    setClosingBikeBoard(true);
+    setTimeout(() => {
+      bikeBoard.dismiss?.();
+      setBikeBoard(null);
+      setClosingBikeBoard(false);
+    }, 220);
+  }, [bikeBoard, closingBikeBoard]);
   const [timetableState, setTimetableState] = useState<{
     open: boolean;
     lineId: string | null;
@@ -430,6 +456,33 @@ export default function Planner({ network, places, reach, box, fares }: {
     return () => { cancelled = true; };
   }, [from, to, network.stops, walkingKey]);
 
+  /* The static catalogue works immediately and offline. A successful endpoint
+     response replaces only its availability counts; it never blocks planning. */
+  useEffect(() => {
+    const controller = new AbortController();
+    fetch("/api/sepsibike", { signal: controller.signal })
+      .then((response) => response.ok ? response.json() : null)
+      .then((value: unknown) => {
+        if (controller.signal.aborted || !value || typeof value !== "object") return;
+        const data = value as Partial<BikeAvailability>;
+        if (Array.isArray(data.stations) && (data.source === "live" || data.source === "snapshot")
+          && typeof data.fetchedAt === "string" && typeof data.stale === "boolean") {
+          setBikeAvailability(data as BikeAvailability);
+        }
+      })
+      .catch(() => {});
+    return () => controller.abort();
+  }, []);
+
+  const bikeKey = from && to ? `${from.at.join(",")}>${to.at.join(",")}>${bikeAvailability.fetchedAt}` : "";
+  useEffect(() => {
+    if (!from || !to) return;
+    let cancelled = false;
+    findBikeOption(from.at, to.at, bikeAvailability, { walk: routeOnFoot, ride: routeByBike })
+      .then((value) => { if (!cancelled) setBikeOption({ key: bikeKey, value }); });
+    return () => { cancelled = true; };
+  }, [from, to, bikeAvailability, bikeKey]);
+
 
 
   /* Sharing sends the plan, not a picture of it: the link re-plans on the other
@@ -450,7 +503,7 @@ export default function Planner({ network, places, reach, box, fares }: {
         to: to && { name: to.name, at: to.at },
         time: timeCustomized ? time : null,
         mode: mode !== "departAt" ? mode : null,
-        journey: detail,
+        journey: sharedJourney,
       });
     }
     const link = base + query;
@@ -510,15 +563,31 @@ export default function Planner({ network, places, reach, box, fares }: {
     }, walking.value);
   }, [ctx, from, to, time, date, mode, settledAversion, visibleLines, walking, walkingKey]);
 
+  const requestedMinute = useMemo(() => {
+    const [hours, minutes] = time.split(":").map(Number);
+    return hours * 60 + minutes;
+  }, [time]);
+  const timedBike = useMemo(() => {
+    const base = bikeOption?.key === bikeKey ? bikeOption.value : null;
+    return base ? timeBikeJourney(base, requestedMinute, mode) : null;
+  }, [bikeOption, bikeKey, requestedMinute, mode]);
+  const options = useMemo(
+    () => mergePlannerOptions(journeys, timedBike, mode),
+    [journeys, timedBike, mode],
+  );
+
   const planKey = [from?.name, to?.name, time, date.toDateString(), mode,
-                   settledAversion, [...visibleLines].sort().join(",")].join("|");
+                   settledAversion, [...visibleLines].sort().join(","),
+                   timedBike ? `${timedBike.start.id}-${timedBike.finish.id}-${timedBike.depart}` : ""].join("|");
   const [selection, setSelection] = useState({ key: planKey, chosen: 0,
                                                detail: null as number | null });
   if (selection.key !== planKey) {
-    const nextDetail = initJourney !== null && initJourney >= 0
-      ? (journeys.length > 0 ? Math.min(initJourney, journeys.length - 1) : initJourney)
-      : null;
-    if (initJourney !== null && (journeys.length > 0 || !planning)) {
+    const restoredTransit = initJourney !== null && initJourney >= 0
+      ? options.findIndex((option) => option.kind === "transit"
+        && options.filter((candidate) => candidate.kind === "transit").indexOf(option) === initJourney)
+      : -1;
+    const nextDetail = restoredTransit >= 0 ? restoredTransit : null;
+    if (initJourney !== null && (options.length > 0 || !planning)) {
       setInitJourney(null);
     }
     setSelection({ key: planKey, chosen: nextDetail ?? 0, detail: nextDetail });
@@ -526,6 +595,9 @@ export default function Planner({ network, places, reach, box, fares }: {
   const { chosen, detail } = selection;
   const setChosen = (i: number) => setSelection((s) => ({ ...s, chosen: i }));
   const setDetail = (i: number | null) => setSelection((s) => ({ ...s, detail: i, chosen: i ?? s.chosen }));
+  const sharedJourney = detail !== null && options[detail]?.kind === "transit"
+    ? options.slice(0, detail + 1).filter((option) => option.kind === "transit").length - 1
+    : null;
 
   useEffect(() => {
     if (!mounted || !linkRead) return;
@@ -545,7 +617,7 @@ export default function Planner({ network, places, reach, box, fares }: {
         to: to && { name: to.name, at: to.at },
         time: timeCustomized ? time : null,
         mode: mode !== "departAt" ? mode : null,
-        journey: detail,
+        journey: sharedJourney,
       });
     }
 
@@ -553,7 +625,7 @@ export default function Planner({ network, places, reach, box, fares }: {
     if (currentQuery !== nextQuery) {
       window.history.replaceState(null, "", base + nextQuery);
     }
-  }, [from, to, time, mode, timeCustomized, detail, timetableState, boardStop, mounted, linkRead]);
+  }, [from, to, time, mode, timeCustomized, sharedJourney, timetableState, boardStop, mounted, linkRead]);
 
   /* ---- pin picking. The map reports its centre; we name it. ---- */
   const onCentreChange = useCallback((at: LngLat) => { if (picking) setPinAt(at); }, [picking, setPinAt]);
@@ -567,16 +639,16 @@ export default function Planner({ network, places, reach, box, fares }: {
     if (!insideArea(pinAt, area))
       return { name: formatCoordinates(pinAt), detail: t.outsideArea };
     let best: Place | null = null, bestDistance = Infinity;
-    for (const place of places) {
+    for (const place of allPlaces) {
       if (place.kind === "street") continue;      // a centroid is no use here
       const d = metresBetween(place.at, pinAt);
       if (d < bestDistance) { bestDistance = d; best = place; }
     }
     if (best && bestDistance <= 60)
-      return { name: lang === "hu" ? best.hu : best.ro,
+      return { name: lang === "ro" ? best.ro : best.hu,
                detail: `${Math.round(bestDistance)} m · ${t.localIndex}` };
     return null;
-  }, [picking, pinAt, places, lang, t, area]);
+  }, [picking, pinAt, allPlaces, lang, t, area]);
 
   /* The answer is tagged with the coordinate it belongs to, so a stale reply
      is simply ignored on the next render instead of being cleared by a
@@ -615,8 +687,11 @@ export default function Planner({ network, places, reach, box, fares }: {
     setPicking(null);
   };
 
-  const picked = journeys[detail ?? chosen] ?? journeys[0] ?? null;
-  const shown = useRoutedWalks(picked);
+  const picked = options[detail ?? chosen] ?? options[0] ?? null;
+  const shown = useRoutedWalks(picked?.kind === "transit" ? picked.journey : null);
+  const shownBike = picked?.kind === "bike" ? picked.journey : null;
+  const bikeBoardStation = bikeBoard
+    ? bikeAvailability.stations.find((station) => station.id === bikeBoard.stationId) ?? null : null;
 
   /* What comes after the bus you are being shown. At a change this is the
      difference between "you have four minutes" and "you have four minutes or
@@ -651,6 +726,10 @@ export default function Planner({ network, places, reach, box, fares }: {
                service={serviceForDate(date)} now={minutesOfDay(new Date())}
                lang={lang} t={t}
                onClose={closeBoard} />
+  ) : null;
+  const bikeSheet = bikeBoardStation ? (
+    <BikeStationBoard station={bikeBoardStation} stale={bikeAvailability.stale}
+                      fetchedAt={bikeAvailability.fetchedAt} t={t} onClose={closeBikeBoard} />
   ) : null;
 
   return (
@@ -792,15 +871,20 @@ export default function Planner({ network, places, reach, box, fares }: {
 
         {planning && <div className={styles.scroll}>
           {detail === null ? (
-            <JourneyList journeys={journeys} lines={lineMap} t={t} chosen={chosen}
+            <JourneyList options={options} lines={lineMap} t={t} chosen={chosen}
                          fares={fares} date={date} stops={stops} patterns={patterns} dark={dark}
                          onHover={setChosen} onOpen={setDetail} />
           ) : (
-            <JourneyDetail journey={journeys[detail]} lines={lineMap} patterns={patterns}
-                           stops={stops} fares={fares} date={date} lang={lang} t={t} dark={dark}
-                           from={from?.name ?? ""} to={to?.name ?? ""}
-                           laterBuses={laterBuses}
-                           onBack={backFromDetail} />
+            picked?.kind === "bike" ? (
+              <BikeJourneyDetail journey={picked.journey} from={from?.name ?? ""} to={to?.name ?? ""}
+                                 t={t} onBack={backFromDetail} />
+            ) : picked?.kind === "transit" ? (
+              <JourneyDetail journey={picked.journey} lines={lineMap} patterns={patterns}
+                             stops={stops} fares={fares} date={date} lang={lang} t={t} dark={dark}
+                             from={from?.name ?? ""} to={to?.name ?? ""}
+                             laterBuses={laterBuses}
+                             onBack={backFromDetail} />
+            ) : null
           )}
         </div>}
 
@@ -818,12 +902,28 @@ export default function Planner({ network, places, reach, box, fares }: {
             </>,
           ))}
 
+      {bikeSheet && (bikeBoard!.anchor
+        ? createPortal(bikeSheet, bikeBoard!.anchor)
+        : asSheet(
+            <>
+              <div className={`${styles.scrim} ${closingBikeBoard ? styles.closingScrim : ""}`}
+                   onClick={closeBikeBoard} aria-hidden />
+              <div className={`${styles.boardHolder} ${closingBikeBoard ? styles.closingBoard : ""}`}>
+                {bikeSheet}
+              </div>
+            </>,
+          ))}
+
       <main className={styles.map}>
         <TransitMap network={network} patterns={patterns} lines={lineMap} lang={lang}
                     area={area} resizeKey={mapNudge}
                     covered={narrow && detail !== null ? drawer.height : 0}
                     onStopPick={(stopId, anchor, dismiss) =>
                       setBoard(stopId ? { stopId, anchor, dismiss } : null)}
+                    bikeStations={bikeAvailability.stations}
+                    bikeJourney={shownBike}
+                    onBikeStationPick={(stationId, anchor, dismiss) =>
+                      setBikeBoard(stationId ? { stationId, anchor, dismiss } : null)}
                     journey={shown} visibleLines={visibleLines} dark={dark}
                     picking={picking !== null} onCentreChange={onCentreChange} />
 
@@ -908,6 +1008,7 @@ export default function Planner({ network, places, reach, box, fares }: {
                   <div className={styles.seg}>
                     <button aria-pressed={lang === "hu"} onClick={() => setLang("hu")}>Magyar</button>
                     <button aria-pressed={lang === "ro"} onClick={() => setLang("ro")}>Română</button>
+                    <button aria-pressed={lang === "en"} onClick={() => setLang("en")}>English</button>
                   </div>
                 </div>
                 <div className={styles.setRow}>
@@ -918,6 +1019,9 @@ export default function Planner({ network, places, reach, box, fares }: {
                               onClick={() => setTheme(th)}>{t[th]}</button>
                     ))}
                   </div>
+                </div>
+                <div className={styles.setRow}>
+                  <InstallApp t={t} />
                 </div>
                 {recent.length > 0 && (
                   <div className={styles.setRow}>

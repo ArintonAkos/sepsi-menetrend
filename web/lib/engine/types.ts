@@ -76,6 +76,19 @@ export interface Trip {
   start: Minute;
 }
 
+/** One literal column from the operator's published board at a station.
+ *
+ * It is intentionally separate from a routed Pattern: a printed board is an
+ * authoritative answer to "when does it leave here?", while the route pages
+ * are the separate authority for line geometry. */
+export interface OfficialBoard {
+  stopRo: string;
+  lineId: string;
+  destination: string;
+  weekday: Minute[];
+  weekend: Minute[];
+}
+
 /** A routed footpath between two stops, from OSRM/Valhalla - storable. */
 export interface Walk {
   from: string;
@@ -95,6 +108,7 @@ export interface Network {
   patterns: Pattern[];
   trips: Trip[];
   walks: Walk[];
+  officialBoards?: OfficialBoard[];
 }
 
 /* ---- what the planner returns ---- */

@@ -30,13 +30,6 @@ route_id,service_id,trip_id,trip_headsign,direction_id,shape_id
 1,weekday,1-depart-weekday-029,Cap Linie Simeria → Gara CFR,0,1-depart
 1,weekday,1-depart-weekday-030,Cap Linie Simeria → Gara CFR,0,1-depart
 1,weekday,1-depart-weekday-031,Cap Linie Simeria → Gara CFR,0,1-depart
-1,weekday,1-depart-weekday-032,Cap Linie Simeria → Gara CFR,0,1-depart
-1,weekday,1-depart-weekday-033,Cap Linie Simeria → Gara CFR,0,1-depart
-1,weekday,1-depart-weekday-034,Cap Linie Simeria → Gara CFR,0,1-depart
-1,weekday,1-depart-weekday-035,Cap Linie Simeria → Gara CFR,0,1-depart
-1,weekday,1-depart-weekday-036,Cap Linie Simeria → Gara CFR,0,1-depart
-1,weekday,1-depart-weekday-037,Cap Linie Simeria → Gara CFR,0,1-depart
-1,weekday,1-depart-weekday-038,Cap Linie Simeria → Gara CFR,0,1-depart
 1,weekend,1-depart-weekend-001,Cap Linie Simeria → Gara CFR,0,1-depart
 1,weekend,1-depart-weekend-002,Cap Linie Simeria → Gara CFR,0,1-depart
 1,weekend,1-depart-weekend-003,Cap Linie Simeria → Gara CFR,0,1-depart
@@ -67,12 +60,6 @@ route_id,service_id,trip_id,trip_headsign,direction_id,shape_id
 1,weekend,1-depart-weekend-028,Cap Linie Simeria → Gara CFR,0,1-depart
 1,weekend,1-depart-weekend-029,Cap Linie Simeria → Gara CFR,0,1-depart
 1,weekend,1-depart-weekend-030,Cap Linie Simeria → Gara CFR,0,1-depart
-1,weekend,1-depart-weekend-031,Cap Linie Simeria → Gara CFR,0,1-depart
-1,weekend,1-depart-weekend-032,Cap Linie Simeria → Gara CFR,0,1-depart
-1,weekend,1-depart-weekend-033,Cap Linie Simeria → Gara CFR,0,1-depart
-1,weekend,1-depart-weekend-034,Cap Linie Simeria → Gara CFR,0,1-depart
-1,weekend,1-depart-weekend-035,Cap Linie Simeria → Gara CFR,0,1-depart
-1,weekend,1-depart-weekend-036,Cap Linie Simeria → Gara CFR,0,1-depart
 1,weekday,1-return-weekday-001,Gara CFR → Cap Linie Simeria,1,1-return
 1,weekday,1-return-weekday-002,Gara CFR → Cap Linie Simeria,1,1-return
 1,weekday,1-return-weekday-003,Gara CFR → Cap Linie Simeria,1,1-return
@@ -103,14 +90,6 @@ route_id,service_id,trip_id,trip_headsign,direction_id,shape_id
 1,weekday,1-return-weekday-028,Gara CFR → Cap Linie Simeria,1,1-return
 1,weekday,1-return-weekday-029,Gara CFR → Cap Linie Simeria,1,1-return
 1,weekday,1-return-weekday-030,Gara CFR → Cap Linie Simeria,1,1-return
-1,weekday,1-return-weekday-031,Gara CFR → Cap Linie Simeria,1,1-return
-1,weekday,1-return-weekday-032,Gara CFR → Cap Linie Simeria,1,1-return
-1,weekday,1-return-weekday-033,Gara CFR → Cap Linie Simeria,1,1-return
-1,weekday,1-return-weekday-034,Gara CFR → Cap Linie Simeria,1,1-return
-1,weekday,1-return-weekday-035,Gara CFR → Cap Linie Simeria,1,1-return
-1,weekday,1-return-weekday-036,Gara CFR → Cap Linie Simeria,1,1-return
-1,weekday,1-return-weekday-037,Gara CFR → Cap Linie Simeria,1,1-return
-1,weekday,1-return-weekday-038,Gara CFR → Cap Linie Simeria,1,1-return
 1,weekend,1-return-weekend-001,Gara CFR → Cap Linie Simeria,1,1-return
 1,weekend,1-return-weekend-002,Gara CFR → Cap Linie Simeria,1,1-return
 1,weekend,1-return-weekend-003,Gara CFR → Cap Linie Simeria,1,1-return
@@ -141,11 +120,40 @@ route_id,service_id,trip_id,trip_headsign,direction_id,shape_id
 1,weekend,1-return-weekend-028,Gara CFR → Cap Linie Simeria,1,1-return
 1,weekend,1-return-weekend-029,Gara CFR → Cap Linie Simeria,1,1-return
 1,weekend,1-return-weekend-030,Gara CFR → Cap Linie Simeria,1,1-return
-1,weekend,1-return-weekend-031,Gara CFR → Cap Linie Simeria,1,1-return
-1,weekend,1-return-weekend-032,Gara CFR → Cap Linie Simeria,1,1-return
-1,weekend,1-return-weekend-033,Gara CFR → Cap Linie Simeria,1,1-return
-1,weekend,1-return-weekend-034,Gara CFR → Cap Linie Simeria,1,1-return
-1,weekend,1-return-weekend-035,Gara CFR → Cap Linie Simeria,1,1-return
+1D,weekday,1D-depart-weekday-001,Cap Linie Simeria → Câmpul Frumos,0,1D-depart
+1D,weekday,1D-depart-weekday-002,Cap Linie Simeria → Câmpul Frumos,0,1D-depart
+1D,weekday,1D-depart-weekday-003,Cap Linie Simeria → Câmpul Frumos,0,1D-depart
+1D,weekday,1D-depart-weekday-004,Cap Linie Simeria → Câmpul Frumos,0,1D-depart
+1D,weekday,1D-depart-weekday-005,Cap Linie Simeria → Câmpul Frumos,0,1D-depart
+1D,weekday,1D-depart-weekday-006,Cap Linie Simeria → Câmpul Frumos,0,1D-depart
+1D,weekday,1D-depart-weekday-007,Cap Linie Simeria → Câmpul Frumos,0,1D-depart
+1D,weekday,1D-depart-weekday-008,Cap Linie Simeria → Câmpul Frumos,0,1D-depart
+1D,weekday,1D-depart-weekday-009,Cap Linie Simeria → Câmpul Frumos,0,1D-depart
+1D,weekday,1D-depart-weekday-010,Cap Linie Simeria → Câmpul Frumos,0,1D-depart
+1D,weekday,1D-depart-weekday-011,Cap Linie Simeria → Câmpul Frumos,0,1D-depart
+1D,weekday,1D-depart-weekday-012,Cap Linie Simeria → Câmpul Frumos,0,1D-depart
+1D,weekday,1D-depart-weekday-013,Cap Linie Simeria → Câmpul Frumos,0,1D-depart
+1D,weekday,1D-depart-weekday-014,Cap Linie Simeria → Câmpul Frumos,0,1D-depart
+1D,weekday,1D-depart-weekday-015,Cap Linie Simeria → Câmpul Frumos,0,1D-depart
+1D,weekday,1D-depart-weekday-016,Cap Linie Simeria → Câmpul Frumos,0,1D-depart
+1D,weekday,1D-depart-weekday-017,Cap Linie Simeria → Câmpul Frumos,0,1D-depart
+1D,weekday,1D-depart-weekday-018,Cap Linie Simeria → Câmpul Frumos,0,1D-depart
+1D,weekend,1D-depart-weekend-001,Cap Linie Simeria → Câmpul Frumos,0,1D-depart
+1D,weekend,1D-depart-weekend-002,Cap Linie Simeria → Câmpul Frumos,0,1D-depart
+1D,weekend,1D-depart-weekend-003,Cap Linie Simeria → Câmpul Frumos,0,1D-depart
+1D,weekend,1D-depart-weekend-004,Cap Linie Simeria → Câmpul Frumos,0,1D-depart
+1D,weekend,1D-depart-weekend-005,Cap Linie Simeria → Câmpul Frumos,0,1D-depart
+1D,weekend,1D-depart-weekend-006,Cap Linie Simeria → Câmpul Frumos,0,1D-depart
+1D,weekend,1D-depart-weekend-007,Cap Linie Simeria → Câmpul Frumos,0,1D-depart
+1D,weekend,1D-depart-weekend-008,Cap Linie Simeria → Câmpul Frumos,0,1D-depart
+1D,weekend,1D-depart-weekend-009,Cap Linie Simeria → Câmpul Frumos,0,1D-depart
+1D,weekend,1D-depart-weekend-010,Cap Linie Simeria → Câmpul Frumos,0,1D-depart
+1D,weekend,1D-depart-weekend-011,Cap Linie Simeria → Câmpul Frumos,0,1D-depart
+1D,weekend,1D-depart-weekend-012,Cap Linie Simeria → Câmpul Frumos,0,1D-depart
+1D,weekend,1D-depart-weekend-013,Cap Linie Simeria → Câmpul Frumos,0,1D-depart
+1D,weekend,1D-depart-weekend-014,Cap Linie Simeria → Câmpul Frumos,0,1D-depart
+1D,weekend,1D-depart-weekend-015,Cap Linie Simeria → Câmpul Frumos,0,1D-depart
+1D,weekend,1D-depart-weekend-016,Cap Linie Simeria → Câmpul Frumos,0,1D-depart
 1D,weekday,1D-return-weekday-001,Câmpul Frumos → Cap Linie Simeria,1,1D-return
 1D,weekday,1D-return-weekday-002,Câmpul Frumos → Cap Linie Simeria,1,1D-return
 1D,weekday,1D-return-weekday-003,Câmpul Frumos → Cap Linie Simeria,1,1D-return
@@ -186,6 +194,22 @@ route_id,service_id,trip_id,trip_headsign,direction_id,shape_id
 2,weekday,2-depart-weekday-024,Bartók Béla – traseu circular,0,2-depart
 2,weekday,2-depart-weekday-025,Bartók Béla – traseu circular,0,2-depart
 2,weekday,2-depart-weekday-026,Bartók Béla – traseu circular,0,2-depart
+2,weekday,2-depart-weekday-027,Bartók Béla – traseu circular,0,2-depart
+2,weekday,2-depart-weekday-028,Bartók Béla – traseu circular,0,2-depart
+2,weekday,2-depart-weekday-029,Bartók Béla – traseu circular,0,2-depart
+2,weekday,2-depart-weekday-030,Bartók Béla – traseu circular,0,2-depart
+2,weekday,2-depart-weekday-031,Bartók Béla – traseu circular,0,2-depart
+2,weekday,2-depart-weekday-032,Bartók Béla – traseu circular,0,2-depart
+2,weekday,2-depart-weekday-033,Bartók Béla – traseu circular,0,2-depart
+2,weekday,2-depart-weekday-034,Bartók Béla – traseu circular,0,2-depart
+2,weekday,2-depart-weekday-035,Bartók Béla – traseu circular,0,2-depart
+2,weekday,2-depart-weekday-036,Bartók Béla – traseu circular,0,2-depart
+2,weekday,2-depart-weekday-037,Bartók Béla – traseu circular,0,2-depart
+2,weekday,2-depart-weekday-038,Bartók Béla – traseu circular,0,2-depart
+2,weekday,2-depart-weekday-039,Bartók Béla – traseu circular,0,2-depart
+2,weekday,2-depart-weekday-040,Bartók Béla – traseu circular,0,2-depart
+2,weekday,2-depart-weekday-041,Bartók Béla – traseu circular,0,2-depart
+2,weekday,2-depart-weekday-042,Bartók Béla – traseu circular,0,2-depart
 2,weekend,2-depart-weekend-001,Bartók Béla – traseu circular,0,2-depart
 2,weekend,2-depart-weekend-002,Bartók Béla – traseu circular,0,2-depart
 2,weekend,2-depart-weekend-003,Bartók Béla – traseu circular,0,2-depart
@@ -204,6 +228,47 @@ route_id,service_id,trip_id,trip_headsign,direction_id,shape_id
 2,weekend,2-depart-weekend-016,Bartók Béla – traseu circular,0,2-depart
 2,weekend,2-depart-weekend-017,Bartók Béla – traseu circular,0,2-depart
 2,weekend,2-depart-weekend-018,Bartók Béla – traseu circular,0,2-depart
+2,weekend,2-depart-weekend-019,Bartók Béla – traseu circular,0,2-depart
+2,weekend,2-depart-weekend-020,Bartók Béla – traseu circular,0,2-depart
+2,weekend,2-depart-weekend-021,Bartók Béla – traseu circular,0,2-depart
+2,weekend,2-depart-weekend-022,Bartók Béla – traseu circular,0,2-depart
+2,weekend,2-depart-weekend-023,Bartók Béla – traseu circular,0,2-depart
+2,weekend,2-depart-weekend-024,Bartók Béla – traseu circular,0,2-depart
+2,weekend,2-depart-weekend-025,Bartók Béla – traseu circular,0,2-depart
+2,weekend,2-depart-weekend-026,Bartók Béla – traseu circular,0,2-depart
+2,weekend,2-depart-weekend-027,Bartók Béla – traseu circular,0,2-depart
+2,weekend,2-depart-weekend-028,Bartók Béla – traseu circular,0,2-depart
+2,weekend,2-depart-weekend-029,Bartók Béla – traseu circular,0,2-depart
+2,weekend,2-depart-weekend-030,Bartók Béla – traseu circular,0,2-depart
+2,weekend,2-depart-weekend-031,Bartók Béla – traseu circular,0,2-depart
+2,weekend,2-depart-weekend-032,Bartók Béla – traseu circular,0,2-depart
+2,weekend,2-depart-weekend-033,Bartók Béla – traseu circular,0,2-depart
+2,weekend,2-depart-weekend-034,Bartók Béla – traseu circular,0,2-depart
+2D,weekday,2D-depart-weekday-001,Str. Bartók Béla → Câmpul Frumos,0,2D-depart
+2D,weekday,2D-depart-weekday-002,Str. Bartók Béla → Câmpul Frumos,0,2D-depart
+2D,weekday,2D-depart-weekday-003,Str. Bartók Béla → Câmpul Frumos,0,2D-depart
+2D,weekday,2D-depart-weekday-004,Str. Bartók Béla → Câmpul Frumos,0,2D-depart
+2D,weekday,2D-depart-weekday-005,Str. Bartók Béla → Câmpul Frumos,0,2D-depart
+2D,weekday,2D-depart-weekday-006,Str. Bartók Béla → Câmpul Frumos,0,2D-depart
+2D,weekday,2D-depart-weekday-007,Str. Bartók Béla → Câmpul Frumos,0,2D-depart
+2D,weekday,2D-depart-weekday-008,Str. Bartók Béla → Câmpul Frumos,0,2D-depart
+2D,weekday,2D-depart-weekday-009,Str. Bartók Béla → Câmpul Frumos,0,2D-depart
+2D,weekday,2D-depart-weekday-010,Str. Bartók Béla → Câmpul Frumos,0,2D-depart
+2D,weekday,2D-depart-weekday-011,Str. Bartók Béla → Câmpul Frumos,0,2D-depart
+2D,weekday,2D-depart-weekday-012,Str. Bartók Béla → Câmpul Frumos,0,2D-depart
+2D,weekday,2D-depart-weekday-013,Str. Bartók Béla → Câmpul Frumos,0,2D-depart
+2D,weekday,2D-depart-weekday-014,Str. Bartók Béla → Câmpul Frumos,0,2D-depart
+2D,weekday,2D-depart-weekday-015,Str. Bartók Béla → Câmpul Frumos,0,2D-depart
+2D,weekend,2D-depart-weekend-001,Str. Bartók Béla → Câmpul Frumos,0,2D-depart
+2D,weekend,2D-depart-weekend-002,Str. Bartók Béla → Câmpul Frumos,0,2D-depart
+2D,weekend,2D-depart-weekend-003,Str. Bartók Béla → Câmpul Frumos,0,2D-depart
+2D,weekend,2D-depart-weekend-004,Str. Bartók Béla → Câmpul Frumos,0,2D-depart
+2D,weekend,2D-depart-weekend-005,Str. Bartók Béla → Câmpul Frumos,0,2D-depart
+2D,weekend,2D-depart-weekend-006,Str. Bartók Béla → Câmpul Frumos,0,2D-depart
+2D,weekend,2D-depart-weekend-007,Str. Bartók Béla → Câmpul Frumos,0,2D-depart
+2D,weekend,2D-depart-weekend-008,Str. Bartók Béla → Câmpul Frumos,0,2D-depart
+2D,weekend,2D-depart-weekend-009,Str. Bartók Béla → Câmpul Frumos,0,2D-depart
+2D,weekend,2D-depart-weekend-010,Str. Bartók Béla → Câmpul Frumos,0,2D-depart
 2D,weekday,2D-return-weekday-001,Câmpul Frumos → Str. Bartók Béla,1,2D-return
 2D,weekday,2D-return-weekday-002,Câmpul Frumos → Str. Bartók Béla,1,2D-return
 2D,weekday,2D-return-weekday-003,Câmpul Frumos → Str. Bartók Béla,1,2D-return
@@ -232,6 +297,36 @@ route_id,service_id,trip_id,trip_headsign,direction_id,shape_id
 3,weekday,3-depart-weekday-013,Str. Țigaretei – traseu circular,0,3-depart
 3,weekday,3-depart-weekday-014,Str. Țigaretei – traseu circular,0,3-depart
 3,weekday,3-depart-weekday-015,Str. Țigaretei – traseu circular,0,3-depart
+3,weekday,3-depart-weekday-016,Str. Țigaretei – traseu circular,0,3-depart
+3,weekday,3-depart-weekday-017,Str. Țigaretei – traseu circular,0,3-depart
+3,weekday,3-depart-weekday-018,Str. Țigaretei – traseu circular,0,3-depart
+3,weekday,3-depart-weekday-019,Str. Țigaretei – traseu circular,0,3-depart
+3,weekday,3-depart-weekday-020,Str. Țigaretei – traseu circular,0,3-depart
+3,weekday,3-depart-weekday-021,Str. Țigaretei – traseu circular,0,3-depart
+3,weekday,3-depart-weekday-022,Str. Țigaretei – traseu circular,0,3-depart
+3,weekday,3-depart-weekday-023,Str. Țigaretei – traseu circular,0,3-depart
+3,weekday,3-depart-weekday-024,Str. Țigaretei – traseu circular,0,3-depart
+3,weekday,3-depart-weekday-025,Str. Țigaretei – traseu circular,0,3-depart
+3,weekday,3-depart-weekday-026,Str. Țigaretei – traseu circular,0,3-depart
+3,weekday,3-depart-weekday-027,Str. Țigaretei – traseu circular,0,3-depart
+3,weekday,3-depart-weekday-028,Str. Țigaretei – traseu circular,0,3-depart
+3,weekday,3-depart-weekday-029,Str. Țigaretei – traseu circular,0,3-depart
+3,weekday,3-depart-weekday-030,Str. Țigaretei – traseu circular,0,3-depart
+3,weekday,3-depart-weekday-031,Str. Țigaretei – traseu circular,0,3-depart
+3,weekday,3-depart-weekday-032,Str. Țigaretei – traseu circular,0,3-depart
+3,weekday,3-depart-weekday-033,Str. Țigaretei – traseu circular,0,3-depart
+3,weekday,3-depart-weekday-034,Str. Țigaretei – traseu circular,0,3-depart
+3,weekday,3-depart-weekday-035,Str. Țigaretei – traseu circular,0,3-depart
+3,weekday,3-depart-weekday-036,Str. Țigaretei – traseu circular,0,3-depart
+3,weekday,3-depart-weekday-037,Str. Țigaretei – traseu circular,0,3-depart
+3,weekday,3-depart-weekday-038,Str. Țigaretei – traseu circular,0,3-depart
+3,weekday,3-depart-weekday-039,Str. Țigaretei – traseu circular,0,3-depart
+3,weekday,3-depart-weekday-040,Str. Țigaretei – traseu circular,0,3-depart
+3,weekday,3-depart-weekday-041,Str. Țigaretei – traseu circular,0,3-depart
+3,weekday,3-depart-weekday-042,Str. Țigaretei – traseu circular,0,3-depart
+3,weekday,3-depart-weekday-043,Str. Țigaretei – traseu circular,0,3-depart
+3,weekday,3-depart-weekday-044,Str. Țigaretei – traseu circular,0,3-depart
+3,weekday,3-depart-weekday-045,Str. Țigaretei – traseu circular,0,3-depart
 3,weekend,3-depart-weekend-001,Str. Țigaretei – traseu circular,0,3-depart
 3,weekend,3-depart-weekend-002,Str. Țigaretei – traseu circular,0,3-depart
 3,weekend,3-depart-weekend-003,Str. Țigaretei – traseu circular,0,3-depart
@@ -240,6 +335,22 @@ route_id,service_id,trip_id,trip_headsign,direction_id,shape_id
 3,weekend,3-depart-weekend-006,Str. Țigaretei – traseu circular,0,3-depart
 3,weekend,3-depart-weekend-007,Str. Țigaretei – traseu circular,0,3-depart
 3,weekend,3-depart-weekend-008,Str. Țigaretei – traseu circular,0,3-depart
+3,weekend,3-depart-weekend-009,Str. Țigaretei – traseu circular,0,3-depart
+3,weekend,3-depart-weekend-010,Str. Țigaretei – traseu circular,0,3-depart
+3,weekend,3-depart-weekend-011,Str. Țigaretei – traseu circular,0,3-depart
+3,weekend,3-depart-weekend-012,Str. Țigaretei – traseu circular,0,3-depart
+3,weekend,3-depart-weekend-013,Str. Țigaretei – traseu circular,0,3-depart
+3,weekend,3-depart-weekend-014,Str. Țigaretei – traseu circular,0,3-depart
+3,weekend,3-depart-weekend-015,Str. Țigaretei – traseu circular,0,3-depart
+3,weekend,3-depart-weekend-016,Str. Țigaretei – traseu circular,0,3-depart
+3,weekend,3-depart-weekend-017,Str. Țigaretei – traseu circular,0,3-depart
+3,weekend,3-depart-weekend-018,Str. Țigaretei – traseu circular,0,3-depart
+3,weekend,3-depart-weekend-019,Str. Țigaretei – traseu circular,0,3-depart
+3,weekend,3-depart-weekend-020,Str. Țigaretei – traseu circular,0,3-depart
+3,weekend,3-depart-weekend-021,Str. Țigaretei – traseu circular,0,3-depart
+3,weekend,3-depart-weekend-022,Str. Țigaretei – traseu circular,0,3-depart
+3,weekend,3-depart-weekend-023,Str. Țigaretei – traseu circular,0,3-depart
+3,weekend,3-depart-weekend-024,Str. Țigaretei – traseu circular,0,3-depart
 4,weekday,4-depart-weekday-001,Str. Țigaretei – traseu circular,0,4-depart
 4,weekday,4-depart-weekday-002,Str. Țigaretei – traseu circular,0,4-depart
 4,weekday,4-depart-weekday-003,Str. Țigaretei – traseu circular,0,4-depart
@@ -256,6 +367,22 @@ route_id,service_id,trip_id,trip_headsign,direction_id,shape_id
 4,weekday,4-depart-weekday-014,Str. Țigaretei – traseu circular,0,4-depart
 4,weekday,4-depart-weekday-015,Str. Țigaretei – traseu circular,0,4-depart
 4,weekday,4-depart-weekday-016,Str. Țigaretei – traseu circular,0,4-depart
+4,weekday,4-depart-weekday-017,Str. Țigaretei – traseu circular,0,4-depart
+4,weekday,4-depart-weekday-018,Str. Țigaretei – traseu circular,0,4-depart
+4,weekday,4-depart-weekday-019,Str. Țigaretei – traseu circular,0,4-depart
+4,weekday,4-depart-weekday-020,Str. Țigaretei – traseu circular,0,4-depart
+4,weekday,4-depart-weekday-021,Str. Țigaretei – traseu circular,0,4-depart
+4,weekday,4-depart-weekday-022,Str. Țigaretei – traseu circular,0,4-depart
+4,weekday,4-depart-weekday-023,Str. Țigaretei – traseu circular,0,4-depart
+4,weekday,4-depart-weekday-024,Str. Țigaretei – traseu circular,0,4-depart
+4,weekday,4-depart-weekday-025,Str. Țigaretei – traseu circular,0,4-depart
+4,weekday,4-depart-weekday-026,Str. Țigaretei – traseu circular,0,4-depart
+4,weekday,4-depart-weekday-027,Str. Țigaretei – traseu circular,0,4-depart
+4,weekday,4-depart-weekday-028,Str. Țigaretei – traseu circular,0,4-depart
+4,weekday,4-depart-weekday-029,Str. Țigaretei – traseu circular,0,4-depart
+4,weekday,4-depart-weekday-030,Str. Țigaretei – traseu circular,0,4-depart
+4,weekday,4-depart-weekday-031,Str. Țigaretei – traseu circular,0,4-depart
+4,weekday,4-depart-weekday-032,Str. Țigaretei – traseu circular,0,4-depart
 4,weekend,4-depart-weekend-001,Str. Țigaretei – traseu circular,0,4-depart
 4,weekend,4-depart-weekend-002,Str. Țigaretei – traseu circular,0,4-depart
 4,weekend,4-depart-weekend-003,Str. Țigaretei – traseu circular,0,4-depart
@@ -265,6 +392,15 @@ route_id,service_id,trip_id,trip_headsign,direction_id,shape_id
 4,weekend,4-depart-weekend-007,Str. Țigaretei – traseu circular,0,4-depart
 4,weekend,4-depart-weekend-008,Str. Țigaretei – traseu circular,0,4-depart
 4,weekend,4-depart-weekend-009,Str. Țigaretei – traseu circular,0,4-depart
+4,weekend,4-depart-weekend-010,Str. Țigaretei – traseu circular,0,4-depart
+4,weekend,4-depart-weekend-011,Str. Țigaretei – traseu circular,0,4-depart
+4,weekend,4-depart-weekend-012,Str. Țigaretei – traseu circular,0,4-depart
+4,weekend,4-depart-weekend-013,Str. Țigaretei – traseu circular,0,4-depart
+4,weekend,4-depart-weekend-014,Str. Țigaretei – traseu circular,0,4-depart
+4,weekend,4-depart-weekend-015,Str. Țigaretei – traseu circular,0,4-depart
+4,weekend,4-depart-weekend-016,Str. Țigaretei – traseu circular,0,4-depart
+4,weekend,4-depart-weekend-017,Str. Țigaretei – traseu circular,0,4-depart
+4,weekend,4-depart-weekend-018,Str. Țigaretei – traseu circular,0,4-depart
 5,weekday,5-depart-weekday-001,Str. József Attila – traseu circular,0,5-depart
 5,weekday,5-depart-weekday-002,Str. József Attila – traseu circular,0,5-depart
 5,weekday,5-depart-weekday-003,Str. József Attila – traseu circular,0,5-depart
@@ -288,6 +424,13 @@ route_id,service_id,trip_id,trip_headsign,direction_id,shape_id
 5,weekday,5-depart-weekday-021,Str. József Attila – traseu circular,0,5-depart
 5,weekday,5-depart-weekday-022,Str. József Attila – traseu circular,0,5-depart
 5,weekday,5-depart-weekday-023,Str. József Attila – traseu circular,0,5-depart
+5,weekday,5-depart-weekday-024,Str. József Attila – traseu circular,0,5-depart
+5,weekday,5-depart-weekday-025,Str. József Attila – traseu circular,0,5-depart
+5,weekday,5-depart-weekday-026,Str. József Attila – traseu circular,0,5-depart
+5,weekday,5-depart-weekday-027,Str. József Attila – traseu circular,0,5-depart
+5,weekday,5-depart-weekday-028,Str. József Attila – traseu circular,0,5-depart
+5,weekday,5-depart-weekday-029,Str. József Attila – traseu circular,0,5-depart
+5,weekday,5-depart-weekday-030,Str. József Attila – traseu circular,0,5-depart
 5,weekend,5-depart-weekend-001,Str. József Attila – traseu circular,0,5-depart
 5,weekend,5-depart-weekend-002,Str. József Attila – traseu circular,0,5-depart
 5,weekend,5-depart-weekend-003,Str. József Attila – traseu circular,0,5-depart
@@ -303,6 +446,19 @@ route_id,service_id,trip_id,trip_headsign,direction_id,shape_id
 5,weekend,5-depart-weekend-013,Str. József Attila – traseu circular,0,5-depart
 5,weekend,5-depart-weekend-014,Str. József Attila – traseu circular,0,5-depart
 5,weekend,5-depart-weekend-015,Str. József Attila – traseu circular,0,5-depart
+5,weekend,5-depart-weekend-016,Str. József Attila – traseu circular,0,5-depart
+5,weekend,5-depart-weekend-017,Str. József Attila – traseu circular,0,5-depart
+5D,weekday,5D-depart-weekday-001,Str. József Attila 2 → Câmpul Frumos,0,5D-depart
+5D,weekday,5D-depart-weekday-002,Str. József Attila 2 → Câmpul Frumos,0,5D-depart
+5D,weekday,5D-depart-weekday-003,Str. József Attila 2 → Câmpul Frumos,0,5D-depart
+5D,weekday,5D-depart-weekday-004,Str. József Attila 2 → Câmpul Frumos,0,5D-depart
+5D,weekday,5D-depart-weekday-005,Str. József Attila 2 → Câmpul Frumos,0,5D-depart
+5D,weekday,5D-depart-weekday-006,Str. József Attila 2 → Câmpul Frumos,0,5D-depart
+5D,weekday,5D-depart-weekday-007,Str. József Attila 2 → Câmpul Frumos,0,5D-depart
+5D,weekend,5D-depart-weekend-001,Str. József Attila 2 → Câmpul Frumos,0,5D-depart
+5D,weekend,5D-depart-weekend-002,Str. József Attila 2 → Câmpul Frumos,0,5D-depart
+5D,weekend,5D-depart-weekend-003,Str. József Attila 2 → Câmpul Frumos,0,5D-depart
+5D,weekend,5D-depart-weekend-004,Str. József Attila 2 → Câmpul Frumos,0,5D-depart
 5D,weekday,5D-return-weekday-001,Câmpul Frumos → Str. József Attila 2,1,5D-return
 5D,weekday,5D-return-weekday-002,Câmpul Frumos → Str. József Attila 2,1,5D-return
 5D,weekday,5D-return-weekday-003,Câmpul Frumos → Str. József Attila 2,1,5D-return
@@ -330,6 +486,9 @@ route_id,service_id,trip_id,trip_headsign,direction_id,shape_id
 6,weekday,6-depart-weekday-019,Str. Bartók Béla – traseu circular,0,6-depart
 6,weekday,6-depart-weekday-020,Str. Bartók Béla – traseu circular,0,6-depart
 6,weekday,6-depart-weekday-021,Str. Bartók Béla – traseu circular,0,6-depart
+6,weekday,6-depart-weekday-022,Str. Bartók Béla – traseu circular,0,6-depart
+6,weekday,6-depart-weekday-023,Str. Bartók Béla – traseu circular,0,6-depart
+6,weekday,6-depart-weekday-024,Str. Bartók Béla – traseu circular,0,6-depart
 6,weekend,6-depart-weekend-001,Str. Bartók Béla – traseu circular,0,6-depart
 6,weekend,6-depart-weekend-002,Str. Bartók Béla – traseu circular,0,6-depart
 6,weekend,6-depart-weekend-003,Str. Bartók Béla – traseu circular,0,6-depart
@@ -347,6 +506,7 @@ route_id,service_id,trip_id,trip_headsign,direction_id,shape_id
 6,weekend,6-depart-weekend-015,Str. Bartók Béla – traseu circular,0,6-depart
 6,weekend,6-depart-weekend-016,Str. Bartók Béla – traseu circular,0,6-depart
 6,weekend,6-depart-weekend-017,Str. Bartók Béla – traseu circular,0,6-depart
+6,weekend,6-depart-weekend-018,Str. Bartók Béla – traseu circular,0,6-depart
 7,weekday,7-depart-weekday-001,Cap Linie Simeria → Gara CFR,0,7-depart
 7,weekday,7-depart-weekday-002,Cap Linie Simeria → Gara CFR,0,7-depart
 7,weekday,7-depart-weekday-003,Cap Linie Simeria → Gara CFR,0,7-depart
@@ -451,10 +611,18 @@ route_id,service_id,trip_id,trip_headsign,direction_id,shape_id
 9,weekday,9-depart-weekday-002,Gara CFR → Șugaș Băi,0,9-depart
 9,weekday,9-depart-weekday-003,Gara CFR → Șugaș Băi,0,9-depart
 9,weekday,9-depart-weekday-004,Gara CFR → Șugaș Băi,0,9-depart
+9,weekday,9-depart-weekday-005,Gara CFR → Șugaș Băi,0,9-depart
+9,weekday,9-depart-weekday-006,Gara CFR → Șugaș Băi,0,9-depart
+9,weekday,9-depart-weekday-007,Gara CFR → Șugaș Băi,0,9-depart
+9,weekday,9-depart-weekday-008,Gara CFR → Șugaș Băi,0,9-depart
 9,weekend,9-depart-weekend-001,Gara CFR → Șugaș Băi,0,9-depart
 9,weekend,9-depart-weekend-002,Gara CFR → Șugaș Băi,0,9-depart
 9,weekend,9-depart-weekend-003,Gara CFR → Șugaș Băi,0,9-depart
 9,weekend,9-depart-weekend-004,Gara CFR → Șugaș Băi,0,9-depart
+9,weekend,9-depart-weekend-005,Gara CFR → Șugaș Băi,0,9-depart
+9,weekend,9-depart-weekend-006,Gara CFR → Șugaș Băi,0,9-depart
+9,weekend,9-depart-weekend-007,Gara CFR → Șugaș Băi,0,9-depart
+9,weekend,9-depart-weekend-008,Gara CFR → Șugaș Băi,0,9-depart
 9,weekday,9-return-weekday-001,Șugaș Băi → Gara CFR,1,9-return
 9,weekday,9-return-weekday-002,Șugaș Băi → Gara CFR,1,9-return
 9,weekday,9-return-weekday-003,Șugaș Băi → Gara CFR,1,9-return

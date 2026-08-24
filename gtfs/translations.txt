@@ -1,150 +1,101 @@
 table_name,field_name,language,record_id,translation
-stops,stop_name,hu,S0-0,Sepsi Aréna
-stops,stop_name,hu,ST1,Autoliv
-stops,stop_name,hu,S1-0,Autoliv
-stops,stop_name,hu,S1-1,Autoliv
-stops,stop_name,hu,ST2,G. Bálán sugárút 1
-stops,stop_name,hu,S2-0,G. Bálán sugárút 1
-stops,stop_name,hu,S2-1,G. Bálán sugárút 1
-stops,stop_name,hu,ST3,G. Bálán sugárút 2
-stops,stop_name,hu,S3-0,G. Bálán sugárút 2
-stops,stop_name,hu,S3-1,G. Bálán sugárút 2
-stops,stop_name,hu,ST4,N. Iorga sugárút 1
-stops,stop_name,hu,S4-0,N. Iorga sugárút 1
-stops,stop_name,hu,S4-1,N. Iorga sugárút 1
-stops,stop_name,hu,ST5,N. Iorga sugárút 2
-stops,stop_name,hu,S5-0,N. Iorga sugárút 2
-stops,stop_name,hu,S5-1,N. Iorga sugárút 2
-stops,stop_name,hu,ST6,Református Templom
-stops,stop_name,hu,S6-0,Református Templom
-stops,stop_name,hu,S6-1,Református Templom
-stops,stop_name,hu,S7-0,Árkosi Református Templom
-stops,stop_name,hu,ST8,Brassói út 1
-stops,stop_name,hu,S8-0,Brassói út 1
-stops,stop_name,hu,S8-1,Brassói út 1
-stops,stop_name,hu,ST9,Brassói út 2
-stops,stop_name,hu,S9-0,Brassói út 2
-stops,stop_name,hu,S9-1,Brassói út 2
-stops,stop_name,hu,ST10,Brassói út 3
-stops,stop_name,hu,S10-0,Brassói út 3
-stops,stop_name,hu,S10-1,Brassói út 3
-stops,stop_name,hu,ST11,Szemerja Végállomás
-stops,stop_name,hu,S11-0,Szemerja Végállomás
-stops,stop_name,hu,S11-1,Szemerja Végállomás
-stops,stop_name,hu,ST12,Kossuth Lajos negyed
-stops,stop_name,hu,S12-0,Kossuth Lajos negyed
-stops,stop_name,hu,S12-1,Kossuth Lajos negyed
-stops,stop_name,hu,ST13,Csíki negyed
-stops,stop_name,hu,S13-0,Csíki negyed
-stops,stop_name,hu,S13-1,Csíki negyed
-stops,stop_name,hu,S14-0,Lábasház
-stops,stop_name,hu,ST15,Szentkereszty kastély
-stops,stop_name,hu,S15-0,Szentkereszty kastély
-stops,stop_name,hu,S15-1,Szentkereszty kastély
-stops,stop_name,hu,S16-0,Árkos központ
-stops,stop_name,hu,ST17,Bevásárlóközpont
-stops,stop_name,hu,S17-0,Bevásárlóközpont
-stops,stop_name,hu,S17-1,Bevásárlóközpont
-stops,stop_name,hu,ST18,Kilyén
-stops,stop_name,hu,S18-0,Kilyén
-stops,stop_name,hu,S18-1,Kilyén
-stops,stop_name,hu,ST19,Vitéz Mihály Líceum
-stops,stop_name,hu,S19-0,Vitéz Mihály Líceum
-stops,stop_name,hu,S19-1,Vitéz Mihály Líceum
-stops,stop_name,hu,S20-0,Comfort Residence
-stops,stop_name,hu,ST21,Szotyor 1
-stops,stop_name,hu,S21-0,Szotyor 1
-stops,stop_name,hu,S21-1,Szotyor 1
-stops,stop_name,hu,S22-0,Szotyor 2
-stops,stop_name,hu,ST23,Szépmező
-stops,stop_name,hu,S23-0,Szépmező
-stops,stop_name,hu,S23-1,Szépmező
-stops,stop_name,hu,ST24,Debren
-stops,stop_name,hu,S24-0,Debren
-stops,stop_name,hu,S24-1,Debren
-stops,stop_name,hu,ST25,Tejgyár
-stops,stop_name,hu,S25-0,Tejgyár
-stops,stop_name,hu,S25-1,Tejgyár
-stops,stop_name,hu,ST26,Cigarettagyár
-stops,stop_name,hu,S26-0,Cigarettagyár
-stops,stop_name,hu,S26-1,Cigarettagyár
-stops,stop_name,hu,ST27,Honvéd kút
-stops,stop_name,hu,S27-0,Honvéd kút
-stops,stop_name,hu,S27-1,Honvéd kút
-stops,stop_name,hu,S28-0,Vasútállomás
-stops,stop_name,hu,ST29,Kertészet
-stops,stop_name,hu,S29-0,Kertészet
-stops,stop_name,hu,S29-1,Kertészet
-stops,stop_name,hu,ST30,Tervező Intézet
-stops,stop_name,hu,S30-0,Tervező Intézet
-stops,stop_name,hu,S30-1,Tervező Intézet
-stops,stop_name,hu,S31-0,Büdöskút
-stops,stop_name,hu,ST32,Plugor Sándor Líceum
-stops,stop_name,hu,S32-0,Plugor Sándor Líceum
-stops,stop_name,hu,S32-1,Plugor Sándor Líceum
-stops,stop_name,hu,ST33,Motel Calypso
-stops,stop_name,hu,S33-0,Motel Calypso
-stops,stop_name,hu,S33-1,Motel Calypso
-stops,stop_name,hu,S34-0,Multi-Trans
-stops,stop_name,hu,ST35,Erzsébet Park
-stops,stop_name,hu,S35-0,Erzsébet Park
-stops,stop_name,hu,S35-1,Erzsébet Park
-stops,stop_name,hu,ST36,Kálvin tér
-stops,stop_name,hu,S36-0,Kálvin tér
-stops,stop_name,hu,S36-1,Kálvin tér
-stops,stop_name,hu,ST37,Árkosi Polgármesteri Hivatal
-stops,stop_name,hu,S37-0,Árkosi Polgármesteri Hivatal
-stops,stop_name,hu,S37-1,Árkosi Polgármesteri Hivatal
-stops,stop_name,hu,ST38,Megyei Kórház
-stops,stop_name,hu,S38-0,Megyei Kórház
-stops,stop_name,hu,S38-1,Megyei Kórház
-stops,stop_name,hu,S39-0,Bartók Béla utca
-stops,stop_name,hu,ST40,Borvíz utca
-stops,stop_name,hu,S40-0,Borvíz utca
-stops,stop_name,hu,S40-1,Borvíz utca
-stops,stop_name,hu,ST41,Csíki utca 1
-stops,stop_name,hu,S41-0,Csíki utca 1
-stops,stop_name,hu,S41-1,Csíki utca 1
-stops,stop_name,hu,ST42,Csíki utca 2
-stops,stop_name,hu,S42-0,Csíki utca 2
-stops,stop_name,hu,S42-1,Csíki utca 2
-stops,stop_name,hu,ST43,Építők útja 1
-stops,stop_name,hu,S43-0,Építők útja 1
-stops,stop_name,hu,S43-1,Építők útja 1
-stops,stop_name,hu,ST44,Építők útja 2
-stops,stop_name,hu,S44-0,Építők útja 2
-stops,stop_name,hu,S44-1,Építők útja 2
-stops,stop_name,hu,ST45,Építők útja 3
-stops,stop_name,hu,S45-0,Építők útja 3
-stops,stop_name,hu,S45-1,Építők útja 3
-stops,stop_name,hu,ST46,Domb utca
-stops,stop_name,hu,S46-0,Domb utca
-stops,stop_name,hu,S46-1,Domb utca
-stops,stop_name,hu,S47-0,Dózsa György utca
-stops,stop_name,hu,S48-0,Gyár utca 1
-stops,stop_name,hu,S49-0,Gyár utca 2
-stops,stop_name,hu,S50-0,Hóvirág utca
-stops,stop_name,hu,S51-0,Gábor Áron utca
-stops,stop_name,hu,S52-0,József Attila u. 1
-stops,stop_name,hu,S53-0,József Attila u. 2
-stops,stop_name,hu,S54-0,Kós Károly utca
-stops,stop_name,hu,ST55,Gyöngyvirág utca 1
-stops,stop_name,hu,S55-0,Gyöngyvirág utca 1
-stops,stop_name,hu,S55-1,Gyöngyvirág utca 1
-stops,stop_name,hu,ST56,Gyöngyvirág utca 2
-stops,stop_name,hu,S56-0,Gyöngyvirág utca 2
-stops,stop_name,hu,S56-1,Gyöngyvirág utca 2
-stops,stop_name,hu,ST57,Sport utca
-stops,stop_name,hu,S57-0,Sport utca
-stops,stop_name,hu,S57-1,Sport utca
-stops,stop_name,hu,S58-0,Vadász utca 1
-stops,stop_name,hu,S59-0,Vadász utca 2
-stops,stop_name,hu,S60-0,Cigaretta utca 1
-stops,stop_name,hu,S61-0,Cigaretta utca 2
-stops,stop_name,hu,S62-0,Cigaretta utca 3
-stops,stop_name,hu,S63-0,Terminál
-stops,stop_name,hu,S64-0,Törvényszék
-stops,stop_name,hu,S65-0,Sugásfürdő
+stops,stop_name,hu,P1,Szotyor 1
+stops,stop_name,hu,P2,Erzsébet park
+stops,stop_name,hu,P3,Református templom
+stops,stop_name,hu,P4,Domb utca
+stops,stop_name,hu,P5,Tervező Intézet
+stops,stop_name,hu,P6,Megyei Kórház
+stops,stop_name,hu,P7,Református templom
+stops,stop_name,hu,P8,Lábas Ház
+stops,stop_name,hu,P9,Tervező Intézet
+stops,stop_name,hu,P10,Domb utca
+stops,stop_name,hu,P11,Debren
+stops,stop_name,hu,P12,Debren
+stops,stop_name,hu,P13,Csíki negyed
+stops,stop_name,hu,P14,Csíki negyed
+stops,stop_name,hu,P15,Törvényszék
+stops,stop_name,hu,P16,Sepsi Aréna
+stops,stop_name,hu,P17,Autoliv
+stops,stop_name,hu,P18,G. Bálán sugárút 1
+stops,stop_name,hu,P19,G. Bálán sugárút 2
+stops,stop_name,hu,P20,N. Iorga sugárút 1
+stops,stop_name,hu,P21,N. Iorga sugárút 1
+stops,stop_name,hu,P22,N. Iorga sugárút 2
+stops,stop_name,hu,P23,N. Iorga sugárút 2
+stops,stop_name,hu,P24,Árkosi Református Templom
+stops,stop_name,hu,P25,Brassói út 1
+stops,stop_name,hu,P26,Brassói út 1
+stops,stop_name,hu,P27,Brassói út 2
+stops,stop_name,hu,P28,Brassói út 2
+stops,stop_name,hu,P29,Brassói út 3
+stops,stop_name,hu,P30,Brassói út 3
+stops,stop_name,hu,P31,Szépmező
+stops,stop_name,hu,P32,Szemerja Végállomás
+stops,stop_name,hu,P33,Szemerja Végállomás
+stops,stop_name,hu,P34,Kossuth Lajos negyed
+stops,stop_name,hu,P35,Kossuth Lajos negyed
+stops,stop_name,hu,P36,Szentkereszty kastély
+stops,stop_name,hu,P37,Szentkereszty kastély
+stops,stop_name,hu,P38,Árkos központ
+stops,stop_name,hu,P39,Bevásárlóközpont
+stops,stop_name,hu,P40,Bevásárlóközpont
+stops,stop_name,hu,P41,Kilyén
+stops,stop_name,hu,P42,Kilyén
+stops,stop_name,hu,P43,Vitéz Mihály Líceum
+stops,stop_name,hu,P44,Vitéz Mihály Líceum
+stops,stop_name,hu,P45,Comfort Residence
+stops,stop_name,hu,P46,Szotyor 2
+stops,stop_name,hu,P47,Tejgyár
+stops,stop_name,hu,P48,Cigarettagyár
+stops,stop_name,hu,P49,Cigarettagyár
+stops,stop_name,hu,P50,Honvéd kút
+stops,stop_name,hu,P51,Honvéd kút
+stops,stop_name,hu,P52,Vasútállomás
+stops,stop_name,hu,P53,Kertészet
+stops,stop_name,hu,P54,Kertészet
+stops,stop_name,hu,P55,Büdöskút
+stops,stop_name,hu,P56,Plugor Sándor Líceum
+stops,stop_name,hu,P57,Plugor Sándor Líceum
+stops,stop_name,hu,P58,Motel Calypso
+stops,stop_name,hu,P59,Motel Calypso
+stops,stop_name,hu,P60,Multi-Trans
+stops,stop_name,hu,P61,Kálvin tér
+stops,stop_name,hu,P62,Kálvin tér
+stops,stop_name,hu,P63,Árkosi Polgármesteri Hivatal
+stops,stop_name,hu,P64,Árkosi Polgármesteri Hivatal
+stops,stop_name,hu,P65,Megyei Kórház
+stops,stop_name,hu,P66,Bartók Béla utca
+stops,stop_name,hu,P67,Borvíz utca
+stops,stop_name,hu,P68,Borvíz utca
+stops,stop_name,hu,P69,Csíki utca 1
+stops,stop_name,hu,P70,Csíki utca 1
+stops,stop_name,hu,P71,Csíki utca 2
+stops,stop_name,hu,P72,Csíki utca 2
+stops,stop_name,hu,P73,Építők útja 1
+stops,stop_name,hu,P74,Építők útja 1
+stops,stop_name,hu,P75,Építők útja 2
+stops,stop_name,hu,P76,Építők útja 2
+stops,stop_name,hu,P77,Építők útja 3
+stops,stop_name,hu,P78,Dózsa György utca
+stops,stop_name,hu,P79,Gyár utca 1
+stops,stop_name,hu,P80,Gyár utca 2
+stops,stop_name,hu,P81,Gábor Áron utca
+stops,stop_name,hu,P82,Hóvirág utca
+stops,stop_name,hu,P83,József Attila u. 1
+stops,stop_name,hu,P84,József Attila u. 2
+stops,stop_name,hu,P85,Kós Károly utca
+stops,stop_name,hu,P86,Gyöngyvirág utca 1
+stops,stop_name,hu,P87,Gyöngyvirág utca 1
+stops,stop_name,hu,P88,Gyöngyvirág utca 2
+stops,stop_name,hu,P89,Sport utca
+stops,stop_name,hu,P90,Sport utca
+stops,stop_name,hu,P91,Cigaretta utca 1
+stops,stop_name,hu,P92,Cigaretta utca 2
+stops,stop_name,hu,P93,Cigaretta utca 3
+stops,stop_name,hu,P94,Vadász utca 1
+stops,stop_name,hu,P95,Vadász utca 2
+stops,stop_name,hu,P96,Sugásfürdő
+stops,stop_name,hu,P97,Terminál
 fare_products,fare_product_name,hu,city_24pay,50 percig érvényes jegy a 24pay alkalmazásban
 fare_products,fare_product_name,hu,city_machine,"Egy utazásra szóló jegy, jegyautomatából"
 fare_products,fare_product_name,hu,city_two,Kétutazásos jegy

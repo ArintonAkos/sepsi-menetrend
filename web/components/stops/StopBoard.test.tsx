@@ -1,6 +1,6 @@
 /** The board a rider reads while standing at the pole. */
-import { describe, it, expect, beforeAll } from "vitest";
-import { render, screen, within } from "@testing-library/react";
+import { describe, it, expect, beforeAll, beforeEach } from "vitest";
+import { cleanup, render, screen, within } from "@testing-library/react";
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import StopBoard from "./StopBoard";
@@ -18,6 +18,11 @@ beforeAll(() => {
   for (const s of net.stops) if (!byName.has(s.name.ro)) byName.set(s.name.ro, s);
 });
 
+/* Keep one test's popup from becoming another test's board. */
+beforeEach(cleanup);
+
+const inferredContext = () => prepare({ ...net, officialBoards: [] });
+
 const show = (name: string, now = 8 * 60) => {
   const stop = byName.get(name);
   if (!stop) throw new Error(`no stop called ${name}`);
@@ -33,6 +38,24 @@ describe("a stop's board", () => {
     expect(screen.getByText("Vasútállomás")).toBeInTheDocument();
     const times = screen.getAllByText(/^\d{2}:\d{2}\*?$/);
     expect(times.length).toBeGreaterThan(10);
+  });
+
+  it("shows an exact official board before the inferred route timetable", () => {
+    const stop = byName.get("Gara CFR")!;
+    const sourceCtx = prepare({
+      ...net,
+      officialBoards: [{
+        stopRo: "Gara CFR", lineId: "2D", destination: "Câmpul Frumos / Szépmező",
+        weekday: [7 * 60 + 17], weekend: [7 * 60 + 17],
+      }],
+    });
+    const sourceBoard = render(<StopBoard stop={stop} ctx={sourceCtx}
+                                          lines={new Map(net.lines.map((l) => [l.id, l]))}
+                                          service="weekday" now={7 * 60} lang="hu" t={STRINGS.hu}
+                                          onClose={() => {}} />);
+
+    expect(sourceBoard.getByText("07:17")).toBeInTheDocument();
+    expect(sourceBoard.getByText("→ Câmpul Frumos / Szépmező")).toBeInTheDocument();
   });
 
   it("gives a circular line one row per pass, not one merged column", () => {
@@ -58,10 +81,11 @@ describe("a stop's board", () => {
   });
 
   it("says a terminus ends there rather than pointing somewhere", () => {
+    const inferred = inferredContext();
     const terminus = net.patterns
       .map((p) => net.stops.find((s) => s.id === p.stopIds[p.stopIds.length - 1])!)
-      .find((s) => !ctx.callsAt.has(s.id))!;
-    render(<StopBoard stop={terminus} ctx={ctx}
+      .find((s) => !inferred.callsAt.has(s.id))!;
+    render(<StopBoard stop={terminus} ctx={inferred}
                       lines={new Map(net.lines.map((l) => [l.id, l]))}
                       service="weekday" now={8 * 60} lang="hu" t={STRINGS.hu}
                       onClose={() => {}} />);
@@ -69,10 +93,11 @@ describe("a stop's board", () => {
   });
 
   it("flags the times nobody published rather than passing them off as given", () => {
+    const inferred = inferredContext();
     const guessed = net.patterns.find((p) => p.published.includes(false))!;
     const index = guessed.published.indexOf(false);
     const stop = net.stops.find((s) => s.id === guessed.stopIds[index])!;
-    render(<StopBoard stop={stop} ctx={ctx}
+    render(<StopBoard stop={stop} ctx={inferred}
                       lines={new Map(net.lines.map((l) => [l.id, l]))}
                       service="weekday" now={8 * 60} lang="hu" t={STRINGS.hu}
                       onClose={() => {}} />);
@@ -84,7 +109,18 @@ describe("a stop's board", () => {
     /* Dimming means "you have missed this one". With nothing left to come it
        means nothing, and a column of grey reads as a fault rather than as the
        end of the service day. */
-    show("Gara CFR", 23 * 60 + 59);
+    const stop = byName.get("Gara CFR")!;
+    const sourceCtx = prepare({
+      ...net,
+      officialBoards: [{
+        stopRo: "Gara CFR", lineId: "2D", destination: "Câmpul Frumos / Szépmező",
+        weekday: [8 * 60], weekend: [8 * 60],
+      }],
+    });
+    render(<StopBoard stop={stop} ctx={sourceCtx}
+                      lines={new Map(net.lines.map((l) => [l.id, l]))}
+                      service="weekday" now={23 * 60 + 59} lang="hu" t={STRINGS.hu}
+                      onClose={() => {}} />);
     const times = screen.getAllByText(/^\d{2}:\d{2}\*?$/);
     expect(times.length).toBeGreaterThan(0);
     expect(times.filter((el) => el.className.includes("past"))).toHaveLength(0);
@@ -103,7 +139,11 @@ describe("a stop's board", () => {
   });
 
   it("puts buses that finish here after the ones you can board", () => {
-    show("Gara CFR");
+    const stop = byName.get("Gara CFR")!;
+    render(<StopBoard stop={stop} ctx={inferredContext()}
+                      lines={new Map(net.lines.map((l) => [l.id, l]))}
+                      service="weekday" now={8 * 60} lang="hu" t={STRINGS.hu}
+                      onClose={() => {}} />);
     const heading = screen.getByText("Ide érkezik");
     const ends = screen.getAllByText("Itt ér véget");
     for (const end of ends)

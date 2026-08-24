@@ -9,7 +9,8 @@
     "lint": "eslint",
     "test": "vitest run",
     "test:watch": "vitest",
-    "dev:https": "node scripts/dev-cert.mjs && next dev --experimental-https --experimental-https-key certificates/dev-key.pem --experimental-https-cert certificates/dev.pem",
+    "dev:https": "node scripts/dev-cert.mjs && ./node_modules/.bin/netlify dev --skip-gitignore",
+    "dev:https:next": "next dev --port 3000",
     "dev:cert": "node scripts/dev-cert.mjs"
   },
   "dependencies": {
@@ -19,6 +20,7 @@
     "react-dom": "19.2.8"
   },
   "devDependencies": {
+    "@opentelemetry/api": "^1.9.1",
     "@testing-library/jest-dom": "^7.0.1",
     "@testing-library/react": "^16.3.2",
     "@testing-library/user-event": "^14.6.5",
@@ -30,6 +32,7 @@
     "eslint": "^9",
     "eslint-config-next": "16.3.1",
     "jsdom": "^29.1.1",
+    "netlify-cli": "^27.1.2",
     "typescript": "^5",
     "vitest": "^4.1.11"
   }

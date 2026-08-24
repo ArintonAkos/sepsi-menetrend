@@ -30,13 +30,16 @@ npm run dev:https
 ```
 
 That issues a certificate covering localhost, this machine's LAN addresses and
-its Bonjour name, then serves over HTTPS. `next dev --experimental-https` on its
-own only covers localhost, which the phone rejects.
+its Bonjour name, then starts Netlify Dev over HTTPS. It runs the Next server in
+the background and also executes the local Edge Function, so
+`/api/sepsibike` retrieves the live station state just as it does in production.
+Open the Netlify Dev address (normally port 8888), rather than the background
+Next server on port 3000.
 
 Prefer the Bonjour name - it survives the router handing out a new address:
 
 ```
-https://akoss-mac-mini.local:3000
+https://akoss-mac-mini.local:8888
 ```
 
 Once per phone, trust the local authority so there are no warnings:

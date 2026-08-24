@@ -5,18 +5,19 @@ Source: https://www.multitrans.ro/orarele/multitrans_menetrendek_web.html
 The page renders client-side from a `const STATIONS = [...]` array, so the data
 is read out of the script rather than the markup.
 
-Two things about that source have to be corrected on the way in:
+Two compatibility details matter when importing it:
 
-  * its `hu` and `ro` keys are swapped - the field labelled `hu` holds the
-    Romanian name. Checked both ways against our own stop names: 62 of 72
-    match when swapped, 2 when taken at face value.
+  * current pages label `ro` and `hu` correctly, but older downloads reversed
+    them; the importer accepts both only when the known Romanian stop name
+    confirms the orientation;
   * a handful of stops are spelled differently here than on the line pages.
 
 Output  timetable.json
 
-Only 36 of the 66 stops carry published times; they are the timing points.
-Times for the rest have to be interpolated when stop_times.txt is built, which
-is what GTFS's timepoint=0 is for.
+The page currently publishes 291 line-at-station columns. The route geometry
+has more physical calls than the board, so only those explicit columns are
+marked as GTFS timing points; the remaining calls retain a clearly labelled
+interpolation.
 """
 
 import json
@@ -37,6 +38,20 @@ ALIASES = {
     "Centru comercial": "Centru Comercial",
     "Simeria (Str.Berzei)": "Cap Linie Simeria",
     "Cart. Ciucului": "Cartierul Ciucului",
+    "Liceul de Artă Plugor Sándor": "Lic. Plugor Sándor",
+    "Piaţa Kálvin": "Piața Kálvin",
+    "Liceul M. Viteazul": "Col. Mihai Viteazul",
+    "B-dul G.Bălan 2": "B-dul Grigore Bălan 2",
+    "B-dul G.Bălan 1": "B-dul Grigore Bălan 1",
+    "Institutul de proiectări": "Institutul de Proiectări",
+    "Parc Elisabeta": "Parcul Elisabeta",
+    "B-dul. N. Iorga 1": "B-dul Nicolae Iorga 1",
+    "B-dul. N. Iorga 2": "B-dul Nicolae Iorga 2",
+    "B-dul.N.Iorga 1": "B-dul Nicolae Iorga 1",
+    "B-dul.N.Iorga 2": "B-dul Nicolae Iorga 2",
+    "Gara CFR (1)": "Gara CFR",
+    "Gara CFR (2)": "Gara CFR",
+    "Str. Borvíz": "Str. Borviz",
 }
 
 # The two service patterns the operator publishes.
@@ -44,6 +59,12 @@ SERVICES = {
     "Zile lucrătoare / Munkanapok": "weekday",
     "Sâmbătă & Duminică / Szombat & Vasárnap": "weekend",
 }
+
+# A smaller result means the operator page changed or an import bug returned.
+# Refuse to replace a complete local timetable with such a partial download.
+MIN_STATIONS = 90
+MIN_TIMEPOINTS = 250
+MIN_DEPARTURES = 7000
 
 
 def fold(text):
@@ -78,14 +99,52 @@ def extract(page):
     return json.loads(page[start:i + 1])
 
 
-def times_of(schedule):
-    """[{h:'07', m:'25 55'}] -> ['07:25', '07:55']"""
+def events_of(schedule):
+    """Read exact board events, including a marked D-extension departure."""
     out = []
     for row in schedule["rows"]:
         hour = row["h"].strip()
-        for minute in row["m"].split():
-            out.append(f"{int(hour):02d}:{int(minute):02d}")
-    return sorted(out)
+        entries = row.get("entries")
+        if entries is None:
+            entries = [{"m": minute, "marked": False}
+                       for minute in row.get("m", "").split()]
+        for entry in entries:
+            minute = entry["m"]
+            out.append({"time": f"{int(hour):02d}:{int(minute):02d}",
+                        "marked": bool(entry.get("marked", False))})
+    return sorted(out, key=lambda event: event["time"])
+
+
+def times_of(schedule):
+    """Compatibility clock list for consumers that do not need D markers."""
+    return [event["time"] for event in events_of(schedule)]
+
+
+def normalise_station_names(station, known):
+    """Return canonical names, accepting both historic and current field labels."""
+    candidates = (
+        (station["ro"], station["hu"]),
+        (station["hu"], station["ro"]),
+    )
+    for romanian, _hungarian in candidates:
+        romanian = ALIASES.get(romanian, romanian)
+        if romanian in known:
+            return romanian, known[romanian]
+    romanian, hungarian = candidates[0]
+    return ALIASES.get(romanian, romanian), hungarian
+
+
+def validate_coverage(station_count, timepoint_count, departure_count):
+    """Reject a download that is too incomplete to safely publish."""
+    actual = (station_count, timepoint_count, departure_count)
+    minimum = (MIN_STATIONS, MIN_TIMEPOINTS, MIN_DEPARTURES)
+    if any(value < floor for value, floor in zip(actual, minimum)):
+        raise ValueError(
+            "incomplete timetable: "
+            f"{station_count} stations, {timepoint_count} timing points, "
+            f"{departure_count} departures; minimum is "
+            f"{MIN_STATIONS}, {MIN_TIMEPOINTS}, {MIN_DEPARTURES}"
+        )
 
 
 def load_directions():
@@ -137,9 +196,7 @@ def main():
 
     entries, unmatched, ambiguous = [], [], []
     for station in stations:
-        # the page labels these the wrong way round
-        romanian, hungarian = station["hu"], station["ro"]
-        romanian = ALIASES.get(romanian, romanian)
+        romanian, hungarian = normalise_station_names(station, known)
         if romanian not in known:
             unmatched.append(f"{romanian!r} ({hungarian!r})")
             continue
@@ -153,6 +210,10 @@ def main():
             if score == 0:
                 ambiguous.append(f"line {number} -> {line['dest']!r} (no word matched)")
 
+            schedules = {
+                SERVICES[s["title"]]: s
+                for s in line["orare"] if s["title"] in SERVICES
+            }
             entries.append(
                 {
                     "line": number,
@@ -160,11 +221,10 @@ def main():
                     "stop_ro": romanian,
                     "stop_hu": known[romanian],
                     "destination": line["dest"].strip(),
-                    "times": {
-                        SERVICES[s["title"]]: times_of(s)
-                        for s in line["orare"]
-                        if s["title"] in SERVICES
-                    },
+                    "times": {service: times_of(schedule)
+                              for service, schedule in schedules.items()},
+                    "events": {service: events_of(schedule)
+                               for service, schedule in schedules.items()},
                 }
             )
 
@@ -176,6 +236,9 @@ def main():
     colours = {k: v.most_common(1)[0][0] for k, v in palette.items()}
 
     valid = stations[0]["valid"] if stations else []
+    departures = sum(len(t) for e in entries for t in e["times"].values())
+    validate_coverage(len(stations), len(entries), departures)
+
     bundle = {
         "source": URL,
         "valid_from": valid,
@@ -186,7 +249,6 @@ def main():
     }
     OUTPUT.write_text(json.dumps(bundle, indent=2, ensure_ascii=False), encoding="utf-8")
 
-    departures = sum(len(t) for e in entries for t in e["times"].values())
     print(f"{len(stations)} timetabled stops -> {len(entries)} line/direction timing points")
     print(f"{departures} published departure times, services: {bundle['services']}")
     print(f"valid from: {valid}")
