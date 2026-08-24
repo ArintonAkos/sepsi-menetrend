@@ -158,7 +158,9 @@ git commit -m "Build GTFS from physical platforms"
 **Files:**
 
 - Modify: build_web_data.py:341-455
+- Modify: fetch_walks.py:1-115
 - Modify: tests/test_build_web_data.py
+- Create: tests/test_fetch_walks.py
 - Modify: web/lib/engine/plan.ts:382-390
 - Modify: web/lib/engine/__tests__/network.test.ts:46-110
 - Regenerate: web/public/data/network.json
@@ -168,6 +170,8 @@ git commit -m "Build GTFS from physical platforms"
 - GTFS stops without a parent station receive stationId equal to stop_id.
 - Every Network.walks endpoint resolves to one unique canonical platform within 25 m.
 - A ride is rejected only when fromIndex is not strictly less than toIndex; no rejection is based on name grouping.
+- fetch_walks.py reads platforms.json and creates its cached walking requests
+  from canonical platform coordinates, never from name-grouped stations.
 
 - [ ] **Step 1: Write failing network tests**
 
@@ -199,16 +203,26 @@ if (leg.kind === "ride" && leg.fromIndex >= leg.toIndex) return null;
 
 Time increases along every trip, so this cannot create a time-travel cycle. It permits a valid later circular call even where old name grouping had collapsed it.
 
-- [ ] **Step 4: Regenerate and test**
+- [ ] **Step 4: Test and update the walking-cache input**
+
+Write a focused test for `fetch_walks.platform_pairs(topology)` that gives it one
+Erzsébet park platform and one Lábasház platform and asserts that it produces
+one pair with those two coordinates, not an internal fabricated Erzsébet park
+pair. Run it red with `python3 -m unittest tests.test_fetch_walks -v`, then
+replace `build_stations(load_directions())` with loading `platforms.json` and
+calling `platform_pairs`. Keep the existing Mapbox request/cache format, but
+its endpoints must be canonical platform coordinates.
+
+- [ ] **Step 5: Regenerate and test**
 
 Run: python3 build_web_data.py && cd web && npm test -- --run lib/engine/__tests__/network.test.ts
 
 Expected: the new tests pass and each web walk has distinct real endpoints.
 
-- [ ] **Step 5: Commit**
+- [ ] **Step 6: Commit**
 
 ~~~
-git add build_web_data.py tests/test_build_web_data.py web/lib/engine/plan.ts web/lib/engine/__tests__/network.test.ts web/public/data/network.json
+git add build_web_data.py fetch_walks.py tests/test_build_web_data.py tests/test_fetch_walks.py web/lib/engine/plan.ts web/lib/engine/__tests__/network.test.ts web/public/data/network.json
 git commit -m "Route transfers through real platforms"
 ~~~
 
@@ -303,4 +317,3 @@ Expected: all assertions and whitespace checks pass. Preserve the pre-existing u
 git add platforms.json gtfs multitrans-gtfs.zip web/public/data/network.json route-audit.html
 git commit -m "Regenerate verified platform topology"
 ~~~
-
