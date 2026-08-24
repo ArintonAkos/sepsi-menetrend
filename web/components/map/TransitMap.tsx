@@ -313,12 +313,23 @@ function addLayers(m: MapboxMap, dark: boolean, network: Network,
       "circle-opacity": ["interpolate", ["linear"], ["zoom"], 12.2, .45, 13.5, 1],
       "circle-stroke-opacity": ["interpolate", ["linear"], ["zoom"], 12.2, .45, 13.5, 1],
     } });
-  add({ id: "bike-station-dot", type: "circle", source: "bike-stations",
-    paint: { "circle-radius": 9, "circle-color": "#3d8c27", "circle-stroke-color": "#fbfaf7",
-             "circle-stroke-width": 2.5 } });
+  /* One large invisible hit area makes the marker as forgiving to tap as a
+     bus stop, while the visible parts can stay compact and legible. */
+  add({ id: "bike-station-hit", type: "circle", source: "bike-stations",
+    paint: { "circle-radius": ["interpolate", ["linear"], ["zoom"], 10, 12, 16, 20],
+             "circle-opacity": 0, "circle-stroke-opacity": 0 } });
+  add({ id: "bike-station-icon", type: "symbol", source: "bike-stations",
+    layout: { "icon-image": "bike-station",
+              "icon-size": ["interpolate", ["linear"], ["zoom"], 10, 0.42, 16, 0.82],
+              "icon-allow-overlap": true, "icon-ignore-placement": true } });
+  add({ id: "bike-station-count-badge", type: "circle", source: "bike-stations",
+    paint: { "circle-radius": ["interpolate", ["linear"], ["zoom"], 10, 5.4, 16, 8.4],
+             "circle-color": "#1269A8", "circle-stroke-color": "#FBFAF7", "circle-stroke-width": 1.5,
+             "circle-translate": ["interpolate", ["linear"], ["zoom"], 10, [6, -6], 16, [11, -11]] } });
   add({ id: "bike-station-count", type: "symbol", source: "bike-stations",
-    layout: { "text-field": ["to-string", ["get", "bikes"]], "text-size": 11,
-              "text-font": ["Open Sans Bold"], "text-allow-overlap": true },
+    layout: { "text-field": ["to-string", ["get", "bikes"]],
+              "text-size": ["interpolate", ["linear"], ["zoom"], 10, 8, 16, 11],
+              "text-offset": [0.75, -0.75], "text-font": ["Open Sans Bold"], "text-allow-overlap": true },
     paint: { "text-color": "#ffffff" } });
   add({ id: "trip-nodes", type: "circle", source: "nodes",
     paint: { "circle-radius": 4.6, "circle-color": dark ? "#0D1108" : "#FFFFFF",
@@ -363,6 +374,13 @@ function sprites(dark: boolean) {
       + `<path d="M10 33V4" stroke="${ink}" stroke-width="3" stroke-linecap="round"/>`
       + `<path d="M11.5 5.5h15l-3.4 5.2 3.4 5.2h-15z"
                fill="${ink}" stroke="${halo}" stroke-width="2.2" stroke-linejoin="round"/>`),
+    "bike-station": svg(
+      `<circle cx="18" cy="18" r="15" fill="#2188D6" stroke="#FBFAF7" stroke-width="2.4"/>`
+      + `<circle cx="11.5" cy="23.5" r="4" fill="none" stroke="#FFF" stroke-width="2"/>`
+      + `<circle cx="25.3" cy="23.5" r="4" fill="none" stroke="#FFF" stroke-width="2"/>`
+      + `<path d="M11.5 23.5l5.1-9h4.4l4.3 9m-10.2 0h10.2M18.2 14.5l-2.3-3.8m5.5 3.8h3.4"
+               fill="none" stroke="#FFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>`
+      + `<circle cx="14.9" cy="9.1" r="1.8" fill="#FFF"/>`),
   };
 }
 
@@ -459,11 +477,11 @@ function paintBikes(m: MapboxMap, stations: BikeStation[], journey: BikeJourneyO
 
 /** The map identifies a dock; React owns the accessible station card. */
 function attachBikeStations(m: MapboxMap, onPick: () => ((stationId: string) => void) | undefined) {
-  for (const layer of ["bike-station-dot", "bike-station-count"]) {
+  for (const layer of ["bike-station-hit", "bike-station-icon", "bike-station-count-badge", "bike-station-count"]) {
     m.on("mouseenter", layer, () => { m.getCanvas().style.cursor = "pointer"; });
     m.on("mouseleave", layer, () => { m.getCanvas().style.cursor = ""; });
   }
-  m.on("click", "bike-station-dot", (event) => {
+  m.on("click", "bike-station-hit", (event) => {
     const id = event.features?.[0]?.properties?.id;
     if (id) onPick()?.(String(id));
   });

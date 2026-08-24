@@ -210,4 +210,12 @@ describe("the SepsiBike map layer", () => {
     expect(map).toContain('"bike-route"');
     expect(map).not.toContain("bikePopup");
   });
+
+  it("uses a blue bicycle pictogram that scales with map zoom", () => {
+    const map = css("map/TransitMap.tsx");
+    expect(map).toContain('"bike-station-icon"');
+    expect(map).toContain('"icon-image": "bike-station"');
+    expect(map).toMatch(/bike-station-icon[\s\S]*?"icon-size": \["interpolate", \["linear"\], \["zoom"\]/);
+    expect(map).toMatch(/bike-station-count-badge[\s\S]*?"circle-radius": \["interpolate", \["linear"\], \["zoom"\]/);
+  });
 });
