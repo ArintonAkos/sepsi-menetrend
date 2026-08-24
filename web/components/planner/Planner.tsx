@@ -18,6 +18,7 @@ import JourneyList from "../journey/JourneyList";
 import JourneyDetail from "../journey/JourneyDetail";
 import { prepare, planWithWalking, metresBetween, nextDepartures } from "@/lib/engine/plan";
 import { buildIndex } from "@/lib/engine/search";
+import { bikeStationsToPlaces, type BikeStation } from "@/lib/sepsibike";
 import { formatHHMM, minutesOfDay, serviceForDate } from "@/lib/engine/time";
 import { formatCoordinates, insideArea, reverse } from "@/lib/geocode";
 import { isStraightLine, routeOnFoot, walkingContext } from "@/lib/walking";
@@ -56,19 +57,20 @@ const subscribeToWidth = (notify: () => void) => {
 };
 const isNarrow = () => widthQuery()?.matches ?? false;
 
-export default function Planner({ network, places, reach, box, fares }: {
+export default function Planner({ network, places, reach, box, fares, bikeStations = [] }: {
   network: Network; places: Place[]; reach: number;
-  box: [number, number, number, number]; fares: FareTable;
+  box: [number, number, number, number]; fares: FareTable; bikeStations?: BikeStation[];
 }) {
   const ctx = useMemo(() => { primeStops(network); return prepare(network); }, [network]);
-  const index = useMemo(() => buildIndex(places), [places]);
+  const allPlaces = useMemo(() => [...places, ...bikeStationsToPlaces(bikeStations)], [places, bikeStations]);
+  const index = useMemo(() => buildIndex(allPlaces), [allPlaces]);
   /* Villages are indexed by Mapbox under their Romanian names only, so the
      search needs to know that Szotyor is Coșeni before it asks. */
   const pairs = useMemo(() => {
     const seen = new Map<string, string>();
-    for (const p of places) if (p.hu && p.ro && p.hu !== p.ro) seen.set(p.hu, p.ro);
+    for (const p of allPlaces) if (p.hu && p.ro && p.hu !== p.ro) seen.set(p.hu, p.ro);
     return [...seen].map(([hu, ro]) => ({ hu, ro }));
-  }, [places]);
+  }, [allPlaces]);
   const patterns = useMemo(() => new Map(network.patterns.map((p) => [p.id, p])), [network]);
   const lineMap = useMemo(() => new Map(network.lines.map((l) => [l.id, l])), [network]);
   const stops = useMemo(() => new Map(network.stops.map((s) => [s.id, s])), [network]);
@@ -567,16 +569,16 @@ export default function Planner({ network, places, reach, box, fares }: {
     if (!insideArea(pinAt, area))
       return { name: formatCoordinates(pinAt), detail: t.outsideArea };
     let best: Place | null = null, bestDistance = Infinity;
-    for (const place of places) {
+    for (const place of allPlaces) {
       if (place.kind === "street") continue;      // a centroid is no use here
       const d = metresBetween(place.at, pinAt);
       if (d < bestDistance) { bestDistance = d; best = place; }
     }
     if (best && bestDistance <= 60)
-      return { name: lang === "hu" ? best.hu : best.ro,
+      return { name: lang === "ro" ? best.ro : best.hu,
                detail: `${Math.round(bestDistance)} m · ${t.localIndex}` };
     return null;
-  }, [picking, pinAt, places, lang, t, area]);
+  }, [picking, pinAt, allPlaces, lang, t, area]);
 
   /* The answer is tagged with the coordinate it belongs to, so a stale reply
      is simply ignored on the next render instead of being cleared by a
@@ -908,6 +910,7 @@ export default function Planner({ network, places, reach, box, fares }: {
                   <div className={styles.seg}>
                     <button aria-pressed={lang === "hu"} onClick={() => setLang("hu")}>Magyar</button>
                     <button aria-pressed={lang === "ro"} onClick={() => setLang("ro")}>Română</button>
+                    <button aria-pressed={lang === "en"} onClick={() => setLang("en")}>English</button>
                   </div>
                 </div>
                 <div className={styles.setRow}>

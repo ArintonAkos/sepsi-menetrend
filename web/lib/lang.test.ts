@@ -12,6 +12,11 @@ describe("language persistence and detection", () => {
     expect(readLang(store)).toBe("ro");
   });
 
+  it("accepts English from local preference", () => {
+    const store = { getItem: (k: string) => (k === LANG_KEY ? "en" : null) };
+    expect(readLang(store)).toBe("en");
+  });
+
   it("writes language choice to store", () => {
     const mockSet = vi.fn();
     const store = { setItem: mockSet };

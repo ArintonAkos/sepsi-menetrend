@@ -3,6 +3,7 @@
 import { useEffect, useSyncExternalStore } from "react";
 import { read, write, type Consent } from "@/lib/consent";
 import { readLang, LANG_CHANGE_EVENT } from "@/lib/lang";
+import type { Lang } from "@/lib/i18n";
 import styles from "./Analytics.module.css";
 
 declare global {
@@ -32,6 +33,16 @@ const TEXT = {
     and: "și",
     accept: "Accept",
     decline: "Refuz",
+  },
+  en: {
+    title: "Cookie consent",
+    message: "This site uses Google Analytics to measure traffic anonymously and improve the service. Please choose your preferred option.",
+    privacyLink: "privacy and cookie policy",
+    termsLink: "terms and conditions",
+    more: "For more details, read the",
+    and: "and the",
+    accept: "Accept",
+    decline: "Decline",
   },
 };
 
@@ -86,7 +97,7 @@ function load(gaId: string) {
  */
 export default function Analytics({ gaId }: { gaId?: string }) {
   const consent = useSyncExternalStore(subscribe, snapshot, serverSnapshot);
-  const lang = useSyncExternalStore<"hu" | "ro">(
+  const lang = useSyncExternalStore<Lang>(
     subscribe,
     () => readLang(globalThis.localStorage ?? null),
     () => "hu",

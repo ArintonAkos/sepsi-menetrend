@@ -6,7 +6,7 @@ export const LANG_CHANGE_EVENT = "sepsi:lang";
 export function readLang(store: Pick<Storage, "getItem"> | null): Lang {
   try {
     const raw = store?.getItem(LANG_KEY);
-    if (raw === "hu" || raw === "ro") return raw;
+    if (raw === "hu" || raw === "ro" || raw === "en") return raw;
   } catch {
     /* private browsing, or no storage at all */
   }
@@ -15,7 +15,7 @@ export function readLang(store: Pick<Storage, "getItem"> | null): Lang {
     try {
       const urlParams = new URLSearchParams(window.location.search);
       const param = urlParams.get("lang");
-      if (param === "hu" || param === "ro") return param;
+      if (param === "hu" || param === "ro" || param === "en") return param;
     } catch {
       /* ignore */
     }

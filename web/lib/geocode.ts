@@ -11,6 +11,7 @@
 import { MAPBOX_TOKEN } from "./mapbox";
 import { tokenise, type Place } from "./engine/search";
 import type { LngLat } from "./engine/types";
+import type { Lang } from "./i18n";
 
 /** Where the planner is willing to answer.
  *
@@ -75,7 +76,7 @@ export function romanianForm(query: string, pairs: NamePair[]): string | null {
 
 const looksLikeAddress = (query: string) => /\d/.test(query);
 
-async function ask(query: string, lang: "hu" | "ro", area: Area,
+async function ask(query: string, lang: Lang, area: Area,
                    signal?: AbortSignal): Promise<Place[]> {
   const url = new URL("https://api.mapbox.com/search/geocode/v6/forward");
   url.search = new URLSearchParams({
@@ -99,7 +100,7 @@ async function ask(query: string, lang: "hu" | "ro", area: Area,
   } catch { return []; }
 }
 
-export async function forward(query: string, lang: "hu" | "ro", area: Area,
+export async function forward(query: string, lang: Lang, area: Area,
                               signal?: AbortSignal,
                               pairs: NamePair[] = []): Promise<Place[]> {
   if (!MAPBOX_TOKEN || query.trim().length < 3) return [];
@@ -128,7 +129,7 @@ const rank = (place: Place, wantedAddress: boolean) =>
 
 export interface ReverseResult { name: string; detail: string; approximate: boolean }
 
-export async function reverse([lon, lat]: LngLat, lang: "hu" | "ro",
+export async function reverse([lon, lat]: LngLat, lang: Lang,
                               signal?: AbortSignal): Promise<ReverseResult | null> {
   if (!MAPBOX_TOKEN) return null;
   const url = new URL("https://api.mapbox.com/search/geocode/v6/reverse");

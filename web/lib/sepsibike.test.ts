@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { isBikeStationUsable, normaliseBikeStations } from "./sepsibike";
+import { bikeStationsToPlaces, isBikeStationUsable, normaliseBikeStations } from "./sepsibike";
 import snapshot from "../public/data/sepsibike.json";
 
 const arena = {
@@ -37,5 +37,11 @@ describe("SepsiBike station data", () => {
     expect(snapshot).toMatchObject({ snapshotAt: expect.any(String) });
     expect(Array.isArray((snapshot as { stations?: unknown }).stations)).toBe(true);
     expect((snapshot as { stations: unknown[] }).stations).toHaveLength(17);
+  });
+
+  it("makes docks locally searchable by bicycle aliases", () => {
+    expect(bikeStationsToPlaces([normaliseBikeStations([arena], 1)[0]])[0]).toMatchObject({
+      kind: "bikeStation", hu: "Sepsi Aréna", aliases: expect.arrayContaining(["kerékpár", "dock"]),
+    });
   });
 });

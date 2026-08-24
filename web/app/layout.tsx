@@ -69,7 +69,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <head>
         <script
           dangerouslySetInnerHTML={{
-            __html: `(function(){try{var t=localStorage.getItem('sepsi.theme');if(t&&t!=='auto'){document.documentElement.dataset.theme=t;}var l=localStorage.getItem('sepsi.lang');if(l==='ro'||l==='hu'){document.documentElement.lang=l;}}catch(e){}})();`,
+            __html: `(function(){try{var t=localStorage.getItem('sepsi.theme');if(t&&t!=='auto'){document.documentElement.dataset.theme=t;}var l=localStorage.getItem('sepsi.lang');if(l==='ro'||l==='hu'||l==='en'){document.documentElement.lang=l;}}catch(e){}})();`,
           }}
         />
       </head>

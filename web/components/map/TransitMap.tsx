@@ -8,6 +8,7 @@ import { MAPBOX_TOKEN, STYLES, bottomInset, labelAnchor, casingColour, networkCo
 import type { Area } from "@/lib/geocode";
 import { shadeOf } from "@/lib/engine/types";
 import type { Journey, Line, LngLat, Network, Pattern, RideLeg, WalkLeg } from "@/lib/engine/types";
+import type { Lang } from "@/lib/i18n";
 import { stopAt } from "../stops/stopLookup";
 import styles from "./TransitMap.module.css";
 
@@ -28,7 +29,7 @@ const point = (coordinates: LngLat, properties: Record<string, unknown>) =>
 export interface TransitMapProps {
   network: Network;
   area: Area;
-  lang: "hu" | "ro";
+  lang: Lang;
   /** Bumped whenever something around the map changed its size. */
   resizeKey: number;
   /** Pixels of the map's bottom edge hidden behind the drawer, so a route can

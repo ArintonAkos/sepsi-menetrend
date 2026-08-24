@@ -1,4 +1,4 @@
-export type Lang = "hu" | "ro";
+export type Lang = "hu" | "ro" | "en";
 
 const hu = {
   from: "Honnan", to: "Hová", swap: "Csere", pickOnMap: "Választás a térképen",
@@ -122,8 +122,69 @@ const ro: Strings = {
   days: ["duminică", "luni", "marți", "miercuri", "joi", "vineri", "sâmbătă"],
 };
 
+const en: Strings = {
+  from: "From", to: "To", swap: "Swap", pickOnMap: "Pick on map",
+  placeholder: "stop, address, shop…", myLocation: "My location",
+  departAt: "Depart", arriveBy: "Arrive by",
+  departAtLong: "Depart at", arriveByLong: "Arrive by",
+  lines: "Lines", allLines: "All", noLines: "None",
+  faster: "Faster", lessWalking: "Less walking",
+  minutes: "min", walk: "walk", transfer: "transfer", direct: "direct",
+  soonest: "arrives first", shortest: "shortest",
+  onFootOnly: "walk the whole way", noBusNeeded: "No bus needed",
+  leastWalking: "least walking",
+  noResults: "No service at this time.",
+  journey: "Your journey", back: "Back", stops: "stops", wait: "wait",
+  sameStop: "Change at the same stop", departure: "departure", arrival: "arrival",
+  title: "Sepsi Timetable", ticket: "Ticket", freeFriday: "Free Friday",
+  close: "Close", noService: "There is no bus service here today.",
+  endsHere: "Ends here", arrivesHere: "Arrives here",
+  timetables: "Timetables",
+  pickLine: "Choose a line", weekdayShort: "Weekday", weekendShort: "Weekend",
+  stopColumn: "Stop", noRuns: "There is no service in this direction on this day.",
+  fromTheMakers: "From the same makers",
+  apertaPitch: "Pre-accounting for firms — close the month without chasing documents.", share: "Share", copied: "Link copied",
+  shareFailed: "Could not share the link",
+  settings: "Settings", language: "Language", theme: "Theme",
+  light: "Light", dark: "Dark", auto: "Auto",
+  unofficial: "unofficial",
+  source: "Data source and legal information",
+  disclaimer: "This is not the official site of Multi-Trans SA. The data comes from the timetable published at multitrans.ro.",
+  estimated: "Times marked with an asterisk are calculated from neighbouring stops — the operator does not publish them.",
+  terms: "Terms and conditions",
+  privacy: "Privacy and cookie policy",
+  cookieSettings: "Change cookie settings",
+  cookieConsentTitle: "Cookie consent",
+  cookieConsentText: "This site uses Google Analytics to collect anonymous visitor statistics and improve the service.",
+  cookieConsentMore: "For more information, read the",
+  cookieConsentAnd: "and the",
+  cookieConsentSuffix: ".",
+  backToPlanner: "Back to planner",
+  locating: "Finding location…",
+  locateDenied: "Location permission is not enabled.",
+  locateInsecure: "Location needs HTTPS — plain HTTP is not enough on a phone.",
+  locateFailed: "Could not determine your location.",
+  locateFar: "You are too far from the network",
+  locateVague: "Your location is too imprecise",
+  hereName: "My location",
+  currentGps: "Current position",
+  pickOnMapDetail: "Choose with a pin",
+  laterToday: "Next:",
+  whereTo: "Where are you going?",
+  journeys: "Journeys",
+  recent: "Recent",
+  forgetOne: "Remove from list",
+  clearHistory: "Clear history",
+  historyNote: "Stored only on this device and never sent anywhere.",
+  dragMap: "Move the map to your destination", cancel: "Cancel", done: "Done",
+  searching: "searching…", noAddress: "no address at this point",
+  outsideArea: "outside the network", noHouseNumber: "without house number",
+  localIndex: "local result", today: "Today",
+  days: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+};
+
 /** Widened on purpose: with `as const` every Hungarian value becomes its own
  *  literal type, and the Romanian table then fails to match it. */
 export type Strings = typeof hu;
 
-export const STRINGS: Record<Lang, Strings> = { hu, ro };
+export const STRINGS: Record<Lang, Strings> = { hu, ro, en };

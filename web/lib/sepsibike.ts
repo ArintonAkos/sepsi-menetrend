@@ -23,6 +23,13 @@ export interface BikeAvailability {
   stale: boolean;
 }
 
+export interface BikeSnapshot {
+  snapshotAt: string;
+  stations: BikeStation[];
+}
+
+import type { Place } from "./engine/search";
+
 interface OfficialStation {
   StationName: unknown;
   Address: unknown;
@@ -87,4 +94,16 @@ export function isBikeStationUsable(station: StationInventory, role: "origin" | 
   if (state.status.toLowerCase() !== "online") return false;
   const count = role === "origin" ? state.availableBikes : state.freeDocks;
   return typeof count === "number" && Number.isFinite(count) && count > 0;
+}
+
+/** Docks are normal coordinate places: discoverable offline, never bus stops. */
+export function bikeStationsToPlaces(stations: BikeStation[]): Place[] {
+  return stations.map((station) => ({
+    kind: "bikeStation",
+    ro: station.name.replace(/^\d+\.\s*/, ""),
+    hu: station.name.replace(/^\d+\.\s*/, ""),
+    at: [station.lng, station.lat],
+    detail: station.address,
+    aliases: ["bicikli", "kerékpár", "bike", "dock", "dokkoló", "stație", station.address],
+  }));
 }
