@@ -31,12 +31,16 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent
 OUT = ROOT / "gtfs"
 ARCHIVE = ROOT / "multitrans-gtfs.zip"
+PLATFORMS = ROOT / "platforms.json"
 
 sys.path.insert(0, str(ROOT))
 from build_map import (  # noqa: E402
-    DESCRIPTIONS, ORDER, anchor_vertices, build_stations, load_directions,
-    contrast, official_colours, split_shared_kerbs,
+    DESCRIPTIONS, ORDER, anchor_vertices, load_directions,
+    contrast, official_colours,
     luminance, metres, palette,
+)
+from build_platforms import (  # noqa: E402
+    load_osm_platforms, load_overrides, resolve_platforms, write_platforms,
 )
 
 AGENCY = {
@@ -131,7 +135,7 @@ def timing_points(directions, built, timetable):
     return chosen
 
 
-def fare_tables(fares, stations, stop_id):
+def fare_tables(fares, platforms, stop_id):
     """The published tariff, in both the old and the new GTFS fare models.
 
     Fares V1 (fare_attributes + fare_rules) is what almost every consumer
@@ -144,10 +148,9 @@ def fare_tables(fares, stations, stop_id):
     """
     arcus = set(fares["zones"]["arcus"])
     zone_of = {}
-    for station in stations:
-        zone = "arcus" if station["name"]["ro"] in arcus else "city"
-        for kerb in range(len(station["points"])):
-            zone_of[stop_id[(station["id"], kerb)]] = zone
+    for platform in platforms:
+        zone = "arcus" if platform["name"]["ro"] in arcus else "city"
+        zone_of[stop_id[platform["id"]]] = zone
 
     attributes, rules, products, leg_rules, names = [], [], [], [], []
     for ticket in fares["tickets"]:
@@ -232,48 +235,31 @@ def write(name, fields, rows):
 def main():
     OUT.mkdir(exist_ok=True)
     directions = load_directions()
-    stations = build_stations(directions)
-    # the operator repeats one coordinate for both passes at a few stops; give
-    # those their second kerb before anything else is keyed off the list
-    kerb_by_call, derived, skipped = split_shared_kerbs(stations, directions)
+    topology = resolve_platforms(directions, load_osm_platforms(), load_overrides())
+    platforms = topology["platforms"]
+    write_platforms(topology, PLATFORMS)
     trips_data = json.loads((ROOT / "trips.json").read_text(encoding="utf-8"))["trips"]
 
-    # ---- stops: one per kerb, grouped under a station where there are two ----
+    # ---- stops: one row per physical boarding platform ----
     stop_rows, translations, stop_id = [], [], {}
-    for station in stations:
-        multi = len(station["points"]) > 1
-        parent = f"ST{station['id']}" if multi else ""
-        if multi:
-            stop_rows.append({
-                "stop_id": parent, "stop_name": station["name"]["ro"],
-                "stop_lat": f"{station['lat']:.6f}", "stop_lon": f"{station['lng']:.6f}",
-                "location_type": 1, "parent_station": "",
-            })
-            translations.append({
-                "table_name": "stops", "field_name": "stop_name", "language": "hu",
-                "record_id": parent, "translation": station["name"]["hu"],
-            })
-        for kerb, point in enumerate(station["points"]):
-            sid = f"S{station['id']}-{kerb}"
-            stop_id[(station["id"], kerb)] = sid
-            stop_rows.append({
-                "stop_id": sid, "stop_name": station["name"]["ro"],
-                "stop_lat": f"{point[0]:.6f}", "stop_lon": f"{point[1]:.6f}",
-                "location_type": 0, "parent_station": parent,
-                "platform_code": str(kerb + 1) if multi else "",
-                "stop_desc": ("Peron helye számítva a menetirányból; "
-                              "a forrás egyetlen koordinátát közöl."
-                              if station.get("derived_kerbs") else ""),
-            })
-            translations.append({
-                "table_name": "stops", "field_name": "stop_name", "language": "hu",
-                "record_id": sid, "translation": station["name"]["hu"],
-            })
-
-    station_index = {s["name"]["ro"]: s for s in stations}
+    for index, platform in enumerate(platforms, 1):
+        sid = f"P{index}"
+        stop_id[platform["id"]] = sid
+        point = platform["point"]
+        stop_rows.append({
+            "stop_id": sid, "stop_name": platform["name"]["ro"],
+            "stop_lat": f"{point[0]:.6f}", "stop_lon": f"{point[1]:.6f}",
+            "location_type": 0, "parent_station": "", "platform_code": "",
+            "stop_desc": "OSM peron" if platform["source"] == "osm"
+                         else "A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.",
+        })
+        translations.append({
+            "table_name": "stops", "field_name": "stop_name", "language": "hu",
+            "record_id": sid, "translation": platform["name"]["hu"],
+        })
 
     fares = json.loads((ROOT / "fares.json").read_text(encoding="utf-8"))
-    zone_of, fare_files, fare_names = fare_tables(fares, stations, stop_id)
+    zone_of, fare_files, fare_names = fare_tables(fares, platforms, stop_id)
     for row in stop_rows:
         if row.get("location_type") != 1:
             row["zone_id"] = zone_of.get(row["stop_id"], "city")
@@ -344,16 +330,13 @@ def main():
                     "shape_id": key,
                 })
                 for i, stop in enumerate(d["stops"]):
-                    station = station_index[stop["name"]["ro"]]
                     call = (d["line"], d["direction"], i)
-                    kerb = (kerb_by_call[call] if call in kerb_by_call
-                            else station["points"].index(
-                                [stop["stop_lat"], stop["stop_lon"]]))
+                    platform_id = topology["call_platforms"][call]
                     when = gtfs_time(trip["calls"][i])
                     time_rows.append({
                         "trip_id": trip_id, "arrival_time": when,
                         "departure_time": when,
-                        "stop_id": stop_id[(station["id"], kerb)],
+                        "stop_id": stop_id[platform_id],
                         "stop_sequence": i + 1,
                         # 1 if this exact call is on the official stop board;
                         # 0 only if it was filled from its surrounding calls.
@@ -410,12 +393,12 @@ def main():
 
     for name, rows in counts.items():
         print(f"  {name:<20} {rows:>6} sor")
-    if derived:
-        print(f"\nsecond kerb derived at {len(derived)} stops the source lists once:")
-        for name in sorted(derived):
-            print(f"  {name}")
-    if skipped:
-        print(f"left alone, the bus turns round there: {', '.join(sorted(skipped))}")
+    print(f"\n{len(platforms)} physical platforms: "
+          f"{sum(p['source'] == 'osm' for p in platforms)} OSM, "
+          f"{sum(p['source'] == 'source-fallback' for p in platforms)} source fallback")
+    if topology["unmatched"]:
+        print(f"{len(topology['unmatched'])} calls use a source-coordinate fallback; "
+              "see platforms.json")
 
     print(f"\n{ARCHIVE.name}: {ARCHIVE.stat().st_size / 1024:.0f} KB")
     if missing:
