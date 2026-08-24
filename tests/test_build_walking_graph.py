@@ -42,6 +42,24 @@ class WalkingGraphBuildTests(unittest.TestCase):
         self.assertEqual(graph["edges"], [[1], []])
         self.assertEqual(len(graph["metres"][0]), 1)
 
+    def test_bicycle_graph_excludes_steps_and_obeys_bicycle_oneway(self):
+        osm = {
+            "elements": [
+                {"type": "node", "id": 1, "lat": 45.86, "lon": 25.76},
+                {"type": "node", "id": 2, "lat": 45.86, "lon": 25.761},
+                {"type": "node", "id": 3, "lat": 45.86, "lon": 25.762},
+                {"type": "way", "id": 10, "nodes": [1, 2],
+                 "tags": {"highway": "residential", "oneway:bicycle": "yes"}},
+                {"type": "way", "id": 11, "nodes": [2, 3],
+                 "tags": {"highway": "steps"}},
+            ],
+        }
+
+        graph = build_graph(osm, mode="bicycle")
+
+        self.assertEqual(graph["vertices"], [[25.76, 45.86], [25.761, 45.86]])
+        self.assertEqual(graph["edges"], [[1], []])
+
 
 if __name__ == "__main__":
     unittest.main()

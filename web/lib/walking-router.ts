@@ -59,7 +59,8 @@ export class WalkingRouter {
   private readonly reverseEdges: number[][];
   private readonly reverseMetres: number[][];
 
-  constructor(private readonly graph: WalkingGraph) {
+  constructor(private readonly graph: WalkingGraph,
+              private readonly metresPerMinute = WALKING_METRES_PER_MINUTE) {
     if (graph.vertices.length !== graph.edges.length || graph.edges.length !== graph.metres.length)
       throw new Error("walking graph has mismatched vertex and edge arrays");
     this.reverseEdges = graph.vertices.map(() => []);
@@ -121,7 +122,7 @@ export class WalkingRouter {
     }
     if (to[0] !== path[path.length - 1][0] || to[1] !== path[path.length - 1][1]) path.push(to);
     const metres = Math.round(start.metres + distance[reached] + finish.metres);
-    return { path, metres, minutes: Math.max(1, Math.ceil(metres / WALKING_METRES_PER_MINUTE)) };
+    return { path, metres, minutes: Math.max(1, Math.ceil(metres / this.metresPerMinute)) };
   }
 
   private nearest(point: LngLat): { vertex: number; metres: number } | null {
