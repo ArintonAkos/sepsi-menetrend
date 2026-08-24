@@ -3,19 +3,20 @@
 import { formatHHMM } from "@/lib/engine/time";
 import { fareFor, type FareTable } from "@/lib/engine/fares";
 import { shadeOf } from "@/lib/engine/types";
-import type { Journey, Line, Pattern, RideLeg, Stop, WalkLeg } from "@/lib/engine/types";
+import type { Line, Pattern, RideLeg, Stop, WalkLeg } from "@/lib/engine/types";
 import type { Strings } from "@/lib/i18n";
+import { plannerOptionTimes, type PlannerOption } from "@/lib/planner-options";
 import { WalkIcon } from "../common/icons";
 import styles from "./JourneyList.module.css";
 
 export default function JourneyList({
-  journeys, lines, patterns, stops, fares, date, t, chosen, dark, onHover, onOpen,
+  options, lines, patterns, stops, fares, date, t, chosen, dark, onHover, onOpen,
 }: {
-  journeys: Journey[]; lines: Map<string, Line>; patterns: Map<string, Pattern>;
+  options: PlannerOption[]; lines: Map<string, Line>; patterns: Map<string, Pattern>;
   stops: Map<string, Stop>; fares: FareTable; date: Date; t: Strings; chosen: number;
   dark: boolean; onHover: (i: number) => void; onOpen: (i: number) => void;
 }) {
-  if (!journeys.length) return <p className={styles.empty}>{t.noResults}</p>;
+  if (!options.length) return <p className={styles.empty}>{t.noResults}</p>;
 
   /* Three different questions, and they rarely have the same answer. The list
      is ordered by when you get there, so that is the badge that explains the
@@ -25,17 +26,59 @@ export default function JourneyList({
      puts you at the door long before an 18-minute one leaving half an hour
      later. Naming each claim for what it actually measures removes the
      argument between the badge and the sort. */
-  const soonest = journeys.reduce((a, b) => b.arrive < a.arrive ? b : a);
-  const shortest = journeys.reduce((a, b) =>
-    (b.arrive - b.depart) < (a.arrive - a.depart) ? b : a);
-  const gentlest = journeys.reduce((a, b) => b.walkMinutes < a.walkMinutes ? b : a);
+  const duration = (option: PlannerOption) => {
+    const times = plannerOptionTimes(option);
+    return times.arrive - times.depart;
+  };
+  const walking = (option: PlannerOption) => option.kind === "transit"
+    ? option.journey.walkMinutes
+    : option.journey.access.minutes + option.journey.egress.minutes;
+  const soonest = options.reduce((a, b) => plannerOptionTimes(b).arrive < plannerOptionTimes(a).arrive ? b : a);
+  const shortest = options.reduce((a, b) => duration(b) < duration(a) ? b : a);
+  const gentlest = options.reduce((a, b) => walking(b) < walking(a) ? b : a);
 
   return (
     <ul className={styles.list}>
-      {journeys.map((j, i) => {
+      {options.map((option, i) => {
+        if (option.kind === "bike") {
+          const j = option.journey;
+          return (
+            <li key={`bike-${j.start.id}-${j.finish.id}`}>
+              <button className={styles.card} aria-current={i === chosen}
+                      onMouseEnter={() => onHover(i)} onClick={() => onOpen(i)}>
+                <div className={styles.top}>
+                  <div className={styles.modes}>
+                    <span className={styles.bikePill}>🚲 {t.bike}</span>
+                    <span className={styles.walk}><WalkIcon />{j.access.minutes + j.egress.minutes}</span>
+                  </div>
+                  <div className={`${styles.dur} rounded`}>
+                    <b>{duration(option)}</b><span>{t.minutes}</span>
+                  </div>
+                </div>
+                <div className={styles.bot}>
+                  <b>{formatHHMM(j.depart)} → {formatHHMM(j.arrive)}</b>
+                  <span className={styles.dot} /><span>{j.fareLei} RON</span>
+                </div>
+                <div className={styles.bikeSummary}>
+                  {j.access.minutes} {t.walk} · {j.ride.minutes} {t.bikeRide} · {j.egress.minutes} {t.walk}
+                </div>
+                <div className={styles.bikeSummary}>{j.start.name} → {j.finish.name}</div>
+                <div className={styles.tags}>
+                  {option === soonest && <span className={`${styles.tag} ${styles.hi}`}>{t.soonest}</span>}
+                  {option === shortest && option !== soonest && <span className={styles.tag}>{t.shortest}</span>}
+                  {option === gentlest && option !== soonest && option !== shortest &&
+                    <span className={styles.tag}>{t.leastWalking}</span>}
+                  <span className={styles.tag}>{t.direct}</span>
+                  {j.stale && <span className={styles.tag}>{t.lastKnown}</span>}
+                </div>
+              </button>
+            </li>
+          );
+        }
+        const j = option.journey;
         const fare = fareFor(j, stops, (id) => patterns.get(id)?.stopIds ?? [], fares, date);
         return (
-          <li key={i}>
+          <li key={`transit-${i}`}>
             <button className={styles.card} aria-current={i === chosen}
                     onMouseEnter={() => onHover(i)} onClick={() => onOpen(i)}>
               <div className={styles.top}>
@@ -75,10 +118,10 @@ export default function JourneyList({
                     : `${fare.count} × ${String(fare.ticket.price).replace(".", ",")} lej`}</span></>}
               </div>
               <div className={styles.tags}>
-                {j === soonest && <span className={`${styles.tag} ${styles.hi}`}>{t.soonest}</span>}
-                {j === shortest && j !== soonest &&
+                {option === soonest && <span className={`${styles.tag} ${styles.hi}`}>{t.soonest}</span>}
+                {option === shortest && option !== soonest &&
                   <span className={styles.tag}>{t.shortest}</span>}
-                {j === gentlest && j !== soonest && j !== shortest &&
+                {option === gentlest && option !== soonest && option !== shortest &&
                   <span className={styles.tag}>{t.leastWalking}</span>}
                 <span className={styles.tag}>
                   {/* "direct" is a claim about buses; with none, say what it is */}

@@ -16,10 +16,13 @@ const TransitMap = dynamic(() => import("../map/TransitMap"), {
 import PlaceInput, { type Chosen } from "./PlaceInput";
 import JourneyList from "../journey/JourneyList";
 import JourneyDetail from "../journey/JourneyDetail";
+import BikeJourneyDetail from "../journey/BikeJourneyDetail";
 import { prepare, planWithWalking, metresBetween, nextDepartures } from "@/lib/engine/plan";
 import { buildIndex } from "@/lib/engine/search";
 import { bikeStationsToPlaces, findBikeOption, type BikeAvailability, type BikeJourneyOption,
          type BikeStation } from "@/lib/sepsibike";
+import { mergePlannerOptions } from "@/lib/planner-options";
+import { timeBikeJourney } from "@/lib/sepsibike-timing";
 import { formatHHMM, minutesOfDay, serviceForDate } from "@/lib/engine/time";
 import { formatCoordinates, insideArea, reverse } from "@/lib/geocode";
 import { isStraightLine, routeOnFoot, walkingContext } from "@/lib/walking";
@@ -131,7 +134,6 @@ export default function Planner({ network, places, reach, box, fares, bikeStatio
     stations: bikeStations, source: "snapshot", fetchedAt: bikeSnapshotAt, stale: true,
   }));
   const [bikeOption, setBikeOption] = useState<{ key: string; value: BikeJourneyOption | null } | null>(null);
-  const [bikeSelectedKey, setBikeSelectedKey] = useState<string | null>(null);
   const [bikeBoard, setBikeBoard] = useState<
     { stationId: string; anchor: HTMLElement | null; dismiss: () => void } | null>(null);
   const [closingBikeBoard, setClosingBikeBoard] = useState(false);
@@ -501,7 +503,7 @@ export default function Planner({ network, places, reach, box, fares, bikeStatio
         to: to && { name: to.name, at: to.at },
         time: timeCustomized ? time : null,
         mode: mode !== "departAt" ? mode : null,
-        journey: detail,
+        journey: sharedJourney,
       });
     }
     const link = base + query;
@@ -561,15 +563,31 @@ export default function Planner({ network, places, reach, box, fares, bikeStatio
     }, walking.value);
   }, [ctx, from, to, time, date, mode, settledAversion, visibleLines, walking, walkingKey]);
 
+  const requestedMinute = useMemo(() => {
+    const [hours, minutes] = time.split(":").map(Number);
+    return hours * 60 + minutes;
+  }, [time]);
+  const timedBike = useMemo(() => {
+    const base = bikeOption?.key === bikeKey ? bikeOption.value : null;
+    return base ? timeBikeJourney(base, requestedMinute, mode) : null;
+  }, [bikeOption, bikeKey, requestedMinute, mode]);
+  const options = useMemo(
+    () => mergePlannerOptions(journeys, timedBike, mode),
+    [journeys, timedBike, mode],
+  );
+
   const planKey = [from?.name, to?.name, time, date.toDateString(), mode,
-                   settledAversion, [...visibleLines].sort().join(",")].join("|");
+                   settledAversion, [...visibleLines].sort().join(","),
+                   timedBike ? `${timedBike.start.id}-${timedBike.finish.id}-${timedBike.depart}` : ""].join("|");
   const [selection, setSelection] = useState({ key: planKey, chosen: 0,
                                                detail: null as number | null });
   if (selection.key !== planKey) {
-    const nextDetail = initJourney !== null && initJourney >= 0
-      ? (journeys.length > 0 ? Math.min(initJourney, journeys.length - 1) : initJourney)
-      : null;
-    if (initJourney !== null && (journeys.length > 0 || !planning)) {
+    const restoredTransit = initJourney !== null && initJourney >= 0
+      ? options.findIndex((option) => option.kind === "transit"
+        && options.filter((candidate) => candidate.kind === "transit").indexOf(option) === initJourney)
+      : -1;
+    const nextDetail = restoredTransit >= 0 ? restoredTransit : null;
+    if (initJourney !== null && (options.length > 0 || !planning)) {
       setInitJourney(null);
     }
     setSelection({ key: planKey, chosen: nextDetail ?? 0, detail: nextDetail });
@@ -577,6 +595,9 @@ export default function Planner({ network, places, reach, box, fares, bikeStatio
   const { chosen, detail } = selection;
   const setChosen = (i: number) => setSelection((s) => ({ ...s, chosen: i }));
   const setDetail = (i: number | null) => setSelection((s) => ({ ...s, detail: i, chosen: i ?? s.chosen }));
+  const sharedJourney = detail !== null && options[detail]?.kind === "transit"
+    ? options.slice(0, detail + 1).filter((option) => option.kind === "transit").length - 1
+    : null;
 
   useEffect(() => {
     if (!mounted || !linkRead) return;
@@ -596,7 +617,7 @@ export default function Planner({ network, places, reach, box, fares, bikeStatio
         to: to && { name: to.name, at: to.at },
         time: timeCustomized ? time : null,
         mode: mode !== "departAt" ? mode : null,
-        journey: detail,
+        journey: sharedJourney,
       });
     }
 
@@ -604,7 +625,7 @@ export default function Planner({ network, places, reach, box, fares, bikeStatio
     if (currentQuery !== nextQuery) {
       window.history.replaceState(null, "", base + nextQuery);
     }
-  }, [from, to, time, mode, timeCustomized, detail, timetableState, boardStop, mounted, linkRead]);
+  }, [from, to, time, mode, timeCustomized, sharedJourney, timetableState, boardStop, mounted, linkRead]);
 
   /* ---- pin picking. The map reports its centre; we name it. ---- */
   const onCentreChange = useCallback((at: LngLat) => { if (picking) setPinAt(at); }, [picking, setPinAt]);
@@ -666,10 +687,9 @@ export default function Planner({ network, places, reach, box, fares, bikeStatio
     setPicking(null);
   };
 
-  const picked = journeys[detail ?? chosen] ?? journeys[0] ?? null;
-  const shown = useRoutedWalks(picked);
-  const shownBike = bikeOption?.key === bikeKey ? bikeOption.value : null;
-  const bikeSelected = bikeSelectedKey === bikeKey;
+  const picked = options[detail ?? chosen] ?? options[0] ?? null;
+  const shown = useRoutedWalks(picked?.kind === "transit" ? picked.journey : null);
+  const shownBike = picked?.kind === "bike" ? picked.journey : null;
   const bikeBoardStation = bikeBoard
     ? bikeAvailability.stations.find((station) => station.id === bikeBoard.stationId) ?? null : null;
 
@@ -851,26 +871,20 @@ export default function Planner({ network, places, reach, box, fares, bikeStatio
 
         {planning && <div className={styles.scroll}>
           {detail === null ? (
-            <>
-              {shownBike && <button className={styles.bikeCard} aria-pressed={bikeSelected}
-                                    onClick={() => setBikeSelectedKey(bikeSelected ? null : bikeKey)}>
-                <span className={styles.bikeTitle}>🚲 {t.bike}</span>
-                <strong>{shownBike.totalMinutes} {t.minutes}</strong>
-                <span>{shownBike.access.minutes} {t.walk} · {shownBike.ride.minutes} {t.bikeRide} · {shownBike.egress.minutes} {t.walk}</span>
-                <span>{shownBike.start.name} ({shownBike.start.availableBikes} {t.bikes}) → {shownBike.finish.name} ({shownBike.finish.freeDocks} {t.freeDocks})</span>
-                {shownBike.stale && <small>{t.lastKnown}</small>}
-                <small>{shownBike.isFreeEstimate ? t.estimatedFree : t.bikeAccount}</small>
-              </button>}
-              <JourneyList journeys={journeys} lines={lineMap} t={t} chosen={chosen}
-                           fares={fares} date={date} stops={stops} patterns={patterns} dark={dark}
-                           onHover={setChosen} onOpen={setDetail} />
-            </>
+            <JourneyList options={options} lines={lineMap} t={t} chosen={chosen}
+                         fares={fares} date={date} stops={stops} patterns={patterns} dark={dark}
+                         onHover={setChosen} onOpen={setDetail} />
           ) : (
-            <JourneyDetail journey={journeys[detail]} lines={lineMap} patterns={patterns}
-                           stops={stops} fares={fares} date={date} lang={lang} t={t} dark={dark}
-                           from={from?.name ?? ""} to={to?.name ?? ""}
-                           laterBuses={laterBuses}
-                           onBack={backFromDetail} />
+            picked?.kind === "bike" ? (
+              <BikeJourneyDetail journey={picked.journey} from={from?.name ?? ""} to={to?.name ?? ""}
+                                 t={t} onBack={backFromDetail} />
+            ) : picked?.kind === "transit" ? (
+              <JourneyDetail journey={picked.journey} lines={lineMap} patterns={patterns}
+                             stops={stops} fares={fares} date={date} lang={lang} t={t} dark={dark}
+                             from={from?.name ?? ""} to={to?.name ?? ""}
+                             laterBuses={laterBuses}
+                             onBack={backFromDetail} />
+            ) : null
           )}
         </div>}
 
@@ -907,7 +921,7 @@ export default function Planner({ network, places, reach, box, fares, bikeStatio
                     onStopPick={(stopId, anchor, dismiss) =>
                       setBoard(stopId ? { stopId, anchor, dismiss } : null)}
                     bikeStations={bikeAvailability.stations}
-                    bikeJourney={bikeSelected ? shownBike : null}
+                    bikeJourney={shownBike}
                     onBikeStationPick={(stationId, anchor, dismiss) =>
                       setBikeBoard(stationId ? { stationId, anchor, dismiss } : null)}
                     journey={shown} visibleLines={visibleLines} dark={dark}

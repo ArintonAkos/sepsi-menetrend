@@ -151,13 +151,39 @@ describe("Planner", () => {
     expect(screen.getByText(/Nu este site-ul oficial/)).toBeInTheDocument();
   });
 
-  it("offers a direct SepsiBike alternative from the static catalogue", async () => {
+  it("presents SepsiBike as a selectable direct option with its own detail", async () => {
     const user = userEvent.setup();
     render(<Planner network={network} places={places} reach={reach} box={box} fares={fares}
                     bikeStations={bikeStations} bikeSnapshotAt="2026-08-23T12:53:56.000Z" />);
     await screen.findByText(/Nincs Mapbox token/);
     await startPlanning(user, "Nicolae Iorga", "Sepsi Aréna");
-    expect(await screen.findByRole("button", { name: /SepsiBike/ })).toBeInTheDocument();
+    await user.click(screen.getByRole("button", { name: /Indulás|Érkezés/ }));
+    fireEvent.change(screen.getByDisplayValue(/^\d{2}:\d{2}$/), { target: { value: "09:00" } });
+    await user.keyboard("{Escape}");
+    const bike = await screen.findByRole("button", { name: /SepsiBike/ });
+    expect(bike.closest("li")).not.toBeNull();
+    await user.click(bike);
+    expect(await screen.findByText("06:00–22:00 között lehet biciklit felvenni.")).toBeInTheDocument();
+    expect(screen.getAllByText(/szabad dokk/).length).toBeGreaterThanOrEqual(2);
+  });
+
+  it("hides SepsiBike when the pickup would be at 22:00", async () => {
+    const user = userEvent.setup();
+    render(<Planner network={network} places={places} reach={reach} box={box} fares={fares}
+                    bikeStations={bikeStations} bikeSnapshotAt="2026-08-23T12:53:56.000Z" />);
+    await screen.findByText(/Nincs Mapbox token/);
+    await startPlanning(user, "Nicolae Iorga", "Sepsi Aréna");
+    await user.click(screen.getByRole("button", { name: /Indulás|Érkezés/ }));
+    fireEvent.change(screen.getByDisplayValue(/^\d{2}:\d{2}$/), { target: { value: "09:00" } });
+    await user.keyboard("{Escape}");
+    await waitFor(() => expect(screen.queryByRole("button", { name: "Érkezés ekkorra" })).not.toBeInTheDocument());
+    await screen.findByRole("button", { name: /SepsiBike/ });
+
+    await user.click(screen.getByRole("button", { name: /^Indulás 09:00$/ }));
+    fireEvent.change(screen.getByDisplayValue(/^\d{2}:\d{2}$/), { target: { value: "22:00" } });
+    await user.keyboard("{Escape}");
+    await waitFor(() => expect(screen.queryByRole("button", { name: "Érkezés ekkorra" })).not.toBeInTheDocument());
+    await waitFor(() => expect(screen.queryByRole("button", { name: /SepsiBike/ })).not.toBeInTheDocument());
   });
 
   it("opens the time panel and offers the two questions worth asking", async () => {

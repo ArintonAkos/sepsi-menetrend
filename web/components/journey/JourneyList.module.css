@@ -30,6 +30,10 @@
   font-family: ui-rounded, "SF Pro Rounded", "Varela Round", system-ui, sans-serif;
   box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .18);
 }
+.bikePill { display: inline-flex; align-items: center; justify-content: center; min-width: 26px;
+  height: 24px; padding: 0 8px; border-radius: 7px; color: #fff; background: #2674d9;
+  font-family: ui-rounded, "SF Pro Rounded", "Varela Round", system-ui, sans-serif;
+  font-size: 13px; font-weight: 800; }
 .walk { display: inline-flex; align-items: center; gap: 1px;
   font-size: 12px; font-weight: 700; color: var(--ink-2); }
 .dur { text-align: right; flex: 0 0 auto; }
@@ -39,6 +43,7 @@
 .bot { display: flex; align-items: center; gap: 10px; margin-top: 7px;
   font-size: 13px; color: var(--muted); font-variant-numeric: tabular-nums; }
 .bot b { color: var(--ink); font-weight: 600; }
+.bikeSummary { margin-top: 5px; color: var(--muted); font-size: 12px; line-height: 1.35; }
 .dot { width: 3px; height: 3px; border-radius: 50%; background: currentColor;
   opacity: .5; flex: 0 0 auto; }
 .tags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 8px; }
