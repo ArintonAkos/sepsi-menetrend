@@ -6,6 +6,7 @@ import { resolve } from "node:path";
 import { prepare, boardAt, timetable, type PlanContext } from "../plan";
 import { formatHHMM } from "../time";
 import type { Network, Stop } from "../types";
+import { fixture } from "./fixture";
 
 let net: Network, ctx: PlanContext, byName: Map<string, Stop>;
 
@@ -60,35 +61,70 @@ describe("the board at a stop", () => {
     for (const column of three) expect(column.times.length).toBeGreaterThan(0);
   });
 
+  it("merges timetable columns only when they leave for the same next stop", () => {
+    const synthetic = fixture();
+    synthetic.patterns.push({
+      id: "P1-extra", lineId: "1", shapeId: "S1-extra",
+      headsign: { ro: "spre C", hu: "C felé" },
+      stopIds: ["A", "B"], offsets: [0, 5], published: [true, true],
+      shape: [[25.760, 45.86], [25.780, 45.86]], shapeIndex: [0, 1],
+    });
+    synthetic.trips.push({ patternId: "P1-extra", service: "weekday", start: 8 * 60 + 5 });
+
+    const merged = boardAt(prepare(synthetic), "A", "weekday")
+      .filter((column) => column.lineId === "1");
+
+    expect(merged).toHaveLength(1);
+    expect(merged[0]?.towards).toBe("B");
+    expect(merged[0]?.times).toEqual([480, 485, 510, 540]);
+  });
+
   it("says nothing rather than inventing a service that does not run", () => {
     for (const stop of net.stops.slice(0, 30)) {
       for (const column of boardAt(ctx, stop.id, "weekend")) {
-        const trips = net.trips.filter((t) => t.patternId === column.patternId
-                                              && t.service === "weekend");
-        expect(column.times.length).toBe(trips.length);
+        const pattern = ctx.patterns.get(column.patternId)!;
+        const expected = net.patterns.flatMap((candidate) => candidate.stopIds
+          .flatMap((stopId, index) => {
+            if (stopId !== stop.id
+                || candidate.lineId !== column.lineId
+                || candidate.headsign.ro !== column.headsign.ro
+                || candidate.headsign.hu !== column.headsign.hu
+                || (candidate.stopIds[index + 1] ?? null) !== column.towards
+                || candidate.published[index] !== column.published
+                || (index === candidate.stopIds.length - 1) !== column.terminates) {
+              return [];
+            }
+            return net.trips.filter((trip) => trip.patternId === candidate.id
+                                                && trip.service === "weekend")
+              .map((trip) => trip.start + candidate.offsets[index]);
+          })).sort((a, b) => a - b);
+        expect(column.times).toEqual(expected);
+        expect(pattern.lineId).toBe(column.lineId);
       }
     }
   });
 
-  it("agrees, call for call, with the times in the feed", () => {
-    // one column per call, not per pattern - Gara CFR is reached twice a loop
+  it("agrees with the feed after equivalent columns are coalesced", () => {
     const stopId = at("Gara CFR");
-    const expected: string[] = [];
+    const expected = new Map<string, number[]>();
     for (const pattern of net.patterns) {
       pattern.stopIds.forEach((sid, index) => {
         if (sid !== stopId) return;
         const times = net.trips
           .filter((t) => t.patternId === pattern.id && t.service === "weekday")
           .map((t) => t.start + pattern.offsets[index]).sort((a, b) => a - b);
-        if (times.length) expected.push(`${pattern.id}@${index}:${times.join(",")}`);
+        if (!times.length) return;
+        const key = [pattern.lineId, pattern.headsign.ro, pattern.headsign.hu,
+          pattern.stopIds[index + 1] ?? "", index === pattern.stopIds.length - 1,
+          pattern.published[index]].join("|");
+        expected.set(key, [...new Set([...(expected.get(key) ?? []), ...times])]
+          .sort((a, b) => a - b));
       });
     }
-    const got = boardAt(ctx, stopId, "weekday")
-      .map((c) => `${c.patternId}@?:${c.times.join(",")}`);
-    expect(got.length).toBe(expected.length);
-    for (const row of expected) {
-      const times = row.slice(row.indexOf(":"));
-      expect(got.some((g) => g.endsWith(times)), row.slice(0, 40)).toBe(true);
+    const got = boardAt(ctx, stopId, "weekday");
+    expect(got).toHaveLength(expected.size);
+    for (const times of expected.values()) {
+      expect(got.some((column) => column.times.join(",") === times.join(","))).toBe(true);
     }
   });
 });

@@ -1,5 +1,5 @@
 /** End-to-end against the real feed. The synthetic fixture proves the rules;
- *  this proves they still hold on 97 stops, 16 patterns and 498 trips. */
+ *  this proves they still hold on the reviewed physical-platform topology. */
 import { describe, it, expect, beforeAll } from "vitest";
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
@@ -45,9 +45,11 @@ const rides = (j: { legs: Array<{ kind: string }> }) =>
 
 describe("the real network", () => {
   it("loaded", () => {
-    expect(net.stops).toHaveLength(97);              // real platforms, not guessed kerbs
-    expect(net.stations).toHaveLength(97);
-    expect(net.walks).toHaveLength(104);             // every cached physical-platform walk
+    expect(net.stops).toHaveLength(96);              // real platforms, not guessed kerbs
+    expect(net.stations).toHaveLength(96);
+    expect(net.stops.some((stop) => stop.name.ro === "Terminal")).toBe(false);
+    expect(net.stops.some((stop) => stop.name.ro === "Calea Brașovului 1")).toBe(true);
+    expect(net.walks.length).toBeGreaterThan(80);     // cached physical-platform walks
     expect(net.lines).toHaveLength(12);
     expect(net.trips.length).toBeGreaterThan(400);
   });

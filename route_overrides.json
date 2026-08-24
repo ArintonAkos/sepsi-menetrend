@@ -1,0 +1,6 @@
+{
+  "removeCalls": [
+    {"line": "3", "direction": "depart", "name": "Terminal"},
+    {"line": "4", "direction": "depart", "name": "Terminal"}
+  ]
+}

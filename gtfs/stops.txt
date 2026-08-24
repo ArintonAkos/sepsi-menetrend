@@ -95,4 +95,3 @@ P93,Str. Țigaretei 3,45.854300,25.790300,0,,,city,A vonaloldal koordinátája; 
 P94,Str. Vânătorilor 1,45.864500,25.775600,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
 P95,Str. Vânătorilor 2,45.864800,25.772500,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
 P96,Șugaș Băi,45.896700,25.707100,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
-P97,Terminal,45.856800,25.806600,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.

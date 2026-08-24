@@ -195,10 +195,50 @@ DESCRIPTIONS = {
     "10": "Lábasház – Árkos központ · Kossuth Lajos negyeden át",
 }
 
+ROUTE_OVERRIDES = ROOT / "route_overrides.json"
+
 
 def metres(a, b):
     lat = math.radians((a[0] + b[0]) / 2)
     return math.hypot((b[1] - a[1]) * 111320 * math.cos(lat), (b[0] - a[0]) * 111320)
+
+
+def apply_route_overrides(directions, overrides):
+    """Apply reviewed source corrections and retain the removed call positions.
+
+    A source-page stop can be a legacy label rather than a physical platform.
+    Overrides are intentionally exact and fail closed: a source change must be
+    reviewed instead of silently creating a different route.
+    """
+    for override in overrides.get("removeCalls", []):
+        matching_directions = [
+            direction for direction in directions
+            if direction["line"] == override["line"]
+            and direction["direction"] == override["direction"]
+        ]
+        if len(matching_directions) != 1:
+            raise ValueError(f"route override has no unique direction: {override}")
+        direction = matching_directions[0]
+        matching_indexes = [
+            index for index, stop in enumerate(direction["stops"])
+            if stop["name"]["ro"] == override["name"]
+        ]
+        if len(matching_indexes) != 1:
+            raise ValueError(f"route override has no unique stop: {override}")
+
+        index = matching_indexes[0]
+        source_index = direction["source_stop_indexes"].pop(index)
+        removed = direction["stops"].pop(index)
+        if 0 < index < len(direction["stops"]):
+            previous = direction["stops"][index - 1]
+            previous["distance_to_next_m"] = (
+                (previous["distance_to_next_m"] or 0)
+                + (removed["distance_to_next_m"] or 0)
+            )
+        direction.setdefault("removed_call_indexes", []).append(source_index)
+        for sequence, stop in enumerate(direction["stops"], 1):
+            stop["stop_sequence"] = sequence
+    return directions
 
 
 def load_directions():
@@ -212,10 +252,26 @@ def load_directions():
             shape_path = ROOT / f"line-{line}" / f"{direction}-shape.json"
             shape = json.loads(shape_path.read_text(encoding="utf-8"))
             data["shape"] = shape["points"]
+            data["source_stop_indexes"] = list(range(len(data["stops"])))
             # measured on the full geometry, not the thinned one the page draws
             data["length_m"] = shape["length_m"]
             out.append(data)
-    return out
+    overrides = json.loads(ROUTE_OVERRIDES.read_text(encoding="utf-8"))
+    return apply_route_overrides(out, overrides)
+
+
+def duration_seconds_for(direction, legs):
+    """Collapse source duration legs after reviewed intermediate-stop removals."""
+    source_indexes = direction.get("source_stop_indexes", list(range(len(direction["stops"]))))
+    if len(source_indexes) != len(direction["stops"]):
+        raise ValueError("route source indexes do not match retained stops")
+    if not source_indexes:
+        return []
+    if len(legs) < source_indexes[-1]:
+        raise ValueError("route durations do not cover retained stops")
+    seconds = [sum(leg["seconds"] for leg in legs[left:right])
+               for left, right in zip(source_indexes, source_indexes[1:])]
+    return seconds + [0]
 
 
 def build_stations(directions):
@@ -483,7 +539,7 @@ def main():
         timings = ROOT / f"line-{d['line']}" / f"{d['direction']}-durations.json"
         if timings.exists():
             legs = json.loads(timings.read_text(encoding="utf-8"))["legs"]
-            secs = [leg["seconds"] for leg in legs] + [0]
+            secs = duration_seconds_for(d, legs)
             timed = True
         else:
             secs = [round(m / BUS_SPEED_M_PER_MIN * 60) for m in hops]

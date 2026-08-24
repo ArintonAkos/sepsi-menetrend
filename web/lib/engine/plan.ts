@@ -699,9 +699,21 @@ export function boardAt(ctx: PlanContext, stopId: string,
       });
     });
   }
-  /* A route that doubles back calls at the same stop twice on one run, and each
-     pass is its own column - they are different times going different ways. */
-  return boards.sort((a, b) =>
+  /* Keep distinct loop passes apart, but do not render duplicate timetable
+     columns when separately reconstructed patterns leave for the same place. */
+  const merged = new Map<string, StopBoard>();
+  for (const board of boards) {
+    const key = [board.lineId, board.headsign.ro, board.headsign.hu,
+      board.towards ?? "", board.terminates, board.published].join("|");
+    const previous = merged.get(key);
+    if (!previous) {
+      merged.set(key, board);
+      continue;
+    }
+    previous.times = [...new Set([...previous.times, ...board.times])]
+      .sort((a, b) => a - b);
+  }
+  return [...merged.values()].sort((a, b) =>
     a.lineId.localeCompare(b.lineId, "en", { numeric: true })
     || (a.times[0] ?? 0) - (b.times[0] ?? 0));
 }

@@ -95,7 +95,6 @@ stops,stop_name,hu,P93,Cigaretta utca 3
 stops,stop_name,hu,P94,Vadász utca 1
 stops,stop_name,hu,P95,Vadász utca 2
 stops,stop_name,hu,P96,Sugásfürdő
-stops,stop_name,hu,P97,Terminál
 fare_products,fare_product_name,hu,city_24pay,50 percig érvényes jegy a 24pay alkalmazásban
 fare_products,fare_product_name,hu,city_machine,"Egy utazásra szóló jegy, jegyautomatából"
 fare_products,fare_product_name,hu,city_two,Kétutazásos jegy

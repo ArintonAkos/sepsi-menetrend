@@ -4,6 +4,7 @@ import unittest
 from pathlib import Path
 
 import build_gtfs
+import build_map
 
 
 class GtfsCsvTests(unittest.TestCase):
@@ -65,6 +66,28 @@ class GtfsTopologyTests(unittest.TestCase):
         self.assertEqual(
             {(row["stop_lat"], row["stop_lon"]) for row in factory},
             {("45.858900", "25.782600"), ("45.858400", "25.782200")},
+        )
+
+    def test_real_feed_omits_removed_terminal_but_keeps_brasovului(self):
+        """The unverified Terminal source call must not create a fake platform."""
+        rows = self.build_in_temporary_directory()
+        names = {row["stop_name"] for row in rows}
+
+        self.assertNotIn("Terminal", names)
+        self.assertIn("Calea Brașovului 1", names)
+
+
+class RouteOverrideTests(unittest.TestCase):
+    def test_removed_intermediate_stop_coalesces_its_adjacent_durations(self):
+        direction = {
+            "stops": [{}, {}, {}],
+            "source_stop_indexes": [0, 2, 3],
+        }
+        legs = [{"seconds": 40}, {"seconds": 60}, {"seconds": 50}]
+
+        self.assertEqual(
+            build_map.duration_seconds_for(direction, legs),
+            [100, 50, 0],
         )
 
 

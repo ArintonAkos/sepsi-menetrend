@@ -86,6 +86,32 @@ def trip_calls(record, service):
     } for start in trips]
 
 
+def without_removed_calls(record, removed_indexes):
+    """Keep reconstructed trip times aligned with source-call overrides."""
+    if not removed_indexes:
+        return record
+    indexes = sorted(removed_indexes, reverse=True)
+    result = {key: value for key, value in record.items()}
+    result["offsets"] = list(record["offsets"])
+    for index in indexes:
+        result["offsets"].pop(index)
+    for service in ("weekday", "weekend"):
+        trips = []
+        for trip in record.get(service, []):
+            if not isinstance(trip, dict):
+                trips.append(trip)
+                continue
+            trimmed = {key: value for key, value in trip.items()}
+            trimmed["calls"] = list(trip["calls"])
+            trimmed["published"] = list(trip["published"])
+            for index in indexes:
+                trimmed["calls"].pop(index)
+                trimmed["published"].pop(index)
+            trips.append(trimmed)
+        result[service] = trips
+    return result
+
+
 def timing_points(directions, built, timetable):
     """Which (line, direction, stop index) the operator actually prints a time for.
 
@@ -238,7 +264,15 @@ def main():
     topology = resolve_platforms(directions, load_osm_platforms(), load_overrides())
     platforms = topology["platforms"]
     write_platforms(topology, PLATFORMS)
-    trips_data = json.loads((ROOT / "trips.json").read_text(encoding="utf-8"))["trips"]
+    raw_trips_data = json.loads((ROOT / "trips.json").read_text(encoding="utf-8"))["trips"]
+    trips_data = {
+        f"{direction['line']}-{direction['direction']}": without_removed_calls(
+            raw_trips_data[f"{direction['line']}-{direction['direction']}"],
+            direction.get("removed_call_indexes", []),
+        )
+        for direction in directions
+        if f"{direction['line']}-{direction['direction']}" in raw_trips_data
+    }
 
     # ---- stops: one row per physical boarding platform ----
     stop_rows, translations, stop_id = [], [], {}
