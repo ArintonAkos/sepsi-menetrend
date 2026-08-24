@@ -11,11 +11,12 @@ import { media } from "../../vitest.setup";
 import type { Network } from "@/lib/engine/types";
 import type { Place } from "@/lib/engine/search";
 import type { FareTable } from "@/lib/engine/fares";
+import type { BikeSnapshot, BikeStation } from "@/lib/sepsibike";
 
 const load = <T,>(name: string): T =>
   JSON.parse(readFileSync(resolve(import.meta.dirname, "../../public/data", name), "utf8"));
 
-let network: Network, places: Place[], fares: FareTable;
+let network: Network, places: Place[], fares: FareTable, bikeStations: BikeStation[];
 let reach: number;
 let box: [number, number, number, number];
 
@@ -27,6 +28,7 @@ beforeAll(() => {
   reach = index.reach;
   box = index.bbox;
   fares = load<FareTable>("fares.json");
+  bikeStations = load<BikeSnapshot>("sepsibike.json").stations;
 });
 
 /** Render the planner. Synchronous, so a test can assert what is on screen
@@ -147,6 +149,15 @@ describe("Planner", () => {
     await user.click(screen.getByRole("button", { name: "Română" }));
     expect(screen.getByLabelText("De la")).toBeInTheDocument();
     expect(screen.getByText(/Nu este site-ul oficial/)).toBeInTheDocument();
+  });
+
+  it("offers a direct SepsiBike alternative from the static catalogue", async () => {
+    const user = userEvent.setup();
+    render(<Planner network={network} places={places} reach={reach} box={box} fares={fares}
+                    bikeStations={bikeStations} bikeSnapshotAt="2026-08-23T12:53:56.000Z" />);
+    await screen.findByText(/Nincs Mapbox token/);
+    await startPlanning(user, "Nicolae Iorga", "Sepsi Aréna");
+    expect(await screen.findByRole("button", { name: /SepsiBike/ })).toBeInTheDocument();
   });
 
   it("opens the time panel and offers the two questions worth asking", async () => {

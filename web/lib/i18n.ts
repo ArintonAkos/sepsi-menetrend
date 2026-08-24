@@ -58,6 +58,9 @@ const hu = {
   searching: "keresés…", noAddress: "nincs cím ezen a ponton",
   outsideArea: "a hálózaton kívül", noHouseNumber: "házszám nélkül",
   localIndex: "helyi találat", today: "Ma",
+  bike: "SepsiBike", bikeRide: "kerékpározás", bikes: "kerékpár", freeDocks: "szabad dokk",
+  lastKnown: "utoljára ismert elérhetőség", bikeAccount: "SepsiBike / GloBikes fiók szükséges",
+  estimatedFree: "várhatóan 0 RON", bikeUnavailable: "Nincs használható SepsiBike útvonal.",
   days: ["vasárnap", "hétfő", "kedd", "szerda", "csütörtök", "péntek", "szombat"],
 };
 
@@ -119,6 +122,9 @@ const ro: Strings = {
   searching: "se caută…", noAddress: "nicio adresă aici",
   outsideArea: "în afara rețelei", noHouseNumber: "fără număr",
   localIndex: "rezultat local", today: "Azi",
+  bike: "SepsiBike", bikeRide: "cu bicicleta", bikes: "biciclete", freeDocks: "locuri libere",
+  lastKnown: "disponibilitate cunoscută ultima dată", bikeAccount: "Este necesar un cont SepsiBike / GloBikes",
+  estimatedFree: "probabil 0 RON", bikeUnavailable: "Nu există o rută SepsiBike disponibilă.",
   days: ["duminică", "luni", "marți", "miercuri", "joi", "vineri", "sâmbătă"],
 };
 
@@ -180,6 +186,9 @@ const en: Strings = {
   searching: "searching…", noAddress: "no address at this point",
   outsideArea: "outside the network", noHouseNumber: "without house number",
   localIndex: "local result", today: "Today",
+  bike: "SepsiBike", bikeRide: "cycling", bikes: "bikes", freeDocks: "free docks",
+  lastKnown: "last known availability", bikeAccount: "A SepsiBike / GloBikes account is required",
+  estimatedFree: "estimated 0 RON", bikeUnavailable: "No usable SepsiBike route is available.",
   days: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
 };
 

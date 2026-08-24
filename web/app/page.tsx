@@ -24,5 +24,5 @@ export default async function Page() {
   ]);
   return <Planner network={network} places={places.places}
                   reach={places.reach} box={places.bbox} fares={fares}
-                  bikeStations={bikeSnapshot.stations} />;
+                  bikeStations={bikeSnapshot.stations} bikeSnapshotAt={bikeSnapshot.snapshotAt} />;
 }

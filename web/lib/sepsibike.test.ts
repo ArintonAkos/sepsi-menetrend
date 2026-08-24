@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { bikeStationsToPlaces, isBikeStationUsable, normaliseBikeStations } from "./sepsibike";
+import { bikeStationsToPlaces, findBikeOption, isBikeStationUsable, normaliseBikeStations } from "./sepsibike";
 import snapshot from "../public/data/sepsibike.json";
 
 const arena = {
@@ -44,4 +44,33 @@ describe("SepsiBike station data", () => {
       kind: "bikeStation", hu: "Sepsi Aréna", aliases: expect.arrayContaining(["kerékpár", "dock"]),
     });
   });
+
+  it("does not offer a bike journey when no bike can be borrowed", async () => {
+    const stations = normaliseBikeStations([
+      { ...arena, OcuppiedSpots: 0 },
+      { ...arena, StationName: "07. Kaufland", Longitude: 25.80086 },
+    ], 2);
+    await expect(findBikeOption([25.79, 45.86], [25.80, 45.87], {
+      stations, source: "live", fetchedAt: new Date().toISOString(), stale: false,
+    }, unreachableRoutes)).resolves.toBeNull();
+  });
+
+  it("does not promise a free trip after 25 minutes of riding", async () => {
+    const stations = normaliseBikeStations([
+      arena,
+      { ...arena, StationName: "07. Kaufland", Longitude: 25.80086 },
+    ], 2);
+    const option = await findBikeOption([25.79, 45.86], [25.80, 45.87], {
+      stations, source: "live", fetchedAt: new Date().toISOString(), stale: false,
+    }, {
+      walk: async (from, to) => ({ path: [from, to], metres: 80, minutes: 1 }),
+      ride: async (from, to) => ({ path: [from, to], metres: 6500, minutes: 26 }),
+    });
+    expect(option).toMatchObject({ totalMinutes: 28, isFreeEstimate: false, stale: false });
+  });
 });
+
+const unreachableRoutes = {
+  walk: async () => null,
+  ride: async () => null,
+};

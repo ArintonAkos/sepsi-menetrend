@@ -28,7 +28,7 @@ class FakeWalkingWorker {
     if (type === "message") this.listener = listener;
   }
 
-  postMessage(request: { id: number; type: string; from?: [number, number]; to?: [number, number];
+  postMessage(request: { id: number; type?: string; from?: [number, number]; to?: [number, number];
                          destinations?: [number, number][]; destination?: [number, number];
                          origins?: [number, number][] }) {
     let routes: Array<FootPath | null> = [];
@@ -38,6 +38,11 @@ class FakeWalkingWorker {
       routes = this.router.routesFrom(request.from, request.destinations);
     if (request.type === "to" && request.destination && request.origins)
       routes = this.router.routesTo(request.destination, request.origins);
+    if (!request.type && request.from && request.to) {
+      const route = this.router.route(request.from, request.to);
+      queueMicrotask(() => this.listener?.({ data: { id: request.id, route } } as MessageEvent));
+      return;
+    }
     queueMicrotask(() => this.listener?.({ data: { id: request.id, routes } } as MessageEvent));
   }
 }

@@ -63,6 +63,14 @@
 
 .scroll { flex: 1; min-height: 0; overflow-y: auto; overscroll-behavior: contain;
   scrollbar-gutter: stable; }
+.bikeCard { width: 100%; display: grid; grid-template-columns: 1fr auto; gap: 5px 12px;
+  padding: 14px 18px; text-align: left; color: var(--ink); background: color-mix(in srgb, #55a630 12%, var(--paper));
+  border-bottom: 1px solid var(--border); border-left: 4px solid #3d8c27; }
+.bikeCard:hover, .bikeCard[aria-pressed="true"] { background: color-mix(in srgb, #55a630 21%, var(--paper)); }
+.bikeTitle { font-size: 15px; font-weight: 800; color: #27651d; }
+.bikeCard > strong { font-size: 20px; font-variant-numeric: tabular-nums; }
+.bikeCard > span:not(.bikeTitle), .bikeCard > small { grid-column: 1 / -1; font-size: 12px; color: var(--ink-2); }
+.bikeCard > small { font-weight: 600; }
 
 .map { position: relative; background: var(--surface); min-height: 0; min-width: 0; }
 

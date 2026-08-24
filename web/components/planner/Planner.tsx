@@ -18,10 +18,12 @@ import JourneyList from "../journey/JourneyList";
 import JourneyDetail from "../journey/JourneyDetail";
 import { prepare, planWithWalking, metresBetween, nextDepartures } from "@/lib/engine/plan";
 import { buildIndex } from "@/lib/engine/search";
-import { bikeStationsToPlaces, type BikeStation } from "@/lib/sepsibike";
+import { bikeStationsToPlaces, findBikeOption, type BikeAvailability, type BikeJourneyOption,
+         type BikeStation } from "@/lib/sepsibike";
 import { formatHHMM, minutesOfDay, serviceForDate } from "@/lib/engine/time";
 import { formatCoordinates, insideArea, reverse } from "@/lib/geocode";
 import { isStraightLine, routeOnFoot, walkingContext } from "@/lib/walking";
+import { routeByBike } from "@/lib/bicycle";
 import StopBoard from "../stops/StopBoard";
 import Timetable from "../timetable/Timetable";
 import { Back, ShareIcon } from "../common/icons";
@@ -57,9 +59,10 @@ const subscribeToWidth = (notify: () => void) => {
 };
 const isNarrow = () => widthQuery()?.matches ?? false;
 
-export default function Planner({ network, places, reach, box, fares, bikeStations = [] }: {
+export default function Planner({ network, places, reach, box, fares, bikeStations = [], bikeSnapshotAt = "" }: {
   network: Network; places: Place[]; reach: number;
   box: [number, number, number, number]; fares: FareTable; bikeStations?: BikeStation[];
+  bikeSnapshotAt?: string;
 }) {
   const ctx = useMemo(() => { primeStops(network); return prepare(network); }, [network]);
   const allPlaces = useMemo(() => [...places, ...bikeStationsToPlaces(bikeStations)], [places, bikeStations]);
@@ -122,6 +125,11 @@ export default function Planner({ network, places, reach, box, fares, bikeStatio
   const settledAversion = useDeferredValue(aversion);
   const [visibleLines, setVisibleLines] = useState(() => new Set(network.lines.map((l) => l.id)));
   const [openPanel, setOpenPanel] = useState<"when" | "day" | "lines" | "settings" | null>(null);
+  const [bikeAvailability, setBikeAvailability] = useState<BikeAvailability>(() => ({
+    stations: bikeStations, source: "snapshot", fetchedAt: bikeSnapshotAt, stale: true,
+  }));
+  const [bikeOption, setBikeOption] = useState<{ key: string; value: BikeJourneyOption | null } | null>(null);
+  const [bikeSelected, setBikeSelected] = useState(false);
 
   /* On a phone the panels are sheets pinned to the bottom of the screen, and a
      sheet cannot be a child of the panel it belongs to: any ancestor with a
@@ -432,6 +440,33 @@ export default function Planner({ network, places, reach, box, fares, bikeStatio
     return () => { cancelled = true; };
   }, [from, to, network.stops, walkingKey]);
 
+  /* The static catalogue works immediately and offline. A successful endpoint
+     response replaces only its availability counts; it never blocks planning. */
+  useEffect(() => {
+    const controller = new AbortController();
+    fetch("/api/sepsibike", { signal: controller.signal })
+      .then((response) => response.ok ? response.json() : null)
+      .then((value: unknown) => {
+        if (controller.signal.aborted || !value || typeof value !== "object") return;
+        const data = value as Partial<BikeAvailability>;
+        if (Array.isArray(data.stations) && (data.source === "live" || data.source === "snapshot")
+          && typeof data.fetchedAt === "string" && typeof data.stale === "boolean") {
+          setBikeAvailability(data as BikeAvailability);
+        }
+      })
+      .catch(() => {});
+    return () => controller.abort();
+  }, []);
+
+  const bikeKey = from && to ? `${from.at.join(",")}>${to.at.join(",")}>${bikeAvailability.fetchedAt}` : "";
+  useEffect(() => {
+    if (!from || !to) { setBikeOption(null); setBikeSelected(false); return; }
+    let cancelled = false;
+    findBikeOption(from.at, to.at, bikeAvailability, { walk: routeOnFoot, ride: routeByBike })
+      .then((value) => { if (!cancelled) setBikeOption({ key: bikeKey, value }); });
+    return () => { cancelled = true; };
+  }, [from, to, bikeAvailability, bikeKey]);
+
 
 
   /* Sharing sends the plan, not a picture of it: the link re-plans on the other
@@ -619,6 +654,7 @@ export default function Planner({ network, places, reach, box, fares, bikeStatio
 
   const picked = journeys[detail ?? chosen] ?? journeys[0] ?? null;
   const shown = useRoutedWalks(picked);
+  const shownBike = bikeOption?.key === bikeKey ? bikeOption.value : null;
 
   /* What comes after the bus you are being shown. At a change this is the
      difference between "you have four minutes" and "you have four minutes or
@@ -794,9 +830,20 @@ export default function Planner({ network, places, reach, box, fares, bikeStatio
 
         {planning && <div className={styles.scroll}>
           {detail === null ? (
-            <JourneyList journeys={journeys} lines={lineMap} t={t} chosen={chosen}
-                         fares={fares} date={date} stops={stops} patterns={patterns} dark={dark}
-                         onHover={setChosen} onOpen={setDetail} />
+            <>
+              {shownBike && <button className={styles.bikeCard} aria-pressed={bikeSelected}
+                                    onClick={() => setBikeSelected((selected) => !selected)}>
+                <span className={styles.bikeTitle}>🚲 {t.bike}</span>
+                <strong>{shownBike.totalMinutes} {t.minutes}</strong>
+                <span>{shownBike.access.minutes} {t.walk} · {shownBike.ride.minutes} {t.bikeRide} · {shownBike.egress.minutes} {t.walk}</span>
+                <span>{shownBike.start.name} ({shownBike.start.availableBikes} {t.bikes}) → {shownBike.finish.name} ({shownBike.finish.freeDocks} {t.freeDocks})</span>
+                {shownBike.stale && <small>{t.lastKnown}</small>}
+                <small>{shownBike.isFreeEstimate ? t.estimatedFree : t.bikeAccount}</small>
+              </button>}
+              <JourneyList journeys={journeys} lines={lineMap} t={t} chosen={chosen}
+                           fares={fares} date={date} stops={stops} patterns={patterns} dark={dark}
+                           onHover={setChosen} onOpen={setDetail} />
+            </>
           ) : (
             <JourneyDetail journey={journeys[detail]} lines={lineMap} patterns={patterns}
                            stops={stops} fares={fares} date={date} lang={lang} t={t} dark={dark}
