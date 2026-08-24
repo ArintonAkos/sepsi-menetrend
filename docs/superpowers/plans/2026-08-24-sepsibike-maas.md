@@ -353,13 +353,18 @@ git commit -m "feat: add PWA installation and offline SepsiBike data"
 **Files:**
 - Modify: docs/superpowers/plans/2026-08-24-sepsibike-maas.md
 
-- [ ] **Step 1: Run reproducible OSM build**
+- [x] **Step 1: Run reproducible OSM build**
 
 Run: python build_walking_graph.py
 
 Expected: both graph files rebuild from the committed OSM extract without runtime network access.
 
-- [ ] **Step 2: Run all checks**
+Result (2026-08-24): `python build_walking_graph.py` rebuilt both files from the
+committed extract: walking 23,972 vertices / 50,086 directed edges; bicycle
+23,216 vertices / 46,777 directed edges. No network request is made by this
+builder.
+
+- [x] **Step 2: Run all checks**
 
 ~~~
 python -m unittest discover -s tests
@@ -368,13 +373,24 @@ cd web && npm test && npm run lint && npm run build
 
 Expected: Python and TypeScript tests pass, lint has no errors, and static export succeeds.
 
-- [ ] **Step 3: Inspect PWA output**
+Result (2026-08-24): `python -m unittest discover -s tests` passed 4 tests;
+`cd web && npm test` passed 25 files / 298 tests; `npm run build` passed.
+The targeted lint for the newly added installer passes. Repository-wide lint
+remains blocked by six pre-existing React Compiler violations in `Planner.tsx`
+(lines 255, 256, 326, 361, 365 and 522), plus two pre-existing unused-variable
+warnings in `Analytics.tsx`. The SepsiBike-specific synchronous-effect errors
+were fixed before this record was written.
+
+- [x] **Step 3: Inspect PWA output**
 
 Run: rg -n 'sepsibike.json|bicycle-graph.json' web/out/sw.js and test -f web/out/data/bicycle-graph.json
 
 Expected: service worker lists both new datasets and build output contains the graph.
 
-- [ ] **Step 4: Record exact results and commit**
+Result (2026-08-24): `web/out/sw.js` lists `/data/sepsibike.json` and
+`/data/bicycle-graph.json`; `web/out/data/bicycle-graph.json` exists.
+
+- [x] **Step 4: Record exact results and commit**
 
 Replace this task's boxes with [x], write the command counts and task commit hashes, then:
 
@@ -382,3 +398,7 @@ Replace this task's boxes with [x], write the command counts and task commit has
 git add docs/superpowers/plans/2026-08-24-sepsibike-maas.md
 git commit -m "docs: record SepsiBike verification"
 ~~~
+
+Task commits: `d4f4254`, `3475447`, `fc569e8`, `ad372d3`, `592ebd4`,
+`5fc9dd9`; final verification record follows in the next local commit. No
+commit has been pushed or deployed.
