@@ -11,7 +11,7 @@ export type { FootPath } from "./walking-router";
 
 type RequestInput =
   | { type: "route"; from: LngLat; to: LngLat }
-  | { type: "from"; from: LngLat; destinations: LngLat[] }
+  | { type: "from"; from: LngLat; destinations: LngLat[]; maxMetres?: number }
   | { type: "to"; destination: LngLat; origins: LngLat[] };
 type Request = RequestInput & { id: number };
 type Response = { id: number; routes: Array<FootPath | null>; error?: string };
@@ -73,8 +73,8 @@ export async function routeOnFoot(from: LngLat, to: LngLat,
   }
 }
 
-export async function routesFrom(point: LngLat, stops: LngLat[]) {
-  try { return await ask({ type: "from", from: point, destinations: stops }); }
+export async function routesFrom(point: LngLat, stops: LngLat[], maxMetres?: number) {
+  try { return await ask({ type: "from", from: point, destinations: stops, maxMetres }); }
   catch { return stops.map(() => null); }
 }
 

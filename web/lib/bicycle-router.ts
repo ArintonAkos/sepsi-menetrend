@@ -26,11 +26,29 @@ export class BicycleRouter extends WalkingRouter {
   }
 
   route(from: LngLat, to: LngLat): BicyclePath | null {
+    return this.routesFrom(from, [to])[0] ?? null;
+  }
+
+  /** One weighted Dijkstra run serves every possible return dock from the
+   * same pickup dock. The multimodal planner needs precisely this operation
+   * to compare all live, usable stations without turning one search into N
+   * repeated graph traversals. */
+  routesFrom(from: LngLat, destinations: LngLat[]): Array<BicyclePath | null> {
     const start = this.nearest(from);
-    const finish = this.nearest(to);
-    if (!start || !finish) return null;
+    if (!start) return destinations.map(() => null);
     const { distance, previous } = this.dijkstra(start.vertex, this.graph.edges,
       (this.graph as BicycleGraph).seconds);
+    return destinations.map((to) => this.pathFromBikeSearch(from, to, start, distance, previous));
+  }
+
+  private pathFromBikeSearch(from: LngLat, to: LngLat,
+                             start: { vertex: number; metres: number },
+                             distance: Float64Array, previous: Int32Array): BicyclePath | null {
+    const finish = this.nearest(to);
+    if (!finish) return null;
+    /* pathFromSearch only reconstructs geometry here. Its metre calculation
+     * receives second-weights in this router, so the physical distance is
+     * recomputed from the parallel metre edge list below. */
     const base = this.pathFromSearch(from, to, start, finish, distance, previous);
     if (!base) return null;
 

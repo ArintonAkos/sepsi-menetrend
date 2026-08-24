@@ -25,7 +25,7 @@ import { mergePlannerOptions } from "@/lib/planner-options";
 import { formatHHMM, minutesOfDay, serviceForDate } from "@/lib/engine/time";
 import { formatCoordinates, insideArea, reverse } from "@/lib/geocode";
 import { isStraightLine, routeOnFoot, routesFrom, walkingContext } from "@/lib/walking";
-import { routeByBike } from "@/lib/bicycle";
+import { routeByBike, routesByBikeFrom } from "@/lib/bicycle";
 import StopBoard from "../stops/StopBoard";
 import BikeStationBoard from "../bike/BikeStationBoard";
 import Timetable from "../timetable/Timetable";
@@ -557,7 +557,7 @@ export default function Planner({ network, places, reach, box, fares, bikeStatio
       mode, walkAversion: settledAversion, lines: visibleLines } as const;
     const result = showBikeOptions
       ? planMultimodal(ctx, request, walking.value, { availability: bikeAvailability,
-        routes: { walk: routeOnFoot, ride: routeByBike }, walkFrom: routesFrom })
+        routes: { walk: routeOnFoot, ride: routeByBike, ridesFrom: routesByBikeFrom }, walkFrom: routesFrom })
       : Promise.resolve(planWithWalking(ctx, request, walking.value));
     result.then((journeys) => { if (!cancelled) setPlanned({ key: multimodalKey, journeys }); });
     return () => { cancelled = true; };

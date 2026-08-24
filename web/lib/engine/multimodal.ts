@@ -1,28 +1,21 @@
 /** Bounded time-dependent search over the existing physical bus, foot and
- * SepsiBike networks.  Every foot and bicycle geometry is supplied by the
+ * SepsiBike networks. Every foot and bicycle geometry is supplied by the
  * offline routers; this module only combines those exact paths with GTFS
  * departure times. */
 import { isBikeStationUsable, type BikeAvailability, type BikeRouteFunctions, type BikeStation } from "../sepsibike";
 import { bikeFare, canStartBikeRide } from "../sepsibike-timing";
-import { metresBetween } from "../walking-router";
-import { MAX_DIRECT_WALK, MAX_RIDES, MIN_TRANSFER, generalisedCost, removeNoProgressLoops, type PlanContext } from "./plan";
+import { MAX_ACCESS_MINUTES, MAX_DIRECT_WALK, MAX_RIDES, MIN_TRANSFER, WALK_PACE, generalisedCost, removeNoProgressLoops, type PlanContext } from "./plan";
 import type { BikeLeg, Journey, Leg, LngLat, Minute, PlanRequest, RideLeg, WalkLeg, WalkingContext } from "./types";
 
 /** Two rentals already cover first/last mile plus one transfer; a third makes
  * a city journey slower and explodes the state space without helping riders. */
 const MAX_RENTALS = 2;
-/** Candidate selection limits router work, never path geometry: every selected
- * connection is still accepted only after an exact OSM route succeeds. */
-const NEAREST_DOCKS = 3;
-const NEAREST_STOPS = 8;
-const BIKE_FINISH_CANDIDATES = 2;
-
 export interface MultimodalDependencies {
   availability: BikeAvailability;
   routes: BikeRouteFunctions;
   /** Optional worker batch endpoint.  It turns all walk candidates from one
    * node into one Dijkstra run instead of N identical graph searches. */
-  walkFrom?: (from: LngLat, destinations: LngLat[]) => Promise<Array<{
+  walkFrom?: (from: LngLat, destinations: LngLat[], maxMetres?: number) => Promise<Array<{
     metres: number; minutes: number; path: LngLat[];
   } | null>>;
 }
@@ -56,13 +49,33 @@ function timedStart(legs: Leg[], fallback: Minute): Minute {
   return fallback;
 }
 
+/** Platform nodes are useful to the search but not an instruction to the
+ * rider. A chain of foot edges is one continuous walk, with its measured OSM
+ * geometry retained end-to-end. */
+function mergeAdjacentWalks(legs: Leg[]): Leg[] {
+  const merged: Leg[] = [];
+  for (const leg of legs) {
+    const previous = merged.at(-1);
+    if (leg.kind === "walk" && previous?.kind === "walk") {
+      previous.toStopId = leg.toStopId;
+      previous.metres += leg.metres;
+      previous.minutes += leg.minutes;
+      previous.path = [...previous.path, ...leg.path.slice(1)];
+    } else {
+      merged.push(leg.kind === "walk" ? { ...leg, path: [...leg.path] } : leg);
+    }
+  }
+  return merged;
+}
+
 function toJourney(label: Label, fallbackDepart: Minute): Journey {
-  const rides = label.legs.filter((leg): leg is RideLeg => leg.kind === "ride");
+  const legs = mergeAdjacentWalks(label.legs);
+  const rides = legs.filter((leg): leg is RideLeg => leg.kind === "ride");
   return {
-    legs: label.legs,
-    depart: timedStart(label.legs, fallbackDepart),
+    legs,
+    depart: timedStart(legs, fallbackDepart),
     arrive: label.minute,
-    walkMinutes: label.walkMinutes,
+    walkMinutes: legs.reduce((total, leg) => total + (leg.kind === "walk" ? leg.minutes : 0), 0),
     transfers: Math.max(0, rides.length - 1),
   };
 }
@@ -74,19 +87,16 @@ function signature(journey: Journey) {
       : `w:${leg.fromStopId ?? "origin"}>${leg.toStopId ?? "destination"}`).join("|");
 }
 
-function nearest<T>(from: LngLat, values: T[], at: (value: T) => LngLat, limit: number): T[] {
-  return [...values].sort((left, right) => metresBetween(from, at(left)) - metresBetween(from, at(right)))
-    .slice(0, limit);
-}
-
 function readyAt(label: Label) {
   return label.minute + (label.legs.at(-1)?.kind === "ride" ? MIN_TRANSFER : 0);
 }
 
 /**
  * Plan direct bike, first/last-mile bike and bike-between-buses journeys.  The
- * only approximating step is pruning which potential connection to ask the
- * router about; no selected leg ever falls back to a diagonal or guessed time.
+ * Every usable dock and every physically reachable platform participates in
+ * the search. Worker batch APIs keep that exhaustive city-scale comparison
+ * inexpensive; no connection is discarded merely because its coordinates are
+ * not among a small nearest-by-air-distance list.
  */
 export async function planMultimodal(
   ctx: PlanContext, request: PlanRequest, walking: WalkingContext,
@@ -103,11 +113,11 @@ export async function planMultimodal(
     if (!route) { route = dependencies.routes.walk(from, to); routeCache.set(key, route); }
     return route;
   };
-  const walksFrom = async (from: LngLat, destinations: LngLat[]) => {
+  const walksFrom = async (from: LngLat, destinations: LngLat[], maxMinutes = MAX_ACCESS_MINUTES) => {
     const keys = destinations.map((to) => `w:${from.join(",")}>${to.join(",")}`);
     const missing = destinations.filter((_, index) => !routeCache.has(keys[index]));
     if (missing.length && dependencies.walkFrom) {
-      const routes = await dependencies.walkFrom(from, missing);
+      const routes = await dependencies.walkFrom(from, missing, maxMinutes * WALK_PACE);
       missing.forEach((to, index) => {
         const key = `w:${from.join(",")}>${to.join(",")}`;
         routeCache.set(key, Promise.resolve(routes[index] ?? null));
@@ -121,15 +131,21 @@ export async function planMultimodal(
     if (!route) { route = dependencies.routes.ride(from, to); bikeCache.set(key, route); }
     return route;
   };
+  const ridesFrom = async (from: LngLat, destinations: LngLat[]) => {
+    const keys = destinations.map((to) => `b:${from.join(",")}>${to.join(",")}`);
+    const missing = destinations.filter((_, index) => !bikeCache.has(keys[index]));
+    if (missing.length && dependencies.routes.ridesFrom) {
+      const routes = await dependencies.routes.ridesFrom(from, missing);
+      missing.forEach((to, index) => {
+        const key = `b:${from.join(",")}>${to.join(",")}`;
+        bikeCache.set(key, Promise.resolve(routes[index] ?? null));
+      });
+    }
+    return Promise.all(destinations.map((to) => ride(from, to)));
+  };
   const usableOrigins = stations.filter((station) => isBikeStationUsable(station, "origin"));
   const usableDestinations = stations.filter((station) => isBikeStationUsable(station, "destination"));
-  const stopCandidates = (from: LngLat) => nearest(from, [...ctx.stops.values()], (stop) => stop.at, NEAREST_STOPS);
-  const dockCandidates = (from: LngLat) => nearest(from, stations, pointOf, NEAREST_DOCKS);
-  const bikeFinishCandidates = (from: LngLat) => {
-    const combined = [...nearest(from, usableDestinations, pointOf, BIKE_FINISH_CANDIDATES),
-      ...nearest(request.to, usableDestinations, pointOf, BIKE_FINISH_CANDIDATES)];
-    return [...new Map(combined.map((station) => [station.id, station])).values()];
-  };
+  const allStops = [...ctx.stops.values()];
 
   const found = new Map<string, Journey>();
   const starts = request.mode === "departAt" ? [request.time]
@@ -151,11 +167,11 @@ export async function planMultimodal(
       enqueue({ at: stopNode(id), minute: start + route.minutes,
         legs: [footLeg(null, id, route)], walkMinutes: route.minutes, rides: 0, rentals: 0 });
     }
-    const initialDocks = dockCandidates(request.from);
+    const initialDocks = usableOrigins;
     const initialRoutes = await walksFrom(request.from, initialDocks.map(pointOf));
     for (const [index, station] of initialDocks.entries()) {
       const route = initialRoutes[index];
-      if (!route) continue;
+      if (!route || route.minutes > MAX_ACCESS_MINUTES) continue;
       enqueue({ at: dockNode(station.id), minute: start + route.minutes,
         legs: [footLeg(null, null, route)], walkMinutes: route.minutes, rides: 0, rentals: 0 });
     }
@@ -207,11 +223,11 @@ export async function planMultimodal(
             }
           }
         }
-        const nearbyDocks = dockCandidates(stop.at);
+        const nearbyDocks = usableOrigins;
         const nearbyDockRoutes = await walksFrom(stop.at, nearbyDocks.map(pointOf));
         for (const [index, station] of nearbyDocks.entries()) {
           const route = nearbyDockRoutes[index];
-          if (!route) continue;
+          if (!route || route.minutes > MAX_ACCESS_MINUTES) continue;
           enqueue({ at: dockNode(station.id), minute: readyAt(label) + route.minutes,
             legs: [...label.legs, footLeg(id, null, route)], walkMinutes: label.walkMinutes + route.minutes,
             rides: label.rides, rentals: label.rentals });
@@ -219,26 +235,27 @@ export async function planMultimodal(
       } else {
         const station = stationById.get(dockId(label.at as `dock:${string}`));
         if (!station) continue;
-        const endRoute = await walk(pointOf(station), request.to);
+        const [endRoute] = await walksFrom(pointOf(station), [request.to]);
         if (endRoute) {
           const end: Label = { ...label, minute: label.minute + endRoute.minutes,
             legs: [...label.legs, footLeg(null, null, endRoute)], walkMinutes: label.walkMinutes + endRoute.minutes };
           const journey = removeNoProgressLoops(ctx, toJourney(end, start), request, walking);
           if (request.mode === "departAt" || journey.arrive <= request.time) found.set(signature(journey), journey);
         }
-        const nearbyStops = stopCandidates(pointOf(station));
+        const nearbyStops = allStops;
         const nearbyStopRoutes = await walksFrom(pointOf(station), nearbyStops.map((stop) => stop.at));
         for (const [index, stop] of nearbyStops.entries()) {
           const route = nearbyStopRoutes[index];
-          if (!route) continue;
+          if (!route || route.minutes > MAX_ACCESS_MINUTES) continue;
           enqueue({ at: stopNode(stop.id), minute: label.minute + route.minutes,
             legs: [...label.legs, footLeg(null, stop.id, route)], walkMinutes: label.walkMinutes + route.minutes,
             rides: label.rides, rentals: label.rentals });
         }
         if (label.rentals < MAX_RENTALS && isBikeStationUsable(station, "origin") && canStartBikeRide(label.minute)) {
-          for (const finish of bikeFinishCandidates(pointOf(station))) {
-            if (finish.id === station.id) continue;
-            const route = await ride(pointOf(station), pointOf(finish));
+          const finishes = usableDestinations.filter((finish) => finish.id !== station.id);
+          const bikeRoutes = await ridesFrom(pointOf(station), finishes.map(pointOf));
+          for (const [finishIndex, finish] of finishes.entries()) {
+            const route = bikeRoutes[finishIndex];
             if (!route) continue;
             const terrain = route as typeof route & Partial<{
               seconds: number; ascentMetres: number; descentMetres: number;

@@ -35,6 +35,19 @@ describe("WalkingRouter", () => {
     expect(routes.map((route) => route?.metres)).toEqual([190, 270]);
   });
 
+  it("only explores the exact walking-transfer radius when requested", () => {
+    const router = new WalkingRouter(graph) as WalkingRouter & {
+      routesFromWithin(from: [number, number], destinations: [number, number][], maxMetres: number): Array<unknown>;
+    };
+
+    const routes = router.routesFromWithin([25.76, 45.86], [
+      [25.76, 45.861],
+      [25.761, 45.86],
+    ], 200) as Array<{ metres: number } | null>;
+
+    expect(routes).toEqual([null, expect.objectContaining({ metres: 80 })]);
+  });
+
   it("reconstructs egress walks from the stop, not as a diagonal to the destination", () => {
     const router = new WalkingRouter(graph);
 

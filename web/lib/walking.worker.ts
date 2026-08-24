@@ -5,7 +5,7 @@ import type { LngLat } from "./engine/types";
 
 type Request =
   | { id: number; type: "route"; from: LngLat; to: LngLat }
-  | { id: number; type: "from"; from: LngLat; destinations: LngLat[] }
+  | { id: number; type: "from"; from: LngLat; destinations: LngLat[]; maxMetres?: number }
   | { id: number; type: "to"; destination: LngLat; origins: LngLat[] };
 
 type Response = { id: number; routes: Array<FootPath | null>; error?: string };
@@ -29,7 +29,9 @@ self.addEventListener("message", async (event: MessageEvent<Request>) => {
     const routes = request.type === "route"
       ? [graph.route(request.from, request.to)]
       : request.type === "from"
-        ? graph.routesFrom(request.from, request.destinations)
+        ? Number.isFinite(request.maxMetres)
+          ? graph.routesFromWithin(request.from, request.destinations, request.maxMetres!)
+          : graph.routesFrom(request.from, request.destinations)
         : graph.routesTo(request.destination, request.origins);
     (self as DedicatedWorkerGlobalScope).postMessage({ id: request.id, routes } satisfies Response);
   } catch (error) {

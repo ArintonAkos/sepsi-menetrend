@@ -28,6 +28,9 @@ export function bikeStationsToPlaces(stations: BikeStation[]): Place[] {
 export interface BikeRouteFunctions {
   walk(from: LngLat, to: LngLat): Promise<FootPath | null>;
   ride(from: LngLat, to: LngLat): Promise<FootPath | null>;
+  /** Optional worker batch. All returns from one dock use one weighted
+   * bicycle-graph search instead of one complete search per destination. */
+  ridesFrom?(from: LngLat, destinations: LngLat[]): Promise<Array<FootPath | null>>;
 }
 
 export interface BikeJourneyOption {

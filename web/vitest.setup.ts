@@ -30,12 +30,14 @@ class FakeWalkingWorker {
 
   postMessage(request: { id: number; type?: string; from?: [number, number]; to?: [number, number];
                          destinations?: [number, number][]; destination?: [number, number];
-                         origins?: [number, number][] }) {
+                         origins?: [number, number][]; maxMetres?: number }) {
     let routes: Array<FootPath | null> = [];
     if (request.type === "route" && request.from && request.to)
       routes = [this.router.route(request.from, request.to)];
     if (request.type === "from" && request.from && request.destinations)
-      routes = this.router.routesFrom(request.from, request.destinations);
+      routes = Number.isFinite(request.maxMetres)
+        ? this.router.routesFromWithin(request.from, request.destinations, request.maxMetres!)
+        : this.router.routesFrom(request.from, request.destinations);
     if (request.type === "to" && request.destination && request.origins)
       routes = this.router.routesTo(request.destination, request.origins);
     if (!request.type && request.from && request.to) {

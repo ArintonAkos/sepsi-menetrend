@@ -84,12 +84,20 @@ export class WalkingRouter {
 
   /** Every access walk uses a single Dijkstra search from the chosen origin. */
   routesFrom(from: LngLat, destinations: LngLat[]): Array<FootPath | null> {
+    return this.routesFromWithin(from, destinations, Infinity);
+  }
+
+  /** Like routesFrom, but only explores a measured OSM walking radius. This is
+   * for transfers: a 15-minute interchange does not need a whole-city graph
+   * traversal merely to prove that a distant platform is too far away. */
+  routesFromWithin(from: LngLat, destinations: LngLat[], maxMetres: number): Array<FootPath | null> {
     const start = this.nearest(from);
     if (!start) return destinations.map(() => null);
-    const { distance, previous } = this.dijkstra(start.vertex);
+    const { distance, previous } = this.dijkstra(start.vertex, this.graph.edges, this.graph.metres, maxMetres);
     return destinations.map((to) => {
       const finish = this.nearest(to);
-      return finish ? this.pathFromSearch(from, to, start, finish, distance, previous) : null;
+      const route = finish ? this.pathFromSearch(from, to, start, finish, distance, previous) : null;
+      return route && route.metres <= maxMetres ? route : null;
     });
   }
 
@@ -135,7 +143,8 @@ export class WalkingRouter {
     return bestMetres <= MAX_SNAP_METRES ? { vertex: bestVertex, metres: bestMetres } : null;
   }
 
-  protected dijkstra(source: number, edges = this.graph.edges, lengths = this.graph.metres) {
+  protected dijkstra(source: number, edges = this.graph.edges, lengths = this.graph.metres,
+                     maxCost = Infinity) {
     const distance = new Float64Array(this.graph.vertices.length);
     distance.fill(Infinity);
     const previous = new Int32Array(this.graph.vertices.length);
@@ -146,9 +155,11 @@ export class WalkingRouter {
     for (let next = queue.pop(); next; next = queue.pop()) {
       const [cost, node] = next;
       if (cost !== distance[node]) continue;
+      if (cost > maxCost) continue;
       for (let i = 0; i < edges[node].length; i++) {
         const neighbour = edges[node][i];
         const alternative = cost + lengths[node][i];
+        if (alternative > maxCost) continue;
         if (alternative >= distance[neighbour]) continue;
         distance[neighbour] = alternative;
         previous[neighbour] = node;

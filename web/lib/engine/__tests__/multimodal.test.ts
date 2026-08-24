@@ -99,10 +99,56 @@ describe("multimodal planner", () => {
     });
   });
 
+  it("does not expose internal platform-walk hops as separate walking instructions", async () => {
+    const transferOnly = network();
+    transferOnly.patterns = [{ id: "one", lineId: "1", shapeId: "one", headsign: { ro: "D", hu: "D" },
+      stopIds: ["B", "D"], offsets: [0, 5], published: [true, true], shape: [b, d], shapeIndex: [0, 1] }];
+    transferOnly.trips = [{ patternId: "one", service: "weekday", start: 8 * 60 + 2 }];
+    transferOnly.walks = [{ from: "A", to: "B", metres: 50, seconds: 60, path: [a, b] }];
+    const transferWalking: WalkingContext = {
+      access: new Map([["A", foot(origin, a, 20, 1)]]),
+      egress: new Map([["D", foot(d, destination, 20, 1)]]),
+      direct: null,
+    };
+    const found = await planMultimodal(prepare(transferOnly), request(8 * 60), transferWalking,
+      deps([]));
+    const journey = found.find((item) => item.legs.some((leg) => leg.kind === "ride"));
+
+    expect(journey?.legs.map((leg) => leg.kind)).toEqual(["walk", "ride", "walk"]);
+    expect(journey?.legs[0]).toMatchObject({ kind: "walk", metres: 70, minutes: 2, toStopId: "B" });
+  });
+
   it("does not invent a bike leg without a bike at the pickup dock", async () => {
     const found = await planMultimodal(prepare(network()), request(), walking,
       deps(stations({ availableBikes: 0 })));
     expect(found.every((journey) => !journey.legs.some((leg) => leg.kind === "bike"))).toBe(true);
+  });
+
+  it("reaches a usable dock even when three nearer empty docks cannot lend a bike", async () => {
+    const blocked = [1, 2, 3].map((number) => ({
+      id: `blocked-${number}`, name: `Blocked ${number}`, address: "Blocked",
+      lat: origin[1], lng: origin[0] + number / 100_000,
+      availableBikes: 0, freeDocks: 4, totalCapacity: 4, status: "Online",
+    }));
+    const found = await planMultimodal(prepare(network()), request(8 * 60, new Set(["no-bus"])), walking,
+      deps([...blocked, ...stations()]));
+
+    expect(found.some((journey) => journey.legs.some((leg) => leg.kind === "bike"
+      && leg.startStationId === "01" && leg.finishStationId === "02"))).toBe(true);
+  });
+
+  it("keeps a bike-to-bus connection when its serving platform is not among the nearest eight", async () => {
+    const withNearbyIrrelevantStops = network();
+    withNearbyIrrelevantStops.stops.push(...Array.from({ length: 8 }, (_, index) => ({
+      id: `X${index}`, name: { ro: `X${index}`, hu: `X${index}` },
+      at: [dockB[0] + (index + 1) / 100_000, dockB[1]] as LngLat,
+      stationId: `X${index}`, zone: "city" as const,
+    })));
+    const found = await planMultimodal(prepare(withNearbyIrrelevantStops), request(8 * 60, new Set(["2"])), walking,
+      deps());
+
+    expect(found.some((journey) => journey.legs.map((leg) => leg.kind).join(",")
+      === "walk,bike,walk,ride,walk")).toBe(true);
   });
 
   it("does not start a rental at 22:00", async () => {

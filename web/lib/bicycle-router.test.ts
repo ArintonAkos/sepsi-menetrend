@@ -42,6 +42,18 @@ describe("BicycleRouter", () => {
     expect(route?.ascentMetres).toBe(0);
   });
 
+  it("calculates all dock destinations from one terrain-aware search", () => {
+    const router = new BicycleRouter(graph);
+
+    const routes = router.routesFrom([25.76, 45.86], [
+      [25.76, 45.861],
+      [25.761, 45.86],
+    ]);
+
+    expect(routes.map((route) => route?.metres)).toEqual([270, 80]);
+    expect(routes.map((route) => route?.seconds)).toEqual([80, 20]);
+  });
+
   it("fails closed when the browser has no worker support", async () => {
     const original = globalThis.Worker;
     Object.defineProperty(globalThis, "Worker", { configurable: true, value: undefined });
