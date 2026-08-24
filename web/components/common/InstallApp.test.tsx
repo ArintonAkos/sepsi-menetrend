@@ -9,7 +9,7 @@ afterEach(() => localStorage.clear());
 describe("InstallApp", () => {
   it("calls the browser install prompt only after the user presses Install", async () => {
     const prompt = vi.fn().mockResolvedValue(undefined);
-    render(<InstallApp lang="en" t={STRINGS.en} />);
+    render(<InstallApp t={STRINGS.en} />);
     const event = new Event("beforeinstallprompt");
     Object.assign(event, { prompt });
     fireEvent(window, event);
@@ -19,7 +19,13 @@ describe("InstallApp", () => {
 
   it("explains the iOS route when there is no native install prompt", () => {
     Object.defineProperty(navigator, "userAgent", { configurable: true, value: "iPhone Safari" });
-    render(<InstallApp lang="en" t={STRINGS.en} />);
+    render(<InstallApp t={STRINGS.en} />);
     expect(screen.getByText(/Share.*Add to Home Screen/i)).toBeInTheDocument();
+  });
+
+  it("does not render again after the user dismissed installation", () => {
+    localStorage.setItem("sepsi.install.dismissed", "1");
+    render(<InstallApp t={STRINGS.en} />);
+    expect(screen.queryByRole("button", { name: "Install app" })).not.toBeInTheDocument();
   });
 });

@@ -130,7 +130,7 @@ export default function Planner({ network, places, reach, box, fares, bikeStatio
     stations: bikeStations, source: "snapshot", fetchedAt: bikeSnapshotAt, stale: true,
   }));
   const [bikeOption, setBikeOption] = useState<{ key: string; value: BikeJourneyOption | null } | null>(null);
-  const [bikeSelected, setBikeSelected] = useState(false);
+  const [bikeSelectedKey, setBikeSelectedKey] = useState<string | null>(null);
   const [selectedBikeStationId, setSelectedBikeStationId] = useState<string | null>(null);
 
   /* On a phone the panels are sheets pinned to the bottom of the screen, and a
@@ -462,7 +462,7 @@ export default function Planner({ network, places, reach, box, fares, bikeStatio
 
   const bikeKey = from && to ? `${from.at.join(",")}>${to.at.join(",")}>${bikeAvailability.fetchedAt}` : "";
   useEffect(() => {
-    if (!from || !to) { setBikeOption(null); setBikeSelected(false); return; }
+    if (!from || !to) return;
     let cancelled = false;
     findBikeOption(from.at, to.at, bikeAvailability, { walk: routeOnFoot, ride: routeByBike })
       .then((value) => { if (!cancelled) setBikeOption({ key: bikeKey, value }); });
@@ -657,6 +657,7 @@ export default function Planner({ network, places, reach, box, fares, bikeStatio
   const picked = journeys[detail ?? chosen] ?? journeys[0] ?? null;
   const shown = useRoutedWalks(picked);
   const shownBike = bikeOption?.key === bikeKey ? bikeOption.value : null;
+  const bikeSelected = bikeSelectedKey === bikeKey;
   const selectedBikeStation = selectedBikeStationId
     ? bikeAvailability.stations.find((station) => station.id === selectedBikeStationId) ?? null : null;
 
@@ -846,7 +847,7 @@ export default function Planner({ network, places, reach, box, fares, bikeStatio
                 <small>{bikeAvailability.stale ? t.lastKnown : bikeAvailability.fetchedAt}</small>
               </section>}
               {shownBike && <button className={styles.bikeCard} aria-pressed={bikeSelected}
-                                    onClick={() => setBikeSelected((selected) => !selected)}>
+                                    onClick={() => setBikeSelectedKey(bikeSelected ? null : bikeKey)}>
                 <span className={styles.bikeTitle}>🚲 {t.bike}</span>
                 <strong>{shownBike.totalMinutes} {t.minutes}</strong>
                 <span>{shownBike.access.minutes} {t.walk} · {shownBike.ride.minutes} {t.bikeRide} · {shownBike.egress.minutes} {t.walk}</span>
@@ -987,7 +988,7 @@ export default function Planner({ network, places, reach, box, fares, bikeStatio
                   </div>
                 </div>
                 <div className={styles.setRow}>
-                  <InstallApp lang={lang} t={t} />
+                  <InstallApp t={t} />
                 </div>
                 {recent.length > 0 && (
                   <div className={styles.setRow}>

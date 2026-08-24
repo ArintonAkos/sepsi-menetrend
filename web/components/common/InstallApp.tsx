@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import type { Lang, Strings } from "@/lib/i18n";
+import type { Strings } from "@/lib/i18n";
 
 interface InstallPromptEvent extends Event {
   prompt(): Promise<void>;
@@ -17,16 +17,16 @@ const isStandalone = () =>
 const isIos = () => /iphone|ipad|ipod/i.test(navigator.userAgent);
 
 /** Browser-native installation where possible, accurate instructions on iOS. */
-export default function InstallApp({ lang: _lang, t, compact = false }: {
-  lang: Lang;
+export default function InstallApp({ t, compact = false }: {
   t: Strings;
   compact?: boolean;
 }) {
   const [prompt, setPrompt] = useState<InstallPromptEvent | null>(null);
-  const [dismissed, setDismissed] = useState(false);
+  const [dismissed, setDismissed] = useState(() => {
+    try { return localStorage.getItem(DISMISSED_KEY) === "1"; } catch { return false; }
+  });
 
   useEffect(() => {
-    try { setDismissed(localStorage.getItem(DISMISSED_KEY) === "1"); } catch {}
     const capture = (event: Event) => {
       event.preventDefault();
       setPrompt(event as InstallPromptEvent);
