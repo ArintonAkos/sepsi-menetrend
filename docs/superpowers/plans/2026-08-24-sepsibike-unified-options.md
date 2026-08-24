@@ -30,7 +30,7 @@
 - web/components/planner/Planner.tsx and .test.tsx: timed option construction, common selection, correct map detail.
 - web/lib/i18n.ts: localized journey-detail copy.
 
-## Task 1: Encode SepsiBike operating time and price
+## Task 1: Encode SepsiBike operating time and price ✅
 
 **Files:**
 - Create: web/lib/sepsibike-timing.ts
@@ -113,7 +113,7 @@ git add web/lib/sepsibike-timing.ts web/lib/sepsibike-timing.test.ts
 git commit -m "feat: time and price SepsiBike journeys"
 ~~~
 
-## Task 2: Create a common transit/bike result model
+## Task 2: Create a common transit/bike result model ✅
 
 **Files:**
 - Create: web/lib/planner-options.ts
@@ -177,7 +177,7 @@ git add web/lib/planner-options.ts web/lib/planner-options.test.ts
 git commit -m "feat: merge direct bike and transit options"
 ~~~
 
-## Task 3: Build the SepsiBike detail timeline
+## Task 3: Build the SepsiBike detail timeline ✅
 
 **Files:**
 - Create: web/components/journey/BikeJourneyDetail.tsx
@@ -237,7 +237,7 @@ git add web/components/journey/BikeJourneyDetail.tsx web/components/journey/Bike
 git commit -m "feat: show detailed SepsiBike journeys"
 ~~~
 
-## Task 4: Integrate one selectable option list
+## Task 4: Integrate one selectable option list ✅
 
 **Files:**
 - Modify: web/components/journey/JourneyList.tsx
@@ -316,7 +316,7 @@ git add web/components/journey/JourneyList.tsx web/components/journey/JourneyLis
 git commit -m "feat: present SepsiBike as a planner option"
 ~~~
 
-## Task 5: Verify the branch
+## Task 5: Verify the branch ✅
 
 **Files:**
 - Modify: docs/superpowers/plans/2026-08-24-sepsibike-unified-options.md
@@ -325,25 +325,25 @@ git commit -m "feat: present SepsiBike as a planner option"
 - Consumes: Tasks 1–4.
 - Produces: reproducible verification record.
 
-- [ ] **Step 1: Run the complete automated suite**
+- [x] **Step 1: Run the complete automated suite**
 
 Run: cd web && npm test
 
 Expected: PASS with zero failed files and tests; record exact counts in this plan.
 
-- [ ] **Step 2: Build the static PWA**
+- [x] **Step 2: Build the static PWA**
 
 Run: cd web && npm run build
 
 Expected: PASS; Next compiles, type-checks, generates static pages, and stamps the service worker.
 
-- [ ] **Step 3: Check the worktree**
+- [x] **Step 3: Check the worktree**
 
 Run: git diff --check HEAD && git status --short
 
 Expected: no whitespace errors and no web/.netlify entry.
 
-- [ ] **Step 4: Record evidence and commit**
+- [x] **Step 4: Record evidence and commit**
 
 Replace the Task 5 checkboxes with completed states and append exact results.
 
@@ -351,3 +351,10 @@ Replace the Task 5 checkboxes with completed states and append exact results.
 git add docs/superpowers/plans/2026-08-24-sepsibike-unified-options.md
 git commit -m "docs: verify unified SepsiBike options"
 ~~~
+
+### Verification record — 2026-08-24
+
+- `cd web && npm test`: 29 test files, 311 tests passed.
+- `cd web && npm run build`: passed; Next.js compiled, type-checked, statically generated all 8 pages, and stamped the service worker.
+- `git diff --check HEAD`: passed; `git status --short`: clean, with no `web/.netlify` artefact.
+- `cd web && npm run lint`: still reports pre-existing lint errors in the unrelated drawer test files and existing `Planner.tsx` React Compiler rules; this change adds none. The production type-check and all automated tests pass.
