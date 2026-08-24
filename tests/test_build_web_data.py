@@ -1,6 +1,6 @@
 import unittest
 
-from build_web_data import official_boards
+from build_web_data import official_boards, pattern_key
 
 
 class OfficialBoardTests(unittest.TestCase):
@@ -20,6 +20,19 @@ class OfficialBoardTests(unittest.TestCase):
             "destination": "Câmpul Frumos / Szépmező",
             "weekday": [305, 380], "weekend": [305],
         }])
+
+    def test_keeps_a_separate_pattern_when_an_official_mid_route_call_differs(self):
+        trip = {"route_id": "1", "shape_id": "1-depart"}
+        normal = [
+            {"stop_id": "A", "departure_time": "08:00:00"},
+            {"stop_id": "B", "departure_time": "08:04:00"},
+        ]
+        published = [
+            {"stop_id": "A", "departure_time": "08:00:00"},
+            {"stop_id": "B", "departure_time": "08:05:00"},
+        ]
+
+        self.assertNotEqual(pattern_key(trip, normal), pattern_key(trip, published))
 
 
 if __name__ == "__main__":

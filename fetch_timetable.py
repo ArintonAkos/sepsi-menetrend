@@ -99,18 +99,25 @@ def extract(page):
     return json.loads(page[start:i + 1])
 
 
-def times_of(schedule):
-    """Read departure times from both published row formats."""
+def events_of(schedule):
+    """Read exact board events, including a marked D-extension departure."""
     out = []
     for row in schedule["rows"]:
         hour = row["h"].strip()
         entries = row.get("entries")
         if entries is None:
-            entries = [{"m": minute} for minute in row.get("m", "").split()]
+            entries = [{"m": minute, "marked": False}
+                       for minute in row.get("m", "").split()]
         for entry in entries:
             minute = entry["m"]
-            out.append(f"{int(hour):02d}:{int(minute):02d}")
-    return sorted(out)
+            out.append({"time": f"{int(hour):02d}:{int(minute):02d}",
+                        "marked": bool(entry.get("marked", False))})
+    return sorted(out, key=lambda event: event["time"])
+
+
+def times_of(schedule):
+    """Compatibility clock list for consumers that do not need D markers."""
+    return [event["time"] for event in events_of(schedule)]
 
 
 def normalise_station_names(station, known):
@@ -203,6 +210,10 @@ def main():
             if score == 0:
                 ambiguous.append(f"line {number} -> {line['dest']!r} (no word matched)")
 
+            schedules = {
+                SERVICES[s["title"]]: s
+                for s in line["orare"] if s["title"] in SERVICES
+            }
             entries.append(
                 {
                     "line": number,
@@ -210,11 +221,10 @@ def main():
                     "stop_ro": romanian,
                     "stop_hu": known[romanian],
                     "destination": line["dest"].strip(),
-                    "times": {
-                        SERVICES[s["title"]]: times_of(s)
-                        for s in line["orare"]
-                        if s["title"] in SERVICES
-                    },
+                    "times": {service: times_of(schedule)
+                              for service, schedule in schedules.items()},
+                    "events": {service: events_of(schedule)
+                               for service, schedule in schedules.items()},
                 }
             )
 

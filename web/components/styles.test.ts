@@ -221,7 +221,9 @@ describe("the SepsiBike map layer", () => {
     const map = css("map/TransitMap.tsx");
     expect(map).toContain('"bike-station-icon"');
     expect(map).toContain('"icon-image": "bike-station"');
-    expect(map).toMatch(/bike-station-icon[\s\S]*?"icon-size": \["interpolate", \["linear"\], \["zoom"\]/);
+    /* A dock is only a little more prominent than a bus-stop point. It used
+       to be four times its visual diameter and stayed loud when zooming out. */
+    expect(map).toMatch(/bike-station-icon[\s\S]*?"icon-size": \["interpolate", \["linear"\], \["zoom"\], 12\.2, 0\.2, 16, 0\.36\]/);
     expect(map).toMatch(/bike-station-icon[\s\S]*?minzoom:\s*12\.2/);
     expect(map).not.toContain('"bike-station-count-badge"');
     expect(map).not.toContain('"bike-station-count"');

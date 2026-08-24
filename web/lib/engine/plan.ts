@@ -338,8 +338,19 @@ function toJourney(ctx: PlanContext, chain: Hop[], destination: LngLat,
   for (const hop of chain) {
     if (hop.kind === "walk") {
       walkMinutes += hop.minutes;
-      legs.push({ kind: "walk", fromStopId: hop.fromStopId, toStopId: hop.toStopId,
-                  metres: hop.metres, minutes: hop.minutes, path: hop.path });
+      const previous = legs[legs.length - 1];
+      if (previous?.kind === "walk" && previous.toStopId === hop.fromStopId) {
+        // The transfer graph may express one continuous pavement route through
+        // two nearby stops. Keep its measured route, but present it as one walk
+        // instead of telling the rider to walk to a stop and immediately walk on.
+        previous.toStopId = hop.toStopId;
+        previous.metres += hop.metres;
+        previous.minutes += hop.minutes;
+        previous.path = [...previous.path, ...hop.path.slice(1)];
+      } else {
+        legs.push({ kind: "walk", fromStopId: hop.fromStopId, toStopId: hop.toStopId,
+                    metres: hop.metres, minutes: hop.minutes, path: hop.path });
+      }
     } else if (hop.kind === "ride") {
       const p = ctx.patterns.get(hop.patternId)!;
       let fromIndex = boardLate(p, hop.fromIndex, hop.toIndex);

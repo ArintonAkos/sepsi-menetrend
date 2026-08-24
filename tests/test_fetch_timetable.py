@@ -1,6 +1,6 @@
 import unittest
 
-from fetch_timetable import normalise_station_names, times_of, validate_coverage
+from fetch_timetable import events_of, normalise_station_names, times_of, validate_coverage
 
 
 class CurrentOperatorTimetableTests(unittest.TestCase):
@@ -16,6 +16,20 @@ class CurrentOperatorTimetableTests(unittest.TestCase):
         }
 
         self.assertEqual(times_of(schedule), ["06:05", "07:15", "07:45"])
+
+    def test_preserves_the_d_extension_marker_on_each_published_event(self):
+        schedule = {
+            "rows": [{"h": "08", "entries": [
+                {"m": "04", "marked": False},
+                {"m": "36", "marked": True},
+            ]}]
+        }
+
+        self.assertEqual(
+            events_of(schedule),
+            [{"time": "08:04", "marked": False},
+             {"time": "08:36", "marked": True}],
+        )
 
     def test_uses_the_current_romanian_and_hungarian_fields_when_romanian_name_is_known(self):
         known = {"Arena Sepsi": "Sepsi Aréna"}

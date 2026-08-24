@@ -64,6 +64,24 @@ def gtfs_time(minutes):
     return f"{total // 3600:02d}:{total // 60 % 60:02d}:{total % 60:02d}"
 
 
+def trip_calls(record, service):
+    """Return complete calls for one service, accepting the old cache format too."""
+    trips = record.get(service, [])
+    if not trips:
+        return []
+    if isinstance(trips[0], dict):
+        return trips
+
+    # A local cache generated before the reconstruction still contains starting
+    # times only.  Keep it readable while the next build replaces it with calls.
+    offsets = [offset / 60 for offset in record["offsets"]]
+    return [{
+        "start": start,
+        "calls": [start + offset for offset in offsets],
+        "published": [False] * len(offsets),
+    } for start in trips]
+
+
 def timing_points(directions, built, timetable):
     """Which (line, direction, stop index) the operator actually prints a time for.
 
@@ -219,9 +237,6 @@ def main():
     # those their second kerb before anything else is keyed off the list
     kerb_by_call, derived, skipped = split_shared_kerbs(stations, directions)
     trips_data = json.loads((ROOT / "trips.json").read_text(encoding="utf-8"))["trips"]
-    timetable = json.loads((ROOT / "timetable.json").read_text(encoding="utf-8"))
-
-    printed = timing_points(directions, trips_data, timetable)
 
     # ---- stops: one per kerb, grouped under a station where there are two ----
     stop_rows, translations, stop_id = [], [], {}
@@ -319,10 +334,8 @@ def main():
         if not record:
             missing.append(key)
             continue
-        offsets = record["offsets"]
-        for name, starts in (("weekday", record.get("weekday", [])),
-                             ("weekend", record.get("weekend", []))):
-            for n, start in enumerate(starts, 1):
+        for name in ("weekday", "weekend"):
+            for n, trip in enumerate(trip_calls(record, name), 1):
                 trip_id = f"{key}-{name}-{n:03d}"
                 trip_rows.append({
                     "route_id": d["line"], "service_id": name, "trip_id": trip_id,
@@ -336,16 +349,15 @@ def main():
                     kerb = (kerb_by_call[call] if call in kerb_by_call
                             else station["points"].index(
                                 [stop["stop_lat"], stop["stop_lon"]]))
-                    when = gtfs_time(start + offsets[i] / 60)
+                    when = gtfs_time(trip["calls"][i])
                     time_rows.append({
                         "trip_id": trip_id, "arrival_time": when,
                         "departure_time": when,
                         "stop_id": stop_id[(station["id"], kerb)],
                         "stop_sequence": i + 1,
-                        # 1 where the operator prints this time, 0 where we carried
-                        # it over from the nearest stop that has one
-                        "timepoint": 1 if (d["line"], d["direction"], i)
-                                          in printed else 0,
+                        # 1 if this exact call is on the official stop board;
+                        # 0 only if it was filled from its surrounding calls.
+                        "timepoint": 1 if trip["published"][i] else 0,
                         "shape_dist_traveled": f"{stop_distance[key][i]:.1f}",
                     })
 

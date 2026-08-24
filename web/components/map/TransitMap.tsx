@@ -325,7 +325,7 @@ function addLayers(m: MapboxMap, dark: boolean, network: Network,
   add({ id: "bike-station-icon", type: "symbol", source: "bike-stations",
     minzoom: 12.2,
     layout: { "icon-image": "bike-station",
-              "icon-size": ["interpolate", ["linear"], ["zoom"], 12.2, 0.48, 16, 0.82],
+              "icon-size": ["interpolate", ["linear"], ["zoom"], 12.2, 0.2, 16, 0.36],
               "icon-allow-overlap": true, "icon-ignore-placement": true } });
   add({ id: "trip-nodes", type: "circle", source: "nodes",
     paint: { "circle-radius": 4.6, "circle-color": dark ? "#0D1108" : "#FFFFFF",

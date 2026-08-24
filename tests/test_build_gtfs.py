@@ -17,6 +17,21 @@ class GtfsCsvTests(unittest.TestCase):
             finally:
                 build_gtfs.OUT = previous
 
+    def test_uses_each_reconstructed_call_instead_of_a_fixed_route_offset(self):
+        record = {
+            "offsets": [0, 240, 540],
+            "weekday": [{
+                "start": 540,
+                "calls": [540, 545, 549],
+                "published": [True, True, False],
+            }],
+        }
+
+        trip = build_gtfs.trip_calls(record, "weekday")[0]
+
+        self.assertEqual(build_gtfs.gtfs_time(trip["calls"][1]), "09:05:00")
+        self.assertEqual(trip["published"], [True, True, False])
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -65,6 +65,14 @@ def seconds(text):
     return h * 3600 + m * 60 + s
 
 
+def pattern_key(trip, rows):
+    """Identify a reusable pattern, including its published call-time shape."""
+    base = seconds(rows[0]["departure_time"])
+    offsets = tuple((seconds(row["departure_time"]) - base) // 60 for row in rows)
+    return (trip["route_id"], trip["shape_id"],
+            tuple(row["stop_id"] for row in rows), offsets)
+
+
 def official_boards(timetable):
     """Keep the operator's stop boards separate from generated trip estimates.
 
@@ -391,7 +399,7 @@ def main():
     patterns, pattern_id, trips = {}, {}, []
     for tid, rows in times.items():
         trip = trips_raw[tid]
-        key = (trip["route_id"], trip["shape_id"], tuple(r["stop_id"] for r in rows))
+        key = pattern_key(trip, rows)
         base = seconds(rows[0]["departure_time"])
         if key not in pattern_id:
             pid = f"P{len(pattern_id) + 1}"
