@@ -1,4 +1,6 @@
-[
+{
+  "snapshotAt": "2026-08-23T12:53:56.000Z",
+  "stations": [
   {
     "id": "13",
     "name": "13. Grigore Bălan",
@@ -186,4 +188,5 @@
     "totalCapacity": 8,
     "status": "Online"
   }
-]
+  ]
+}
