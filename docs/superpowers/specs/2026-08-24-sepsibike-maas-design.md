@@ -1,6 +1,6 @@
 # SepsiBike multimodális tervező – tervezési specifikáció
 
-**Dátum:** 2026-08-24  
+**Dátum:** 2026-08-24
 **Branch:** `feat/sepsibike-maas`
 
 ## Cél
