@@ -17,12 +17,13 @@ that do not exist in the per-line files:
 """
 
 import colorsys
-import os
 import json
 import math
 import re
 import sys
 from pathlib import Path
+
+from mapbox_config import load_mapbox_token
 
 ROOT = Path(__file__).resolve().parent
 TEMPLATE = ROOT / "map.template.html"
@@ -32,7 +33,7 @@ OUTPUT = ROOT / "map.html"
 # sit here belonged to somebody else's. Set MAPBOX_TOKEN in the environment to
 # build a map.html that loads tiles; without it the page renders everything
 # except the basemap, which is enough to check the routes.
-MAPBOX_TOKEN = os.environ.get("MAPBOX_TOKEN", "")
+MAPBOX_TOKEN = load_mapbox_token()
 
 # Furthest apart two differently-named stops can be and still count as a place
 # you would walk between mid-journey.

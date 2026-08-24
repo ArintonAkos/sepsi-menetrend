@@ -45,29 +45,27 @@ const rides = (j: { legs: Array<{ kind: string }> }) =>
 
 describe("the real network", () => {
   it("loaded", () => {
-    expect(net.stops.length).toBeGreaterThan(100);   // kerbs, not places
-    expect(net.stations).toHaveLength(66);
+    expect(net.stops).toHaveLength(97);              // real platforms, not guessed kerbs
+    expect(net.stations).toHaveLength(97);
+    expect(net.walks).toHaveLength(104);             // every cached physical-platform walk
     expect(net.lines).toHaveLength(12);
     expect(net.trips.length).toBeGreaterThan(400);
   });
 
-  it("gives both sides of the road their own kerb", () => {
-    /* The operator repeats one coordinate for both passes at nine stops. Left
-       as one point the planner never asks anyone to cross the road. The pairs
-       it does publish, and the ones OSM records, sit 11-13 m apart; a derived
-       pair has to land in the same range. */
-    const k = Math.cos((45.865 * Math.PI) / 180);
-    const byName = new Map<string, typeof net.stops>();
-    for (const s of net.stops) {
-      byName.set(s.name.ro, [...(byName.get(s.name.ro) ?? []), s]);
-    }
-    const pair = byName.get("Coșeni 1");
-    expect(pair, "Coșeni 1 should have two kerbs").toHaveLength(2);
-    const [a, b] = pair!;
-    const apart = Math.hypot((a.at[0] - b.at[0]) * k * 111320,
-                             (a.at[1] - b.at[1]) * 111320);
-    expect(apart).toBeGreaterThan(8);      // OpenStreetMap measures 11.8 m here
-    expect(apart).toBeLessThan(16);
+  it("uses only the real Erzsébet park and Lábasház platforms", () => {
+    expect(net.stops.filter((s) => s.name.ro === "Parcul Elisabeta")).toHaveLength(1);
+    expect(net.stops.filter((s) => s.name.ro === "Casa cu Arcade")).toHaveLength(1);
+  });
+
+  it("keeps the two Cigarettagyár platforms physically distinct", () => {
+    const factory = net.stops.filter((s) => s.name.ro === "Fabrica de Țigarete");
+
+    expect(factory).toHaveLength(2);
+    expect(factory[0].stationId).not.toBe(factory[1].stationId);
+  });
+
+  it("does not invent an opposite kerb from a repeated source coordinate", () => {
+    expect(net.stops.filter((s) => s.name.ro === "Coșeni 1")).toHaveLength(1);
   });
 
   it("keeps every kerb of a station in the same place", () => {

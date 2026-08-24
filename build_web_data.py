@@ -364,7 +364,9 @@ def main():
             "id": r["stop_id"],
             "name": {"ro": name, "hu": hu.get(name, name)},
             "at": [round(float(r["stop_lon"]), 6), round(float(r["stop_lat"]), 6)],
-            "stationId": r.get("parent_station") or f"ST-{name}",
+            # A physical platform is the planning identity.  Equal labels do
+            # not prove that two kerbs are interchangeable or even nearby.
+            "stationId": r.get("parent_station") or r["stop_id"],
             "zone": r.get("zone_id") or "city",
         }
         if r.get("platform_code"):
@@ -426,18 +428,43 @@ def main():
                       "start": base // 60})
 
     # walks.json is keyed by coordinates; map them back onto stop ids
-    coord_to_stop = {}
+    def walk_key_coord(lat, lon):
+        # Match the f"{value:.5f}" representation used by fetch_walks.key.
+        # Python's `round` has a different tie-breaking rule for e.g.
+        # 25.795895, which would silently lose an otherwise exact endpoint.
+        return float(f"{lat:.5f}"), float(f"{lon:.5f}")
+
+    # The GTFS text has already rounded latitude/longitude to six decimals.
+    # The walking cache is created from the original platform evidence, so use
+    # that evidence for the primary lookup too (rather than rounding a rounded
+    # value for a second time).  GTFS assigns P1… in this same sorted order.
+    topology = json.loads((ROOT / "platforms.json").read_text(encoding="utf-8"))
+    coord_to_stop = {
+        walk_key_coord(*platform["point"]): f"P{index}"
+        for index, platform in enumerate(topology["platforms"], 1)
+    }
     for r in stops_raw:
         if r.get("location_type") != "1":
-            coord_to_stop[(round(float(r["stop_lat"]), 5), round(float(r["stop_lon"]), 5))] = r["stop_id"]
+            # Compatibility for an existing cache made from a prior GTFS
+            # version; canonical platform evidence above always wins.
+            coord_to_stop.setdefault(
+                walk_key_coord(float(r["stop_lat"]), float(r["stop_lon"])), r["stop_id"]
+            )
 
     def nearest(lat, lon):
-        best, bd = None, 1e9
+        # `walks.json` deliberately keys the endpoint at five decimals.  Check
+        # that canonical coordinate first: opposite physical platforms can be
+        # only a few metres apart, so a generic nearest-within-25m rule would
+        # otherwise call an exact endpoint ambiguous and drop its real walk.
+        exact = coord_to_stop.get(walk_key_coord(lat, lon))
+        if exact:
+            return exact
+        candidates = []
         for (a, b), sid in coord_to_stop.items():
             d = math.hypot((a - lat) * 111320, (b - lon) * 111320 * K)
-            if d < bd:
-                bd, best = d, sid
-        return best if bd < 25 else None
+            if d < 25:
+                candidates.append((d, sid))
+        return candidates[0][1] if len(candidates) == 1 else None
 
     walks, dropped = [], 0
     raw_walks = json.loads((ROOT / "walks.json").read_text(encoding="utf-8"))["walks"]

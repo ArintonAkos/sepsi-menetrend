@@ -375,18 +375,11 @@ function toJourney(ctx: PlanContext, chain: Hop[], destination: LngLat,
   }
   if (!legs.some((l) => l.kind === "ride")) return null;
 
-  // Discard journeys with loops (visiting the same station multiple times across rides)
-  const visitedStations = new Set<string>();
   for (const leg of legs) {
     if (leg.kind === "ride") {
-      const p = ctx.patterns.get(leg.patternId)!;
-      const fromStop = ctx.stops.get(p.stopIds[leg.fromIndex]);
-      const toStop = ctx.stops.get(p.stopIds[leg.toIndex]);
-      const fromStn = fromStop?.stationId ?? p.stopIds[leg.fromIndex];
-      const toStn = toStop?.stationId ?? p.stopIds[leg.toIndex];
-      if (fromStn === toStn || visitedStations.has(toStn)) return null;
-      visitedStations.add(fromStn);
-      visitedStations.add(toStn);
+      // A loop may revisit a named place later on the same vehicle.  Its call
+      // order is the proof of progress; station labels are not.
+      if (leg.fromIndex >= leg.toIndex) return null;
     }
   }
 

@@ -6,6 +6,8 @@ import json
 from collections import Counter
 from pathlib import Path
 
+from build_platforms import load_osm_platforms, load_overrides, resolve_platforms
+
 ROOT = Path(__file__).resolve().parent
 OUT = ROOT / "route-audit.html"
 ORDER = ["1", "1D", "2", "2D", "3", "4", "5", "5D", "6", "7", "9", "10"]
@@ -15,9 +17,14 @@ def esc(value):
     return html.escape(str(value), quote=True)
 
 
-def render_route(direction):
+def render_route(direction, topology=None):
     """Render one route, keeping repeated physical stops visibly distinct."""
     stops = direction["stops"]
+    platforms = {
+        platform["id"]: platform
+        for platform in (topology or {}).get("platforms", [])
+    }
+    call_platforms = (topology or {}).get("call_platforms", {})
     names = [stop["name"]["ro"] for stop in stops]
     totals = Counter(names)
     seen = Counter()
@@ -28,13 +35,31 @@ def render_route(direction):
         pass_label = f"{seen[ro]}/{totals[ro]}" if totals[ro] > 1 else "1/1"
         turning = (0 < index < len(stops) - 1 and names[index - 1] == names[index + 1])
         note = "forduló / hurok" if turning else ""
+        platform = platforms.get(call_platforms.get((direction["line"], direction["direction"], index)))
+        if "stop_lat" in stop and "stop_lon" in stop:
+            raw = f'nyers: {stop["stop_lat"]:.6f}, {stop["stop_lon"]:.6f}'
+        else:
+            raw = "nyers koordináta: nincs a bemeneti mintában"
+        evidence = raw
+        if platform:
+            source = {
+                "osm": f'OSM #{platform["osm_id"]}',
+                "source-fallback": "vonaloldali koordináta (OSM-peron hiányzik)",
+                "override": "kézi, dokumentált felülbírálat",
+            }.get(platform["source"], platform["source"])
+            evidence += (
+                f' · <span class="platform-id">{esc(platform["id"])}</span>'
+                f' · {esc(source)}'
+                f' · peron: {platform["point"][0]:.6f}, {platform["point"][1]:.6f}'
+            )
         rows.append(
             f'<li data-pass="{pass_label}">'
             f'<span class="seq">#{index + 1}</span>'
             f'<span class="name">{esc(ro)}</span>'
             f'<span class="hu">{esc(hu)}</span>'
             f'<span class="pass">áthaladás {pass_label}</span>'
-            f'<span class="turn">{note}</span></li>'
+            f'<span class="turn">{note}</span>'
+            f'<span class="evidence">{evidence}</span></li>'
         )
 
     title = f'{direction["line"]} · {direction["direction"]}'
@@ -58,7 +83,9 @@ def load_directions():
 
 
 def main():
-    sections = "".join(render_route(direction) for direction in load_directions())
+    directions = load_directions()
+    topology = resolve_platforms(directions, load_osm_platforms(), load_overrides())
+    sections = "".join(render_route(direction, topology) for direction in directions)
     document = f"""<!doctype html>
 <html lang="hu"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Sepsi Bus · útvonalsorrend ellenőrzés</title>
@@ -75,13 +102,15 @@ def main():
   li:last-child {{ border-bottom:0; }} .seq,.pass {{ color:#6a7263; font-size:13px; }}
   .name {{ font-weight:700; }} .hu {{ color:#4f5848; }}
   .turn {{ color:#8a4d00; font-weight:700; font-size:13px; }}
-  @media (max-width:680px) {{ li {{ grid-template-columns:52px 1fr; }} .hu,.pass,.turn {{ grid-column:2; }} }}
+  .evidence {{ grid-column:2 / -1; color:#5f6758; font-size:12px; font-family:ui-monospace,SFMono-Regular,monospace; }}
+  .platform-id {{ color:#24371b; font-weight:700; }}
+  @media (max-width:680px) {{ li {{ grid-template-columns:52px 1fr; }} .hu,.pass,.turn,.evidence {{ grid-column:2; }} }}
 </style>
 <body><h1>Útvonalsorrend – kézi ellenőrzés</h1>
-<p class="intro">Ez nem útvonalterv és nem becslés: a Multi-Trans hivatalos vonaloldalairól kiolvasott sorrend. Az ismétlődő megállók áthaladásszáma segít ellenőrizni a hurkokat és fordulókat.</p>
+<p class="intro">Ez nem útvonalterv és nem becslés: a Multi-Trans hivatalos vonaloldalairól kiolvasott sorrend. Minden hívásnál látható a nyers koordináta és az arra feloldott fizikai peron bizonyítéka; így ellenőrizhetők a hurkok, fordulók és az azonos nevű, de külön oldali peronok.</p>
 {sections}</body></html>"""
     OUT.write_text(document, encoding="utf-8")
-    print(f"{OUT.name}: {len(load_directions())} útvonal")
+    print(f"{OUT.name}: {len(directions)} útvonal")
 
 
 if __name__ == "__main__":
