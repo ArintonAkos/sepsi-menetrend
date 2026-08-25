@@ -1,0 +1,12 @@
+{
+  "3-depart": [
+    {
+      "index": 17,
+      "stop_ro": "Coșeni 2",
+      "arrival_destination": "Coșeni / Szotyor",
+      "departure_destination": "Str. Fabricii / Gyár utca",
+      "minimum_dwell_minutes": 0,
+      "evidence": "Multi-Trans stop board: 04:56 Coșeni arrival; 05:16 Gyár utca departure"
+    }
+  ]
+}

@@ -3,6 +3,46 @@
 OPERATING_DAY_ENDS_AT = 4 * 60
 
 
+def load_turnarounds(raw):
+    """Validate the source-headsign roles at verified terminal calls."""
+    turns = {}
+    for direction_key, entries in raw.items():
+        seen = set()
+        loaded = []
+        for entry in entries:
+            index = entry["index"]
+            arrival = entry["arrival_destination"]
+            departure = entry["departure_destination"]
+            if arrival == departure:
+                raise ValueError(f"{direction_key} call {index}: identical turnaround destinations")
+            for role in ("arrival", "departure"):
+                key = (index, role)
+                if key in seen:
+                    raise ValueError(f"{direction_key} call {index}: duplicate {role} role")
+                seen.add(key)
+            loaded.append({
+                "index": index,
+                "stop_ro": entry["stop_ro"],
+                "arrival_destination": arrival,
+                "departure_destination": departure,
+                "minimum_dwell_minutes": entry["minimum_dwell_minutes"],
+            })
+        turns[direction_key] = loaded
+    return turns
+
+
+def turnaround_role(turns, direction_key, index, destination):
+    """Return the event role only for an exact verified board headsign."""
+    for entry in turns.get(direction_key, []):
+        if entry["index"] != index:
+            continue
+        if entry["arrival_destination"] == destination:
+            return "arrival"
+        if entry["departure_destination"] == destination:
+            return "departure"
+    return None
+
+
 def _service_minute(minute):
     """Put the operator's 00:xx–03:xx clocks after the preceding evening."""
     return minute + 24 * 60 if minute < OPERATING_DAY_ENDS_AT else minute

@@ -1,6 +1,11 @@
 import unittest
 
-from trip_reconstruction import align_events, reconstruct_direction
+from trip_reconstruction import (
+    align_events,
+    load_turnarounds,
+    reconstruct_direction,
+    turnaround_role,
+)
 
 
 class EventAlignmentTests(unittest.TestCase):
@@ -22,6 +27,28 @@ class DirectionReconstructionTests(unittest.TestCase):
         ],
     }
     offsets = [0, 4 * 60, 9 * 60]
+
+    def test_line_three_coseni_turn_assigns_each_board_column_once(self):
+        """Changing either source headsign must not swap arrival and departure."""
+        turns = load_turnarounds({
+            "3-depart": [{
+                "index": 17,
+                "stop_ro": "Coșeni 2",
+                "arrival_destination": "Coșeni / Szotyor",
+                "departure_destination": "Str. Fabricii / Gyár utca",
+                "minimum_dwell_minutes": 0,
+            }],
+        })
+
+        self.assertEqual(
+            turnaround_role(turns, "3-depart", 17, "Coșeni / Szotyor"),
+            "arrival",
+        )
+        self.assertEqual(
+            turnaround_role(turns, "3-depart", 17, "Str. Fabricii / Gyár utca"),
+            "departure",
+        )
+        self.assertIsNone(turnaround_role(turns, "3-depart", 17, "Gara CFR"))
 
     @staticmethod
     def board(line, stop, *events, direction="depart"):
