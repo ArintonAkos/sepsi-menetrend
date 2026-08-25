@@ -8,6 +8,7 @@ from pathlib import Path
 from build_map import load_directions
 from build_platforms import load_osm_platforms, load_overrides, resolve_platforms
 from build_web_data import official_board_bindings
+from timetable_overrides import apply_timetable_overrides
 
 ROOT = Path(__file__).resolve().parent
 OUT = ROOT / "official-board-audit.html"
@@ -158,8 +159,10 @@ def main():
     topology = resolve_platforms(directions, load_osm_platforms(), load_overrides())
     platform_stop_ids = {platform["id"]: f"P{index}"
                          for index, platform in enumerate(topology["platforms"], 1)}
-    bindings = official_board_bindings(timetable, directions, topology, platform_stop_ids)
-    rows = unresolved_boards(timetable["timepoints"], bindings, directions, topology,
+    timepoints = apply_timetable_overrides(timetable["timepoints"])
+    normalised = {**timetable, "timepoints": timepoints}
+    bindings = official_board_bindings(normalised, directions, topology, platform_stop_ids)
+    rows = unresolved_boards(timepoints, bindings, directions, topology,
                              platform_stop_ids)
     OUT.write_text(render_audit(rows), encoding="utf-8")
     print(f"{OUT.name}: {len(rows)} ellenőrizendő oszlop")

@@ -1,6 +1,15 @@
 {
+  "renameCalls": [
+    {
+      "line": "3",
+      "direction": "depart",
+      "name": "Terminal",
+      "replacement": {"ro": "Calea Brașovului 1", "hu": "Brassói út 1"}
+    }
+  ],
   "removeCalls": [
-    {"line": "3", "direction": "depart", "name": "Terminal"},
-    {"line": "4", "direction": "depart", "name": "Terminal"}
+    {"line": "3", "direction": "depart", "name": "Fabrica de Țigarete", "occurrence": 2},
+    {"line": "4", "direction": "depart", "name": "Terminal"},
+    {"line": "4", "direction": "depart", "name": "Fabrica de Țigarete", "occurrence": 2}
   ]
 }

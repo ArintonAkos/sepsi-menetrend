@@ -16,7 +16,7 @@
         {
           "line": "3",
           "direction": "depart-to-coseni",
-          "index": 15
+          "index": 16
         },
         {
           "line": "3",
@@ -66,7 +66,7 @@
         {
           "line": "4",
           "direction": "depart-from-campul-frumos",
-          "index": 8
+          "index": 9
         },
         {
           "line": "5",
@@ -111,7 +111,7 @@
         {
           "line": "4",
           "direction": "depart-from-campul-frumos",
-          "index": 7
+          "index": 8
         },
         {
           "line": "5",
@@ -911,6 +911,26 @@
       ]
     },
     {
+      "id": "source-caleabrasovului1-45.856800-25.806600",
+      "name": {
+        "ro": "Calea Brașovului 1",
+        "hu": "Brassói út 1"
+      },
+      "point": [
+        45.8568,
+        25.8066
+      ],
+      "source": "source-fallback",
+      "osm_id": null,
+      "calls": [
+        {
+          "line": "3",
+          "direction": "depart-to-coseni",
+          "index": 11
+        }
+      ]
+    },
+    {
       "id": "source-caleabrasovului1-45.857000-25.806900",
       "name": {
         "ro": "Calea Brașovului 1",
@@ -951,7 +971,7 @@
         {
           "line": "4",
           "direction": "depart-from-campul-frumos",
-          "index": 4
+          "index": 5
         }
       ]
     },
@@ -991,7 +1011,7 @@
         {
           "line": "3",
           "direction": "depart-to-coseni",
-          "index": 11
+          "index": 12
         }
       ]
     },
@@ -1011,7 +1031,7 @@
         {
           "line": "3",
           "direction": "depart-to-coseni",
-          "index": 12
+          "index": 13
         }
       ]
     },
@@ -1076,7 +1096,7 @@
         {
           "line": "4",
           "direction": "depart-from-campul-frumos",
-          "index": 0
+          "index": 1
         },
         {
           "line": "5D",
@@ -1321,7 +1341,7 @@
         {
           "line": "3",
           "direction": "depart-to-coseni",
-          "index": 13
+          "index": 14
         }
       ]
     },
@@ -1366,7 +1386,7 @@
         {
           "line": "4",
           "direction": "depart-from-campul-frumos",
-          "index": 9
+          "index": 10
         }
       ]
     },
@@ -1456,7 +1476,7 @@
         {
           "line": "3",
           "direction": "depart-to-coseni",
-          "index": 16
+          "index": 17
         },
         {
           "line": "3",
@@ -1514,16 +1534,6 @@
       "osm_id": null,
       "calls": [
         {
-          "line": "3",
-          "direction": "depart-from-coseni",
-          "index": 14
-        },
-        {
-          "line": "4",
-          "direction": "depart-from-campul-frumos",
-          "index": 11
-        },
-        {
           "line": "5",
           "direction": "depart",
           "index": 3
@@ -1556,7 +1566,7 @@
         {
           "line": "4",
           "direction": "depart-from-campul-frumos",
-          "index": 10
+          "index": 11
         },
         {
           "line": "7",
@@ -1671,7 +1681,7 @@
         {
           "line": "4",
           "direction": "depart-from-campul-frumos",
-          "index": 5
+          "index": 6
         },
         {
           "line": "5",
@@ -1871,7 +1881,7 @@
         {
           "line": "3",
           "direction": "depart-to-coseni",
-          "index": 14
+          "index": 15
         }
       ]
     },
@@ -1926,6 +1936,16 @@
         {
           "line": "2D",
           "direction": "return",
+          "index": 0
+        },
+        {
+          "line": "4",
+          "direction": "depart-to-campul-frumos",
+          "index": 17
+        },
+        {
+          "line": "4",
+          "direction": "depart-from-campul-frumos",
           "index": 0
         },
         {
@@ -2346,7 +2366,7 @@
         {
           "line": "4",
           "direction": "depart-from-campul-frumos",
-          "index": 3
+          "index": 4
         }
       ]
     },
@@ -2386,7 +2406,7 @@
         {
           "line": "4",
           "direction": "depart-from-campul-frumos",
-          "index": 2
+          "index": 3
         }
       ]
     },
@@ -2411,7 +2431,7 @@
         {
           "line": "4",
           "direction": "depart-from-campul-frumos",
-          "index": 1
+          "index": 2
         }
       ]
     },
@@ -2826,7 +2846,7 @@
         {
           "line": "4",
           "direction": "depart-from-campul-frumos",
-          "index": 6
+          "index": 7
         },
         {
           "line": "6",
@@ -2876,7 +2896,7 @@
         {
           "line": "3",
           "direction": "depart-from-coseni",
-          "index": 15
+          "index": 14
         },
         {
           "line": "4",
@@ -3536,34 +3556,41 @@
       "line": "3",
       "direction": "depart-to-coseni",
       "index": 11,
-      "name": "Calea Brașovului 2",
+      "name": "Calea Brașovului 1",
       "reason": "no matching OSM platform"
     },
     {
       "line": "3",
       "direction": "depart-to-coseni",
       "index": 12,
-      "name": "Calea Brașovului 3",
+      "name": "Calea Brașovului 2",
       "reason": "no matching OSM platform"
     },
     {
       "line": "3",
       "direction": "depart-to-coseni",
       "index": 13,
-      "name": "Chilieni",
+      "name": "Calea Brașovului 3",
       "reason": "no matching OSM platform"
     },
     {
       "line": "3",
       "direction": "depart-to-coseni",
       "index": 14,
+      "name": "Chilieni",
+      "reason": "no matching OSM platform"
+    },
+    {
+      "line": "3",
+      "direction": "depart-to-coseni",
+      "index": 15,
       "name": "Motel Calypso",
       "reason": "no matching OSM platform"
     },
     {
       "line": "3",
       "direction": "depart-to-coseni",
-      "index": 16,
+      "index": 17,
       "name": "Coșeni 2",
       "reason": "no matching OSM platform"
     },
@@ -3641,13 +3668,6 @@
       "line": "3",
       "direction": "depart-from-coseni",
       "index": 14,
-      "name": "Fabrica de Țigarete",
-      "reason": "no matching OSM platform"
-    },
-    {
-      "line": "3",
-      "direction": "depart-from-coseni",
-      "index": 15,
       "name": "Str. Țigaretei 1",
       "reason": "no matching OSM platform"
     },
@@ -3751,65 +3771,72 @@
     },
     {
       "line": "4",
+      "direction": "depart-to-campul-frumos",
+      "index": 17,
+      "name": "Multi-Trans",
+      "reason": "no matching OSM platform"
+    },
+    {
+      "line": "4",
       "direction": "depart-from-campul-frumos",
       "index": 0,
-      "name": "Câmpul Frumos",
+      "name": "Multi-Trans",
       "reason": "no matching OSM platform"
     },
     {
       "line": "4",
       "direction": "depart-from-campul-frumos",
       "index": 1,
-      "name": "Str. Constructorilor 3",
+      "name": "Câmpul Frumos",
       "reason": "no matching OSM platform"
     },
     {
       "line": "4",
       "direction": "depart-from-campul-frumos",
       "index": 2,
-      "name": "Str. Constructorilor 2",
+      "name": "Str. Constructorilor 3",
       "reason": "no matching OSM platform"
     },
     {
       "line": "4",
       "direction": "depart-from-campul-frumos",
       "index": 3,
-      "name": "Str. Constructorilor 1",
+      "name": "Str. Constructorilor 2",
       "reason": "no matching OSM platform"
     },
     {
       "line": "4",
       "direction": "depart-from-campul-frumos",
       "index": 4,
-      "name": "Calea Brașovului 1",
+      "name": "Str. Constructorilor 1",
       "reason": "no matching OSM platform"
     },
     {
       "line": "4",
       "direction": "depart-from-campul-frumos",
       "index": 5,
-      "name": "Gara CFR",
+      "name": "Calea Brașovului 1",
       "reason": "no matching OSM platform"
     },
     {
       "line": "4",
       "direction": "depart-from-campul-frumos",
       "index": 6,
+      "name": "Gara CFR",
+      "reason": "no matching OSM platform"
+    },
+    {
+      "line": "4",
+      "direction": "depart-from-campul-frumos",
+      "index": 7,
       "name": "Str. Sporturilor",
       "reason": "no matching OSM platform"
     },
     {
       "line": "4",
       "direction": "depart-from-campul-frumos",
-      "index": 9,
-      "name": "Col. Mihai Viteazul",
-      "reason": "no matching OSM platform"
-    },
-    {
-      "line": "4",
-      "direction": "depart-from-campul-frumos",
       "index": 10,
-      "name": "Fabrica de Țigarete",
+      "name": "Col. Mihai Viteazul",
       "reason": "no matching OSM platform"
     },
     {

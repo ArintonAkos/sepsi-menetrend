@@ -1,9 +1,19 @@
+import json
 import unittest
+from pathlib import Path
 
 from timetable_segments import expand_timetable_segments
 
 
 class TimetableSegmentTests(unittest.TestCase):
+    def test_real_multitrans_turn_is_only_the_line_four_overlap(self):
+        segments = json.loads((Path(__file__).resolve().parents[1] /
+                               "timetable_segments.json").read_text(encoding="utf-8"))
+
+        self.assertEqual(segments["3-depart"][0]["end"], 17)
+        self.assertEqual(segments["4-depart"][0]["end"], 18)
+        self.assertEqual(segments["4-depart"][1]["start"], 18)
+
     def test_keeps_same_name_calls_on_their_destination_specific_passes(self):
         direction = {
             "line": "4", "direction": "depart",

@@ -212,6 +212,22 @@ def apply_route_overrides(directions, overrides):
     Overrides are intentionally exact and fail closed: a source change must be
     reviewed instead of silently creating a different route.
     """
+    for override in overrides.get("renameCalls", []):
+        matching_directions = [
+            direction for direction in directions
+            if direction["line"] == override["line"]
+            and direction["direction"] == override["direction"]
+        ]
+        if len(matching_directions) != 1:
+            raise ValueError(f"route rename has no unique direction: {override}")
+        matching_stops = [
+            stop for stop in matching_directions[0]["stops"]
+            if stop["name"]["ro"] == override["name"]
+        ]
+        if len(matching_stops) != 1:
+            raise ValueError(f"route rename has no unique stop: {override}")
+        matching_stops[0]["name"] = dict(override["replacement"])
+
     for override in overrides.get("removeCalls", []):
         matching_directions = [
             direction for direction in directions
@@ -225,6 +241,11 @@ def apply_route_overrides(directions, overrides):
             index for index, stop in enumerate(direction["stops"])
             if stop["name"]["ro"] == override["name"]
         ]
+        occurrence = override.get("occurrence")
+        if occurrence is not None:
+            if occurrence < 1 or occurrence > len(matching_indexes):
+                raise ValueError(f"route override has no matching occurrence: {override}")
+            matching_indexes = [matching_indexes[occurrence - 1]]
         if len(matching_indexes) != 1:
             raise ValueError(f"route override has no unique stop: {override}")
 

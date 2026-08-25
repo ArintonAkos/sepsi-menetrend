@@ -90,6 +90,29 @@ class RouteOverrideTests(unittest.TestCase):
             [100, 50, 0],
         )
 
+    def test_can_rename_a_legacy_terminal_and_remove_only_the_second_duplicate(self):
+        directions = [{
+            "line": "3", "direction": "depart", "source_stop_indexes": [0, 1, 2, 3],
+            "stops": [
+                {"name": {"ro": "Gara CFR", "hu": "Vasútállomás"}, "distance_to_next_m": 1},
+                {"name": {"ro": "Terminal", "hu": "Terminál"}, "distance_to_next_m": 1},
+                {"name": {"ro": "Fabrica de Țigarete", "hu": "Cigarettagyár"}, "distance_to_next_m": 1},
+                {"name": {"ro": "Fabrica de Țigarete", "hu": "Cigarettagyár"}, "distance_to_next_m": 1},
+            ],
+        }]
+        overrides = {
+            "renameCalls": [{"line": "3", "direction": "depart", "name": "Terminal",
+                             "replacement": {"ro": "Calea Brașovului 1", "hu": "Brassói út 1"}}],
+            "removeCalls": [{"line": "3", "direction": "depart", "name": "Fabrica de Țigarete",
+                             "occurrence": 2}],
+        }
+
+        result = build_map.apply_route_overrides(directions, overrides)[0]
+
+        self.assertEqual([stop["name"]["ro"] for stop in result["stops"]],
+                         ["Gara CFR", "Calea Brașovului 1", "Fabrica de Țigarete"])
+        self.assertEqual(result["source_stop_indexes"], [0, 1, 2])
+
 
 if __name__ == "__main__":
     unittest.main()

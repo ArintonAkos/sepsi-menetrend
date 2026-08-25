@@ -39,6 +39,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from build_map import anchor_vertices, best_label, load_directions, palette  # noqa: E402
 from build_platforms import load_osm_platforms, load_overrides, resolve_platforms  # noqa: E402
+from timetable_overrides import apply_timetable_overrides  # noqa: E402
 
 ROOT = Path(__file__).resolve().parent
 GTFS = ROOT / "gtfs"
@@ -86,7 +87,7 @@ def official_boards(timetable, bindings=None, *, strict=True):
     false trip topology.
     """
     out = []
-    for entry in timetable.get("timepoints", []):
+    for entry in apply_timetable_overrides(timetable.get("timepoints", [])):
         services = {}
         for service in ("weekday", "weekend"):
             minutes = []
@@ -230,7 +231,7 @@ def official_board_bindings(timetable, directions, topology, platform_stop_ids):
     source-route-missing case stays unbound for review.
     """
     bindings = {}
-    for entry in timetable.get("timepoints", []):
+    for entry in apply_timetable_overrides(timetable.get("timepoints", [])):
         key = (entry["line"], entry.get("direction", "depart"),
                entry["stop_ro"], entry["destination"])
         candidates = _board_candidates(entry, directions, topology, platform_stop_ids)

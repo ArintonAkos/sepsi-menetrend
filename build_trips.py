@@ -13,6 +13,7 @@ from pathlib import Path
 
 from build_map import duration_seconds_for, load_directions
 from trip_reconstruction import reconstruct_direction
+from timetable_overrides import apply_timetable_overrides
 
 ROOT = Path(__file__).resolve().parent
 OUTPUT = ROOT / "trips.json"
@@ -45,12 +46,13 @@ def offsets_for(direction):
 
 def main():
     timetable = json.loads((ROOT / "timetable.json").read_text(encoding="utf-8"))
+    timepoints = apply_timetable_overrides(timetable["timepoints"])
     trips, reports, skipped = {}, [], []
     for direction in load_directions():
         line, name = direction["line"], direction["direction"]
         key = f"{line}-{name}"
         offsets = offsets_for(direction)
-        calls, report = reconstruct_direction(direction, timetable["timepoints"], offsets)
+        calls, report = reconstruct_direction(direction, timepoints, offsets)
         if not any(calls.values()):
             skipped.append(f"{key}: no reconstructable official times")
             continue

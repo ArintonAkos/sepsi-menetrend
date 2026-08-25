@@ -1,0 +1,46 @@
+{
+  "rewriteColumns": [
+    {
+      "line": "2D",
+      "fromDirection": "depart",
+      "fromDestination": "Câmpul Frumos / Szépmező",
+      "stops": [
+        "Spitalul Județean",
+        "Str. Ghioceilor",
+        "Str. Gábor Áron",
+        "Str. Vânătorilor 1",
+        "Str. Vânătorilor 2"
+      ],
+      "direction": "return",
+      "destination": "Str. Bartók Béla / Bartók Béla utca"
+    },
+    {
+      "line": "5D",
+      "fromDirection": "depart",
+      "fromDestination": "Câmpul Frumos / Szépmező",
+      "stops": [
+        "Institutul de Proiectări",
+        "Str. Dealului",
+        "Str. Dózsa György"
+      ],
+      "direction": "return",
+      "destination": "Str. József Attila / József Attila utca"
+    },
+    {
+      "line": "3",
+      "fromDirection": "depart",
+      "fromDestination": "Coșeni / Szotyor",
+      "stops": ["Fabrica de Țigarete"],
+      "direction": "depart",
+      "destination": "Str. Fabricii / Gyár utca"
+    },
+    {
+      "line": "4",
+      "fromDirection": "depart",
+      "fromDestination": "Câmpul Frumos / Szépmező",
+      "stops": ["Fabrica de Țigarete"],
+      "direction": "depart",
+      "destination": "Str. Fabricii / Gyár utca"
+    }
+  ]
+}

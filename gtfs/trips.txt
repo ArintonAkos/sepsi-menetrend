@@ -279,9 +279,19 @@ route_id,service_id,trip_id,trip_headsign,direction_id,shape_id
 2D,weekday,2D-return-weekday-008,Câmpul Frumos → Str. Bartók Béla,1,2D-return
 2D,weekday,2D-return-weekday-009,Câmpul Frumos → Str. Bartók Béla,1,2D-return
 2D,weekday,2D-return-weekday-010,Câmpul Frumos → Str. Bartók Béla,1,2D-return
+2D,weekday,2D-return-weekday-011,Câmpul Frumos → Str. Bartók Béla,1,2D-return
+2D,weekday,2D-return-weekday-012,Câmpul Frumos → Str. Bartók Béla,1,2D-return
+2D,weekday,2D-return-weekday-013,Câmpul Frumos → Str. Bartók Béla,1,2D-return
+2D,weekday,2D-return-weekday-014,Câmpul Frumos → Str. Bartók Béla,1,2D-return
+2D,weekday,2D-return-weekday-015,Câmpul Frumos → Str. Bartók Béla,1,2D-return
+2D,weekday,2D-return-weekday-016,Câmpul Frumos → Str. Bartók Béla,1,2D-return
+2D,weekday,2D-return-weekday-017,Câmpul Frumos → Str. Bartók Béla,1,2D-return
 2D,weekend,2D-return-weekend-001,Câmpul Frumos → Str. Bartók Béla,1,2D-return
 2D,weekend,2D-return-weekend-002,Câmpul Frumos → Str. Bartók Béla,1,2D-return
 2D,weekend,2D-return-weekend-003,Câmpul Frumos → Str. Bartók Béla,1,2D-return
+2D,weekend,2D-return-weekend-004,Câmpul Frumos → Str. Bartók Béla,1,2D-return
+2D,weekend,2D-return-weekend-005,Câmpul Frumos → Str. Bartók Béla,1,2D-return
+2D,weekend,2D-return-weekend-006,Câmpul Frumos → Str. Bartók Béla,1,2D-return
 3,weekday,3-depart-to-coseni-weekday-001,Coșeni / Szotyor,1,3-depart-to-coseni
 3,weekday,3-depart-to-coseni-weekday-002,Coșeni / Szotyor,1,3-depart-to-coseni
 3,weekday,3-depart-to-coseni-weekday-003,Coșeni / Szotyor,1,3-depart-to-coseni
@@ -320,6 +330,11 @@ route_id,service_id,trip_id,trip_headsign,direction_id,shape_id
 3,weekday,3-depart-from-coseni-weekday-013,Str. Fabricii / Gyár utca,1,3-depart-from-coseni
 3,weekday,3-depart-from-coseni-weekday-014,Str. Fabricii / Gyár utca,1,3-depart-from-coseni
 3,weekday,3-depart-from-coseni-weekday-015,Str. Fabricii / Gyár utca,1,3-depart-from-coseni
+3,weekday,3-depart-from-coseni-weekday-016,Str. Fabricii / Gyár utca,1,3-depart-from-coseni
+3,weekday,3-depart-from-coseni-weekday-017,Str. Fabricii / Gyár utca,1,3-depart-from-coseni
+3,weekday,3-depart-from-coseni-weekday-018,Str. Fabricii / Gyár utca,1,3-depart-from-coseni
+3,weekday,3-depart-from-coseni-weekday-019,Str. Fabricii / Gyár utca,1,3-depart-from-coseni
+3,weekday,3-depart-from-coseni-weekday-020,Str. Fabricii / Gyár utca,1,3-depart-from-coseni
 3,weekend,3-depart-from-coseni-weekend-001,Str. Fabricii / Gyár utca,1,3-depart-from-coseni
 3,weekend,3-depart-from-coseni-weekend-002,Str. Fabricii / Gyár utca,1,3-depart-from-coseni
 3,weekend,3-depart-from-coseni-weekend-003,Str. Fabricii / Gyár utca,1,3-depart-from-coseni
@@ -328,6 +343,14 @@ route_id,service_id,trip_id,trip_headsign,direction_id,shape_id
 3,weekend,3-depart-from-coseni-weekend-006,Str. Fabricii / Gyár utca,1,3-depart-from-coseni
 3,weekend,3-depart-from-coseni-weekend-007,Str. Fabricii / Gyár utca,1,3-depart-from-coseni
 3,weekend,3-depart-from-coseni-weekend-008,Str. Fabricii / Gyár utca,1,3-depart-from-coseni
+3,weekend,3-depart-from-coseni-weekend-009,Str. Fabricii / Gyár utca,1,3-depart-from-coseni
+3,weekend,3-depart-from-coseni-weekend-010,Str. Fabricii / Gyár utca,1,3-depart-from-coseni
+3,weekend,3-depart-from-coseni-weekend-011,Str. Fabricii / Gyár utca,1,3-depart-from-coseni
+3,weekend,3-depart-from-coseni-weekend-012,Str. Fabricii / Gyár utca,1,3-depart-from-coseni
+3,weekend,3-depart-from-coseni-weekend-013,Str. Fabricii / Gyár utca,1,3-depart-from-coseni
+3,weekend,3-depart-from-coseni-weekend-014,Str. Fabricii / Gyár utca,1,3-depart-from-coseni
+3,weekend,3-depart-from-coseni-weekend-015,Str. Fabricii / Gyár utca,1,3-depart-from-coseni
+3,weekend,3-depart-from-coseni-weekend-016,Str. Fabricii / Gyár utca,1,3-depart-from-coseni
 4,weekday,4-depart-to-campul-frumos-weekday-001,Câmpul Frumos / Szépmező,1,4-depart-to-campul-frumos
 4,weekday,4-depart-to-campul-frumos-weekday-002,Câmpul Frumos / Szépmező,1,4-depart-to-campul-frumos
 4,weekday,4-depart-to-campul-frumos-weekday-003,Câmpul Frumos / Szépmező,1,4-depart-to-campul-frumos
@@ -369,6 +392,11 @@ route_id,service_id,trip_id,trip_headsign,direction_id,shape_id
 4,weekday,4-depart-from-campul-frumos-weekday-014,Str. Fabricii / Gyár utca,1,4-depart-from-campul-frumos
 4,weekday,4-depart-from-campul-frumos-weekday-015,Str. Fabricii / Gyár utca,1,4-depart-from-campul-frumos
 4,weekday,4-depart-from-campul-frumos-weekday-016,Str. Fabricii / Gyár utca,1,4-depart-from-campul-frumos
+4,weekday,4-depart-from-campul-frumos-weekday-017,Str. Fabricii / Gyár utca,1,4-depart-from-campul-frumos
+4,weekday,4-depart-from-campul-frumos-weekday-018,Str. Fabricii / Gyár utca,1,4-depart-from-campul-frumos
+4,weekday,4-depart-from-campul-frumos-weekday-019,Str. Fabricii / Gyár utca,1,4-depart-from-campul-frumos
+4,weekday,4-depart-from-campul-frumos-weekday-020,Str. Fabricii / Gyár utca,1,4-depart-from-campul-frumos
+4,weekday,4-depart-from-campul-frumos-weekday-021,Str. Fabricii / Gyár utca,1,4-depart-from-campul-frumos
 4,weekend,4-depart-from-campul-frumos-weekend-001,Str. Fabricii / Gyár utca,1,4-depart-from-campul-frumos
 4,weekend,4-depart-from-campul-frumos-weekend-002,Str. Fabricii / Gyár utca,1,4-depart-from-campul-frumos
 4,weekend,4-depart-from-campul-frumos-weekend-003,Str. Fabricii / Gyár utca,1,4-depart-from-campul-frumos
@@ -378,6 +406,14 @@ route_id,service_id,trip_id,trip_headsign,direction_id,shape_id
 4,weekend,4-depart-from-campul-frumos-weekend-007,Str. Fabricii / Gyár utca,1,4-depart-from-campul-frumos
 4,weekend,4-depart-from-campul-frumos-weekend-008,Str. Fabricii / Gyár utca,1,4-depart-from-campul-frumos
 4,weekend,4-depart-from-campul-frumos-weekend-009,Str. Fabricii / Gyár utca,1,4-depart-from-campul-frumos
+4,weekend,4-depart-from-campul-frumos-weekend-010,Str. Fabricii / Gyár utca,1,4-depart-from-campul-frumos
+4,weekend,4-depart-from-campul-frumos-weekend-011,Str. Fabricii / Gyár utca,1,4-depart-from-campul-frumos
+4,weekend,4-depart-from-campul-frumos-weekend-012,Str. Fabricii / Gyár utca,1,4-depart-from-campul-frumos
+4,weekend,4-depart-from-campul-frumos-weekend-013,Str. Fabricii / Gyár utca,1,4-depart-from-campul-frumos
+4,weekend,4-depart-from-campul-frumos-weekend-014,Str. Fabricii / Gyár utca,1,4-depart-from-campul-frumos
+4,weekend,4-depart-from-campul-frumos-weekend-015,Str. Fabricii / Gyár utca,1,4-depart-from-campul-frumos
+4,weekend,4-depart-from-campul-frumos-weekend-016,Str. Fabricii / Gyár utca,1,4-depart-from-campul-frumos
+4,weekend,4-depart-from-campul-frumos-weekend-017,Str. Fabricii / Gyár utca,1,4-depart-from-campul-frumos
 5,weekday,5-depart-weekday-001,Str. József Attila – traseu circular,0,5-depart
 5,weekday,5-depart-weekday-002,Str. József Attila – traseu circular,0,5-depart
 5,weekday,5-depart-weekday-003,Str. József Attila – traseu circular,0,5-depart
@@ -440,8 +476,13 @@ route_id,service_id,trip_id,trip_headsign,direction_id,shape_id
 5D,weekday,5D-return-weekday-002,Câmpul Frumos → Str. József Attila 2,1,5D-return
 5D,weekday,5D-return-weekday-003,Câmpul Frumos → Str. József Attila 2,1,5D-return
 5D,weekday,5D-return-weekday-004,Câmpul Frumos → Str. József Attila 2,1,5D-return
+5D,weekday,5D-return-weekday-005,Câmpul Frumos → Str. József Attila 2,1,5D-return
+5D,weekday,5D-return-weekday-006,Câmpul Frumos → Str. József Attila 2,1,5D-return
+5D,weekday,5D-return-weekday-007,Câmpul Frumos → Str. József Attila 2,1,5D-return
 5D,weekend,5D-return-weekend-001,Câmpul Frumos → Str. József Attila 2,1,5D-return
 5D,weekend,5D-return-weekend-002,Câmpul Frumos → Str. József Attila 2,1,5D-return
+5D,weekend,5D-return-weekend-003,Câmpul Frumos → Str. József Attila 2,1,5D-return
+5D,weekend,5D-return-weekend-004,Câmpul Frumos → Str. József Attila 2,1,5D-return
 6,weekday,6-depart-weekday-001,Str. Bartók Béla – traseu circular,0,6-depart
 6,weekday,6-depart-weekday-002,Str. Bartók Béla – traseu circular,0,6-depart
 6,weekday,6-depart-weekday-003,Str. Bartók Béla – traseu circular,0,6-depart

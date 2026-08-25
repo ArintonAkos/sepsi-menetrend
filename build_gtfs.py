@@ -42,6 +42,7 @@ from build_map import (  # noqa: E402
 from build_platforms import (  # noqa: E402
     load_osm_platforms, load_overrides, resolve_platforms, write_platforms,
 )
+from timetable_overrides import apply_timetable_overrides  # noqa: E402
 
 AGENCY = {
     "agency_id": "multitrans",
@@ -122,7 +123,7 @@ def timing_points(directions, built, timetable):
     over.
     """
     entries = {}
-    for entry in timetable["timepoints"]:
+    for entry in apply_timetable_overrides(timetable["timepoints"]):
         entries.setdefault((entry["line"], entry["direction"]), []).append(entry)
 
     chosen = set()
