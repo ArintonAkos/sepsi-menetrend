@@ -78,6 +78,32 @@ class PlatformResolutionTests(unittest.TestCase):
         self.assertNotEqual(platform_for("depart-to-arena", "Str. Sporturilor"),
                             platform_for("depart-from-arena", "Str. Sporturilor"))
 
+    def test_lines_five_and_six_share_the_two_milk_factory_kerbs(self):
+        directions = load_directions()
+        topology = resolve_platforms(directions, load_osm_platforms(), load_overrides())
+
+        milk_platforms = [
+            platform for platform in topology["platforms"]
+            if platform["name"]["ro"] == "Fabrica de Lapte"
+        ]
+
+        self.assertEqual(
+            {platform["id"] for platform in milk_platforms},
+            {"manual-6-to-arena-lapte", "manual-6-from-arena-lapte"},
+        )
+
+        line_five = next(item for item in directions
+                         if item["line"] == "5" and item["direction"] == "depart")
+        milk_calls = [
+            topology["call_platforms"][("5", "depart", index)]
+            for index, stop in enumerate(line_five["stops"])
+            if stop["name"]["ro"] == "Fabrica de Lapte"
+        ]
+        self.assertEqual(
+            milk_calls,
+            ["manual-6-to-arena-lapte", "manual-6-from-arena-lapte"],
+        )
+
 
 if __name__ == "__main__":
     unittest.main()

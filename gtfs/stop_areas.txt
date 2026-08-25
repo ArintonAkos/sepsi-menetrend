@@ -67,9 +67,9 @@ city,P65
 city,P66
 city,P67
 city,P68
-city,P69
+arcus,P69
 arcus,P70
-arcus,P71
+city,P71
 city,P72
 city,P73
 city,P74
@@ -101,4 +101,3 @@ city,P99
 city,P100
 city,P101
 city,P102
-city,P103

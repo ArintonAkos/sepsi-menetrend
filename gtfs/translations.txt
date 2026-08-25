@@ -52,56 +52,55 @@ stops,stop_name,hu,P50,Vitéz Mihály Líceum
 stops,stop_name,hu,P51,Vitéz Mihály Líceum
 stops,stop_name,hu,P52,Comfort Residence
 stops,stop_name,hu,P53,Szotyor 2
-stops,stop_name,hu,P54,Tejgyár
+stops,stop_name,hu,P54,Cigarettagyár
 stops,stop_name,hu,P55,Cigarettagyár
-stops,stop_name,hu,P56,Cigarettagyár
+stops,stop_name,hu,P56,Honvéd kút
 stops,stop_name,hu,P57,Honvéd kút
-stops,stop_name,hu,P58,Honvéd kút
-stops,stop_name,hu,P59,Vasútállomás
+stops,stop_name,hu,P58,Vasútállomás
+stops,stop_name,hu,P59,Kertészet
 stops,stop_name,hu,P60,Kertészet
-stops,stop_name,hu,P61,Kertészet
-stops,stop_name,hu,P62,Büdöskút
+stops,stop_name,hu,P61,Büdöskút
+stops,stop_name,hu,P62,Plugor Sándor Líceum
 stops,stop_name,hu,P63,Plugor Sándor Líceum
-stops,stop_name,hu,P64,Plugor Sándor Líceum
+stops,stop_name,hu,P64,Motel Calypso
 stops,stop_name,hu,P65,Motel Calypso
-stops,stop_name,hu,P66,Motel Calypso
-stops,stop_name,hu,P67,Multi-Trans
+stops,stop_name,hu,P66,Multi-Trans
+stops,stop_name,hu,P67,Kálvin tér
 stops,stop_name,hu,P68,Kálvin tér
-stops,stop_name,hu,P69,Kálvin tér
+stops,stop_name,hu,P69,Árkosi Polgármesteri Hivatal
 stops,stop_name,hu,P70,Árkosi Polgármesteri Hivatal
-stops,stop_name,hu,P71,Árkosi Polgármesteri Hivatal
-stops,stop_name,hu,P72,Megyei Kórház
-stops,stop_name,hu,P73,Bartók Béla utca
+stops,stop_name,hu,P71,Megyei Kórház
+stops,stop_name,hu,P72,Bartók Béla utca
+stops,stop_name,hu,P73,Borvíz utca
 stops,stop_name,hu,P74,Borvíz utca
-stops,stop_name,hu,P75,Borvíz utca
+stops,stop_name,hu,P75,Csíki utca 1
 stops,stop_name,hu,P76,Csíki utca 1
-stops,stop_name,hu,P77,Csíki utca 1
+stops,stop_name,hu,P77,Csíki utca 2
 stops,stop_name,hu,P78,Csíki utca 2
-stops,stop_name,hu,P79,Csíki utca 2
+stops,stop_name,hu,P79,Építők útja 1
 stops,stop_name,hu,P80,Építők útja 1
-stops,stop_name,hu,P81,Építők útja 1
+stops,stop_name,hu,P81,Építők útja 2
 stops,stop_name,hu,P82,Építők útja 2
-stops,stop_name,hu,P83,Építők útja 2
-stops,stop_name,hu,P84,Építők útja 3
-stops,stop_name,hu,P85,Dózsa György utca
-stops,stop_name,hu,P86,Gyár utca 1
-stops,stop_name,hu,P87,Gyár utca 2
-stops,stop_name,hu,P88,Gábor Áron utca
-stops,stop_name,hu,P89,Hóvirág utca
-stops,stop_name,hu,P90,József Attila u. 1
-stops,stop_name,hu,P91,József Attila u. 2
-stops,stop_name,hu,P92,Kós Károly utca
+stops,stop_name,hu,P83,Építők útja 3
+stops,stop_name,hu,P84,Dózsa György utca
+stops,stop_name,hu,P85,Gyár utca 1
+stops,stop_name,hu,P86,Gyár utca 2
+stops,stop_name,hu,P87,Gábor Áron utca
+stops,stop_name,hu,P88,Hóvirág utca
+stops,stop_name,hu,P89,József Attila u. 1
+stops,stop_name,hu,P90,József Attila u. 2
+stops,stop_name,hu,P91,Kós Károly utca
+stops,stop_name,hu,P92,Gyöngyvirág utca 1
 stops,stop_name,hu,P93,Gyöngyvirág utca 1
-stops,stop_name,hu,P94,Gyöngyvirág utca 1
-stops,stop_name,hu,P95,Gyöngyvirág utca 2
+stops,stop_name,hu,P94,Gyöngyvirág utca 2
+stops,stop_name,hu,P95,Sport utca
 stops,stop_name,hu,P96,Sport utca
-stops,stop_name,hu,P97,Sport utca
-stops,stop_name,hu,P98,Cigaretta utca 1
-stops,stop_name,hu,P99,Cigaretta utca 2
-stops,stop_name,hu,P100,Cigaretta utca 3
-stops,stop_name,hu,P101,Vadász utca 1
-stops,stop_name,hu,P102,Vadász utca 2
-stops,stop_name,hu,P103,Sugásfürdő
+stops,stop_name,hu,P97,Cigaretta utca 1
+stops,stop_name,hu,P98,Cigaretta utca 2
+stops,stop_name,hu,P99,Cigaretta utca 3
+stops,stop_name,hu,P100,Vadász utca 1
+stops,stop_name,hu,P101,Vadász utca 2
+stops,stop_name,hu,P102,Sugásfürdő
 fare_products,fare_product_name,hu,city_24pay,50 percig érvényes jegy a 24pay alkalmazásban
 fare_products,fare_product_name,hu,city_machine,"Egy utazásra szóló jegy, jegyautomatából"
 fare_products,fare_product_name,hu,city_two,Kétutazásos jegy

@@ -34,6 +34,11 @@
       "osm_id": null,
       "calls": [
         {
+          "line": "5",
+          "direction": "depart",
+          "index": 16
+        },
+        {
           "line": "6",
           "direction": "depart-from-arena",
           "index": 1
@@ -93,6 +98,11 @@
       "source": "override",
       "osm_id": null,
       "calls": [
+        {
+          "line": "5",
+          "direction": "depart",
+          "index": 14
+        },
         {
           "line": "6",
           "direction": "depart-to-arena",
@@ -1602,31 +1612,6 @@
           "line": "3",
           "direction": "depart-from-coseni",
           "index": 1
-        }
-      ]
-    },
-    {
-      "id": "source-fabricadelapte-45.875100-25.800700",
-      "name": {
-        "ro": "Fabrica de Lapte",
-        "hu": "Tejgyár"
-      },
-      "point": [
-        45.8751,
-        25.8007
-      ],
-      "source": "source-fallback",
-      "osm_id": null,
-      "calls": [
-        {
-          "line": "5",
-          "direction": "depart",
-          "index": 14
-        },
-        {
-          "line": "5",
-          "direction": "depart",
-          "index": 16
         }
       ]
     },
@@ -4023,22 +4008,8 @@
     {
       "line": "5",
       "direction": "depart",
-      "index": 14,
-      "name": "Fabrica de Lapte",
-      "reason": "no matching OSM platform"
-    },
-    {
-      "line": "5",
-      "direction": "depart",
       "index": 15,
       "name": "Arena Sepsi",
-      "reason": "no matching OSM platform"
-    },
-    {
-      "line": "5",
-      "direction": "depart",
-      "index": 16,
-      "name": "Fabrica de Lapte",
       "reason": "no matching OSM platform"
     },
     {

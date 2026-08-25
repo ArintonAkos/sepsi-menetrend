@@ -29,6 +29,16 @@
       "id": "manual-6-from-arena-lapte",
       "name": {"ro": "Fabrica de Lapte", "hu": "Tejgyár"},
       "point": [45.875100, 25.800450]
+    },
+    "5:depart:14": {
+      "id": "manual-6-to-arena-lapte",
+      "name": {"ro": "Fabrica de Lapte", "hu": "Tejgyár"},
+      "point": [45.875100, 25.800950]
+    },
+    "5:depart:16": {
+      "id": "manual-6-from-arena-lapte",
+      "name": {"ro": "Fabrica de Lapte", "hu": "Tejgyár"},
+      "point": [45.875100, 25.800450]
     }
   }
 }

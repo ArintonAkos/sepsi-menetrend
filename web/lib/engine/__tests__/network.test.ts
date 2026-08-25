@@ -45,8 +45,8 @@ const rides = (j: { legs: Array<{ kind: string }> }) =>
 
 describe("the real network", () => {
   it("loaded", () => {
-    expect(net.stops).toHaveLength(103);             // real platforms, not guessed kerbs
-    expect(net.stations).toHaveLength(103);
+    expect(net.stops).toHaveLength(102);             // real platforms, not guessed kerbs
+    expect(net.stations).toHaveLength(102);
     expect(net.stops.some((stop) => stop.name.ro === "Terminal")).toBe(false);
     expect(net.stops.some((stop) => stop.name.ro === "Calea Brașovului 1")).toBe(true);
     expect(net.walks.length).toBeGreaterThan(80);     // cached physical-platform walks
