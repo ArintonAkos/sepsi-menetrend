@@ -1,11 +1,11 @@
 .trigger { width: 38px; height: 38px; border-radius: 12px; display: grid; place-items: center;
   background: var(--paper); border: 1px solid var(--border); box-shadow: var(--shadow); color: var(--ink); }
 .trigger svg { width: 19px; height: 19px; }
-.overlay { position: fixed; inset: 0; z-index: 80; display: grid; place-items: center; padding: 18px;
+.overlay { position: fixed; inset: 0; z-index: 100; display: grid; place-items: center; padding: 18px;
   background: color-mix(in srgb, var(--ink) 42%, transparent); animation: fade .16s ease; }
 .card { position: relative; width: min(380px, 100%); border: 1px solid var(--border); border-radius: 20px;
   padding: 22px; background: var(--paper); color: var(--ink); box-shadow: 0 20px 48px -14px #0009;
-  display: grid; gap: 18px; animation: rise .2s var(--ease-out); }
+  display: grid; gap: 18px; animation: rise .2s var(--ease-out); max-height: 88vh; overflow-y: auto; }
 .close { position: absolute; top: 12px; right: 12px; width: 30px; height: 30px; display: grid; place-items: center;
   border-radius: 9px; color: var(--ink); font-size: 22px; line-height: 1; }
 .close:hover { background: var(--sunk); }
@@ -26,7 +26,7 @@
 .action svg { width: 18px; height: 18px; }
 @keyframes fade { from { opacity: 0; } to { opacity: 1; } }
 @keyframes rise { from { opacity: 0; transform: translateY(8px) scale(.98); } to { opacity: 1; transform: none; } }
-@media (max-width: 640px) {
+@media (max-width: 860px) {
   .overlay { align-items: end; padding: 0; }
   .card { width: 100%; border-radius: 20px 20px 0 0; border-bottom: 0; padding: 22px 20px calc(22px + env(safe-area-inset-bottom)); }
 }

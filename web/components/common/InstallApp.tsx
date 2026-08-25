@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useId, useState } from "react";
+import { useEffect, useId, useState, useSyncExternalStore } from "react";
+import { createPortal } from "react-dom";
 import type { Strings } from "@/lib/i18n";
 import styles from "./InstallApp.module.css";
 
@@ -45,6 +46,7 @@ function ShareIcon() {
 export default function InstallApp({ t }: { t: Strings }) {
   const [prompt, setPrompt] = useState<InstallPromptEvent | null>(() => savedPrompt);
   const [open, setOpen] = useState(false);
+  const mounted = useSyncExternalStore(() => () => {}, () => true, () => false);
   const titleId = useId();
 
   useEffect(() => {
@@ -65,10 +67,8 @@ export default function InstallApp({ t }: { t: Strings }) {
   const canPrompt = prompt !== null;
   const fallback = ios ? null : isAndroid() ? t.installAndroid : t.installUnavailable;
 
-  return <>
-    <button type="button" className={styles.trigger} aria-label={t.installApp}
-            onClick={() => setOpen(true)}><DownloadIcon /></button>
-    {open && <div className={styles.overlay} onMouseDown={(event) => {
+  const modal = open ? (
+    <div className={styles.overlay} onMouseDown={(event) => {
       if (event.target === event.currentTarget) setOpen(false);
     }}>
       <section className={styles.card} role="dialog" aria-modal="true" aria-labelledby={titleId}>
@@ -90,6 +90,12 @@ export default function InstallApp({ t }: { t: Strings }) {
           setOpen(false);
         }}><DownloadIcon />{t.installNow}</button>}
       </section>
-    </div>}
+    </div>
+  ) : null;
+
+  return <>
+    <button type="button" className={styles.trigger} aria-label={t.installApp}
+            onClick={() => setOpen(true)}><DownloadIcon /></button>
+    {modal && (mounted ? createPortal(modal, document.body) : modal)}
   </>;
 }

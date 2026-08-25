@@ -141,7 +141,7 @@ export default function Planner({ network, places, reach, box, fares, bikeStatio
     stations: bikeStations, source: "snapshot", fetchedAt: bikeSnapshotAt, stale: true,
   }));
   const [showBikeOptions, setShowBikeOptions] = useState(() =>
-    typeof window === "undefined" || globalThis.localStorage?.getItem("sepsibike-options") !== "off");
+    globalThis.localStorage?.getItem("sepsibike-options") === "on");
   const [bikeBoard, setBikeBoard] = useState<
     { stationId: string; anchor: HTMLElement | null; dismiss: () => void } | null>(null);
   const [closingBikeBoard, setClosingBikeBoard] = useState(false);
@@ -555,7 +555,14 @@ export default function Planner({ network, places, reach, box, fares, bikeStatio
     settledAversion, [...visibleLines].sort().join(","), showBikeOptions, bikeAvailability.fetchedAt].join("|");
   const [planned, setPlanned] = useState<{ key: string; journeys: Journey[] } | null>(null);
   useEffect(() => {
-    if (!from || !to || walking?.key !== walkingKey || metresBetween(from.at, to.at) < 150) {
+    if (!from || !to) {
+      setPlanned(null);
+      return;
+    }
+    if (walking?.key !== walkingKey) {
+      return;
+    }
+    if (metresBetween(from.at, to.at) < 150) {
       setPlanned({ key: multimodalKey, journeys: [] });
       return;
     }
@@ -967,7 +974,7 @@ export default function Planner({ network, places, reach, box, fares, bikeStatio
         )}
 
         <div className={styles.topRight} ref={gearRef}>
-          <button className={styles.round} aria-label={t.timetables}
+          {/* <button className={styles.round} aria-label={t.timetables}
                   onClick={() => setTimetableState((s) => ({
                     ...s,
                     open: true,
@@ -978,7 +985,7 @@ export default function Planner({ network, places, reach, box, fares, bikeStatio
               <rect x="3.5" y="4.5" width="17" height="16" rx="3" />
               <path d="M3.5 9.5h17M8 3v3M16 3v3M8 13h3M8 17h3M14 13h2M14 17h2" />
             </svg>
-          </button>
+          </button> */}
           <InstallApp t={t} />
           {planning && (
             <button className={styles.round} aria-label={t.share} onClick={share}>

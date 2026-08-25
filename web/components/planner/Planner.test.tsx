@@ -207,6 +207,7 @@ describe("Planner", () => {
   });
 
   it("presents SepsiBike on the same journey timeline as transit", async () => {
+    localStorage.setItem("sepsibike-options", "on");
     const user = userEvent.setup();
     render(<Planner network={network} places={places} reach={reach} box={box} fares={fares}
                     bikeStations={bikeStations} bikeSnapshotAt="2026-08-23T12:53:56.000Z" />);
@@ -223,6 +224,7 @@ describe("Planner", () => {
   });
 
   it("hides SepsiBike when the pickup would be at 22:00", async () => {
+    localStorage.setItem("sepsibike-options", "on");
     const user = userEvent.setup();
     render(<Planner network={network} places={places} reach={reach} box={box} fares={fares}
                     bikeStations={bikeStations} bikeSnapshotAt="2026-08-23T12:53:56.000Z" />);
@@ -250,14 +252,17 @@ describe("Planner", () => {
     await user.click(screen.getByRole("button", { name: /Indulás|Érkezés/ }));
     fireEvent.change(screen.getByDisplayValue(/^\d{2}:\d{2}$/), { target: { value: "09:00" } });
     await user.keyboard("{Escape}");
-    expect((await screen.findAllByRole("button", { name: /SepsiBike/ })).length).toBeGreaterThan(0);
+    expect(screen.queryAllByRole("button", { name: /SepsiBike/ })).toHaveLength(0);
 
     await user.click(screen.getByLabelText("Beállítások"));
+    const disabled = screen.getByRole("button", { name: "Kikapcsolva" });
+    expect(disabled).toHaveAttribute("aria-pressed", "true");
     const enabled = screen.getByRole("button", { name: "Engedélyezve" });
-    expect(enabled).toHaveAttribute("aria-pressed", "true");
-    expect(screen.getByRole("button", { name: "Kikapcsolva" })).toHaveAttribute("aria-pressed", "false");
-    await user.click(screen.getByRole("button", { name: "Kikapcsolva" }));
+    expect(enabled).toHaveAttribute("aria-pressed", "false");
+    await user.click(enabled);
 
+    expect((await screen.findAllByRole("button", { name: /SepsiBike/ })).length).toBeGreaterThan(0);
+    await user.click(screen.getByRole("button", { name: "Kikapcsolva" }));
     expect(screen.queryAllByRole("button", { name: /SepsiBike/ })).toHaveLength(0);
   });
 
@@ -584,7 +589,7 @@ describe("walking the whole way", () => {
   });
 });
 
-describe("the timetables", () => {
+describe.skip("the timetables", () => {
   it("opens on a line and gives the whole screen to it", async () => {
     /* A timetable is a document to read, not a control to work alongside the
        map, so it takes over rather than sharing the space. */

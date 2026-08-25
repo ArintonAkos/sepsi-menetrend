@@ -12,3 +12,6 @@ web/.env*
 # derived web/public/aperta.png; the 1 MB original belongs to the Aperta Sync
 # repository, not to a bus timetable.
 Gemini_Generated_Image_*.jpeg
+
+# Local Netlify folder
+.netlify
