@@ -41,6 +41,19 @@
       "stops": ["Fabrica de Țigarete"],
       "direction": "depart",
       "destination": "Str. Fabricii / Gyár utca"
+    },
+    {
+      "line": "6",
+      "fromDirection": "depart",
+      "fromDestination": "Arena Sepsi / Sepsi Aréna",
+      "stops": [
+        "Spitalul Județean",
+        "Str. Ghioceilor",
+        "Str. Vânătorilor 1",
+        "Str. Vânătorilor 2"
+      ],
+      "direction": "depart",
+      "destination": "Str. Bartók Béla / Bartók Béla utca"
     }
   ]
 }

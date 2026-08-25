@@ -1,6 +1,126 @@
 {
   "platforms": [
     {
+      "id": "manual-6-from-arena-ciucului-2",
+      "name": {
+        "ro": "Str. Ciucului 2",
+        "hu": "Csíki utca 2"
+      },
+      "point": [
+        45.87125,
+        25.79525
+      ],
+      "source": "override",
+      "osm_id": null,
+      "calls": [
+        {
+          "line": "6",
+          "direction": "depart-from-arena",
+          "index": 6
+        }
+      ]
+    },
+    {
+      "id": "manual-6-from-arena-lapte",
+      "name": {
+        "ro": "Fabrica de Lapte",
+        "hu": "Tejgyár"
+      },
+      "point": [
+        45.8751,
+        25.80045
+      ],
+      "source": "override",
+      "osm_id": null,
+      "calls": [
+        {
+          "line": "6",
+          "direction": "depart-from-arena",
+          "index": 1
+        }
+      ]
+    },
+    {
+      "id": "manual-6-from-arena-sporturilor",
+      "name": {
+        "ro": "Str. Sporturilor",
+        "hu": "Sport utca"
+      },
+      "point": [
+        45.86428,
+        25.7986
+      ],
+      "source": "override",
+      "osm_id": null,
+      "calls": [
+        {
+          "line": "6",
+          "direction": "depart-from-arena",
+          "index": 3
+        }
+      ]
+    },
+    {
+      "id": "manual-6-to-arena-ciucului-2",
+      "name": {
+        "ro": "Str. Ciucului 2",
+        "hu": "Csíki utca 2"
+      },
+      "point": [
+        45.87185,
+        25.7955
+      ],
+      "source": "override",
+      "osm_id": null,
+      "calls": [
+        {
+          "line": "6",
+          "direction": "depart-to-arena",
+          "index": 8
+        }
+      ]
+    },
+    {
+      "id": "manual-6-to-arena-lapte",
+      "name": {
+        "ro": "Fabrica de Lapte",
+        "hu": "Tejgyár"
+      },
+      "point": [
+        45.8751,
+        25.80095
+      ],
+      "source": "override",
+      "osm_id": null,
+      "calls": [
+        {
+          "line": "6",
+          "direction": "depart-to-arena",
+          "index": 13
+        }
+      ]
+    },
+    {
+      "id": "manual-6-to-arena-sporturilor",
+      "name": {
+        "ro": "Str. Sporturilor",
+        "hu": "Sport utca"
+      },
+      "point": [
+        45.86392,
+        25.7986
+      ],
+      "source": "override",
+      "osm_id": null,
+      "calls": [
+        {
+          "line": "6",
+          "direction": "depart-to-arena",
+          "index": 11
+        }
+      ]
+    },
+    {
       "id": "osm-11707991919",
       "name": {
         "ro": "Coșeni 1",
@@ -72,11 +192,6 @@
           "line": "5",
           "direction": "depart",
           "index": 6
-        },
-        {
-          "line": "6",
-          "direction": "depart",
-          "index": 5
         }
       ]
     },
@@ -165,8 +280,8 @@
         },
         {
           "line": "6",
-          "direction": "depart",
-          "index": 27
+          "direction": "depart-from-arena",
+          "index": 12
         },
         {
           "line": "7",
@@ -220,13 +335,13 @@
         },
         {
           "line": "6",
-          "direction": "depart",
+          "direction": "depart-to-arena",
           "index": 2
         },
         {
           "line": "6",
-          "direction": "depart",
-          "index": 26
+          "direction": "depart-from-arena",
+          "index": 11
         }
       ]
     },
@@ -265,8 +380,8 @@
         },
         {
           "line": "6",
-          "direction": "depart",
-          "index": 28
+          "direction": "depart-from-arena",
+          "index": 13
         },
         {
           "line": "7",
@@ -375,7 +490,7 @@
         },
         {
           "line": "6",
-          "direction": "depart",
+          "direction": "depart-to-arena",
           "index": 4
         },
         {
@@ -435,7 +550,7 @@
         },
         {
           "line": "6",
-          "direction": "depart",
+          "direction": "depart-to-arena",
           "index": 3
         }
       ]
@@ -480,7 +595,7 @@
         },
         {
           "line": "6",
-          "direction": "depart",
+          "direction": "depart-to-arena",
           "index": 1
         },
         {
@@ -520,13 +635,13 @@
         },
         {
           "line": "6",
-          "direction": "depart",
-          "index": 11
+          "direction": "depart-to-arena",
+          "index": 10
         },
         {
           "line": "6",
-          "direction": "depart",
-          "index": 19
+          "direction": "depart-from-arena",
+          "index": 4
         }
       ]
     },
@@ -580,8 +695,8 @@
         },
         {
           "line": "6",
-          "direction": "depart",
-          "index": 22
+          "direction": "depart-from-arena",
+          "index": 7
         }
       ]
     },
@@ -610,8 +725,8 @@
         },
         {
           "line": "6",
-          "direction": "depart",
-          "index": 8
+          "direction": "depart-to-arena",
+          "index": 7
         }
       ]
     },
@@ -670,8 +785,13 @@
         },
         {
           "line": "6",
-          "direction": "depart",
-          "index": 15
+          "direction": "depart-to-arena",
+          "index": 14
+        },
+        {
+          "line": "6",
+          "direction": "depart-from-arena",
+          "index": 0
         }
       ]
     },
@@ -1295,8 +1415,8 @@
         },
         {
           "line": "6",
-          "direction": "depart",
-          "index": 13
+          "direction": "depart-to-arena",
+          "index": 12
         }
       ]
     },
@@ -1320,8 +1440,8 @@
         },
         {
           "line": "6",
-          "direction": "depart",
-          "index": 17
+          "direction": "depart-from-arena",
+          "index": 2
         }
       ]
     },
@@ -1505,16 +1625,6 @@
         },
         {
           "line": "5",
-          "direction": "depart",
-          "index": 16
-        },
-        {
-          "line": "6",
-          "direction": "depart",
-          "index": 14
-        },
-        {
-          "line": "6",
           "direction": "depart",
           "index": 16
         }
@@ -1815,8 +1925,8 @@
         },
         {
           "line": "6",
-          "direction": "depart",
-          "index": 6
+          "direction": "depart-to-arena",
+          "index": 5
         },
         {
           "line": "9",
@@ -1850,8 +1960,8 @@
         },
         {
           "line": "6",
-          "direction": "depart",
-          "index": 24
+          "direction": "depart-from-arena",
+          "index": 9
         },
         {
           "line": "9",
@@ -1985,8 +2095,8 @@
         },
         {
           "line": "6",
-          "direction": "depart",
-          "index": 7
+          "direction": "depart-to-arena",
+          "index": 6
         },
         {
           "line": "9",
@@ -2025,8 +2135,8 @@
         },
         {
           "line": "6",
-          "direction": "depart",
-          "index": 23
+          "direction": "depart-from-arena",
+          "index": 8
         },
         {
           "line": "9",
@@ -2140,13 +2250,13 @@
         },
         {
           "line": "6",
-          "direction": "depart",
+          "direction": "depart-to-arena",
           "index": 0
         },
         {
           "line": "6",
-          "direction": "depart",
-          "index": 32
+          "direction": "depart-from-arena",
+          "index": 17
         }
       ]
     },
@@ -2245,13 +2355,13 @@
         },
         {
           "line": "6",
-          "direction": "depart",
-          "index": 10
+          "direction": "depart-to-arena",
+          "index": 9
         },
         {
           "line": "6",
-          "direction": "depart",
-          "index": 20
+          "direction": "depart-from-arena",
+          "index": 5
         },
         {
           "line": "10",
@@ -2284,11 +2394,6 @@
           "index": 7
         },
         {
-          "line": "6",
-          "direction": "depart",
-          "index": 21
-        },
-        {
           "line": "10",
           "direction": "return",
           "index": 6
@@ -2317,11 +2422,6 @@
           "line": "2D",
           "direction": "depart",
           "index": 7
-        },
-        {
-          "line": "6",
-          "direction": "depart",
-          "index": 9
         },
         {
           "line": "10",
@@ -2540,8 +2640,8 @@
         },
         {
           "line": "6",
-          "direction": "depart",
-          "index": 25
+          "direction": "depart-from-arena",
+          "index": 10
         },
         {
           "line": "9",
@@ -2580,8 +2680,8 @@
         },
         {
           "line": "6",
-          "direction": "depart",
-          "index": 31
+          "direction": "depart-from-arena",
+          "index": 16
         }
       ]
     },
@@ -2849,16 +2949,6 @@
           "index": 7
         },
         {
-          "line": "6",
-          "direction": "depart",
-          "index": 12
-        },
-        {
-          "line": "6",
-          "direction": "depart",
-          "index": 18
-        },
-        {
           "line": "7",
           "direction": "depart",
           "index": 12
@@ -3000,8 +3090,8 @@
         },
         {
           "line": "6",
-          "direction": "depart",
-          "index": 29
+          "direction": "depart-from-arena",
+          "index": 14
         }
       ]
     },
@@ -3030,8 +3120,8 @@
         },
         {
           "line": "6",
-          "direction": "depart",
-          "index": 30
+          "direction": "depart-from-arena",
+          "index": 15
         }
       ]
     },
@@ -4184,148 +4274,113 @@
     },
     {
       "line": "6",
-      "direction": "depart",
+      "direction": "depart-to-arena",
       "index": 0,
       "name": "Str. Bartók Béla",
       "reason": "no matching OSM platform"
     },
     {
       "line": "6",
-      "direction": "depart",
-      "index": 6,
+      "direction": "depart-to-arena",
+      "index": 5,
       "name": "Lic. Plugor Sándor",
       "reason": "no matching OSM platform"
     },
     {
       "line": "6",
-      "direction": "depart",
-      "index": 7,
+      "direction": "depart-to-arena",
+      "index": 6,
       "name": "Piața Kálvin",
       "reason": "no matching OSM platform"
     },
     {
       "line": "6",
-      "direction": "depart",
+      "direction": "depart-to-arena",
       "index": 9,
-      "name": "Str. Ciucului 2",
-      "reason": "no matching OSM platform"
-    },
-    {
-      "line": "6",
-      "direction": "depart",
-      "index": 10,
       "name": "Str. Ciucului 1",
       "reason": "no matching OSM platform"
     },
     {
       "line": "6",
-      "direction": "depart",
+      "direction": "depart-to-arena",
       "index": 12,
-      "name": "Str. Sporturilor",
-      "reason": "no matching OSM platform"
-    },
-    {
-      "line": "6",
-      "direction": "depart",
-      "index": 13,
       "name": "Centru Comercial",
       "reason": "no matching OSM platform"
     },
     {
       "line": "6",
-      "direction": "depart",
+      "direction": "depart-to-arena",
       "index": 14,
-      "name": "Fabrica de Lapte",
-      "reason": "no matching OSM platform"
-    },
-    {
-      "line": "6",
-      "direction": "depart",
-      "index": 15,
       "name": "Arena Sepsi",
       "reason": "no matching OSM platform"
     },
     {
       "line": "6",
-      "direction": "depart",
-      "index": 16,
-      "name": "Fabrica de Lapte",
+      "direction": "depart-from-arena",
+      "index": 0,
+      "name": "Arena Sepsi",
       "reason": "no matching OSM platform"
     },
     {
       "line": "6",
-      "direction": "depart",
-      "index": 17,
+      "direction": "depart-from-arena",
+      "index": 2,
       "name": "Centru Comercial",
       "reason": "no matching OSM platform"
     },
     {
       "line": "6",
-      "direction": "depart",
-      "index": 18,
-      "name": "Str. Sporturilor",
-      "reason": "no matching OSM platform"
-    },
-    {
-      "line": "6",
-      "direction": "depart",
-      "index": 20,
+      "direction": "depart-from-arena",
+      "index": 5,
       "name": "Str. Ciucului 1",
       "reason": "no matching OSM platform"
     },
     {
       "line": "6",
-      "direction": "depart",
-      "index": 21,
-      "name": "Str. Ciucului 2",
-      "reason": "no matching OSM platform"
-    },
-    {
-      "line": "6",
-      "direction": "depart",
-      "index": 23,
+      "direction": "depart-from-arena",
+      "index": 8,
       "name": "Piața Kálvin",
       "reason": "no matching OSM platform"
     },
     {
       "line": "6",
-      "direction": "depart",
-      "index": 24,
+      "direction": "depart-from-arena",
+      "index": 9,
       "name": "Lic. Plugor Sándor",
       "reason": "no matching OSM platform"
     },
     {
       "line": "6",
-      "direction": "depart",
-      "index": 25,
+      "direction": "depart-from-arena",
+      "index": 10,
       "name": "Str. Gábor Áron",
       "reason": "no matching OSM platform"
     },
     {
       "line": "6",
-      "direction": "depart",
-      "index": 29,
+      "direction": "depart-from-arena",
+      "index": 14,
       "name": "Str. Vânătorilor 1",
       "reason": "no matching OSM platform"
     },
     {
       "line": "6",
-      "direction": "depart",
-      "index": 30,
+      "direction": "depart-from-arena",
+      "index": 15,
       "name": "Str. Vânătorilor 2",
       "reason": "no matching OSM platform"
     },
     {
       "line": "6",
-      "direction": "depart",
-      "index": 31,
+      "direction": "depart-from-arena",
+      "index": 16,
       "name": "Str. Ghioceilor",
       "reason": "no matching OSM platform"
     },
     {
       "line": "6",
-      "direction": "depart",
-      "index": 32,
+      "direction": "depart-from-arena",
+      "index": 17,
       "name": "Str. Bartók Béla",
       "reason": "no matching OSM platform"
     },

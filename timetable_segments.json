@@ -26,5 +26,19 @@
       "end": 31,
       "destination": "Str. Fabricii / Gyár utca"
     }
+  ],
+  "6-depart": [
+    {
+      "id": "to-arena",
+      "start": 0,
+      "end": 15,
+      "destination": "Arena Sepsi / Sepsi Aréna"
+    },
+    {
+      "id": "from-arena",
+      "start": 15,
+      "end": 32,
+      "destination": "Str. Bartók Béla / Bartók Béla utca"
+    }
   ]
 }

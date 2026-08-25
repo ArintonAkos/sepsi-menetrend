@@ -483,48 +483,86 @@ route_id,service_id,trip_id,trip_headsign,direction_id,shape_id
 5D,weekend,5D-return-weekend-002,Câmpul Frumos → Str. József Attila 2,1,5D-return
 5D,weekend,5D-return-weekend-003,Câmpul Frumos → Str. József Attila 2,1,5D-return
 5D,weekend,5D-return-weekend-004,Câmpul Frumos → Str. József Attila 2,1,5D-return
-6,weekday,6-depart-weekday-001,Str. Bartók Béla – traseu circular,0,6-depart
-6,weekday,6-depart-weekday-002,Str. Bartók Béla – traseu circular,0,6-depart
-6,weekday,6-depart-weekday-003,Str. Bartók Béla – traseu circular,0,6-depart
-6,weekday,6-depart-weekday-004,Str. Bartók Béla – traseu circular,0,6-depart
-6,weekday,6-depart-weekday-005,Str. Bartók Béla – traseu circular,0,6-depart
-6,weekday,6-depart-weekday-006,Str. Bartók Béla – traseu circular,0,6-depart
-6,weekday,6-depart-weekday-007,Str. Bartók Béla – traseu circular,0,6-depart
-6,weekday,6-depart-weekday-008,Str. Bartók Béla – traseu circular,0,6-depart
-6,weekday,6-depart-weekday-009,Str. Bartók Béla – traseu circular,0,6-depart
-6,weekday,6-depart-weekday-010,Str. Bartók Béla – traseu circular,0,6-depart
-6,weekday,6-depart-weekday-011,Str. Bartók Béla – traseu circular,0,6-depart
-6,weekday,6-depart-weekday-012,Str. Bartók Béla – traseu circular,0,6-depart
-6,weekday,6-depart-weekday-013,Str. Bartók Béla – traseu circular,0,6-depart
-6,weekday,6-depart-weekday-014,Str. Bartók Béla – traseu circular,0,6-depart
-6,weekday,6-depart-weekday-015,Str. Bartók Béla – traseu circular,0,6-depart
-6,weekday,6-depart-weekday-016,Str. Bartók Béla – traseu circular,0,6-depart
-6,weekday,6-depart-weekday-017,Str. Bartók Béla – traseu circular,0,6-depart
-6,weekday,6-depart-weekday-018,Str. Bartók Béla – traseu circular,0,6-depart
-6,weekday,6-depart-weekday-019,Str. Bartók Béla – traseu circular,0,6-depart
-6,weekday,6-depart-weekday-020,Str. Bartók Béla – traseu circular,0,6-depart
-6,weekday,6-depart-weekday-021,Str. Bartók Béla – traseu circular,0,6-depart
-6,weekday,6-depart-weekday-022,Str. Bartók Béla – traseu circular,0,6-depart
-6,weekday,6-depart-weekday-023,Str. Bartók Béla – traseu circular,0,6-depart
-6,weekday,6-depart-weekday-024,Str. Bartók Béla – traseu circular,0,6-depart
-6,weekend,6-depart-weekend-001,Str. Bartók Béla – traseu circular,0,6-depart
-6,weekend,6-depart-weekend-002,Str. Bartók Béla – traseu circular,0,6-depart
-6,weekend,6-depart-weekend-003,Str. Bartók Béla – traseu circular,0,6-depart
-6,weekend,6-depart-weekend-004,Str. Bartók Béla – traseu circular,0,6-depart
-6,weekend,6-depart-weekend-005,Str. Bartók Béla – traseu circular,0,6-depart
-6,weekend,6-depart-weekend-006,Str. Bartók Béla – traseu circular,0,6-depart
-6,weekend,6-depart-weekend-007,Str. Bartók Béla – traseu circular,0,6-depart
-6,weekend,6-depart-weekend-008,Str. Bartók Béla – traseu circular,0,6-depart
-6,weekend,6-depart-weekend-009,Str. Bartók Béla – traseu circular,0,6-depart
-6,weekend,6-depart-weekend-010,Str. Bartók Béla – traseu circular,0,6-depart
-6,weekend,6-depart-weekend-011,Str. Bartók Béla – traseu circular,0,6-depart
-6,weekend,6-depart-weekend-012,Str. Bartók Béla – traseu circular,0,6-depart
-6,weekend,6-depart-weekend-013,Str. Bartók Béla – traseu circular,0,6-depart
-6,weekend,6-depart-weekend-014,Str. Bartók Béla – traseu circular,0,6-depart
-6,weekend,6-depart-weekend-015,Str. Bartók Béla – traseu circular,0,6-depart
-6,weekend,6-depart-weekend-016,Str. Bartók Béla – traseu circular,0,6-depart
-6,weekend,6-depart-weekend-017,Str. Bartók Béla – traseu circular,0,6-depart
-6,weekend,6-depart-weekend-018,Str. Bartók Béla – traseu circular,0,6-depart
+6,weekday,6-depart-to-arena-weekday-001,Arena Sepsi / Sepsi Aréna,1,6-depart-to-arena
+6,weekday,6-depart-to-arena-weekday-002,Arena Sepsi / Sepsi Aréna,1,6-depart-to-arena
+6,weekday,6-depart-to-arena-weekday-003,Arena Sepsi / Sepsi Aréna,1,6-depart-to-arena
+6,weekday,6-depart-to-arena-weekday-004,Arena Sepsi / Sepsi Aréna,1,6-depart-to-arena
+6,weekday,6-depart-to-arena-weekday-005,Arena Sepsi / Sepsi Aréna,1,6-depart-to-arena
+6,weekday,6-depart-to-arena-weekday-006,Arena Sepsi / Sepsi Aréna,1,6-depart-to-arena
+6,weekday,6-depart-to-arena-weekday-007,Arena Sepsi / Sepsi Aréna,1,6-depart-to-arena
+6,weekday,6-depart-to-arena-weekday-008,Arena Sepsi / Sepsi Aréna,1,6-depart-to-arena
+6,weekday,6-depart-to-arena-weekday-009,Arena Sepsi / Sepsi Aréna,1,6-depart-to-arena
+6,weekday,6-depart-to-arena-weekday-010,Arena Sepsi / Sepsi Aréna,1,6-depart-to-arena
+6,weekday,6-depart-to-arena-weekday-011,Arena Sepsi / Sepsi Aréna,1,6-depart-to-arena
+6,weekday,6-depart-to-arena-weekday-012,Arena Sepsi / Sepsi Aréna,1,6-depart-to-arena
+6,weekday,6-depart-to-arena-weekday-013,Arena Sepsi / Sepsi Aréna,1,6-depart-to-arena
+6,weekday,6-depart-to-arena-weekday-014,Arena Sepsi / Sepsi Aréna,1,6-depart-to-arena
+6,weekday,6-depart-to-arena-weekday-015,Arena Sepsi / Sepsi Aréna,1,6-depart-to-arena
+6,weekday,6-depart-to-arena-weekday-016,Arena Sepsi / Sepsi Aréna,1,6-depart-to-arena
+6,weekday,6-depart-to-arena-weekday-017,Arena Sepsi / Sepsi Aréna,1,6-depart-to-arena
+6,weekday,6-depart-to-arena-weekday-018,Arena Sepsi / Sepsi Aréna,1,6-depart-to-arena
+6,weekday,6-depart-to-arena-weekday-019,Arena Sepsi / Sepsi Aréna,1,6-depart-to-arena
+6,weekday,6-depart-to-arena-weekday-020,Arena Sepsi / Sepsi Aréna,1,6-depart-to-arena
+6,weekday,6-depart-to-arena-weekday-021,Arena Sepsi / Sepsi Aréna,1,6-depart-to-arena
+6,weekend,6-depart-to-arena-weekend-001,Arena Sepsi / Sepsi Aréna,1,6-depart-to-arena
+6,weekend,6-depart-to-arena-weekend-002,Arena Sepsi / Sepsi Aréna,1,6-depart-to-arena
+6,weekend,6-depart-to-arena-weekend-003,Arena Sepsi / Sepsi Aréna,1,6-depart-to-arena
+6,weekend,6-depart-to-arena-weekend-004,Arena Sepsi / Sepsi Aréna,1,6-depart-to-arena
+6,weekend,6-depart-to-arena-weekend-005,Arena Sepsi / Sepsi Aréna,1,6-depart-to-arena
+6,weekend,6-depart-to-arena-weekend-006,Arena Sepsi / Sepsi Aréna,1,6-depart-to-arena
+6,weekend,6-depart-to-arena-weekend-007,Arena Sepsi / Sepsi Aréna,1,6-depart-to-arena
+6,weekend,6-depart-to-arena-weekend-008,Arena Sepsi / Sepsi Aréna,1,6-depart-to-arena
+6,weekend,6-depart-to-arena-weekend-009,Arena Sepsi / Sepsi Aréna,1,6-depart-to-arena
+6,weekend,6-depart-to-arena-weekend-010,Arena Sepsi / Sepsi Aréna,1,6-depart-to-arena
+6,weekend,6-depart-to-arena-weekend-011,Arena Sepsi / Sepsi Aréna,1,6-depart-to-arena
+6,weekend,6-depart-to-arena-weekend-012,Arena Sepsi / Sepsi Aréna,1,6-depart-to-arena
+6,weekend,6-depart-to-arena-weekend-013,Arena Sepsi / Sepsi Aréna,1,6-depart-to-arena
+6,weekend,6-depart-to-arena-weekend-014,Arena Sepsi / Sepsi Aréna,1,6-depart-to-arena
+6,weekend,6-depart-to-arena-weekend-015,Arena Sepsi / Sepsi Aréna,1,6-depart-to-arena
+6,weekend,6-depart-to-arena-weekend-016,Arena Sepsi / Sepsi Aréna,1,6-depart-to-arena
+6,weekend,6-depart-to-arena-weekend-017,Arena Sepsi / Sepsi Aréna,1,6-depart-to-arena
+6,weekday,6-depart-from-arena-weekday-001,Str. Bartók Béla / Bartók Béla utca,1,6-depart-from-arena
+6,weekday,6-depart-from-arena-weekday-002,Str. Bartók Béla / Bartók Béla utca,1,6-depart-from-arena
+6,weekday,6-depart-from-arena-weekday-003,Str. Bartók Béla / Bartók Béla utca,1,6-depart-from-arena
+6,weekday,6-depart-from-arena-weekday-004,Str. Bartók Béla / Bartók Béla utca,1,6-depart-from-arena
+6,weekday,6-depart-from-arena-weekday-005,Str. Bartók Béla / Bartók Béla utca,1,6-depart-from-arena
+6,weekday,6-depart-from-arena-weekday-006,Str. Bartók Béla / Bartók Béla utca,1,6-depart-from-arena
+6,weekday,6-depart-from-arena-weekday-007,Str. Bartók Béla / Bartók Béla utca,1,6-depart-from-arena
+6,weekday,6-depart-from-arena-weekday-008,Str. Bartók Béla / Bartók Béla utca,1,6-depart-from-arena
+6,weekday,6-depart-from-arena-weekday-009,Str. Bartók Béla / Bartók Béla utca,1,6-depart-from-arena
+6,weekday,6-depart-from-arena-weekday-010,Str. Bartók Béla / Bartók Béla utca,1,6-depart-from-arena
+6,weekday,6-depart-from-arena-weekday-011,Str. Bartók Béla / Bartók Béla utca,1,6-depart-from-arena
+6,weekday,6-depart-from-arena-weekday-012,Str. Bartók Béla / Bartók Béla utca,1,6-depart-from-arena
+6,weekday,6-depart-from-arena-weekday-013,Str. Bartók Béla / Bartók Béla utca,1,6-depart-from-arena
+6,weekday,6-depart-from-arena-weekday-014,Str. Bartók Béla / Bartók Béla utca,1,6-depart-from-arena
+6,weekday,6-depart-from-arena-weekday-015,Str. Bartók Béla / Bartók Béla utca,1,6-depart-from-arena
+6,weekday,6-depart-from-arena-weekday-016,Str. Bartók Béla / Bartók Béla utca,1,6-depart-from-arena
+6,weekday,6-depart-from-arena-weekday-017,Str. Bartók Béla / Bartók Béla utca,1,6-depart-from-arena
+6,weekday,6-depart-from-arena-weekday-018,Str. Bartók Béla / Bartók Béla utca,1,6-depart-from-arena
+6,weekday,6-depart-from-arena-weekday-019,Str. Bartók Béla / Bartók Béla utca,1,6-depart-from-arena
+6,weekday,6-depart-from-arena-weekday-020,Str. Bartók Béla / Bartók Béla utca,1,6-depart-from-arena
+6,weekday,6-depart-from-arena-weekday-021,Str. Bartók Béla / Bartók Béla utca,1,6-depart-from-arena
+6,weekday,6-depart-from-arena-weekday-022,Str. Bartók Béla / Bartók Béla utca,1,6-depart-from-arena
+6,weekday,6-depart-from-arena-weekday-023,Str. Bartók Béla / Bartók Béla utca,1,6-depart-from-arena
+6,weekday,6-depart-from-arena-weekday-024,Str. Bartók Béla / Bartók Béla utca,1,6-depart-from-arena
+6,weekend,6-depart-from-arena-weekend-001,Str. Bartók Béla / Bartók Béla utca,1,6-depart-from-arena
+6,weekend,6-depart-from-arena-weekend-002,Str. Bartók Béla / Bartók Béla utca,1,6-depart-from-arena
+6,weekend,6-depart-from-arena-weekend-003,Str. Bartók Béla / Bartók Béla utca,1,6-depart-from-arena
+6,weekend,6-depart-from-arena-weekend-004,Str. Bartók Béla / Bartók Béla utca,1,6-depart-from-arena
+6,weekend,6-depart-from-arena-weekend-005,Str. Bartók Béla / Bartók Béla utca,1,6-depart-from-arena
+6,weekend,6-depart-from-arena-weekend-006,Str. Bartók Béla / Bartók Béla utca,1,6-depart-from-arena
+6,weekend,6-depart-from-arena-weekend-007,Str. Bartók Béla / Bartók Béla utca,1,6-depart-from-arena
+6,weekend,6-depart-from-arena-weekend-008,Str. Bartók Béla / Bartók Béla utca,1,6-depart-from-arena
+6,weekend,6-depart-from-arena-weekend-009,Str. Bartók Béla / Bartók Béla utca,1,6-depart-from-arena
+6,weekend,6-depart-from-arena-weekend-010,Str. Bartók Béla / Bartók Béla utca,1,6-depart-from-arena
+6,weekend,6-depart-from-arena-weekend-011,Str. Bartók Béla / Bartók Béla utca,1,6-depart-from-arena
+6,weekend,6-depart-from-arena-weekend-012,Str. Bartók Béla / Bartók Béla utca,1,6-depart-from-arena
+6,weekend,6-depart-from-arena-weekend-013,Str. Bartók Béla / Bartók Béla utca,1,6-depart-from-arena
+6,weekend,6-depart-from-arena-weekend-014,Str. Bartók Béla / Bartók Béla utca,1,6-depart-from-arena
+6,weekend,6-depart-from-arena-weekend-015,Str. Bartók Béla / Bartók Béla utca,1,6-depart-from-arena
+6,weekend,6-depart-from-arena-weekend-016,Str. Bartók Béla / Bartók Béla utca,1,6-depart-from-arena
+6,weekend,6-depart-from-arena-weekend-017,Str. Bartók Béla / Bartók Béla utca,1,6-depart-from-arena
+6,weekend,6-depart-from-arena-weekend-018,Str. Bartók Béla / Bartók Béla utca,1,6-depart-from-arena
 7,weekday,7-depart-weekday-001,Cap Linie Simeria → Gara CFR,0,7-depart
 7,weekday,7-depart-weekday-002,Cap Linie Simeria → Gara CFR,0,7-depart
 7,weekday,7-depart-weekday-003,Cap Linie Simeria → Gara CFR,0,7-depart

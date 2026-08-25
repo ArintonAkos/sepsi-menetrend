@@ -14,6 +14,17 @@ class TimetableSegmentTests(unittest.TestCase):
         self.assertEqual(segments["4-depart"][0]["end"], 18)
         self.assertEqual(segments["4-depart"][1]["start"], 18)
 
+    def test_line_six_has_an_arena_pass_and_a_separate_bartok_return_pass(self):
+        segments = json.loads((Path(__file__).resolve().parents[1] /
+                               "timetable_segments.json").read_text(encoding="utf-8"))
+
+        self.assertEqual(segments["6-depart"], [
+            {"id": "to-arena", "start": 0, "end": 15,
+             "destination": "Arena Sepsi / Sepsi Aréna"},
+            {"id": "from-arena", "start": 15, "end": 32,
+             "destination": "Str. Bartók Béla / Bartók Béla utca"},
+        ])
+
     def test_keeps_same_name_calls_on_their_destination_specific_passes(self):
         direction = {
             "line": "4", "direction": "depart",

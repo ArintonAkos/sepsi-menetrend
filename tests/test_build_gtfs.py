@@ -76,6 +76,17 @@ class GtfsTopologyTests(unittest.TestCase):
         self.assertNotIn("Terminal", names)
         self.assertIn("Calea Brașovului 1", names)
 
+    def test_line_six_has_an_arena_pass_and_a_separate_bartok_return_pass(self):
+        directions = build_map.load_directions()
+        arena = next(direction for direction in directions
+                     if direction["line"] == "6" and direction["direction"] == "depart-to-arena")
+        bartok = next(direction for direction in directions
+                      if direction["line"] == "6" and direction["direction"] == "depart-from-arena")
+
+        self.assertEqual(arena["headsign"]["ro"], "Arena Sepsi / Sepsi Aréna")
+        self.assertEqual(bartok["headsign"]["ro"], "Str. Bartók Béla / Bartók Béla utca")
+        self.assertNotIn("Parcul Elisabeta", [stop["name"]["ro"] for stop in arena["stops"]])
+
 
 class RouteOverrideTests(unittest.TestCase):
     def test_removed_intermediate_stop_coalesces_its_adjacent_durations(self):

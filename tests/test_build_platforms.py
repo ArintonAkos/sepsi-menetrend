@@ -1,6 +1,7 @@
 import unittest
 
-from build_platforms import resolve_platforms
+from build_map import load_directions
+from build_platforms import load_osm_platforms, load_overrides, resolve_platforms
 
 
 def direction(line, direction_name, name, lat, lon):
@@ -60,6 +61,22 @@ class PlatformResolutionTests(unittest.TestCase):
             {platform["source"] for platform in topology["platforms"]},
             {"source-fallback"},
         )
+
+    def test_line_six_uses_two_kerbs_at_milk_factory_and_sport_street(self):
+        directions = load_directions()
+        topology = resolve_platforms(directions, load_osm_platforms(), load_overrides())
+
+        def platform_for(direction_name, name):
+            direction = next(item for item in directions
+                             if item["line"] == "6" and item["direction"] == direction_name)
+            index = next(index for index, stop in enumerate(direction["stops"])
+                         if stop["name"]["ro"] == name)
+            return topology["call_platforms"][("6", direction_name, index)]
+
+        self.assertNotEqual(platform_for("depart-to-arena", "Fabrica de Lapte"),
+                            platform_for("depart-from-arena", "Fabrica de Lapte"))
+        self.assertNotEqual(platform_for("depart-to-arena", "Str. Sporturilor"),
+                            platform_for("depart-from-arena", "Str. Sporturilor"))
 
 
 if __name__ == "__main__":

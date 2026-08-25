@@ -7,7 +7,7 @@ route_id,agency_id,route_short_name,route_long_name,route_type,route_color,route
 4,multitrans,4,Câmpul Frumos / Szépmező,3,F4B400,000000
 5,multitrans,5,Str. József Attila – traseu circular,3,7C3592,FFFFFF
 5D,multitrans,5D,Str. József Attila 2 → Câmpul Frumos,3,7030A0,FFFFFF
-6,multitrans,6,Str. Bartók Béla – traseu circular,3,A9FE00,000000
+6,multitrans,6,Arena Sepsi / Sepsi Aréna,3,A9FE00,000000
 7,multitrans,7,Cap Linie Simeria → Gara CFR,3,FF3EFF,000000
 9,multitrans,9,Gara CFR → Șugaș Băi,3,B27E62,000000
 10,multitrans,10,Casa cu Arcade → Centru Arcuș,3,000000,FFFFFF

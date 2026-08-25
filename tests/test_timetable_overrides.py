@@ -47,6 +47,16 @@ class TimetableOverrideTests(unittest.TestCase):
         self.assertEqual(result[0]["direction"], "depart")
         self.assertEqual(result[0]["destination"], "Str. Fabricii / Gyár utca")
 
+    def test_reassigns_line_six_western_return_board_columns_to_bartok(self):
+        entries = [{
+            "line": "6", "direction": "depart", "stop_ro": "Spitalul Județean",
+            "destination": "Arena Sepsi / Sepsi Aréna",
+        }]
+
+        result = apply_timetable_overrides(entries)
+
+        self.assertEqual(result[0]["destination"], "Str. Bartók Béla / Bartók Béla utca")
+
 
 if __name__ == "__main__":
     unittest.main()

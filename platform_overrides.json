@@ -1,3 +1,34 @@
 {
-  "calls": {}
+  "calls": {
+    "6:depart-to-arena:8": {
+      "id": "manual-6-to-arena-ciucului-2",
+      "name": {"ro": "Str. Ciucului 2", "hu": "Csíki utca 2"},
+      "point": [45.871850, 25.795500]
+    },
+    "6:depart-from-arena:6": {
+      "id": "manual-6-from-arena-ciucului-2",
+      "name": {"ro": "Str. Ciucului 2", "hu": "Csíki utca 2"},
+      "point": [45.871250, 25.795250]
+    },
+    "6:depart-to-arena:11": {
+      "id": "manual-6-to-arena-sporturilor",
+      "name": {"ro": "Str. Sporturilor", "hu": "Sport utca"},
+      "point": [45.863920, 25.798600]
+    },
+    "6:depart-from-arena:3": {
+      "id": "manual-6-from-arena-sporturilor",
+      "name": {"ro": "Str. Sporturilor", "hu": "Sport utca"},
+      "point": [45.864280, 25.798600]
+    },
+    "6:depart-to-arena:13": {
+      "id": "manual-6-to-arena-lapte",
+      "name": {"ro": "Fabrica de Lapte", "hu": "Tejgyár"},
+      "point": [45.875100, 25.800950]
+    },
+    "6:depart-from-arena:1": {
+      "id": "manual-6-from-arena-lapte",
+      "name": {"ro": "Fabrica de Lapte", "hu": "Tejgyár"},
+      "point": [45.875100, 25.800450]
+    }
+  }
 }

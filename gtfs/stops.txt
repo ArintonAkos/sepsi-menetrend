@@ -1,98 +1,104 @@
 stop_id,stop_name,stop_lat,stop_lon,location_type,parent_station,platform_code,zone_id,stop_desc
-P1,Coșeni 1,45.815105,25.798805,0,,,city,OSM peron
-P2,Parcul Elisabeta,45.864116,25.786523,0,,,city,OSM peron
-P3,Biserica reformată,45.864289,25.792036,0,,,city,OSM peron
-P4,Str. Dealului,45.858908,25.776823,0,,,city,OSM peron
-P5,Institutul de proiectări,45.861661,25.782025,0,,,city,OSM peron
-P6,Spitalul Județean,45.863147,25.777734,0,,,city,OSM peron
-P7,Biserica reformată,45.863962,25.792818,0,,,city,OSM peron
-P8,Casa cu Arcade,45.863647,25.786621,0,,,city,OSM peron
-P9,Institutul de proiectări,45.861664,25.782234,0,,,city,OSM peron
-P10,Str. Dealului,45.859367,25.776024,0,,,city,OSM peron
-P11,Debren,45.867007,25.795895,0,,,city,OSM peron
-P12,Debren,45.867016,25.796036,0,,,city,OSM peron
-P13,Cartierul Ciucului,45.873943,25.792354,0,,,city,OSM peron
-P14,Cartierul Ciucului,45.873850,25.792285,0,,,city,OSM peron
-P15,Tribunal,45.862347,25.788008,0,,,city,OSM peron
-P16,Arena Sepsi,45.882200,25.807100,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
-P17,Autoliv,45.865800,25.815300,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
-P18,B-dul Grigore Bălan 1,45.862200,25.796200,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
-P19,B-dul Grigore Bălan 2,45.858000,25.796400,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
-P20,B-dul Nicolae Iorga 1,45.857900,25.794400,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
-P21,B-dul Nicolae Iorga 1,45.858000,25.794800,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
-P22,B-dul Nicolae Iorga 2,45.859100,25.792000,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
-P23,B-dul Nicolae Iorga 2,45.859500,25.791900,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
-P24,Biserica Reformată Arcuș,45.900900,25.772500,0,,,arcus,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
-P25,Calea Brașovului 1,45.856800,25.806600,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
-P26,Calea Brașovului 1,45.857000,25.806900,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
-P27,Calea Brașovului 1,45.857100,25.807200,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
-P28,Calea Brașovului 2,45.851600,25.806000,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
-P29,Calea Brașovului 2,45.851800,25.805800,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
-P30,Calea Brașovului 3,45.848600,25.805200,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
-P31,Calea Brașovului 3,45.848600,25.805400,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
-P32,Câmpul Frumos,45.861900,25.841000,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
-P33,Cap Linie Simeria,45.867100,25.779100,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
-P34,Cap Linie Simeria,45.868000,25.779200,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
-P35,Cart. Kossuth Lajos,45.884000,25.800100,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
-P36,Cart. Kossuth Lajos,45.884000,25.800300,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
-P37,Castelul Szentkereszty,45.897700,25.787900,0,,,arcus,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
-P38,Castelul Szentkereszty,45.898000,25.786200,0,,,arcus,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
-P39,Centru Arcuș,45.903100,25.773500,0,,,arcus,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
-P40,Centru Comercial,45.869300,25.801000,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
-P41,Centru Comercial,45.869800,25.800600,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
-P42,Chilieni,45.836400,25.804100,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
-P43,Chilieni,45.836700,25.804200,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
-P44,Col. Mihai Viteazul,45.860100,25.784200,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
-P45,Col. Mihai Viteazul,45.861000,25.785500,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
-P46,Comfort Residence,45.854800,25.793100,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
-P47,Coșeni 2,45.812900,25.799300,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
-P48,Fabrica de Lapte,45.875100,25.800700,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
-P49,Fabrica de Țigarete,45.858400,25.782200,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
-P50,Fabrica de Țigarete,45.858900,25.782600,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
-P51,Fântâna Honvéd,45.872300,25.741200,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
-P52,Fântâna Honvéd,45.872400,25.741000,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
-P53,Gara CFR,45.863100,25.810100,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
-P54,Grădinărie,45.878900,25.797100,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
-P55,Grădinărie,45.879000,25.797000,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
-P56,Izvorul Sulfuros,45.855500,25.767200,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
-P57,Lic. Plugor Sándor,45.868100,25.787400,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
-P58,Lic. Plugor Sándor,45.868900,25.786800,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
-P59,Motel Calypso,45.823900,25.800000,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
-P60,Motel Calypso,45.824700,25.800400,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
-P61,Multi-Trans,45.859300,25.838900,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
-P62,Piața Kálvin,45.870900,25.788500,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
-P63,Piața Kálvin,45.870900,25.788700,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
-P64,Primăria Arcuș,45.899600,25.778500,0,,,arcus,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
-P65,Primăria Arcuș,45.899700,25.778800,0,,,arcus,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
-P66,Spitalul Județean,45.863900,25.778000,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
-P67,Str. Bartók Béla,45.860900,25.771500,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
-P68,Str. Borviz,45.874400,25.775300,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
-P69,Str. Borviz,45.874500,25.775300,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
-P70,Str. Ciucului 1,45.869200,25.793200,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
-P71,Str. Ciucului 1,45.869300,25.793100,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
-P72,Str. Ciucului 2,45.871400,25.795100,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
-P73,Str. Ciucului 2,45.872000,25.795700,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
-P74,Str. Constructorilor 1,45.856000,25.808500,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
-P75,Str. Constructorilor 1,45.856200,25.808300,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
-P76,Str. Constructorilor 2,45.855700,25.814700,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
-P77,Str. Constructorilor 2,45.855900,25.814800,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
-P78,Str. Constructorilor 3,45.858500,25.818300,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
-P79,Str. Dózsa György,45.856800,25.773300,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
-P80,Str. Fabricii 1,45.855700,25.793200,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
-P81,Str. Fabricii 2,45.859600,25.785800,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
-P82,Str. Gábor Áron,45.864800,25.785100,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
-P83,Str. Ghioceilor,45.863300,25.769900,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
-P84,Str. József Attila 1,45.854400,25.777100,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
-P85,Str. József Attila 2,45.854100,25.772200,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
-P86,Str. Kós Károly,45.855900,25.779000,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
-P87,Str. Lăcrămioarei 1,45.859800,25.799500,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
-P88,Str. Lăcrămioarei 1,45.860500,25.800100,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
-P89,Str. Lăcrămioarei 2,45.858000,25.798100,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
-P90,Str. Sporturilor,45.864000,25.798300,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
-P91,Str. Sporturilor,45.864100,25.798600,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
-P92,Str. Țigaretei 1,45.856600,25.782100,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
-P93,Str. Țigaretei 2,45.855100,25.785100,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
-P94,Str. Țigaretei 3,45.854300,25.790300,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
-P95,Str. Vânătorilor 1,45.864500,25.775600,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
-P96,Str. Vânătorilor 2,45.864800,25.772500,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
-P97,Șugaș Băi,45.896700,25.707100,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
+P1,Str. Ciucului 2,45.871250,25.795250,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
+P2,Fabrica de Lapte,45.875100,25.800450,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
+P3,Str. Sporturilor,45.864280,25.798600,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
+P4,Str. Ciucului 2,45.871850,25.795500,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
+P5,Fabrica de Lapte,45.875100,25.800950,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
+P6,Str. Sporturilor,45.863920,25.798600,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
+P7,Coșeni 1,45.815105,25.798805,0,,,city,OSM peron
+P8,Parcul Elisabeta,45.864116,25.786523,0,,,city,OSM peron
+P9,Biserica reformată,45.864289,25.792036,0,,,city,OSM peron
+P10,Str. Dealului,45.858908,25.776823,0,,,city,OSM peron
+P11,Institutul de proiectări,45.861661,25.782025,0,,,city,OSM peron
+P12,Spitalul Județean,45.863147,25.777734,0,,,city,OSM peron
+P13,Biserica reformată,45.863962,25.792818,0,,,city,OSM peron
+P14,Casa cu Arcade,45.863647,25.786621,0,,,city,OSM peron
+P15,Institutul de proiectări,45.861664,25.782234,0,,,city,OSM peron
+P16,Str. Dealului,45.859367,25.776024,0,,,city,OSM peron
+P17,Debren,45.867007,25.795895,0,,,city,OSM peron
+P18,Debren,45.867016,25.796036,0,,,city,OSM peron
+P19,Cartierul Ciucului,45.873943,25.792354,0,,,city,OSM peron
+P20,Cartierul Ciucului,45.873850,25.792285,0,,,city,OSM peron
+P21,Tribunal,45.862347,25.788008,0,,,city,OSM peron
+P22,Arena Sepsi,45.882200,25.807100,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
+P23,Autoliv,45.865800,25.815300,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
+P24,B-dul Grigore Bălan 1,45.862200,25.796200,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
+P25,B-dul Grigore Bălan 2,45.858000,25.796400,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
+P26,B-dul Nicolae Iorga 1,45.857900,25.794400,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
+P27,B-dul Nicolae Iorga 1,45.858000,25.794800,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
+P28,B-dul Nicolae Iorga 2,45.859100,25.792000,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
+P29,B-dul Nicolae Iorga 2,45.859500,25.791900,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
+P30,Biserica Reformată Arcuș,45.900900,25.772500,0,,,arcus,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
+P31,Calea Brașovului 1,45.856800,25.806600,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
+P32,Calea Brașovului 1,45.857000,25.806900,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
+P33,Calea Brașovului 1,45.857100,25.807200,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
+P34,Calea Brașovului 2,45.851600,25.806000,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
+P35,Calea Brașovului 2,45.851800,25.805800,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
+P36,Calea Brașovului 3,45.848600,25.805200,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
+P37,Calea Brașovului 3,45.848600,25.805400,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
+P38,Câmpul Frumos,45.861900,25.841000,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
+P39,Cap Linie Simeria,45.867100,25.779100,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
+P40,Cap Linie Simeria,45.868000,25.779200,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
+P41,Cart. Kossuth Lajos,45.884000,25.800100,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
+P42,Cart. Kossuth Lajos,45.884000,25.800300,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
+P43,Castelul Szentkereszty,45.897700,25.787900,0,,,arcus,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
+P44,Castelul Szentkereszty,45.898000,25.786200,0,,,arcus,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
+P45,Centru Arcuș,45.903100,25.773500,0,,,arcus,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
+P46,Centru Comercial,45.869300,25.801000,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
+P47,Centru Comercial,45.869800,25.800600,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
+P48,Chilieni,45.836400,25.804100,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
+P49,Chilieni,45.836700,25.804200,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
+P50,Col. Mihai Viteazul,45.860100,25.784200,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
+P51,Col. Mihai Viteazul,45.861000,25.785500,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
+P52,Comfort Residence,45.854800,25.793100,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
+P53,Coșeni 2,45.812900,25.799300,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
+P54,Fabrica de Lapte,45.875100,25.800700,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
+P55,Fabrica de Țigarete,45.858400,25.782200,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
+P56,Fabrica de Țigarete,45.858900,25.782600,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
+P57,Fântâna Honvéd,45.872300,25.741200,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
+P58,Fântâna Honvéd,45.872400,25.741000,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
+P59,Gara CFR,45.863100,25.810100,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
+P60,Grădinărie,45.878900,25.797100,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
+P61,Grădinărie,45.879000,25.797000,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
+P62,Izvorul Sulfuros,45.855500,25.767200,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
+P63,Lic. Plugor Sándor,45.868100,25.787400,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
+P64,Lic. Plugor Sándor,45.868900,25.786800,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
+P65,Motel Calypso,45.823900,25.800000,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
+P66,Motel Calypso,45.824700,25.800400,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
+P67,Multi-Trans,45.859300,25.838900,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
+P68,Piața Kálvin,45.870900,25.788500,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
+P69,Piața Kálvin,45.870900,25.788700,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
+P70,Primăria Arcuș,45.899600,25.778500,0,,,arcus,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
+P71,Primăria Arcuș,45.899700,25.778800,0,,,arcus,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
+P72,Spitalul Județean,45.863900,25.778000,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
+P73,Str. Bartók Béla,45.860900,25.771500,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
+P74,Str. Borviz,45.874400,25.775300,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
+P75,Str. Borviz,45.874500,25.775300,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
+P76,Str. Ciucului 1,45.869200,25.793200,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
+P77,Str. Ciucului 1,45.869300,25.793100,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
+P78,Str. Ciucului 2,45.871400,25.795100,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
+P79,Str. Ciucului 2,45.872000,25.795700,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
+P80,Str. Constructorilor 1,45.856000,25.808500,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
+P81,Str. Constructorilor 1,45.856200,25.808300,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
+P82,Str. Constructorilor 2,45.855700,25.814700,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
+P83,Str. Constructorilor 2,45.855900,25.814800,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
+P84,Str. Constructorilor 3,45.858500,25.818300,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
+P85,Str. Dózsa György,45.856800,25.773300,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
+P86,Str. Fabricii 1,45.855700,25.793200,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
+P87,Str. Fabricii 2,45.859600,25.785800,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
+P88,Str. Gábor Áron,45.864800,25.785100,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
+P89,Str. Ghioceilor,45.863300,25.769900,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
+P90,Str. József Attila 1,45.854400,25.777100,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
+P91,Str. József Attila 2,45.854100,25.772200,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
+P92,Str. Kós Károly,45.855900,25.779000,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
+P93,Str. Lăcrămioarei 1,45.859800,25.799500,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
+P94,Str. Lăcrămioarei 1,45.860500,25.800100,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
+P95,Str. Lăcrămioarei 2,45.858000,25.798100,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
+P96,Str. Sporturilor,45.864000,25.798300,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
+P97,Str. Sporturilor,45.864100,25.798600,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
+P98,Str. Țigaretei 1,45.856600,25.782100,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
+P99,Str. Țigaretei 2,45.855100,25.785100,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
+P100,Str. Țigaretei 3,45.854300,25.790300,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
+P101,Str. Vânătorilor 1,45.864500,25.775600,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
+P102,Str. Vânătorilor 2,45.864800,25.772500,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
+P103,Șugaș Băi,45.896700,25.707100,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
