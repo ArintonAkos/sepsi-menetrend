@@ -87,6 +87,17 @@ class GtfsTopologyTests(unittest.TestCase):
         self.assertEqual(bartok["headsign"]["ro"], "Str. Bartók Béla / Bartók Béla utca")
         self.assertNotIn("Parcul Elisabeta", [stop["name"]["ro"] for stop in arena["stops"]])
 
+    def test_line_four_to_campul_frumos_stops_at_casa_not_elisabeta(self):
+        directions = build_map.load_directions()
+        toward_campul = next(
+            direction for direction in directions
+            if direction["line"] == "4" and direction["direction"] == "depart-to-campul-frumos"
+        )
+        names = [stop["name"]["ro"] for stop in toward_campul["stops"]]
+
+        self.assertIn("Casa cu Arcade", names)
+        self.assertNotIn("Parcul Elisabeta", names)
+
 
 class RouteOverrideTests(unittest.TestCase):
     def test_removed_intermediate_stop_coalesces_its_adjacent_durations(self):

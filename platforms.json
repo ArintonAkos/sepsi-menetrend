@@ -215,11 +215,6 @@
         },
         {
           "line": "4",
-          "direction": "depart-to-campul-frumos",
-          "index": 8
-        },
-        {
-          "line": "4",
           "direction": "depart-from-campul-frumos",
           "index": 9
         },
@@ -456,7 +451,7 @@
         {
           "line": "4",
           "direction": "depart-to-campul-frumos",
-          "index": 9
+          "index": 8
         },
         {
           "line": "9",
@@ -511,7 +506,7 @@
         {
           "line": "4",
           "direction": "depart-to-campul-frumos",
-          "index": 10
+          "index": 9
         },
         {
           "line": "6",
@@ -1156,7 +1151,7 @@
         {
           "line": "4",
           "direction": "depart-to-campul-frumos",
-          "index": 12
+          "index": 11
         }
       ]
     },
@@ -1301,7 +1296,7 @@
         {
           "line": "4",
           "direction": "depart-to-campul-frumos",
-          "index": 16
+          "index": 15
         },
         {
           "line": "4",
@@ -1851,7 +1846,7 @@
         {
           "line": "4",
           "direction": "depart-to-campul-frumos",
-          "index": 11
+          "index": 10
         },
         {
           "line": "4",
@@ -2116,7 +2111,7 @@
         {
           "line": "4",
           "direction": "depart-to-campul-frumos",
-          "index": 17
+          "index": 16
         },
         {
           "line": "4",
@@ -2511,7 +2506,7 @@
         {
           "line": "4",
           "direction": "depart-to-campul-frumos",
-          "index": 13
+          "index": 12
         }
       ]
     },
@@ -2551,7 +2546,7 @@
         {
           "line": "4",
           "direction": "depart-to-campul-frumos",
-          "index": 14
+          "index": 13
         }
       ]
     },
@@ -2591,7 +2586,7 @@
         {
           "line": "4",
           "direction": "depart-to-campul-frumos",
-          "index": 15
+          "index": 14
         },
         {
           "line": "4",
@@ -3698,49 +3693,49 @@
     {
       "line": "4",
       "direction": "depart-to-campul-frumos",
-      "index": 11,
+      "index": 10,
       "name": "Gara CFR",
       "reason": "no matching OSM platform"
     },
     {
       "line": "4",
       "direction": "depart-to-campul-frumos",
-      "index": 12,
+      "index": 11,
       "name": "Calea Brașovului 1",
       "reason": "no matching OSM platform"
     },
     {
       "line": "4",
       "direction": "depart-to-campul-frumos",
-      "index": 13,
+      "index": 12,
       "name": "Str. Constructorilor 1",
       "reason": "no matching OSM platform"
     },
     {
       "line": "4",
       "direction": "depart-to-campul-frumos",
-      "index": 14,
+      "index": 13,
       "name": "Str. Constructorilor 2",
       "reason": "no matching OSM platform"
     },
     {
       "line": "4",
       "direction": "depart-to-campul-frumos",
-      "index": 15,
+      "index": 14,
       "name": "Str. Constructorilor 3",
       "reason": "no matching OSM platform"
     },
     {
       "line": "4",
       "direction": "depart-to-campul-frumos",
-      "index": 16,
+      "index": 15,
       "name": "Câmpul Frumos",
       "reason": "no matching OSM platform"
     },
     {
       "line": "4",
       "direction": "depart-to-campul-frumos",
-      "index": 17,
+      "index": 16,
       "name": "Multi-Trans",
       "reason": "no matching OSM platform"
     },
