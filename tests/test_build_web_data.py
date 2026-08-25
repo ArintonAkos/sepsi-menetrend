@@ -1,6 +1,6 @@
 import unittest
 
-from build_web_data import official_board_bindings, official_boards, pattern_key
+from build_web_data import official_board_bindings, official_boards, pattern_key, platform_side
 
 
 class OfficialBoardTests(unittest.TestCase):
@@ -56,6 +56,45 @@ class OfficialBoardTests(unittest.TestCase):
                                    "Câmpul Frumos / Szépmező")], "P75")
         self.assertEqual(bindings[("4", "depart", "Str. Constructorilor 2",
                                    "Str. Fabricii / Gyár utca")], "P76")
+
+    def test_binds_a_circular_board_to_the_pass_nearest_its_displayed_destination(self):
+        directions = [{
+            "line": "2", "direction": "depart", "source_direction": "depart",
+            "circular": True,
+            "stops": [
+                {"name": {"ro": "Str. Bartók Béla", "hu": "Bartók Béla utca"}},
+                {"name": {"ro": "Piața Kálvin", "hu": "Kálvin tér"}},
+                {"name": {"ro": "Cartierul Ciucului", "hu": "Csíki negyed"}},
+                {"name": {"ro": "Gara CFR", "hu": "Vasútállomás"}},
+                {"name": {"ro": "Cartierul Ciucului", "hu": "Csíki negyed"}},
+                {"name": {"ro": "Str. Bartók Béla", "hu": "Bartók Béla utca"}},
+            ],
+        }]
+        topology = {"call_platforms": {
+            ("2", "depart", 2): "toward-gara",
+            ("2", "depart", 4): "toward-bartok",
+        }, "platforms": []}
+        timetable = {"timepoints": [
+            {"line": "2", "direction": "depart", "stop_ro": "Cartierul Ciucului",
+             "destination": "Gara / Vasútállomás"},
+            {"line": "2", "direction": "depart", "stop_ro": "Cartierul Ciucului",
+             "destination": "Str. Bartók Béla / Bartók Béla utca"},
+        ]}
+
+        bindings = official_board_bindings(timetable, directions, topology,
+                                           {"toward-gara": "P14", "toward-bartok": "P13"})
+
+        self.assertEqual(bindings[("2", "depart", "Cartierul Ciucului",
+                                   "Gara / Vasútállomás")], "P14")
+        self.assertEqual(bindings[("2", "depart", "Cartierul Ciucului",
+                                   "Str. Bartók Béla / Bartók Béla utca")], "P13")
+
+    def test_detects_the_right_hand_side_of_a_travel_vector(self):
+        # Eastbound travel: south is the right side in Romania.
+        self.assertEqual(platform_side([45.0, 25.0], [45.0, 25.001],
+                                       [44.9999, 25.0005]), "right")
+        self.assertEqual(platform_side([45.0, 25.0], [45.0, 25.001],
+                                       [45.0001, 25.0005]), "left")
 
     def test_keeps_a_separate_pattern_when_an_official_mid_route_call_differs(self):
         trip = {"route_id": "1", "shape_id": "1-depart"}

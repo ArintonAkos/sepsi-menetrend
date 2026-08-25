@@ -30,12 +30,14 @@ Writes  web/public/data/{network,places,fares}.json
 import csv
 import json
 import math
+import re
 import sys
+import unicodedata
 from collections import Counter, defaultdict
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from build_map import best_label, load_directions, palette  # noqa: E402
+from build_map import anchor_vertices, best_label, load_directions, palette  # noqa: E402
 from build_platforms import load_osm_platforms, load_overrides, resolve_platforms  # noqa: E402
 
 ROOT = Path(__file__).resolve().parent
@@ -108,38 +110,147 @@ def official_boards(timetable, bindings=None, *, strict=True):
     return sorted(out, key=lambda b: (b["stopRo"], b["lineId"], b["destination"]))
 
 
-def official_board_bindings(timetable, directions, topology, platform_stop_ids):
-    """Bind source columns where route topology proves one physical platform.
+_DESTINATION_NOISE = {"str", "strada", "utca", "cfr", "cap", "linie", "linia"}
 
-    A destination-specific segment is intentionally narrower than its source
-    route.  It can therefore map equal display names on opposing kerbs without
-    guessing from coordinates or copying one column to both.  Legacy source
-    directions that genuinely have only one matching platform receive the same
-    safe binding; ambiguous columns remain unbound until their route segment is
-    audited rather than becoming wrong timetable data.
+
+def _words(text):
+    plain = unicodedata.normalize("NFKD", text)
+    plain = "".join(char for char in plain if not unicodedata.combining(char))
+    return {word for word in re.findall(r"[a-z0-9]+", plain.lower())
+            if word not in _DESTINATION_NOISE}
+
+
+def _destination_stop_indexes(direction, destination):
+    """Find the route calls whose published names best match a board headsign."""
+    wanted = _words(destination)
+    scored = []
+    for index, stop in enumerate(direction["stops"]):
+        names = " ".join(stop["name"].values())
+        shared = wanted & _words(names)
+        if shared:
+            scored.append((len(shared), sum(len(word) for word in shared), index))
+    if not scored:
+        return []
+    best = max(score[:2] for score in scored)
+    return [index for count, letters, index in scored if (count, letters) == best]
+
+
+def platform_side(start, end, platform):
+    """Return the platform's side of travel; Romania uses the right-hand side."""
+    latitude = math.radians((start[0] + end[0] + platform[0]) / 3)
+    scale = 111320 * math.cos(latitude)
+    dx, dy = (end[1] - start[1]) * scale, (end[0] - start[0]) * 111320
+    px, py = (platform[1] - start[1]) * scale, (platform[0] - start[0]) * 111320
+    cross = dx * py - dy * px
+    if abs(cross) < 0.001:
+        return "centre"
+    return "right" if cross < 0 else "left"
+
+
+def _distance_to_segment(point, start, end):
+    latitude = math.radians((point[0] + start[0] + end[0]) / 3)
+    scale = 111320 * math.cos(latitude)
+    ax, ay = (start[1] - point[1]) * scale, (start[0] - point[0]) * 111320
+    bx, by = (end[1] - point[1]) * scale, (end[0] - point[0]) * 111320
+    dx, dy = bx - ax, by - ay
+    length = dx * dx + dy * dy
+    if not length:
+        return math.hypot(ax, ay)
+    factor = max(0, min(1, -(ax * dx + ay * dy) / length))
+    return math.hypot(ax + factor * dx, ay + factor * dy)
+
+
+def _shape_anchor_indexes(direction):
+    """Map retained segment calls to their ordered positions on the full shape."""
+    shape = direction.get("shape")
+    if not shape:
+        return None
+    if "shape_source_stops" not in direction:
+        return anchor_vertices(direction["stops"], shape)
+    full = anchor_vertices(direction["shape_source_stops"], shape)
+    by_source = dict(zip(direction["shape_source_indexes"], full))
+    return [by_source.get(index) for index in direction["source_stop_indexes"]]
+
+
+def _platform_side_on_shape(direction, index, platform):
+    """Use the detailed, ordered road polyline rather than a stop-to-stop chord."""
+    anchors = _shape_anchor_indexes(direction)
+    shape = direction.get("shape")
+    if not anchors or anchors[index] is None or len(shape) < 2:
+        return None
+    anchor = anchors[index]
+    low, high = max(0, anchor - 16), min(len(shape) - 2, anchor + 16)
+    segment = min(range(low, high + 1),
+                  key=lambda item: _distance_to_segment(platform, shape[item], shape[item + 1]))
+    if _distance_to_segment(platform, shape[segment], shape[segment + 1]) > 45:
+        return None
+    side = platform_side(shape[segment], shape[segment + 1], platform)
+    return None if side == "centre" else side
+
+
+def _board_candidates(entry, directions, topology, platform_stop_ids):
+    records = {platform["id"]: platform for platform in topology.get("platforms", [])}
+    candidates = []
+    for direction in directions:
+        if direction["line"] != entry["line"]:
+            continue
+        source_direction = direction.get("source_direction", direction["direction"])
+        if source_direction != entry.get("direction", source_direction):
+            continue
+        if (direction.get("destination") is not None and
+                direction["destination"] != entry["destination"]):
+            continue
+        targets = _destination_stop_indexes(direction, entry["destination"])
+        for index, stop in enumerate(direction["stops"]):
+            if stop["name"]["ro"] != entry["stop_ro"]:
+                continue
+            platform = topology["call_platforms"][(direction["line"], direction["direction"], index)]
+            record = records.get(platform)
+            side = _platform_side_on_shape(direction, index, record["point"]) if record else None
+            if targets:
+                if direction.get("circular"):
+                    distance = min((target - index) % len(direction["stops"]) for target in targets)
+                else:
+                    forward = [target - index for target in targets if target >= index]
+                    distance = min(forward) if forward else None
+            else:
+                distance = None
+            candidates.append({"stop_id": platform_stop_ids[platform], "distance": distance,
+                               "side": side})
+    return candidates
+
+
+def official_board_bindings(timetable, directions, topology, platform_stop_ids):
+    """Bind each literal board to the correct kerb and circular-route pass.
+
+    Where the operator's source route is a loop, a destination label such as
+    ``Gara`` or ``Bartók`` selects the occurrence that reaches that destination
+    first.  The detailed direction geometry supplies a right-hand-side tie
+    breaker where the destination alone cannot choose a pass.  A tied or
+    source-route-missing case stays unbound for review.
     """
     bindings = {}
     for entry in timetable.get("timepoints", []):
         key = (entry["line"], entry.get("direction", "depart"),
                entry["stop_ro"], entry["destination"])
-        candidates = set()
-        for direction in directions:
-            if direction["line"] != entry["line"]:
-                continue
-            source_direction = direction.get("source_direction", direction["direction"])
-            if source_direction != entry.get("direction", source_direction):
-                continue
-            if (direction.get("destination") is not None and
-                    direction["destination"] != entry["destination"]):
-                continue
-            for index, stop in enumerate(direction["stops"]):
-                if stop["name"]["ro"] == entry["stop_ro"]:
-                    platform = topology["call_platforms"][(
-                        direction["line"], direction["direction"], index,
-                    )]
-                    candidates.add(platform_stop_ids[platform])
-        if len(candidates) == 1:
-            bindings[key] = candidates.pop()
+        candidates = _board_candidates(entry, directions, topology, platform_stop_ids)
+        platform_ids = {candidate["stop_id"] for candidate in candidates}
+        if len(platform_ids) == 1:
+            bindings[key] = platform_ids.pop()
+            continue
+        scored = [candidate for candidate in candidates if candidate["distance"] is not None]
+        if not scored:
+            right = {candidate["stop_id"] for candidate in candidates
+                     if candidate["side"] == "right"}
+            if len(right) == 1:
+                bindings[key] = right.pop()
+            continue
+        best_distance = min(candidate["distance"] for candidate in scored)
+        best = [candidate for candidate in scored if candidate["distance"] == best_distance]
+        best_ids = {candidate["stop_id"] for candidate in best}
+        if len(best_ids) != 1:
+            continue
+        bindings[key] = best_ids.pop()
     return bindings
 
 
