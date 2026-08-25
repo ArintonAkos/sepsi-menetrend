@@ -68,6 +68,7 @@ const hu = {
   bikeOptions: "SepsiBike javaslatok",
   planning: "Útvonal tervezése…",
   installApp: "Alkalmazás telepítése", installIos: "Megosztás → Főképernyőhöz adás",
+  installUnavailable: "A telepítés a kiadott HTTPS-es oldalon, támogatott böngészőben érhető el.",
   days: ["vasárnap", "hétfő", "kedd", "szerda", "csütörtök", "péntek", "szombat"],
 };
 
@@ -139,6 +140,7 @@ const ro: Strings = {
   bikeOptions: "Sugestii SepsiBike",
   planning: "Se planifică traseul…",
   installApp: "Instalează aplicația", installIos: "Partajează → Adaugă pe ecranul principal",
+  installUnavailable: "Instalarea este disponibilă pe site-ul HTTPS publicat, într-un browser compatibil.",
   days: ["duminică", "luni", "marți", "miercuri", "joi", "vineri", "sâmbătă"],
 };
 
@@ -210,6 +212,7 @@ const en: Strings = {
   bikeOptions: "SepsiBike suggestions",
   planning: "Planning route…",
   installApp: "Install app", installIos: "Share → Add to Home Screen",
+  installUnavailable: "Installation is available on the published HTTPS site in a supported browser.",
   days: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
 };
 

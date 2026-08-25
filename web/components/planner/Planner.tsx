@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useDeferredValue, useEffect, useMemo, useRef, useState,
+import { useCallback, useEffect, useMemo, useRef, useState,
          useSyncExternalStore } from "react";
 import { createPortal } from "react-dom";
 import dynamic from "next/dynamic";
@@ -124,9 +124,17 @@ export default function Planner({ network, places, reach, box, fares, bikeStatio
   const [time, setTime] = useState(() => formatHHMM(minutesOfDay(new Date())));
   const [timeCustomized, setTimeCustomized] = useState(false);
   const [aversion, setAversion] = useState(0.35);
-  /* Planning costs tens of milliseconds. Deferring it keeps the slider itself
-     responsive - the thumb moves now, the list catches up. */
-  const settledAversion = useDeferredValue(aversion);
+  const [settledAversion, setSettledAversion] = useState(aversion);
+  const [draggingAversion, setDraggingAversion] = useState(false);
+  /* `useDeferredValue` still delivers every intermediate thumb position. That
+     queues costly worker searches behind one another. While a pointer holds
+     the slider we only move the UI; the final value is committed on release.
+     Keyboard changes get the same small quiet period. */
+  useEffect(() => {
+    if (draggingAversion) return;
+    const timer = window.setTimeout(() => setSettledAversion(aversion), 180);
+    return () => window.clearTimeout(timer);
+  }, [aversion, draggingAversion]);
   const [visibleLines, setVisibleLines] = useState(() => new Set(network.lines.map((l) => l.id)));
   const [openPanel, setOpenPanel] = useState<"when" | "day" | "lines" | "settings" | null>(null);
   const [bikeAvailability, setBikeAvailability] = useState<BikeAvailability>(() => ({
@@ -854,6 +862,10 @@ export default function Planner({ network, places, reach, box, fares, bikeStatio
             <div className={styles.prefRow}><span>{t.faster}</span><span>{t.lessWalking}</span></div>
             <input type="range" min={0} max={100} value={Math.round(aversion * 100)}
                    aria-label={`${t.faster} / ${t.lessWalking}`}
+                   onPointerDown={() => setDraggingAversion(true)}
+                   onPointerUp={() => setDraggingAversion(false)}
+                   onPointerCancel={() => setDraggingAversion(false)}
+                   onBlur={() => setDraggingAversion(false)}
                    onChange={(e) => setAversion(Number(e.target.value) / 100)} />
           </div>
         </div>}
@@ -996,7 +1008,7 @@ export default function Planner({ network, places, reach, box, fares, bikeStatio
                 </div>
               )}
               <div className={styles.setScroll}>
-                <div className={`${styles.setRow} ${styles.switchRow}`}>
+                <div className={styles.setRow}>
                   <span>{t.language}</span>
                   <div className={styles.seg}>
                     <button aria-pressed={lang === "hu"} onClick={() => setLang("hu")}>Magyar</button>
@@ -1013,7 +1025,7 @@ export default function Planner({ network, places, reach, box, fares, bikeStatio
                     ))}
                   </div>
                 </div>
-                <div className={styles.setRow}>
+                <div className={`${styles.setRow} ${styles.switchRow}`}>
                   <span id="bike-options-label">{t.bikeOptions}</span>
                   <button type="button" role="switch" aria-checked={showBikeOptions}
                           aria-labelledby="bike-options-label" className={styles.optionSwitch}

@@ -1,0 +1,9 @@
+.offer { display: grid; gap: 6px; }
+.button { width: 100%; min-height: 38px; padding: 8px 11px; border: 1px solid var(--border);
+  border-radius: 10px; background: var(--sunk); color: var(--ink); font-size: 13px; font-weight: 700;
+  text-align: center; transition: background .16s ease, border-color .16s ease, transform .16s ease; }
+.button:not(:disabled):hover { background: var(--paper); border-color: var(--ink); }
+.button:not(:disabled):active { transform: scale(.985); }
+.button:disabled { cursor: not-allowed; color: var(--muted); opacity: .78; }
+.button:focus-visible { outline: 3px solid #2d5bd180; outline-offset: 2px; }
+.note { margin: 0; color: var(--muted); font-size: 11px; line-height: 1.42; }

@@ -14,6 +14,7 @@ import type { FareTable } from "@/lib/engine/fares";
 import type { BikeSnapshot, BikeStation } from "@/lib/sepsibike";
 
 const walkingMock = vi.hoisted(() => ({ pending: false }));
+const planningMock = vi.hoisted(() => ({ calls: 0 }));
 
 vi.mock("@/lib/walking", async (importOriginal) => {
   const actual = await importOriginal<typeof import("@/lib/walking")>();
@@ -21,6 +22,17 @@ vi.mock("@/lib/walking", async (importOriginal) => {
     ...actual,
     walkingContext: (...args: Parameters<typeof actual.walkingContext>) =>
       walkingMock.pending ? new Promise<never>(() => {}) : actual.walkingContext(...args),
+  };
+});
+
+vi.mock("@/lib/engine/plan", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("@/lib/engine/plan")>();
+  return {
+    ...actual,
+    planWithWalking: (...args: Parameters<typeof actual.planWithWalking>) => {
+      planningMock.calls += 1;
+      return actual.planWithWalking(...args);
+    },
   };
 });
 
@@ -89,6 +101,7 @@ describe("Planner", () => {
   beforeEach(() => {
     localStorage.clear();
     walkingMock.pending = false;
+    planningMock.calls = 0;
   });
 
   it("opens on the two fields and nothing else", async () => {
@@ -148,6 +161,27 @@ describe("Planner", () => {
     await chooseStop(user, "Hová", "Sepsi Aréna");
 
     expect(screen.getByRole("status")).toHaveTextContent("Útvonal tervezése…");
+  });
+
+  it("waits for a slider drag to finish before re-planning", async () => {
+    /* The expensive multimodal search should see only the final slider value.
+       Running it for every pixel queues stale worker jobs behind one another. */
+    localStorage.setItem("sepsibike-options", "off");
+    const user = await setup();
+    await startPlanning(user);
+    await waitFor(() => expect(planningMock.calls).toBeGreaterThan(0));
+    const callsBeforeDrag = planningMock.calls;
+    const slider = screen.getByRole("slider");
+
+    fireEvent.pointerDown(slider);
+    fireEvent.change(slider, { target: { value: "52" } });
+    fireEvent.change(slider, { target: { value: "68" } });
+    await new Promise((resolve) => setTimeout(resolve, 240));
+
+    expect(planningMock.calls).toBe(callsBeforeDrag);
+
+    fireEvent.pointerUp(slider);
+    await waitFor(() => expect(planningMock.calls).toBe(callsBeforeDrag + 1));
   });
 
   it("says so plainly when the deadline cannot be met", async () => {
@@ -234,6 +268,15 @@ describe("Planner", () => {
     const toggle = screen.getByRole("switch", { name: "SepsiBike javaslatok" });
     expect(toggle).toHaveAttribute("aria-labelledby", "bike-options-label");
     expect(screen.getByText("SepsiBike javaslatok")).toHaveAttribute("id", "bike-options-label");
+  });
+
+  it("keeps only the SepsiBike setting on one label-and-switch row", async () => {
+    const user = await setup();
+    await user.click(screen.getByLabelText("Beállítások"));
+
+    expect(screen.getByText("SepsiBike javaslatok").parentElement?.className).toContain("switchRow");
+    expect(screen.getByText("Nyelv").parentElement?.className).not.toContain("switchRow");
+    expect(screen.getByText("Téma").parentElement?.className).not.toContain("switchRow");
   });
 
   it("opens the time panel and offers the two questions worth asking", async () => {

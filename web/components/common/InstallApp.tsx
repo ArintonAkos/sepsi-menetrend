@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import type { Strings } from "@/lib/i18n";
+import styles from "./InstallApp.module.css";
 
 interface InstallPromptEvent extends Event {
   prompt(): Promise<void>;
@@ -44,10 +45,7 @@ function listenForInstall() {
 listenForInstall();
 
 /** Browser-native installation where possible, accurate instructions on iOS. */
-export default function InstallApp({ t, compact = false }: {
-  t: Strings;
-  compact?: boolean;
-}) {
+export default function InstallApp({ t }: { t: Strings }) {
   const [prompt, setPrompt] = useState<InstallPromptEvent | null>(() => savedPrompt);
   const [dismissed, setDismissed] = useState(() => {
     try { return localStorage.getItem(DISMISSED_KEY) === "1"; } catch { return false; }
@@ -63,16 +61,22 @@ export default function InstallApp({ t, compact = false }: {
   }, []);
 
   if (dismissed || isStandalone()) return null;
-  if (prompt) return (
-    <button type="button" onClick={async () => {
-      await prompt.prompt();
-      publish(null);
-      try { localStorage.setItem(DISMISSED_KEY, "1"); } catch {}
-      setDismissed(true);
-    }}>
-      {t.installApp}
-    </button>
+  const canPrompt = prompt !== null;
+  const note = isIos() ? t.installIos : t.installUnavailable;
+  return (
+    <div className={styles.offer}>
+      <button type="button" className={styles.button} disabled={!canPrompt}
+              aria-describedby={canPrompt ? undefined : "install-note"}
+              onClick={async () => {
+                if (!prompt) return;
+                await prompt.prompt();
+                publish(null);
+                try { localStorage.setItem(DISMISSED_KEY, "1"); } catch {}
+                setDismissed(true);
+              }}>
+        {t.installApp}
+      </button>
+      {!canPrompt && <p id="install-note" className={styles.note} role="status">{note}</p>}
+    </div>
   );
-  if (isIos()) return <p role="status">{compact ? t.installApp : t.installIos}</p>;
-  return null;
 }
