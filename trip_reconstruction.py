@@ -146,90 +146,7 @@ def _column_score(predicted, entry, service, tolerance):
     return len(pairs), gap, pairs, observed
 
 
-def _turnaround_dwell(direction, entries, turns, service):
-    """Infer each declared terminal wait from its two literal board columns.
-
-    The clock on the terminus-facing column is the arrival; the clock on the
-    outgoing-facing column is the departure.  Their ordinal pairing is the
-    operator's only published evidence for the layover, so do not replace it
-    with a road-duration guess.
-    """
-    key = direction.get("key", f"{direction['line']}-{direction['direction']}")
-    out = {}
-    for turn in turns.get(key, []):
-        columns = _compatible_columns(direction["line"], direction["direction"],
-                                      bool(direction.get("circular")), turn["stop_ro"],
-                                      entries, service)
-        arrival = next((column for column in columns
-                        if column["destination"] == turn["arrival_destination"]), None)
-        departure = next((column for column in columns
-                          if column["destination"] == turn["departure_destination"]), None)
-        if not arrival or not departure:
-            continue
-        arrivals = [_minute(event) for event in _events(arrival, service)]
-        departures = [_minute(event) for event in _events(departure, service)]
-        waits = [depart - arrive for arrive, depart in zip(arrivals, departures)
-                 if depart >= arrive + turn["minimum_dwell_minutes"]]
-        if waits:
-            waits.sort()
-            out[turn["index"]] = waits[len(waits) // 2]
-    return out
-
-
-def _event_offsets(offset_minutes, dwells):
-    """Return predicted arrival/departure offsets with terminal waits included."""
-    arrival, departure = [], []
-    elapsed_wait = 0
-    for index, offset in enumerate(offset_minutes):
-        arrive = offset + elapsed_wait
-        arrival.append(arrive)
-        wait = dwells.get(index, 0)
-        departure.append(arrive + wait)
-        elapsed_wait += wait
-    return arrival, departure
-
-
-def _blank_call(arrival, departure):
-    return {
-        "arrival": arrival,
-        "departure": departure,
-        "published_arrival": False,
-        "published_departure": False,
-    }
-
-
-def _set_anchor(call, role, observed):
-    """Set a literal source time once; conflicting source values are invalid."""
-    roles = (("arrival", "published_arrival"), ("departure", "published_departure")) \
-        if role == "both" else ((role, f"published_{role}"),)
-    for key, published in roles:
-        if call[published] and call[key] != observed:
-            raise ValueError(f"conflicting published {key}: {call[key]} != {observed}")
-        call[key] = observed
-        call[published] = True
-
-
-def _propagate_calls(calls):
-    """Carry a terminal departure forward without overwriting source anchors."""
-    for index in range(1, len(calls)):
-        previous, current = calls[index - 1], calls[index]
-        if current["arrival"] < previous["departure"]:
-            if current["published_arrival"]:
-                raise ValueError(
-                    f"published arrival {current['arrival']} precedes prior departure "
-                    f"{previous['departure']} at call {index}"
-                )
-            current["arrival"] = previous["departure"]
-        if current["departure"] < current["arrival"]:
-            if current["published_departure"]:
-                raise ValueError(
-                    f"published departure {current['departure']} precedes arrival "
-                    f"{current['arrival']} at call {index}"
-                )
-            current["departure"] = current["arrival"]
-
-
-def reconstruct_direction(direction, entries, offsets, turnarounds=None, tolerance=12):
+def reconstruct_direction(direction, entries, offsets, tolerance=12):
     """Reconstruct each service's ordered calls from literal board columns.
 
     The route page supplies `direction["stops"]` and duration offsets. The
@@ -237,8 +154,6 @@ def reconstruct_direction(direction, entries, offsets, turnarounds=None, toleran
     trips; every other column is aligned independently in chronological order.
     A call with no matched board event keeps its measured-duration prediction.
     """
-    turns = turnarounds or {}
-    direction_key = direction.get("key", f"{direction['line']}-{direction['direction']}")
     names = [stop["name"]["ro"] for stop in direction["stops"]]
     offset_minutes = [round(seconds / 60) for seconds in offsets]
     occurrences = {name: names.count(name) for name in set(names)}
@@ -246,21 +161,15 @@ def reconstruct_direction(direction, entries, offsets, turnarounds=None, toleran
     result, report = {"weekday": [], "weekend": []}, []
 
     for service in result:
-        dwells = _turnaround_dwell(direction, entries, turns, service)
-        arrival_offsets, departure_offsets = _event_offsets(offset_minutes, dwells)
         candidates = []
         for index, name in enumerate(names):
             if occurrences[name] != 1:
                 continue
             for entry in _compatible_columns(direction["line"], direction["direction"],
                                              circular, name, entries, service):
-                role = turnaround_role(turns, direction_key, index, entry["destination"]) or "both"
-                predicted_offset = (arrival_offsets[index] if role == "arrival"
-                                    else departure_offsets[index])
                 events = _events(entry, service)
                 if events:
                     candidates.extend(_minute(event) - offset_minutes[index]
-                                      - (predicted_offset - offset_minutes[index])
                                       for event in events)
         if not candidates:
             has_service = any(_events(entry, service) for entry in entries
@@ -274,8 +183,8 @@ def reconstruct_direction(direction, entries, offsets, turnarounds=None, toleran
 
         starts = _seed_starts(candidates)
         trips = [{"start": start,
-                  "calls": [_blank_call(start + arrival, start + departure)
-                            for arrival, departure in zip(arrival_offsets, departure_offsets)]}
+                  "calls": [start + offset for offset in offset_minutes],
+                  "published": [False] * len(names)}
                  for start in starts]
 
         for name in dict.fromkeys(names):
@@ -289,11 +198,7 @@ def reconstruct_direction(direction, entries, offsets, turnarounds=None, toleran
             for column in columns:
                 choices = []
                 for index in indices:
-                    role = turnaround_role(
-                        turns, direction_key, index, column["destination"],
-                    ) or "both"
-                    time_key = "arrival" if role == "arrival" else "departure"
-                    predicted = [trip["calls"][index][time_key] for trip in trips]
+                    predicted = [trip["calls"][index] for trip in trips]
                     score = _column_score(predicted, column, service, tolerance)
                     choices.append((score[0], score[1], index, score))
                 proposals.append((column, choices))
@@ -314,30 +219,31 @@ def reconstruct_direction(direction, entries, offsets, turnarounds=None, toleran
                                                        for choice in proposal[1]),
                             reverse=True)
             for _column, choices in ranked:
-                role_at = lambda index: turnaround_role(
-                    turns, direction_key, index, _column["destination"],
-                ) or "both"
-                available = [choice for choice in choices
-                             if (choice[2], role_at(choice[2])) not in claimed]
+                available = [choice for choice in choices if choice[2] not in claimed]
                 if not available:
                     continue
                 matches, gap, index, best = max(available,
                                                 key=lambda choice: (choice[0], -choice[1]))
                 if matches == 0:
                     continue
-                role = role_at(index)
-                claimed.add((index, role))
+                claimed.add(index)
                 for trip_index, event_index in best[2]:
                     observed = best[3][event_index]
-                    _set_anchor(trips[trip_index]["calls"][index], role, observed)
-        for trip in trips:
-            try:
-                _propagate_calls(trip["calls"])
-            except ValueError as error:
-                report.append({
-                    "line": direction["line"], "direction": direction["direction"],
-                    "service": service, "reason": str(error),
-                })
+                    before = trips[trip_index]["calls"][index - 1] if index else None
+                    after = (trips[trip_index]["calls"][index + 1]
+                             if index + 1 < len(names) else None)
+                    if ((before is not None and observed < before) or
+                            (after is not None and observed > after)):
+                        report.append({
+                            "line": direction["line"],
+                            "direction": direction["direction"],
+                            "service": service,
+                            "stop": name,
+                            "reason": "would break time order",
+                        })
+                        continue
+                    trips[trip_index]["calls"][index] = observed
+                    trips[trip_index]["published"][index] = True
         result[service] = trips
 
     return result, report
