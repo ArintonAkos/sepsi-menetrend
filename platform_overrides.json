@@ -11,14 +11,11 @@
       "point": [45.871250, 25.795250]
     },
     "6:depart-to-arena:11": {
-      "id": "manual-6-to-arena-sporturilor",
+      "id": "osm-1561627779",
       "name": {"ro": "Str. Sporturilor", "hu": "Sport utca"},
-      "point": [45.863920, 25.798600]
-    },
-    "6:depart-from-arena:3": {
-      "id": "manual-6-from-arena-sporturilor",
-      "name": {"ro": "Str. Sporturilor", "hu": "Sport utca"},
-      "point": [45.864280, 25.798600]
+      "point": [45.8639944, 25.7983349],
+      "osm_id": 1561627779,
+      "source": "osm"
     },
     "6:depart-to-arena:13": {
       "id": "manual-6-to-arena-lapte",
@@ -39,6 +36,22 @@
       "id": "manual-6-from-arena-lapte",
       "name": {"ro": "Fabrica de Lapte", "hu": "Tejgyár"},
       "point": [45.875100, 25.800450]
+    }
+  },
+  "source_aliases": {
+    "source-strsporturilor-45.864000-25.798300": {
+      "id": "osm-1561627779",
+      "name": {"ro": "Str. Sporturilor", "hu": "Sport utca"},
+      "point": [45.8639944, 25.7983349],
+      "osm_id": 1561627779,
+      "source": "osm"
+    },
+    "source-strsporturilor-45.864100-25.798600": {
+      "id": "osm-1248719235",
+      "name": {"ro": "Str. Sporturilor", "hu": "Sport utca"},
+      "point": [45.8641288, 25.7984957],
+      "osm_id": 1248719235,
+      "source": "osm"
     }
   }
 }

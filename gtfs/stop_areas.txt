@@ -99,5 +99,3 @@ city,P97
 city,P98
 city,P99
 city,P100
-city,P101
-city,P102

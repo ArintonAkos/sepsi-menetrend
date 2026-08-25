@@ -95,15 +95,25 @@ def nearest_named_osm(stop, nodes):
     }
 
 
-def fallback_for(stop):
+def fallback_for(stop, source_aliases=None):
     """One source coordinate is one platform until stronger evidence exists."""
     lat, lon = stop["stop_lat"], stop["stop_lon"]
-    return {
+    fallback = {
         "id": f"source-{normalise_name(stop['name']['ro'])}-{lat:.6f}-{lon:.6f}",
         "name": stop["name"],
         "point": [lat, lon],
         "source": "source-fallback",
         "osm_id": None,
+    }
+    alias = (source_aliases or {}).get(fallback["id"])
+    if alias is None:
+        return fallback
+    return {
+        "id": alias["id"],
+        "name": alias.get("name", fallback["name"]),
+        "point": alias["point"],
+        "source": alias.get("source", "override"),
+        "osm_id": alias.get("osm_id"),
     }
 
 
@@ -117,11 +127,12 @@ def resolve_platforms(directions, osm_nodes, overrides):
             platform = _platform_from_override(key, overrides)
             platform = platform or nearest_named_osm(stop, nodes)
             if platform is None:
-                platform = fallback_for(stop)
-                unmatched.append({
-                    "line": key[0], "direction": key[1], "index": key[2],
-                    "name": stop["name"]["ro"], "reason": "no matching OSM platform",
-                })
+                platform = fallback_for(stop, overrides.get("source_aliases"))
+                if platform["source"] == "source-fallback":
+                    unmatched.append({
+                        "line": key[0], "direction": key[1], "index": key[2],
+                        "name": stop["name"]["ro"], "reason": "no matching OSM platform",
+                    })
             record = by_id.setdefault(platform["id"], {**platform, "calls": []})
             record["calls"].append({"line": key[0], "direction": key[1], "index": key[2]})
             call_platforms[key] = record["id"]

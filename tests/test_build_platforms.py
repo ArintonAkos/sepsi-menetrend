@@ -104,6 +104,19 @@ class PlatformResolutionTests(unittest.TestCase):
             ["manual-6-to-arena-lapte", "manual-6-from-arena-lapte"],
         )
 
+    def test_sport_street_uses_its_two_real_osm_platforms(self):
+        directions = load_directions()
+        topology = resolve_platforms(directions, load_osm_platforms(), load_overrides())
+
+        sport_platforms = [
+            platform for platform in topology["platforms"]
+            if platform["name"]["ro"] == "Str. Sporturilor"
+        ]
+        self.assertEqual(
+            {platform["id"] for platform in sport_platforms},
+            {"osm-1561627779", "osm-1248719235"},
+        )
+
 
 if __name__ == "__main__":
     unittest.main()

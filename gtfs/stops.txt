@@ -1,17 +1,17 @@
 stop_id,stop_name,stop_lat,stop_lon,location_type,parent_station,platform_code,zone_id,stop_desc
 P1,Str. Ciucului 2,45.871250,25.795250,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
 P2,Fabrica de Lapte,45.875100,25.800450,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
-P3,Str. Sporturilor,45.864280,25.798600,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
-P4,Str. Ciucului 2,45.871850,25.795500,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
-P5,Fabrica de Lapte,45.875100,25.800950,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
-P6,Str. Sporturilor,45.863920,25.798600,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
-P7,Coșeni 1,45.815105,25.798805,0,,,city,OSM peron
-P8,Parcul Elisabeta,45.864116,25.786523,0,,,city,OSM peron
-P9,Biserica reformată,45.864289,25.792036,0,,,city,OSM peron
-P10,Str. Dealului,45.858908,25.776823,0,,,city,OSM peron
-P11,Institutul de proiectări,45.861661,25.782025,0,,,city,OSM peron
-P12,Spitalul Județean,45.863147,25.777734,0,,,city,OSM peron
-P13,Biserica reformată,45.863962,25.792818,0,,,city,OSM peron
+P3,Str. Ciucului 2,45.871850,25.795500,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
+P4,Fabrica de Lapte,45.875100,25.800950,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
+P5,Coșeni 1,45.815105,25.798805,0,,,city,OSM peron
+P6,Str. Sporturilor,45.864129,25.798496,0,,,city,OSM peron
+P7,Parcul Elisabeta,45.864116,25.786523,0,,,city,OSM peron
+P8,Biserica reformată,45.864289,25.792036,0,,,city,OSM peron
+P9,Str. Dealului,45.858908,25.776823,0,,,city,OSM peron
+P10,Institutul de proiectări,45.861661,25.782025,0,,,city,OSM peron
+P11,Spitalul Județean,45.863147,25.777734,0,,,city,OSM peron
+P12,Biserica reformată,45.863962,25.792818,0,,,city,OSM peron
+P13,Str. Sporturilor,45.863994,25.798335,0,,,city,OSM peron
 P14,Casa cu Arcade,45.863647,25.786621,0,,,city,OSM peron
 P15,Institutul de proiectări,45.861664,25.782234,0,,,city,OSM peron
 P16,Str. Dealului,45.859367,25.776024,0,,,city,OSM peron
@@ -93,11 +93,9 @@ P91,Str. Kós Károly,45.855900,25.779000,0,,,city,A vonaloldal koordinátája; 
 P92,Str. Lăcrămioarei 1,45.859800,25.799500,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
 P93,Str. Lăcrămioarei 1,45.860500,25.800100,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
 P94,Str. Lăcrămioarei 2,45.858000,25.798100,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
-P95,Str. Sporturilor,45.864000,25.798300,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
-P96,Str. Sporturilor,45.864100,25.798600,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
-P97,Str. Țigaretei 1,45.856600,25.782100,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
-P98,Str. Țigaretei 2,45.855100,25.785100,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
-P99,Str. Țigaretei 3,45.854300,25.790300,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
-P100,Str. Vânătorilor 1,45.864500,25.775600,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
-P101,Str. Vânătorilor 2,45.864800,25.772500,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
-P102,Șugaș Băi,45.896700,25.707100,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
+P95,Str. Țigaretei 1,45.856600,25.782100,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
+P96,Str. Țigaretei 2,45.855100,25.785100,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
+P97,Str. Țigaretei 3,45.854300,25.790300,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
+P98,Str. Vânătorilor 1,45.864500,25.775600,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
+P99,Str. Vânătorilor 2,45.864800,25.772500,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
+P100,Șugaș Băi,45.896700,25.707100,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.

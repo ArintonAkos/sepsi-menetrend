@@ -46,26 +46,6 @@
       ]
     },
     {
-      "id": "manual-6-from-arena-sporturilor",
-      "name": {
-        "ro": "Str. Sporturilor",
-        "hu": "Sport utca"
-      },
-      "point": [
-        45.86428,
-        25.7986
-      ],
-      "source": "override",
-      "osm_id": null,
-      "calls": [
-        {
-          "line": "6",
-          "direction": "depart-from-arena",
-          "index": 3
-        }
-      ]
-    },
-    {
       "id": "manual-6-to-arena-ciucului-2",
       "name": {
         "ro": "Str. Ciucului 2",
@@ -111,26 +91,6 @@
       ]
     },
     {
-      "id": "manual-6-to-arena-sporturilor",
-      "name": {
-        "ro": "Str. Sporturilor",
-        "hu": "Sport utca"
-      },
-      "point": [
-        45.86392,
-        25.7986
-      ],
-      "source": "override",
-      "osm_id": null,
-      "calls": [
-        {
-          "line": "6",
-          "direction": "depart-to-arena",
-          "index": 11
-        }
-      ]
-    },
-    {
       "id": "osm-11707991919",
       "name": {
         "ro": "Coșeni 1",
@@ -157,6 +117,71 @@
           "line": "3",
           "direction": "depart-from-coseni",
           "index": 2
+        }
+      ]
+    },
+    {
+      "id": "osm-1248719235",
+      "name": {
+        "ro": "Str. Sporturilor",
+        "hu": "Sport utca"
+      },
+      "point": [
+        45.8641288,
+        25.7984957
+      ],
+      "source": "osm",
+      "osm_id": 1248719235,
+      "calls": [
+        {
+          "line": "1",
+          "direction": "return",
+          "index": 1
+        },
+        {
+          "line": "1D",
+          "direction": "return",
+          "index": 4
+        },
+        {
+          "line": "2",
+          "direction": "depart",
+          "index": 12
+        },
+        {
+          "line": "2D",
+          "direction": "return",
+          "index": 4
+        },
+        {
+          "line": "3",
+          "direction": "depart-from-coseni",
+          "index": 9
+        },
+        {
+          "line": "4",
+          "direction": "depart-from-campul-frumos",
+          "index": 7
+        },
+        {
+          "line": "6",
+          "direction": "depart-from-arena",
+          "index": 3
+        },
+        {
+          "line": "7",
+          "direction": "depart",
+          "index": 12
+        },
+        {
+          "line": "7",
+          "direction": "return",
+          "index": 1
+        },
+        {
+          "line": "9",
+          "direction": "depart",
+          "index": 1
         }
       ]
     },
@@ -442,6 +467,61 @@
           "line": "10",
           "direction": "depart",
           "index": 1
+        }
+      ]
+    },
+    {
+      "id": "osm-1561627779",
+      "name": {
+        "ro": "Str. Sporturilor",
+        "hu": "Sport utca"
+      },
+      "point": [
+        45.8639944,
+        25.7983349
+      ],
+      "source": "osm",
+      "osm_id": 1561627779,
+      "calls": [
+        {
+          "line": "1",
+          "direction": "depart",
+          "index": 6
+        },
+        {
+          "line": "1D",
+          "direction": "depart",
+          "index": 6
+        },
+        {
+          "line": "2",
+          "direction": "depart",
+          "index": 10
+        },
+        {
+          "line": "2D",
+          "direction": "depart",
+          "index": 10
+        },
+        {
+          "line": "3",
+          "direction": "depart-to-coseni",
+          "index": 9
+        },
+        {
+          "line": "4",
+          "direction": "depart-to-campul-frumos",
+          "index": 10
+        },
+        {
+          "line": "6",
+          "direction": "depart-to-arena",
+          "index": 11
+        },
+        {
+          "line": "9",
+          "direction": "return",
+          "index": 8
         }
       ]
     },
@@ -2841,116 +2921,6 @@
       ]
     },
     {
-      "id": "source-strsporturilor-45.864000-25.798300",
-      "name": {
-        "ro": "Str. Sporturilor",
-        "hu": "Sport utca"
-      },
-      "point": [
-        45.864,
-        25.7983
-      ],
-      "source": "source-fallback",
-      "osm_id": null,
-      "calls": [
-        {
-          "line": "1",
-          "direction": "depart",
-          "index": 6
-        },
-        {
-          "line": "1D",
-          "direction": "depart",
-          "index": 6
-        },
-        {
-          "line": "2",
-          "direction": "depart",
-          "index": 10
-        },
-        {
-          "line": "2D",
-          "direction": "depart",
-          "index": 10
-        },
-        {
-          "line": "3",
-          "direction": "depart-to-coseni",
-          "index": 9
-        },
-        {
-          "line": "4",
-          "direction": "depart-to-campul-frumos",
-          "index": 10
-        },
-        {
-          "line": "9",
-          "direction": "return",
-          "index": 8
-        }
-      ]
-    },
-    {
-      "id": "source-strsporturilor-45.864100-25.798600",
-      "name": {
-        "ro": "Str. Sporturilor",
-        "hu": "Sport utca"
-      },
-      "point": [
-        45.8641,
-        25.7986
-      ],
-      "source": "source-fallback",
-      "osm_id": null,
-      "calls": [
-        {
-          "line": "1",
-          "direction": "return",
-          "index": 1
-        },
-        {
-          "line": "1D",
-          "direction": "return",
-          "index": 4
-        },
-        {
-          "line": "2",
-          "direction": "depart",
-          "index": 12
-        },
-        {
-          "line": "2D",
-          "direction": "return",
-          "index": 4
-        },
-        {
-          "line": "3",
-          "direction": "depart-from-coseni",
-          "index": 9
-        },
-        {
-          "line": "4",
-          "direction": "depart-from-campul-frumos",
-          "index": 7
-        },
-        {
-          "line": "7",
-          "direction": "depart",
-          "index": 12
-        },
-        {
-          "line": "7",
-          "direction": "return",
-          "index": 1
-        },
-        {
-          "line": "9",
-          "direction": "depart",
-          "index": 1
-        }
-      ]
-    },
-    {
       "id": "source-strtigaretei1-45.856600-25.782100",
       "name": {
         "ro": "Str. Țigaretei 1",
@@ -3154,13 +3124,6 @@
     {
       "line": "1",
       "direction": "depart",
-      "index": 6,
-      "name": "Str. Sporturilor",
-      "reason": "no matching OSM platform"
-    },
-    {
-      "line": "1",
-      "direction": "depart",
       "index": 7,
       "name": "Gara CFR",
       "reason": "no matching OSM platform"
@@ -3170,13 +3133,6 @@
       "direction": "return",
       "index": 0,
       "name": "Gara CFR",
-      "reason": "no matching OSM platform"
-    },
-    {
-      "line": "1",
-      "direction": "return",
-      "index": 1,
-      "name": "Str. Sporturilor",
       "reason": "no matching OSM platform"
     },
     {
@@ -3198,13 +3154,6 @@
       "direction": "depart",
       "index": 1,
       "name": "Spitalul Județean",
-      "reason": "no matching OSM platform"
-    },
-    {
-      "line": "1D",
-      "direction": "depart",
-      "index": 6,
-      "name": "Str. Sporturilor",
       "reason": "no matching OSM platform"
     },
     {
@@ -3266,13 +3215,6 @@
     {
       "line": "1D",
       "direction": "return",
-      "index": 4,
-      "name": "Str. Sporturilor",
-      "reason": "no matching OSM platform"
-    },
-    {
-      "line": "1D",
-      "direction": "return",
       "index": 10,
       "name": "Cap Linie Simeria",
       "reason": "no matching OSM platform"
@@ -3315,22 +3257,8 @@
     {
       "line": "2",
       "direction": "depart",
-      "index": 10,
-      "name": "Str. Sporturilor",
-      "reason": "no matching OSM platform"
-    },
-    {
-      "line": "2",
-      "direction": "depart",
       "index": 11,
       "name": "Gara CFR",
-      "reason": "no matching OSM platform"
-    },
-    {
-      "line": "2",
-      "direction": "depart",
-      "index": 12,
-      "name": "Str. Sporturilor",
       "reason": "no matching OSM platform"
     },
     {
@@ -3434,13 +3362,6 @@
     {
       "line": "2D",
       "direction": "depart",
-      "index": 10,
-      "name": "Str. Sporturilor",
-      "reason": "no matching OSM platform"
-    },
-    {
-      "line": "2D",
-      "direction": "depart",
       "index": 11,
       "name": "Gara CFR",
       "reason": "no matching OSM platform"
@@ -3492,13 +3413,6 @@
       "direction": "return",
       "index": 3,
       "name": "Gara CFR",
-      "reason": "no matching OSM platform"
-    },
-    {
-      "line": "2D",
-      "direction": "return",
-      "index": 4,
-      "name": "Str. Sporturilor",
       "reason": "no matching OSM platform"
     },
     {
@@ -3616,13 +3530,6 @@
     {
       "line": "3",
       "direction": "depart-to-coseni",
-      "index": 9,
-      "name": "Str. Sporturilor",
-      "reason": "no matching OSM platform"
-    },
-    {
-      "line": "3",
-      "direction": "depart-to-coseni",
       "index": 10,
       "name": "Gara CFR",
       "reason": "no matching OSM platform"
@@ -3721,13 +3628,6 @@
     {
       "line": "3",
       "direction": "depart-from-coseni",
-      "index": 9,
-      "name": "Str. Sporturilor",
-      "reason": "no matching OSM platform"
-    },
-    {
-      "line": "3",
-      "direction": "depart-from-coseni",
       "index": 12,
       "name": "Col. Mihai Viteazul",
       "reason": "no matching OSM platform"
@@ -3793,13 +3693,6 @@
       "direction": "depart-to-campul-frumos",
       "index": 6,
       "name": "Col. Mihai Viteazul",
-      "reason": "no matching OSM platform"
-    },
-    {
-      "line": "4",
-      "direction": "depart-to-campul-frumos",
-      "index": 10,
-      "name": "Str. Sporturilor",
       "reason": "no matching OSM platform"
     },
     {
@@ -3898,13 +3791,6 @@
       "direction": "depart-from-campul-frumos",
       "index": 6,
       "name": "Gara CFR",
-      "reason": "no matching OSM platform"
-    },
-    {
-      "line": "4",
-      "direction": "depart-from-campul-frumos",
-      "index": 7,
-      "name": "Str. Sporturilor",
       "reason": "no matching OSM platform"
     },
     {
@@ -4435,13 +4321,6 @@
     {
       "line": "7",
       "direction": "depart",
-      "index": 12,
-      "name": "Str. Sporturilor",
-      "reason": "no matching OSM platform"
-    },
-    {
-      "line": "7",
-      "direction": "depart",
       "index": 13,
       "name": "Gara CFR",
       "reason": "no matching OSM platform"
@@ -4451,13 +4330,6 @@
       "direction": "return",
       "index": 0,
       "name": "Gara CFR",
-      "reason": "no matching OSM platform"
-    },
-    {
-      "line": "7",
-      "direction": "return",
-      "index": 1,
-      "name": "Str. Sporturilor",
       "reason": "no matching OSM platform"
     },
     {
@@ -4514,13 +4386,6 @@
       "direction": "depart",
       "index": 0,
       "name": "Gara CFR",
-      "reason": "no matching OSM platform"
-    },
-    {
-      "line": "9",
-      "direction": "depart",
-      "index": 1,
-      "name": "Str. Sporturilor",
       "reason": "no matching OSM platform"
     },
     {
@@ -4598,13 +4463,6 @@
       "direction": "return",
       "index": 5,
       "name": "Str. Gábor Áron",
-      "reason": "no matching OSM platform"
-    },
-    {
-      "line": "9",
-      "direction": "return",
-      "index": 8,
-      "name": "Str. Sporturilor",
       "reason": "no matching OSM platform"
     },
     {

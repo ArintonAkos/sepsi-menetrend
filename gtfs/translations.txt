@@ -1,17 +1,17 @@
 table_name,field_name,language,record_id,translation
 stops,stop_name,hu,P1,Csíki utca 2
 stops,stop_name,hu,P2,Tejgyár
-stops,stop_name,hu,P3,Sport utca
-stops,stop_name,hu,P4,Csíki utca 2
-stops,stop_name,hu,P5,Tejgyár
+stops,stop_name,hu,P3,Csíki utca 2
+stops,stop_name,hu,P4,Tejgyár
+stops,stop_name,hu,P5,Szotyor 1
 stops,stop_name,hu,P6,Sport utca
-stops,stop_name,hu,P7,Szotyor 1
-stops,stop_name,hu,P8,Erzsébet park
-stops,stop_name,hu,P9,Református templom
-stops,stop_name,hu,P10,Domb utca
-stops,stop_name,hu,P11,Tervező Intézet
-stops,stop_name,hu,P12,Megyei Kórház
-stops,stop_name,hu,P13,Református templom
+stops,stop_name,hu,P7,Erzsébet park
+stops,stop_name,hu,P8,Református templom
+stops,stop_name,hu,P9,Domb utca
+stops,stop_name,hu,P10,Tervező Intézet
+stops,stop_name,hu,P11,Megyei Kórház
+stops,stop_name,hu,P12,Református templom
+stops,stop_name,hu,P13,Sport utca
 stops,stop_name,hu,P14,Lábas Ház
 stops,stop_name,hu,P15,Tervező Intézet
 stops,stop_name,hu,P16,Domb utca
@@ -93,14 +93,12 @@ stops,stop_name,hu,P91,Kós Károly utca
 stops,stop_name,hu,P92,Gyöngyvirág utca 1
 stops,stop_name,hu,P93,Gyöngyvirág utca 1
 stops,stop_name,hu,P94,Gyöngyvirág utca 2
-stops,stop_name,hu,P95,Sport utca
-stops,stop_name,hu,P96,Sport utca
-stops,stop_name,hu,P97,Cigaretta utca 1
-stops,stop_name,hu,P98,Cigaretta utca 2
-stops,stop_name,hu,P99,Cigaretta utca 3
-stops,stop_name,hu,P100,Vadász utca 1
-stops,stop_name,hu,P101,Vadász utca 2
-stops,stop_name,hu,P102,Sugásfürdő
+stops,stop_name,hu,P95,Cigaretta utca 1
+stops,stop_name,hu,P96,Cigaretta utca 2
+stops,stop_name,hu,P97,Cigaretta utca 3
+stops,stop_name,hu,P98,Vadász utca 1
+stops,stop_name,hu,P99,Vadász utca 2
+stops,stop_name,hu,P100,Sugásfürdő
 fare_products,fare_product_name,hu,city_24pay,50 percig érvényes jegy a 24pay alkalmazásban
 fare_products,fare_product_name,hu,city_machine,"Egy utazásra szóló jegy, jegyautomatából"
 fare_products,fare_product_name,hu,city_two,Kétutazásos jegy
