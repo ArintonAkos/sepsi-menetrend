@@ -17,6 +17,14 @@ describe("InstallApp", () => {
       .toBeInTheDocument();
   });
 
+  it("does not leave the installation section empty after a previous prompt", () => {
+    localStorage.setItem("sepsi.install.dismissed", "1");
+
+    render(<InstallApp t={STRINGS.hu} />);
+
+    expect(screen.getByRole("button", { name: "Alkalmazás telepítése" })).toBeInTheDocument();
+  });
+
   it("keeps the browser install offer when it arrives before settings is opened", () => {
     const prompt = vi.fn().mockResolvedValue(undefined);
     const event = new Event("beforeinstallprompt");

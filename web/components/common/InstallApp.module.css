@@ -7,3 +7,6 @@
 .button:disabled { cursor: not-allowed; color: var(--muted); opacity: .78; }
 .button:focus-visible { outline: 3px solid #2d5bd180; outline-offset: 2px; }
 .note { margin: 0; color: var(--muted); font-size: 11px; line-height: 1.42; }
+.installed { margin: 0; min-height: 38px; display: grid; place-items: center; padding: 8px 11px;
+  border: 1px solid var(--border); border-radius: 10px; background: var(--sunk); color: var(--muted);
+  font-size: 12px; font-weight: 600; text-align: center; }

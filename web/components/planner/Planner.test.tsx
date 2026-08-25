@@ -241,7 +241,7 @@ describe("Planner", () => {
     await waitFor(() => expect(screen.queryAllByRole("button", { name: /SepsiBike/ })).toHaveLength(0));
   });
 
-  it("lets the rider hide SepsiBike suggestions from settings", async () => {
+  it("lets the rider choose whether SepsiBike suggestions are enabled from settings", async () => {
     const user = userEvent.setup();
     render(<Planner network={network} places={places} reach={reach} box={box} fares={fares}
                     bikeStations={bikeStations} bikeSnapshotAt="2026-08-23T12:53:56.000Z" />);
@@ -253,30 +253,28 @@ describe("Planner", () => {
     expect((await screen.findAllByRole("button", { name: /SepsiBike/ })).length).toBeGreaterThan(0);
 
     await user.click(screen.getByLabelText("Beállítások"));
-    const toggle = screen.getByRole("switch", { name: "SepsiBike javaslatok" });
-    expect(toggle).toHaveAttribute("aria-checked", "true");
-    expect(screen.queryByRole("checkbox", { name: "SepsiBike javaslatok" })).not.toBeInTheDocument();
-    await user.click(toggle);
+    const enabled = screen.getByRole("button", { name: "Engedélyezve" });
+    expect(enabled).toHaveAttribute("aria-pressed", "true");
+    expect(screen.getByRole("button", { name: "Kikapcsolva" })).toHaveAttribute("aria-pressed", "false");
+    await user.click(screen.getByRole("button", { name: "Kikapcsolva" }));
 
     expect(screen.queryAllByRole("button", { name: /SepsiBike/ })).toHaveLength(0);
   });
 
-  it("gives the SepsiBike suggestion switch the same explicit settings label as other preferences", async () => {
+  it("gives the SepsiBike suggestion choice the same explicit settings label as other preferences", async () => {
     const user = await setup();
     await user.click(screen.getByLabelText("Beállítások"));
 
-    const toggle = screen.getByRole("switch", { name: "SepsiBike javaslatok" });
-    expect(toggle).toHaveAttribute("aria-labelledby", "bike-options-label");
+    expect(screen.getByRole("group", { name: "SepsiBike javaslatok" })).toHaveAttribute("aria-labelledby", "bike-options-label");
     expect(screen.getByText("SepsiBike javaslatok")).toHaveAttribute("id", "bike-options-label");
   });
 
-  it("keeps only the SepsiBike setting on one label-and-switch row", async () => {
+  it("uses the same vertically-stacked label and segmented choice layout for SepsiBike", async () => {
     const user = await setup();
     await user.click(screen.getByLabelText("Beállítások"));
 
-    expect(screen.getByText("SepsiBike javaslatok").parentElement?.className).toContain("switchRow");
-    expect(screen.getByText("Nyelv").parentElement?.className).not.toContain("switchRow");
-    expect(screen.getByText("Téma").parentElement?.className).not.toContain("switchRow");
+    expect(screen.getByText("SepsiBike javaslatok").parentElement?.className).not.toContain("switchRow");
+    expect(screen.getByText("SepsiBike javaslatok").parentElement?.className).toContain("setRow");
   });
 
   it("opens the time panel and offers the two questions worth asking", async () => {

@@ -66,9 +66,11 @@ const hu = {
   bikeReturnAfterHours: "22:00 után csak a leadás lehetséges.",
   bikeSupport: "Ügyfélszolgálat",
   bikeOptions: "SepsiBike javaslatok",
+  bikeOptionsOff: "Kikapcsolva", bikeOptionsOn: "Engedélyezve",
   planning: "Útvonal tervezése…",
   installApp: "Alkalmazás telepítése", installIos: "Megosztás → Főképernyőhöz adás",
   installUnavailable: "A telepítés a kiadott HTTPS-es oldalon, támogatott böngészőben érhető el.",
+  installInstalled: "Az alkalmazás már telepítve van ezen az eszközön.",
   days: ["vasárnap", "hétfő", "kedd", "szerda", "csütörtök", "péntek", "szombat"],
 };
 
@@ -138,9 +140,11 @@ const ro: Strings = {
   bikeReturnAfterHours: "După 22:00 este posibilă doar returnarea.",
   bikeSupport: "Serviciu clienți",
   bikeOptions: "Sugestii SepsiBike",
+  bikeOptionsOff: "Dezactivate", bikeOptionsOn: "Activate",
   planning: "Se planifică traseul…",
   installApp: "Instalează aplicația", installIos: "Partajează → Adaugă pe ecranul principal",
   installUnavailable: "Instalarea este disponibilă pe site-ul HTTPS publicat, într-un browser compatibil.",
+  installInstalled: "Aplicația este deja instalată pe acest dispozitiv.",
   days: ["duminică", "luni", "marți", "miercuri", "joi", "vineri", "sâmbătă"],
 };
 
@@ -210,9 +214,11 @@ const en: Strings = {
   bikeReturnAfterHours: "After 22:00, only returns are possible.",
   bikeSupport: "Customer service",
   bikeOptions: "SepsiBike suggestions",
+  bikeOptionsOff: "Off", bikeOptionsOn: "Enabled",
   planning: "Planning route…",
   installApp: "Install app", installIos: "Share → Add to Home Screen",
   installUnavailable: "Installation is available on the published HTTPS site in a supported browser.",
+  installInstalled: "The app is already installed on this device.",
   days: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
 };
 

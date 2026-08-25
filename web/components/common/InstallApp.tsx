@@ -8,8 +8,6 @@ interface InstallPromptEvent extends Event {
   prompt(): Promise<void>;
 }
 
-const DISMISSED_KEY = "sepsi.install.dismissed";
-
 const isStandalone = () =>
   typeof window !== "undefined"
   && (window.matchMedia("(display-mode: standalone)").matches
@@ -47,9 +45,6 @@ listenForInstall();
 /** Browser-native installation where possible, accurate instructions on iOS. */
 export default function InstallApp({ t }: { t: Strings }) {
   const [prompt, setPrompt] = useState<InstallPromptEvent | null>(() => savedPrompt);
-  const [dismissed, setDismissed] = useState(() => {
-    try { return localStorage.getItem(DISMISSED_KEY) === "1"; } catch { return false; }
-  });
 
   useEffect(() => {
     listenForInstall();
@@ -60,7 +55,9 @@ export default function InstallApp({ t }: { t: Strings }) {
     };
   }, []);
 
-  if (dismissed || isStandalone()) return null;
+  if (isStandalone()) {
+    return <p className={styles.installed} role="status">{t.installInstalled}</p>;
+  }
   const canPrompt = prompt !== null;
   const note = isIos() ? t.installIos : t.installUnavailable;
   return (
@@ -71,8 +68,6 @@ export default function InstallApp({ t }: { t: Strings }) {
                 if (!prompt) return;
                 await prompt.prompt();
                 publish(null);
-                try { localStorage.setItem(DISMISSED_KEY, "1"); } catch {}
-                setDismissed(true);
               }}>
         {t.installApp}
       </button>

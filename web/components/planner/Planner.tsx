@@ -1025,13 +1025,14 @@ export default function Planner({ network, places, reach, box, fares, bikeStatio
                     ))}
                   </div>
                 </div>
-                <div className={`${styles.setRow} ${styles.switchRow}`}>
+                <div className={styles.setRow}>
                   <span id="bike-options-label">{t.bikeOptions}</span>
-                  <button type="button" role="switch" aria-checked={showBikeOptions}
-                          aria-labelledby="bike-options-label" className={styles.optionSwitch}
-                          onClick={() => setShowBikeOptions((value) => !value)}>
-                    <i aria-hidden />
-                  </button>
+                  <div className={styles.seg} role="group" aria-labelledby="bike-options-label">
+                    <button aria-pressed={!showBikeOptions}
+                            onClick={() => setShowBikeOptions(false)}>{t.bikeOptionsOff}</button>
+                    <button aria-pressed={showBikeOptions}
+                            onClick={() => setShowBikeOptions(true)}>{t.bikeOptionsOn}</button>
+                  </div>
                 </div>
                 <div className={styles.setRow}>
                   <span>{t.installApp}</span>

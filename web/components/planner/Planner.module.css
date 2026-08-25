@@ -210,21 +210,12 @@
 .planning i { width: 25px; height: 25px; border: 3px solid var(--hair);
   border-top-color: var(--ink); border-radius: 50%; animation: planSpin .75s linear infinite; }
 @keyframes planSpin { to { transform: rotate(360deg); } }
-.switchRow { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
-.seg { display: flex; background: var(--sunk); border-radius: 11px; padding: 3px; gap: 2px; }
-.seg button { flex: 1; font-size: 13px; font-weight: 600; padding: 7px 4px;
-  border-radius: 9px; color: var(--muted); }
+.seg { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); align-items: stretch;
+  min-height: 42px; background: var(--sunk); border-radius: 11px; padding: 3px; gap: 2px; }
+.seg button { min-width: 0; min-height: 36px; display: grid; place-items: center; font-size: 13px; line-height: 1;
+  font-weight: 600; padding: 7px 4px; border-radius: 9px; color: var(--muted); }
 .seg button[aria-pressed="true"] { background: var(--paper); color: var(--ink);
   box-shadow: var(--shadow); }
-.optionSwitch { display: flex; align-items: center; justify-content: center;
-  padding: 0; background: transparent; color: var(--ink); }
-.optionSwitch i { position: relative; display: block; width: 36px; height: 21px;
-  border-radius: 99px; background: var(--hair); transition: background .16s ease; flex: 0 0 auto; }
-.optionSwitch i::after { content: ""; position: absolute; width: 17px; height: 17px; left: 2px; top: 2px;
-  border-radius: 50%; background: var(--paper); box-shadow: 0 1px 3px #0003; transition: transform .16s ease; }
-.optionSwitch[aria-checked="true"] i { background: #2d5bd1; }
-.optionSwitch[aria-checked="true"] i::after { transform: translateX(15px); }
-.optionSwitch:focus-visible { outline: 3px solid #2d5bd180; outline-offset: 2px; }
 .setNote { margin: 0; font-size: 11px; color: var(--muted); }
 .legalLinks {
   display: flex;
@@ -358,7 +349,9 @@
     display: flex; flex-direction: column; gap: 14px;
     padding: 4px 0 16px;
   }
-  .modes button, .popActions button, .seg button, .optionSwitch { padding: 13px 14px; font-size: 15px; }
+  .modes button, .popActions button, .seg button { padding: 13px 14px; font-size: 15px; }
+  .seg { min-height: 52px; }
+  .seg button { min-height: 46px; }
   .popTime { padding: 13px 14px; }
   .popTime input { font-size: 17px; }
   .lineToggle { padding: 5px; }
