@@ -565,6 +565,10 @@ export default function Planner({ network, places, reach, box, fares, bikeStatio
     multimodalKey, showBikeOptions, bikeAvailability]);
   const journeys = planned?.key === multimodalKey ? planned.journeys : [];
   const options = useMemo(() => mergePlannerOptions(journeys, mode), [journeys, mode]);
+  /* A result belongs to one exact search request.  Until both the OSM walking
+     paths and the subsequent timetable search have caught up, showing either
+     the old answer or the whole network looks like an answer, but isn't one. */
+  const routeLoading = planning && (walking?.key !== walkingKey || planned?.key !== multimodalKey);
   useEffect(() => { globalThis.localStorage?.setItem("sepsibike-options", showBikeOptions ? "on" : "off"); }, [showBikeOptions]);
 
   const planKey = [from?.name, to?.name, time, date.toDateString(), mode,
@@ -856,9 +860,16 @@ export default function Planner({ network, places, reach, box, fares, bikeStatio
 
         {planning && <div className={styles.scroll}>
           {detail === null ? (
-            <JourneyList options={options} lines={lineMap} t={t} chosen={chosen}
-                         fares={fares} date={date} stops={stops} patterns={patterns} dark={dark}
-                         onHover={setChosen} onOpen={setDetail} />
+            routeLoading ? (
+              <div className={styles.planning} role="status" aria-live="polite">
+                <i aria-hidden />
+                <span>{t.planning}</span>
+              </div>
+            ) : (
+              <JourneyList options={options} lines={lineMap} t={t} chosen={chosen}
+                           fares={fares} date={date} stops={stops} patterns={patterns} dark={dark}
+                           onHover={setChosen} onOpen={setDetail} />
+            )
           ) : (
             picked ? (
               <JourneyDetail journey={picked.journey} lines={lineMap} patterns={patterns}
@@ -906,6 +917,7 @@ export default function Planner({ network, places, reach, box, fares, bikeStatio
                     onBikeStationPick={(stationId, anchor, dismiss) =>
                       setBikeBoard(stationId ? { stationId, anchor, dismiss } : null)}
                     journey={shown} visibleLines={visibleLines} dark={dark}
+                    routeLoading={routeLoading}
                     picking={picking !== null} onCentreChange={onCentreChange} />
 
         {picking && (
@@ -984,7 +996,7 @@ export default function Planner({ network, places, reach, box, fares, bikeStatio
                 </div>
               )}
               <div className={styles.setScroll}>
-                <div className={styles.setRow}>
+                <div className={`${styles.setRow} ${styles.switchRow}`}>
                   <span>{t.language}</span>
                   <div className={styles.seg}>
                     <button aria-pressed={lang === "hu"} onClick={() => setLang("hu")}>Magyar</button>
@@ -1001,12 +1013,16 @@ export default function Planner({ network, places, reach, box, fares, bikeStatio
                     ))}
                   </div>
                 </div>
-                <button type="button" role="switch" aria-checked={showBikeOptions}
-                        className={styles.optionSwitch}
-                        onClick={() => setShowBikeOptions((value) => !value)}>
-                  <span>{t.bikeOptions}</span><i aria-hidden />
-                </button>
                 <div className={styles.setRow}>
+                  <span id="bike-options-label">{t.bikeOptions}</span>
+                  <button type="button" role="switch" aria-checked={showBikeOptions}
+                          aria-labelledby="bike-options-label" className={styles.optionSwitch}
+                          onClick={() => setShowBikeOptions((value) => !value)}>
+                    <i aria-hidden />
+                  </button>
+                </div>
+                <div className={styles.setRow}>
+                  <span>{t.installApp}</span>
                   <InstallApp t={t} />
                 </div>
                 {recent.length > 0 && (

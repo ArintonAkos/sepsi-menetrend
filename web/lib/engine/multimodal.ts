@@ -251,7 +251,11 @@ export async function planMultimodal(
             legs: [...label.legs, footLeg(null, stop.id, route)], walkMinutes: label.walkMinutes + route.minutes,
             rides: label.rides, rentals: label.rentals });
         }
-        if (label.rentals < MAX_RENTALS && isBikeStationUsable(station, "origin") && canStartBikeRide(label.minute)) {
+        /* Returning and immediately taking another bike at the same moment is
+         * neither a transport-mode change nor a useful instruction. A second
+         * rental remains possible after an actual walk or bus connection. */
+        if (label.rentals < MAX_RENTALS && label.legs.at(-1)?.kind !== "bike"
+            && isBikeStationUsable(station, "origin") && canStartBikeRide(label.minute)) {
           const finishes = usableDestinations.filter((finish) => finish.id !== station.id);
           const bikeRoutes = await ridesFrom(pointOf(station), finishes.map(pointOf));
           for (const [finishIndex, finish] of finishes.entries()) {

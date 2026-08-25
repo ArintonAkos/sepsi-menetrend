@@ -118,6 +118,36 @@ describe("multimodal planner", () => {
     expect(journey?.legs[0]).toMatchObject({ kind: "walk", metres: 70, minutes: 2, toStopId: "B" });
   });
 
+  it("never docks and immediately rents another bike without changing mode", async () => {
+    const mid: LngLat = [25.7200, 45.8000];
+    const chainedStations: BikeStation[] = [
+      ...stations(),
+      { id: "03", name: "03. Átmeneti dokk", address: "M", lat: mid[1], lng: mid[0],
+        availableBikes: 2, freeDocks: 2, totalCapacity: 4, status: "Online" },
+    ];
+    const chainedRoutes = {
+      walk: async (from: LngLat, to: LngLat) => {
+        if (key(from, to) === key(origin, dockA)) return foot(from, to, 20, 1);
+        if (key(from, to) === key(dockB, destination)) return foot(from, to, 20, 1);
+        return null;
+      },
+      ride: async (from: LngLat, to: LngLat) => {
+        const journey = `${from[0]}>${to[0]}`;
+        if (journey === `${dockA[0]}>${mid[0]}` || journey === `${mid[0]}>${dockB[0]}`)
+          return { ...foot(from, to, 500, 2), seconds: 120, ascentMetres: 0, descentMetres: 0 };
+        if (journey === `${dockA[0]}>${dockB[0]}`)
+          return { ...foot(from, to, 1000, 4), seconds: 240, ascentMetres: 0, descentMetres: 0 };
+        return null;
+      },
+    };
+    const found = await planMultimodal(prepare(network()), request(8 * 60, new Set(["no-bus"])), walking, {
+      availability: availability(chainedStations), routes: chainedRoutes,
+    });
+
+    expect(found.every((journey) => journey.legs.every((leg, index) =>
+      index === 0 || leg.kind !== "bike" || journey.legs[index - 1].kind !== "bike"))).toBe(true);
+  });
+
   it("does not invent a bike leg without a bike at the pickup dock", async () => {
     const found = await planMultimodal(prepare(network()), request(), walking,
       deps(stations({ availableBikes: 0 })));

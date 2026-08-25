@@ -13,6 +13,17 @@ import type { Place } from "@/lib/engine/search";
 import type { FareTable } from "@/lib/engine/fares";
 import type { BikeSnapshot, BikeStation } from "@/lib/sepsibike";
 
+const walkingMock = vi.hoisted(() => ({ pending: false }));
+
+vi.mock("@/lib/walking", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("@/lib/walking")>();
+  return {
+    ...actual,
+    walkingContext: (...args: Parameters<typeof actual.walkingContext>) =>
+      walkingMock.pending ? new Promise<never>(() => {}) : actual.walkingContext(...args),
+  };
+});
+
 const load = <T,>(name: string): T =>
   JSON.parse(readFileSync(resolve(import.meta.dirname, "../../public/data", name), "utf8"));
 
@@ -77,6 +88,7 @@ async function startPlanning(user: ReturnType<typeof userEvent.setup>,
 describe("Planner", () => {
   beforeEach(() => {
     localStorage.clear();
+    walkingMock.pending = false;
   });
 
   it("opens on the two fields and nothing else", async () => {
@@ -127,6 +139,15 @@ describe("Planner", () => {
     const durations = await screen.findAllByText("perc");
     expect(durations.length).toBeGreaterThan(0);
     expect(screen.queryByText(/Nincs járat/)).not.toBeInTheDocument();
+  });
+
+  it("shows an explicit planning state instead of stale network results", async () => {
+    const user = await setup();
+    walkingMock.pending = true;
+    await chooseStop(user, "Honnan", "Vasútállomás");
+    await chooseStop(user, "Hová", "Sepsi Aréna");
+
+    expect(screen.getByRole("status")).toHaveTextContent("Útvonal tervezése…");
   });
 
   it("says so plainly when the deadline cannot be met", async () => {
@@ -204,6 +225,15 @@ describe("Planner", () => {
     await user.click(toggle);
 
     expect(screen.queryAllByRole("button", { name: /SepsiBike/ })).toHaveLength(0);
+  });
+
+  it("gives the SepsiBike suggestion switch the same explicit settings label as other preferences", async () => {
+    const user = await setup();
+    await user.click(screen.getByLabelText("Beállítások"));
+
+    const toggle = screen.getByRole("switch", { name: "SepsiBike javaslatok" });
+    expect(toggle).toHaveAttribute("aria-labelledby", "bike-options-label");
+    expect(screen.getByText("SepsiBike javaslatok")).toHaveAttribute("id", "bike-options-label");
   });
 
   it("opens the time panel and offers the two questions worth asking", async () => {

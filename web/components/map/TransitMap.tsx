@@ -49,6 +49,9 @@ export interface TransitMapProps {
   patterns: Map<string, Pattern>;
   lines: Map<string, Line>;
   journey: Journey | null;
+  /** The planner is resolving a new route.  The old full network must not look
+   *  like the answer while the result is still pending. */
+  routeLoading?: boolean;
   visibleLines: Set<string>;
   dark: boolean;
   picking: boolean;
@@ -74,7 +77,7 @@ function hasWebGL(): boolean {
 }
 
 export default function TransitMap({
-  network, patterns, lines, journey, visibleLines, dark, picking, lang, area, covered,
+  network, patterns, lines, journey, routeLoading = false, visibleLines, dark, picking, lang, area, covered,
   resizeKey, onCentreChange, onStopPick, bikeStations = [], onBikeStationPick,
 }: TransitMapProps) {
   const host = useRef<HTMLDivElement>(null);
@@ -125,7 +128,7 @@ export default function TransitMap({
     m.on("load", () => {
       ready.current = true;
       addLayers(m, dark, network, lines);
-      applyNetFilter(m, Boolean(journey), visibleLines);
+      applyNetFilter(m, Boolean(journey || routeLoading), visibleLines);
       paint(m, journey, patterns, lines, dark);
       paintBikes(m, bikeStations);
       if (journey) fit(m, journey, patterns, picking, covered);
@@ -148,7 +151,7 @@ export default function TransitMap({
     m.once("styledata", () => {
       ready.current = true;
       addLayers(m, dark, network, lines);
-      applyNetFilter(m, Boolean(journey), visibleLines);
+      applyNetFilter(m, Boolean(journey || routeLoading), visibleLines);
       paint(m, journey, patterns, lines, dark);
       paintBikes(m, bikeStations);
       if (journey) fit(m, journey, patterns, picking, covered);
@@ -175,8 +178,8 @@ export default function TransitMap({
   useEffect(() => {
     const m = map.current;
     if (!m || !ready.current || !m.getLayer("net-line")) return;
-    applyNetFilter(m, Boolean(journey), visibleLines);
-  }, [visibleLines, journey]);
+    applyNetFilter(m, Boolean(journey || routeLoading), visibleLines);
+  }, [visibleLines, journey, routeLoading]);
 
   useEffect(() => { map.current?.resize(); }, [picking, resizeKey]);
 

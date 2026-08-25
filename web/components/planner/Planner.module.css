@@ -205,14 +205,19 @@
 .setRow { display: grid; gap: 6px; }
 .setRow > span { font-size: 11px; font-weight: 700; letter-spacing: .06em;
   text-transform: uppercase; color: var(--muted); }
+.planning { min-height: 156px; display: grid; place-content: center; justify-items: center;
+  gap: 12px; color: var(--muted); font-size: 13px; font-weight: 700; }
+.planning i { width: 25px; height: 25px; border: 3px solid var(--hair);
+  border-top-color: var(--ink); border-radius: 50%; animation: planSpin .75s linear infinite; }
+@keyframes planSpin { to { transform: rotate(360deg); } }
+.switchRow { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
 .seg { display: flex; background: var(--sunk); border-radius: 11px; padding: 3px; gap: 2px; }
 .seg button { flex: 1; font-size: 13px; font-weight: 600; padding: 7px 4px;
   border-radius: 9px; color: var(--muted); }
 .seg button[aria-pressed="true"] { background: var(--paper); color: var(--ink);
   box-shadow: var(--shadow); }
-.optionSwitch { width: 100%; display: flex; align-items: center; justify-content: space-between;
-  gap: 12px; padding: 10px 11px; border-radius: 11px; background: var(--sunk);
-  color: var(--ink); font: inherit; font-size: 13px; font-weight: 700; text-align: left; }
+.optionSwitch { display: flex; align-items: center; justify-content: center;
+  padding: 0; background: transparent; color: var(--ink); }
 .optionSwitch i { position: relative; display: block; width: 36px; height: 21px;
   border-radius: 99px; background: var(--hair); transition: background .16s ease; flex: 0 0 auto; }
 .optionSwitch i::after { content: ""; position: absolute; width: 17px; height: 17px; left: 2px; top: 2px;

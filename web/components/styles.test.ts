@@ -213,7 +213,11 @@ describe("the SepsiBike map layer", () => {
   it("uses shared GeoJSON sources for docks and the selected bike route", () => {
     const map = css("map/TransitMap.tsx");
     expect(map).toContain('"bike-stations"');
-    expect(map).toContain('"bike-route"');
+    /* Bike and bus geometry deliberately share the `trip` source: a selected
+       * multimodal journey is painted atomically, so an old bike layer cannot
+       * survive after selecting a bus result. */
+    expect(map).toContain('"trip"');
+    expect(map).toContain('{ kind: "bike" }');
     expect(map).not.toContain("bikePopup");
   });
 
