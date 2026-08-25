@@ -168,6 +168,15 @@ describe("what gets deployed", () => {
     expect(netlify).toMatch(/publish = "out"/);
   });
 
+  it("builds the static export when Netlify resolves configuration from web/", () => {
+    /* Netlify resolves its config after applying the repository config's base
+       directory, so this is the file the production log reports using. */
+    const netlify = readFileSync(
+      resolve(import.meta.dirname, "../netlify.toml"), "utf8");
+    expect(netlify).toMatch(/\[build\][\s\S]*?command = "npm run build"/);
+    expect(netlify).toMatch(/\[build\][\s\S]*?publish = "out"/);
+  });
+
   it("puts a favicon on the page at all", () => {
     /* Naming `icons` in metadata overrides the app/icon file convention, so an
        icon file sitting in app/ next to an icons block is simply ignored - and
