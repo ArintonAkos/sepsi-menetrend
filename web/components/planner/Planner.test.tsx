@@ -277,6 +277,15 @@ describe("Planner", () => {
     expect(screen.getByText("SepsiBike javaslatok").parentElement?.className).toContain("setRow");
   });
 
+  it("keeps the installation action out of the settings sheet", async () => {
+    const user = await setup();
+    await user.click(screen.getByLabelText("Beállítások"));
+
+    const settings = screen.getByText("Nyelv").closest("div[class*='settings']") as HTMLElement | null;
+    expect(settings).not.toBeNull();
+    expect(within(settings!).queryByText("Alkalmazás telepítése")).not.toBeInTheDocument();
+  });
+
   it("opens the time panel and offers the two questions worth asking", async () => {
     const user = await setup();
     await startPlanning(user);

@@ -979,6 +979,7 @@ export default function Planner({ network, places, reach, box, fares, bikeStatio
               <path d="M3.5 9.5h17M8 3v3M16 3v3M8 13h3M8 17h3M14 13h2M14 17h2" />
             </svg>
           </button>
+          <InstallApp t={t} />
           {planning && (
             <button className={styles.round} aria-label={t.share} onClick={share}>
               <ShareIcon />
@@ -1033,10 +1034,6 @@ export default function Planner({ network, places, reach, box, fares, bikeStatio
                     <button aria-pressed={showBikeOptions}
                             onClick={() => setShowBikeOptions(true)}>{t.bikeOptionsOn}</button>
                   </div>
-                </div>
-                <div className={styles.setRow}>
-                  <span>{t.installApp}</span>
-                  <InstallApp t={t} />
                 </div>
                 {recent.length > 0 && (
                   <div className={styles.setRow}>

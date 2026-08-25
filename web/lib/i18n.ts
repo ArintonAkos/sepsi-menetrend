@@ -71,6 +71,12 @@ const hu = {
   installApp: "Alkalmazás telepítése", installIos: "Megosztás → Főképernyőhöz adás",
   installUnavailable: "A telepítés a kiadott HTTPS-es oldalon, támogatott böngészőben érhető el.",
   installInstalled: "Az alkalmazás már telepítve van ezen az eszközön.",
+  installDescription: "Gyors indítás és offline menetrend közvetlenül a telefonodról.",
+  installNow: "Telepítés",
+  installAndroid: "Androidon a böngésző menüjében válaszd az „Alkalmazás telepítése” lehetőséget.",
+  installIosStepOne: "Nyomd meg a Megosztás gombot.",
+  installIosStepTwo: "Válaszd a „Főképernyőhöz adás” lehetőséget.",
+  installIosStepThree: "Erősítsd meg a „Hozzáadás” gombbal.",
   days: ["vasárnap", "hétfő", "kedd", "szerda", "csütörtök", "péntek", "szombat"],
 };
 
@@ -145,6 +151,12 @@ const ro: Strings = {
   installApp: "Instalează aplicația", installIos: "Partajează → Adaugă pe ecranul principal",
   installUnavailable: "Instalarea este disponibilă pe site-ul HTTPS publicat, într-un browser compatibil.",
   installInstalled: "Aplicația este deja instalată pe acest dispozitiv.",
+  installDescription: "Pornire rapidă și orar disponibil offline, direct pe telefon.",
+  installNow: "Instalează",
+  installAndroid: "Pe Android, alege „Instalează aplicația” din meniul browserului.",
+  installIosStepOne: "Apasă butonul Partajează.",
+  installIosStepTwo: "Alege „Adaugă pe ecranul principal”.",
+  installIosStepThree: "Confirmă cu butonul „Adaugă”.",
   days: ["duminică", "luni", "marți", "miercuri", "joi", "vineri", "sâmbătă"],
 };
 
@@ -219,6 +231,12 @@ const en: Strings = {
   installApp: "Install app", installIos: "Share → Add to Home Screen",
   installUnavailable: "Installation is available on the published HTTPS site in a supported browser.",
   installInstalled: "The app is already installed on this device.",
+  installDescription: "Launch quickly and keep the timetable available offline on your phone.",
+  installNow: "Install",
+  installAndroid: "On Android, choose “Install app” from the browser menu.",
+  installIosStepOne: "Tap the Share button.",
+  installIosStepTwo: "Choose “Add to Home Screen”.",
+  installIosStepThree: "Confirm with “Add”.",
   days: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
 };
 
