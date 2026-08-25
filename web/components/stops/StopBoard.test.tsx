@@ -58,6 +58,19 @@ describe("a stop's board", () => {
     expect(sourceBoard.getByText("→ Câmpul Frumos / Szépmező")).toBeInTheDocument();
   });
 
+  it("keeps equal-name circular platforms on their own official destination", () => {
+    const stop = net.stops.find((candidate) => candidate.id === "P76")!;
+    render(<StopBoard stop={stop} ctx={ctx}
+                      lines={new Map(net.lines.map((line) => [line.id, line]))}
+                      service="weekday" now={4 * 60} lang="hu" t={STRINGS.hu}
+                      onClose={() => {}} />);
+
+    expect(screen.getByText("→ Str. Fabricii / Gyár utca")).toBeInTheDocument();
+    expect(screen.getByText("04:21")).toBeInTheDocument();
+    expect(screen.queryByText("→ Câmpul Frumos / Szépmező")).toBeNull();
+    expect(screen.queryByText("05:19")).toBeNull();
+  });
+
   it("gives a circular line one row per pass, not one merged column", () => {
     /* Line 3 comes through Gara CFR twice a loop, 25 minutes apart. Merged,
        it advertises a service twice as frequent as the one that runs - and

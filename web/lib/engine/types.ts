@@ -82,6 +82,8 @@ export interface Trip {
  * authoritative answer to "when does it leave here?", while the route pages
  * are the separate authority for line geometry. */
 export interface OfficialBoard {
+  /** Present once a source column has been audit-bound to one physical kerb. */
+  stopId?: string;
   stopRo: string;
   lineId: string;
   destination: string;

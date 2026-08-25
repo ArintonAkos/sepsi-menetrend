@@ -3,8 +3,8 @@ route_id,agency_id,route_short_name,route_long_name,route_type,route_color,route
 1D,multitrans,1D,Cap Linie Simeria → Câmpul Frumos,3,136F29,FFFFFF
 2,multitrans,2,Bartók Béla – traseu circular,3,DB4436,000000
 2D,multitrans,2D,Str. Bartók Béla → Câmpul Frumos,3,DB4436,000000
-3,multitrans,3,Str. Țigaretei – traseu circular,3,00B0F0,000000
-4,multitrans,4,Str. Țigaretei – traseu circular,3,F4B400,000000
+3,multitrans,3,Coșeni / Szotyor,3,00B0F0,000000
+4,multitrans,4,Câmpul Frumos / Szépmező,3,F4B400,000000
 5,multitrans,5,Str. József Attila – traseu circular,3,7C3592,FFFFFF
 5D,multitrans,5D,Str. József Attila 2 → Câmpul Frumos,3,7030A0,FFFFFF
 6,multitrans,6,Str. Bartók Béla – traseu circular,3,A9FE00,000000

@@ -15,13 +15,18 @@
       "calls": [
         {
           "line": "3",
-          "direction": "depart",
+          "direction": "depart-to-coseni",
           "index": 15
         },
         {
           "line": "3",
-          "direction": "depart",
-          "index": 17
+          "direction": "depart-from-coseni",
+          "index": 0
+        },
+        {
+          "line": "3",
+          "direction": "depart-from-coseni",
+          "index": 2
         }
       ]
     },
@@ -50,18 +55,18 @@
         },
         {
           "line": "3",
-          "direction": "depart",
-          "index": 26
+          "direction": "depart-from-coseni",
+          "index": 11
         },
         {
           "line": "4",
-          "direction": "depart",
+          "direction": "depart-to-campul-frumos",
           "index": 8
         },
         {
           "line": "4",
-          "direction": "depart",
-          "index": 26
+          "direction": "depart-from-campul-frumos",
+          "index": 8
         },
         {
           "line": "5",
@@ -100,13 +105,13 @@
         },
         {
           "line": "3",
-          "direction": "depart",
-          "index": 25
+          "direction": "depart-from-coseni",
+          "index": 10
         },
         {
           "line": "4",
-          "direction": "depart",
-          "index": 25
+          "direction": "depart-from-campul-frumos",
+          "index": 7
         },
         {
           "line": "5",
@@ -295,12 +300,12 @@
         },
         {
           "line": "3",
-          "direction": "depart",
+          "direction": "depart-to-coseni",
           "index": 8
         },
         {
           "line": "4",
-          "direction": "depart",
+          "direction": "depart-to-campul-frumos",
           "index": 9
         },
         {
@@ -350,12 +355,12 @@
         },
         {
           "line": "3",
-          "direction": "depart",
+          "direction": "depart-to-coseni",
           "index": 7
         },
         {
           "line": "4",
-          "direction": "depart",
+          "direction": "depart-to-campul-frumos",
           "index": 7
         },
         {
@@ -920,7 +925,7 @@
       "calls": [
         {
           "line": "4",
-          "direction": "depart",
+          "direction": "depart-to-campul-frumos",
           "index": 12
         }
       ]
@@ -940,13 +945,13 @@
       "calls": [
         {
           "line": "3",
-          "direction": "depart",
-          "index": 22
+          "direction": "depart-from-coseni",
+          "index": 7
         },
         {
           "line": "4",
-          "direction": "depart",
-          "index": 22
+          "direction": "depart-from-campul-frumos",
+          "index": 4
         }
       ]
     },
@@ -965,8 +970,8 @@
       "calls": [
         {
           "line": "3",
-          "direction": "depart",
-          "index": 21
+          "direction": "depart-from-coseni",
+          "index": 6
         }
       ]
     },
@@ -985,7 +990,7 @@
       "calls": [
         {
           "line": "3",
-          "direction": "depart",
+          "direction": "depart-to-coseni",
           "index": 11
         }
       ]
@@ -1005,7 +1010,7 @@
       "calls": [
         {
           "line": "3",
-          "direction": "depart",
+          "direction": "depart-to-coseni",
           "index": 12
         }
       ]
@@ -1025,8 +1030,8 @@
       "calls": [
         {
           "line": "3",
-          "direction": "depart",
-          "index": 20
+          "direction": "depart-from-coseni",
+          "index": 5
         }
       ]
     },
@@ -1065,13 +1070,13 @@
         },
         {
           "line": "4",
-          "direction": "depart",
+          "direction": "depart-to-campul-frumos",
           "index": 16
         },
         {
           "line": "4",
-          "direction": "depart",
-          "index": 18
+          "direction": "depart-from-campul-frumos",
+          "index": 0
         },
         {
           "line": "5D",
@@ -1315,7 +1320,7 @@
       "calls": [
         {
           "line": "3",
-          "direction": "depart",
+          "direction": "depart-to-coseni",
           "index": 13
         }
       ]
@@ -1335,8 +1340,8 @@
       "calls": [
         {
           "line": "3",
-          "direction": "depart",
-          "index": 19
+          "direction": "depart-from-coseni",
+          "index": 4
         }
       ]
     },
@@ -1355,13 +1360,13 @@
       "calls": [
         {
           "line": "3",
-          "direction": "depart",
-          "index": 27
+          "direction": "depart-from-coseni",
+          "index": 12
         },
         {
           "line": "4",
-          "direction": "depart",
-          "index": 27
+          "direction": "depart-from-campul-frumos",
+          "index": 9
         }
       ]
     },
@@ -1380,12 +1385,12 @@
       "calls": [
         {
           "line": "3",
-          "direction": "depart",
+          "direction": "depart-to-coseni",
           "index": 6
         },
         {
           "line": "4",
-          "direction": "depart",
+          "direction": "depart-to-campul-frumos",
           "index": 6
         },
         {
@@ -1420,12 +1425,12 @@
       "calls": [
         {
           "line": "3",
-          "direction": "depart",
+          "direction": "depart-to-coseni",
           "index": 3
         },
         {
           "line": "4",
-          "direction": "depart",
+          "direction": "depart-to-campul-frumos",
           "index": 3
         },
         {
@@ -1450,8 +1455,13 @@
       "calls": [
         {
           "line": "3",
-          "direction": "depart",
+          "direction": "depart-to-coseni",
           "index": 16
+        },
+        {
+          "line": "3",
+          "direction": "depart-from-coseni",
+          "index": 1
         }
       ]
     },
@@ -1505,13 +1515,13 @@
       "calls": [
         {
           "line": "3",
-          "direction": "depart",
-          "index": 29
+          "direction": "depart-from-coseni",
+          "index": 14
         },
         {
           "line": "4",
-          "direction": "depart",
-          "index": 29
+          "direction": "depart-from-campul-frumos",
+          "index": 11
         },
         {
           "line": "5",
@@ -1540,13 +1550,13 @@
       "calls": [
         {
           "line": "3",
-          "direction": "depart",
-          "index": 28
+          "direction": "depart-from-coseni",
+          "index": 13
         },
         {
           "line": "4",
-          "direction": "depart",
-          "index": 28
+          "direction": "depart-from-campul-frumos",
+          "index": 10
         },
         {
           "line": "7",
@@ -1645,23 +1655,23 @@
         },
         {
           "line": "3",
-          "direction": "depart",
+          "direction": "depart-to-coseni",
           "index": 10
         },
         {
           "line": "3",
-          "direction": "depart",
-          "index": 23
+          "direction": "depart-from-coseni",
+          "index": 8
         },
         {
           "line": "4",
-          "direction": "depart",
+          "direction": "depart-to-campul-frumos",
           "index": 11
         },
         {
           "line": "4",
-          "direction": "depart",
-          "index": 23
+          "direction": "depart-from-campul-frumos",
+          "index": 5
         },
         {
           "line": "5",
@@ -1860,7 +1870,7 @@
       "calls": [
         {
           "line": "3",
-          "direction": "depart",
+          "direction": "depart-to-coseni",
           "index": 14
         }
       ]
@@ -1880,8 +1890,8 @@
       "calls": [
         {
           "line": "3",
-          "direction": "depart",
-          "index": 18
+          "direction": "depart-from-coseni",
+          "index": 3
         }
       ]
     },
@@ -1917,11 +1927,6 @@
           "line": "2D",
           "direction": "return",
           "index": 0
-        },
-        {
-          "line": "4",
-          "direction": "depart",
-          "index": 17
         },
         {
           "line": "5D",
@@ -2320,7 +2325,7 @@
       "calls": [
         {
           "line": "4",
-          "direction": "depart",
+          "direction": "depart-to-campul-frumos",
           "index": 13
         }
       ]
@@ -2340,8 +2345,8 @@
       "calls": [
         {
           "line": "4",
-          "direction": "depart",
-          "index": 21
+          "direction": "depart-from-campul-frumos",
+          "index": 3
         }
       ]
     },
@@ -2360,7 +2365,7 @@
       "calls": [
         {
           "line": "4",
-          "direction": "depart",
+          "direction": "depart-to-campul-frumos",
           "index": 14
         }
       ]
@@ -2380,8 +2385,8 @@
       "calls": [
         {
           "line": "4",
-          "direction": "depart",
-          "index": 20
+          "direction": "depart-from-campul-frumos",
+          "index": 2
         }
       ]
     },
@@ -2400,13 +2405,13 @@
       "calls": [
         {
           "line": "4",
-          "direction": "depart",
+          "direction": "depart-to-campul-frumos",
           "index": 15
         },
         {
           "line": "4",
-          "direction": "depart",
-          "index": 19
+          "direction": "depart-from-campul-frumos",
+          "index": 1
         }
       ]
     },
@@ -2450,12 +2455,12 @@
       "calls": [
         {
           "line": "3",
-          "direction": "depart",
+          "direction": "depart-to-coseni",
           "index": 4
         },
         {
           "line": "4",
-          "direction": "depart",
+          "direction": "depart-to-campul-frumos",
           "index": 4
         },
         {
@@ -2480,12 +2485,12 @@
       "calls": [
         {
           "line": "3",
-          "direction": "depart",
+          "direction": "depart-to-coseni",
           "index": 5
         },
         {
           "line": "4",
-          "direction": "depart",
+          "direction": "depart-to-campul-frumos",
           "index": 5
         }
       ]
@@ -2765,12 +2770,12 @@
         },
         {
           "line": "3",
-          "direction": "depart",
+          "direction": "depart-to-coseni",
           "index": 9
         },
         {
           "line": "4",
-          "direction": "depart",
+          "direction": "depart-to-campul-frumos",
           "index": 10
         },
         {
@@ -2815,13 +2820,13 @@
         },
         {
           "line": "3",
-          "direction": "depart",
-          "index": 24
+          "direction": "depart-from-coseni",
+          "index": 9
         },
         {
           "line": "4",
-          "direction": "depart",
-          "index": 24
+          "direction": "depart-from-campul-frumos",
+          "index": 6
         },
         {
           "line": "6",
@@ -2865,23 +2870,23 @@
       "calls": [
         {
           "line": "3",
-          "direction": "depart",
+          "direction": "depart-to-coseni",
           "index": 0
         },
         {
           "line": "3",
-          "direction": "depart",
-          "index": 30
+          "direction": "depart-from-coseni",
+          "index": 15
         },
         {
           "line": "4",
-          "direction": "depart",
+          "direction": "depart-to-campul-frumos",
           "index": 0
         },
         {
           "line": "4",
-          "direction": "depart",
-          "index": 30
+          "direction": "depart-from-campul-frumos",
+          "index": 12
         },
         {
           "line": "7",
@@ -2905,12 +2910,12 @@
       "calls": [
         {
           "line": "3",
-          "direction": "depart",
+          "direction": "depart-to-coseni",
           "index": 1
         },
         {
           "line": "4",
-          "direction": "depart",
+          "direction": "depart-to-campul-frumos",
           "index": 1
         },
         {
@@ -2935,12 +2940,12 @@
       "calls": [
         {
           "line": "3",
-          "direction": "depart",
+          "direction": "depart-to-coseni",
           "index": 2
         },
         {
           "line": "4",
-          "direction": "depart",
+          "direction": "depart-to-campul-frumos",
           "index": 2
         },
         {
@@ -3466,358 +3471,358 @@
     },
     {
       "line": "3",
-      "direction": "depart",
+      "direction": "depart-to-coseni",
       "index": 0,
       "name": "Str. Țigaretei 1",
       "reason": "no matching OSM platform"
     },
     {
       "line": "3",
-      "direction": "depart",
+      "direction": "depart-to-coseni",
       "index": 1,
       "name": "Str. Țigaretei 2",
       "reason": "no matching OSM platform"
     },
     {
       "line": "3",
-      "direction": "depart",
+      "direction": "depart-to-coseni",
       "index": 2,
       "name": "Str. Țigaretei 3",
       "reason": "no matching OSM platform"
     },
     {
       "line": "3",
-      "direction": "depart",
+      "direction": "depart-to-coseni",
       "index": 3,
       "name": "Comfort Residence",
       "reason": "no matching OSM platform"
     },
     {
       "line": "3",
-      "direction": "depart",
+      "direction": "depart-to-coseni",
       "index": 4,
       "name": "Str. Fabricii 1",
       "reason": "no matching OSM platform"
     },
     {
       "line": "3",
-      "direction": "depart",
+      "direction": "depart-to-coseni",
       "index": 5,
       "name": "Str. Fabricii 2",
       "reason": "no matching OSM platform"
     },
     {
       "line": "3",
-      "direction": "depart",
+      "direction": "depart-to-coseni",
       "index": 6,
       "name": "Col. Mihai Viteazul",
       "reason": "no matching OSM platform"
     },
     {
       "line": "3",
-      "direction": "depart",
+      "direction": "depart-to-coseni",
       "index": 9,
       "name": "Str. Sporturilor",
       "reason": "no matching OSM platform"
     },
     {
       "line": "3",
-      "direction": "depart",
+      "direction": "depart-to-coseni",
       "index": 10,
       "name": "Gara CFR",
       "reason": "no matching OSM platform"
     },
     {
       "line": "3",
-      "direction": "depart",
+      "direction": "depart-to-coseni",
       "index": 11,
       "name": "Calea Brașovului 2",
       "reason": "no matching OSM platform"
     },
     {
       "line": "3",
-      "direction": "depart",
+      "direction": "depart-to-coseni",
       "index": 12,
       "name": "Calea Brașovului 3",
       "reason": "no matching OSM platform"
     },
     {
       "line": "3",
-      "direction": "depart",
+      "direction": "depart-to-coseni",
       "index": 13,
       "name": "Chilieni",
       "reason": "no matching OSM platform"
     },
     {
       "line": "3",
-      "direction": "depart",
+      "direction": "depart-to-coseni",
       "index": 14,
       "name": "Motel Calypso",
       "reason": "no matching OSM platform"
     },
     {
       "line": "3",
-      "direction": "depart",
+      "direction": "depart-to-coseni",
       "index": 16,
       "name": "Coșeni 2",
       "reason": "no matching OSM platform"
     },
     {
       "line": "3",
-      "direction": "depart",
-      "index": 18,
+      "direction": "depart-from-coseni",
+      "index": 1,
+      "name": "Coșeni 2",
+      "reason": "no matching OSM platform"
+    },
+    {
+      "line": "3",
+      "direction": "depart-from-coseni",
+      "index": 3,
       "name": "Motel Calypso",
       "reason": "no matching OSM platform"
     },
     {
       "line": "3",
-      "direction": "depart",
-      "index": 19,
+      "direction": "depart-from-coseni",
+      "index": 4,
       "name": "Chilieni",
       "reason": "no matching OSM platform"
     },
     {
       "line": "3",
-      "direction": "depart",
-      "index": 20,
+      "direction": "depart-from-coseni",
+      "index": 5,
       "name": "Calea Brașovului 3",
       "reason": "no matching OSM platform"
     },
     {
       "line": "3",
-      "direction": "depart",
-      "index": 21,
+      "direction": "depart-from-coseni",
+      "index": 6,
       "name": "Calea Brașovului 2",
       "reason": "no matching OSM platform"
     },
     {
       "line": "3",
-      "direction": "depart",
-      "index": 22,
+      "direction": "depart-from-coseni",
+      "index": 7,
       "name": "Calea Brașovului 1",
       "reason": "no matching OSM platform"
     },
     {
       "line": "3",
-      "direction": "depart",
-      "index": 23,
+      "direction": "depart-from-coseni",
+      "index": 8,
       "name": "Gara CFR",
       "reason": "no matching OSM platform"
     },
     {
       "line": "3",
-      "direction": "depart",
-      "index": 24,
+      "direction": "depart-from-coseni",
+      "index": 9,
       "name": "Str. Sporturilor",
       "reason": "no matching OSM platform"
     },
     {
       "line": "3",
-      "direction": "depart",
-      "index": 27,
+      "direction": "depart-from-coseni",
+      "index": 12,
       "name": "Col. Mihai Viteazul",
       "reason": "no matching OSM platform"
     },
     {
       "line": "3",
-      "direction": "depart",
-      "index": 28,
+      "direction": "depart-from-coseni",
+      "index": 13,
       "name": "Fabrica de Țigarete",
       "reason": "no matching OSM platform"
     },
     {
       "line": "3",
-      "direction": "depart",
-      "index": 29,
+      "direction": "depart-from-coseni",
+      "index": 14,
       "name": "Fabrica de Țigarete",
       "reason": "no matching OSM platform"
     },
     {
       "line": "3",
-      "direction": "depart",
-      "index": 30,
+      "direction": "depart-from-coseni",
+      "index": 15,
       "name": "Str. Țigaretei 1",
       "reason": "no matching OSM platform"
     },
     {
       "line": "4",
-      "direction": "depart",
+      "direction": "depart-to-campul-frumos",
       "index": 0,
       "name": "Str. Țigaretei 1",
       "reason": "no matching OSM platform"
     },
     {
       "line": "4",
-      "direction": "depart",
+      "direction": "depart-to-campul-frumos",
       "index": 1,
       "name": "Str. Țigaretei 2",
       "reason": "no matching OSM platform"
     },
     {
       "line": "4",
-      "direction": "depart",
+      "direction": "depart-to-campul-frumos",
       "index": 2,
       "name": "Str. Țigaretei 3",
       "reason": "no matching OSM platform"
     },
     {
       "line": "4",
-      "direction": "depart",
+      "direction": "depart-to-campul-frumos",
       "index": 3,
       "name": "Comfort Residence",
       "reason": "no matching OSM platform"
     },
     {
       "line": "4",
-      "direction": "depart",
+      "direction": "depart-to-campul-frumos",
       "index": 4,
       "name": "Str. Fabricii 1",
       "reason": "no matching OSM platform"
     },
     {
       "line": "4",
-      "direction": "depart",
+      "direction": "depart-to-campul-frumos",
       "index": 5,
       "name": "Str. Fabricii 2",
       "reason": "no matching OSM platform"
     },
     {
       "line": "4",
-      "direction": "depart",
+      "direction": "depart-to-campul-frumos",
       "index": 6,
       "name": "Col. Mihai Viteazul",
       "reason": "no matching OSM platform"
     },
     {
       "line": "4",
-      "direction": "depart",
+      "direction": "depart-to-campul-frumos",
       "index": 10,
       "name": "Str. Sporturilor",
       "reason": "no matching OSM platform"
     },
     {
       "line": "4",
-      "direction": "depart",
+      "direction": "depart-to-campul-frumos",
       "index": 11,
       "name": "Gara CFR",
       "reason": "no matching OSM platform"
     },
     {
       "line": "4",
-      "direction": "depart",
+      "direction": "depart-to-campul-frumos",
       "index": 12,
       "name": "Calea Brașovului 1",
       "reason": "no matching OSM platform"
     },
     {
       "line": "4",
-      "direction": "depart",
+      "direction": "depart-to-campul-frumos",
       "index": 13,
       "name": "Str. Constructorilor 1",
       "reason": "no matching OSM platform"
     },
     {
       "line": "4",
-      "direction": "depart",
+      "direction": "depart-to-campul-frumos",
       "index": 14,
       "name": "Str. Constructorilor 2",
       "reason": "no matching OSM platform"
     },
     {
       "line": "4",
-      "direction": "depart",
+      "direction": "depart-to-campul-frumos",
       "index": 15,
       "name": "Str. Constructorilor 3",
       "reason": "no matching OSM platform"
     },
     {
       "line": "4",
-      "direction": "depart",
+      "direction": "depart-to-campul-frumos",
       "index": 16,
       "name": "Câmpul Frumos",
       "reason": "no matching OSM platform"
     },
     {
       "line": "4",
-      "direction": "depart",
-      "index": 17,
-      "name": "Multi-Trans",
-      "reason": "no matching OSM platform"
-    },
-    {
-      "line": "4",
-      "direction": "depart",
-      "index": 18,
+      "direction": "depart-from-campul-frumos",
+      "index": 0,
       "name": "Câmpul Frumos",
       "reason": "no matching OSM platform"
     },
     {
       "line": "4",
-      "direction": "depart",
-      "index": 19,
+      "direction": "depart-from-campul-frumos",
+      "index": 1,
       "name": "Str. Constructorilor 3",
       "reason": "no matching OSM platform"
     },
     {
       "line": "4",
-      "direction": "depart",
-      "index": 20,
+      "direction": "depart-from-campul-frumos",
+      "index": 2,
       "name": "Str. Constructorilor 2",
       "reason": "no matching OSM platform"
     },
     {
       "line": "4",
-      "direction": "depart",
-      "index": 21,
+      "direction": "depart-from-campul-frumos",
+      "index": 3,
       "name": "Str. Constructorilor 1",
       "reason": "no matching OSM platform"
     },
     {
       "line": "4",
-      "direction": "depart",
-      "index": 22,
+      "direction": "depart-from-campul-frumos",
+      "index": 4,
       "name": "Calea Brașovului 1",
       "reason": "no matching OSM platform"
     },
     {
       "line": "4",
-      "direction": "depart",
-      "index": 23,
+      "direction": "depart-from-campul-frumos",
+      "index": 5,
       "name": "Gara CFR",
       "reason": "no matching OSM platform"
     },
     {
       "line": "4",
-      "direction": "depart",
-      "index": 24,
+      "direction": "depart-from-campul-frumos",
+      "index": 6,
       "name": "Str. Sporturilor",
       "reason": "no matching OSM platform"
     },
     {
       "line": "4",
-      "direction": "depart",
-      "index": 27,
+      "direction": "depart-from-campul-frumos",
+      "index": 9,
       "name": "Col. Mihai Viteazul",
       "reason": "no matching OSM platform"
     },
     {
       "line": "4",
-      "direction": "depart",
-      "index": 28,
+      "direction": "depart-from-campul-frumos",
+      "index": 10,
       "name": "Fabrica de Țigarete",
       "reason": "no matching OSM platform"
     },
     {
       "line": "4",
-      "direction": "depart",
-      "index": 29,
+      "direction": "depart-from-campul-frumos",
+      "index": 11,
       "name": "Fabrica de Țigarete",
       "reason": "no matching OSM platform"
     },
     {
       "line": "4",
-      "direction": "depart",
-      "index": 30,
+      "direction": "depart-from-campul-frumos",
+      "index": 12,
       "name": "Str. Țigaretei 1",
       "reason": "no matching OSM platform"
     },

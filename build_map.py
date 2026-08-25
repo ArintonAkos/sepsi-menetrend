@@ -24,6 +24,7 @@ import sys
 from pathlib import Path
 
 from mapbox_config import load_mapbox_token
+from timetable_segments import expand_timetable_segments
 
 ROOT = Path(__file__).resolve().parent
 TEMPLATE = ROOT / "map.template.html"
@@ -196,6 +197,7 @@ DESCRIPTIONS = {
 }
 
 ROUTE_OVERRIDES = ROOT / "route_overrides.json"
+TIMETABLE_SEGMENTS = ROOT / "timetable_segments.json"
 
 
 def metres(a, b):
@@ -257,7 +259,9 @@ def load_directions():
             data["length_m"] = shape["length_m"]
             out.append(data)
     overrides = json.loads(ROUTE_OVERRIDES.read_text(encoding="utf-8"))
-    return apply_route_overrides(out, overrides)
+    retained = apply_route_overrides(out, overrides)
+    raw_segments = json.loads(TIMETABLE_SEGMENTS.read_text(encoding="utf-8"))
+    return expand_timetable_segments(retained, raw_segments)
 
 
 def duration_seconds_for(direction, legs):

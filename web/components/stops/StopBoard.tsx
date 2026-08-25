@@ -33,11 +33,16 @@ export default function StopBoard({
   onClose: () => void;
 }) {
   const pullDismiss = usePullToDismiss(onClose);
-  const official = useMemo(
-    () => officialBoardAt(ctx.net.officialBoards ?? [], stop.name.ro, service),
-    [ctx.net.officialBoards, stop.name.ro, service],
-  );
   const board = useMemo(() => boardAt(ctx, stop.id, service), [ctx, stop.id, service]);
+  const official = useMemo(() => {
+    const headsigns = new Map<string, Set<string>>();
+    for (const column of board) {
+      const values = headsigns.get(column.lineId) ?? new Set<string>();
+      values.add(column.headsign.ro);
+      headsigns.set(column.lineId, values);
+    }
+    return officialBoardAt(ctx.net.officialBoards ?? [], stop.id, stop.name.ro, service, headsigns);
+  }, [board, ctx.net.officialBoards, stop.id, stop.name.ro, service]);
   /* Buses that finish here are worth listing - somebody is being collected -
      but they are not something you board, so they go last under their own
      heading rather than sitting between two departures of the same line. */

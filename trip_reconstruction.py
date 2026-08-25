@@ -122,6 +122,25 @@ def _compatible_columns(line, direction, circular, stop_name, entries, service):
     return []
 
 
+def bound_board_columns(direction, entries):
+    """Return the literal columns whose source direction and destination own a segment.
+
+    A circular route page may contain the same named stop on two physical
+    passes.  The public destination is the only source fact that tells those
+    passes apart, so a segment may consume only its exact destination column.
+    Unsliced directions intentionally keep their previous name-and-direction
+    behaviour.
+    """
+    source_direction = direction.get("source_direction", direction["direction"])
+    destination = direction.get("destination")
+    return [entry for entry in entries
+            if entry["line"] in ({direction["line"], direction["line"][:-1]}
+                                  if direction["line"].endswith("D")
+                                  else {direction["line"]})
+            and entry.get("direction", source_direction) == source_direction
+            and (destination is None or entry.get("destination") == destination)]
+
+
 def _seed_starts(candidates):
     """Coalesce estimates of the same run without joining neighbouring runs."""
     if not candidates:
@@ -154,6 +173,7 @@ def reconstruct_direction(direction, entries, offsets, tolerance=12):
     trips; every other column is aligned independently in chronological order.
     A call with no matched board event keeps its measured-duration prediction.
     """
+    entries = bound_board_columns(direction, entries)
     names = [stop["name"]["ro"] for stop in direction["stops"]]
     offset_minutes = [round(seconds / 60) for seconds in offsets]
     occurrences = {name: names.count(name) for name in set(names)}
@@ -165,7 +185,7 @@ def reconstruct_direction(direction, entries, offsets, tolerance=12):
         for index, name in enumerate(names):
             if occurrences[name] != 1:
                 continue
-            for entry in _compatible_columns(direction["line"], direction["direction"],
+            for entry in _compatible_columns(direction["line"], direction.get("source_direction", direction["direction"]),
                                              circular, name, entries, service):
                 events = _events(entry, service)
                 if events:
@@ -174,8 +194,8 @@ def reconstruct_direction(direction, entries, offsets, tolerance=12):
         if not candidates:
             has_service = any(_events(entry, service) for entry in entries
                               if entry["line"] == direction["line"]
-                              and (circular or entry.get("direction", direction["direction"])
-                                   == direction["direction"]))
+                              and (circular or entry.get("direction", direction.get("source_direction", direction["direction"]))
+                                   == direction.get("source_direction", direction["direction"])))
             if has_service:
                 report.append({"line": direction["line"], "direction": direction["direction"],
                                "service": service, "reason": "no unambiguous anchor"})
@@ -188,7 +208,7 @@ def reconstruct_direction(direction, entries, offsets, tolerance=12):
                  for start in starts]
 
         for name in dict.fromkeys(names):
-            columns = _compatible_columns(direction["line"], direction["direction"],
+            columns = _compatible_columns(direction["line"], direction.get("source_direction", direction["direction"]),
                                           circular, name, entries, service)
             if not columns:
                 continue

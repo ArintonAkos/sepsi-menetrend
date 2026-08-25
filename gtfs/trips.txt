@@ -282,125 +282,102 @@ route_id,service_id,trip_id,trip_headsign,direction_id,shape_id
 2D,weekend,2D-return-weekend-001,Câmpul Frumos → Str. Bartók Béla,1,2D-return
 2D,weekend,2D-return-weekend-002,Câmpul Frumos → Str. Bartók Béla,1,2D-return
 2D,weekend,2D-return-weekend-003,Câmpul Frumos → Str. Bartók Béla,1,2D-return
-3,weekday,3-depart-weekday-001,Str. Țigaretei – traseu circular,0,3-depart
-3,weekday,3-depart-weekday-002,Str. Țigaretei – traseu circular,0,3-depart
-3,weekday,3-depart-weekday-003,Str. Țigaretei – traseu circular,0,3-depart
-3,weekday,3-depart-weekday-004,Str. Țigaretei – traseu circular,0,3-depart
-3,weekday,3-depart-weekday-005,Str. Țigaretei – traseu circular,0,3-depart
-3,weekday,3-depart-weekday-006,Str. Țigaretei – traseu circular,0,3-depart
-3,weekday,3-depart-weekday-007,Str. Țigaretei – traseu circular,0,3-depart
-3,weekday,3-depart-weekday-008,Str. Țigaretei – traseu circular,0,3-depart
-3,weekday,3-depart-weekday-009,Str. Țigaretei – traseu circular,0,3-depart
-3,weekday,3-depart-weekday-010,Str. Țigaretei – traseu circular,0,3-depart
-3,weekday,3-depart-weekday-011,Str. Țigaretei – traseu circular,0,3-depart
-3,weekday,3-depart-weekday-012,Str. Țigaretei – traseu circular,0,3-depart
-3,weekday,3-depart-weekday-013,Str. Țigaretei – traseu circular,0,3-depart
-3,weekday,3-depart-weekday-014,Str. Țigaretei – traseu circular,0,3-depart
-3,weekday,3-depart-weekday-015,Str. Țigaretei – traseu circular,0,3-depart
-3,weekday,3-depart-weekday-016,Str. Țigaretei – traseu circular,0,3-depart
-3,weekday,3-depart-weekday-017,Str. Țigaretei – traseu circular,0,3-depart
-3,weekday,3-depart-weekday-018,Str. Țigaretei – traseu circular,0,3-depart
-3,weekday,3-depart-weekday-019,Str. Țigaretei – traseu circular,0,3-depart
-3,weekday,3-depart-weekday-020,Str. Țigaretei – traseu circular,0,3-depart
-3,weekday,3-depart-weekday-021,Str. Țigaretei – traseu circular,0,3-depart
-3,weekday,3-depart-weekday-022,Str. Țigaretei – traseu circular,0,3-depart
-3,weekday,3-depart-weekday-023,Str. Țigaretei – traseu circular,0,3-depart
-3,weekday,3-depart-weekday-024,Str. Țigaretei – traseu circular,0,3-depart
-3,weekday,3-depart-weekday-025,Str. Țigaretei – traseu circular,0,3-depart
-3,weekday,3-depart-weekday-026,Str. Țigaretei – traseu circular,0,3-depart
-3,weekday,3-depart-weekday-027,Str. Țigaretei – traseu circular,0,3-depart
-3,weekday,3-depart-weekday-028,Str. Țigaretei – traseu circular,0,3-depart
-3,weekday,3-depart-weekday-029,Str. Țigaretei – traseu circular,0,3-depart
-3,weekday,3-depart-weekday-030,Str. Țigaretei – traseu circular,0,3-depart
-3,weekday,3-depart-weekday-031,Str. Țigaretei – traseu circular,0,3-depart
-3,weekday,3-depart-weekday-032,Str. Țigaretei – traseu circular,0,3-depart
-3,weekday,3-depart-weekday-033,Str. Țigaretei – traseu circular,0,3-depart
-3,weekday,3-depart-weekday-034,Str. Țigaretei – traseu circular,0,3-depart
-3,weekday,3-depart-weekday-035,Str. Țigaretei – traseu circular,0,3-depart
-3,weekday,3-depart-weekday-036,Str. Țigaretei – traseu circular,0,3-depart
-3,weekday,3-depart-weekday-037,Str. Țigaretei – traseu circular,0,3-depart
-3,weekday,3-depart-weekday-038,Str. Țigaretei – traseu circular,0,3-depart
-3,weekday,3-depart-weekday-039,Str. Țigaretei – traseu circular,0,3-depart
-3,weekday,3-depart-weekday-040,Str. Țigaretei – traseu circular,0,3-depart
-3,weekday,3-depart-weekday-041,Str. Țigaretei – traseu circular,0,3-depart
-3,weekday,3-depart-weekday-042,Str. Țigaretei – traseu circular,0,3-depart
-3,weekday,3-depart-weekday-043,Str. Țigaretei – traseu circular,0,3-depart
-3,weekday,3-depart-weekday-044,Str. Țigaretei – traseu circular,0,3-depart
-3,weekday,3-depart-weekday-045,Str. Țigaretei – traseu circular,0,3-depart
-3,weekend,3-depart-weekend-001,Str. Țigaretei – traseu circular,0,3-depart
-3,weekend,3-depart-weekend-002,Str. Țigaretei – traseu circular,0,3-depart
-3,weekend,3-depart-weekend-003,Str. Țigaretei – traseu circular,0,3-depart
-3,weekend,3-depart-weekend-004,Str. Țigaretei – traseu circular,0,3-depart
-3,weekend,3-depart-weekend-005,Str. Țigaretei – traseu circular,0,3-depart
-3,weekend,3-depart-weekend-006,Str. Țigaretei – traseu circular,0,3-depart
-3,weekend,3-depart-weekend-007,Str. Țigaretei – traseu circular,0,3-depart
-3,weekend,3-depart-weekend-008,Str. Țigaretei – traseu circular,0,3-depart
-3,weekend,3-depart-weekend-009,Str. Țigaretei – traseu circular,0,3-depart
-3,weekend,3-depart-weekend-010,Str. Țigaretei – traseu circular,0,3-depart
-3,weekend,3-depart-weekend-011,Str. Țigaretei – traseu circular,0,3-depart
-3,weekend,3-depart-weekend-012,Str. Țigaretei – traseu circular,0,3-depart
-3,weekend,3-depart-weekend-013,Str. Țigaretei – traseu circular,0,3-depart
-3,weekend,3-depart-weekend-014,Str. Țigaretei – traseu circular,0,3-depart
-3,weekend,3-depart-weekend-015,Str. Țigaretei – traseu circular,0,3-depart
-3,weekend,3-depart-weekend-016,Str. Țigaretei – traseu circular,0,3-depart
-3,weekend,3-depart-weekend-017,Str. Țigaretei – traseu circular,0,3-depart
-3,weekend,3-depart-weekend-018,Str. Țigaretei – traseu circular,0,3-depart
-3,weekend,3-depart-weekend-019,Str. Țigaretei – traseu circular,0,3-depart
-3,weekend,3-depart-weekend-020,Str. Țigaretei – traseu circular,0,3-depart
-3,weekend,3-depart-weekend-021,Str. Țigaretei – traseu circular,0,3-depart
-3,weekend,3-depart-weekend-022,Str. Țigaretei – traseu circular,0,3-depart
-3,weekend,3-depart-weekend-023,Str. Țigaretei – traseu circular,0,3-depart
-3,weekend,3-depart-weekend-024,Str. Țigaretei – traseu circular,0,3-depart
-4,weekday,4-depart-weekday-001,Str. Țigaretei – traseu circular,0,4-depart
-4,weekday,4-depart-weekday-002,Str. Țigaretei – traseu circular,0,4-depart
-4,weekday,4-depart-weekday-003,Str. Țigaretei – traseu circular,0,4-depart
-4,weekday,4-depart-weekday-004,Str. Țigaretei – traseu circular,0,4-depart
-4,weekday,4-depart-weekday-005,Str. Țigaretei – traseu circular,0,4-depart
-4,weekday,4-depart-weekday-006,Str. Țigaretei – traseu circular,0,4-depart
-4,weekday,4-depart-weekday-007,Str. Țigaretei – traseu circular,0,4-depart
-4,weekday,4-depart-weekday-008,Str. Țigaretei – traseu circular,0,4-depart
-4,weekday,4-depart-weekday-009,Str. Țigaretei – traseu circular,0,4-depart
-4,weekday,4-depart-weekday-010,Str. Țigaretei – traseu circular,0,4-depart
-4,weekday,4-depart-weekday-011,Str. Țigaretei – traseu circular,0,4-depart
-4,weekday,4-depart-weekday-012,Str. Țigaretei – traseu circular,0,4-depart
-4,weekday,4-depart-weekday-013,Str. Țigaretei – traseu circular,0,4-depart
-4,weekday,4-depart-weekday-014,Str. Țigaretei – traseu circular,0,4-depart
-4,weekday,4-depart-weekday-015,Str. Țigaretei – traseu circular,0,4-depart
-4,weekday,4-depart-weekday-016,Str. Țigaretei – traseu circular,0,4-depart
-4,weekday,4-depart-weekday-017,Str. Țigaretei – traseu circular,0,4-depart
-4,weekday,4-depart-weekday-018,Str. Țigaretei – traseu circular,0,4-depart
-4,weekday,4-depart-weekday-019,Str. Țigaretei – traseu circular,0,4-depart
-4,weekday,4-depart-weekday-020,Str. Țigaretei – traseu circular,0,4-depart
-4,weekday,4-depart-weekday-021,Str. Țigaretei – traseu circular,0,4-depart
-4,weekday,4-depart-weekday-022,Str. Țigaretei – traseu circular,0,4-depart
-4,weekday,4-depart-weekday-023,Str. Țigaretei – traseu circular,0,4-depart
-4,weekday,4-depart-weekday-024,Str. Țigaretei – traseu circular,0,4-depart
-4,weekday,4-depart-weekday-025,Str. Țigaretei – traseu circular,0,4-depart
-4,weekday,4-depart-weekday-026,Str. Țigaretei – traseu circular,0,4-depart
-4,weekday,4-depart-weekday-027,Str. Țigaretei – traseu circular,0,4-depart
-4,weekday,4-depart-weekday-028,Str. Țigaretei – traseu circular,0,4-depart
-4,weekday,4-depart-weekday-029,Str. Țigaretei – traseu circular,0,4-depart
-4,weekday,4-depart-weekday-030,Str. Țigaretei – traseu circular,0,4-depart
-4,weekday,4-depart-weekday-031,Str. Țigaretei – traseu circular,0,4-depart
-4,weekday,4-depart-weekday-032,Str. Țigaretei – traseu circular,0,4-depart
-4,weekend,4-depart-weekend-001,Str. Țigaretei – traseu circular,0,4-depart
-4,weekend,4-depart-weekend-002,Str. Țigaretei – traseu circular,0,4-depart
-4,weekend,4-depart-weekend-003,Str. Țigaretei – traseu circular,0,4-depart
-4,weekend,4-depart-weekend-004,Str. Țigaretei – traseu circular,0,4-depart
-4,weekend,4-depart-weekend-005,Str. Țigaretei – traseu circular,0,4-depart
-4,weekend,4-depart-weekend-006,Str. Țigaretei – traseu circular,0,4-depart
-4,weekend,4-depart-weekend-007,Str. Țigaretei – traseu circular,0,4-depart
-4,weekend,4-depart-weekend-008,Str. Țigaretei – traseu circular,0,4-depart
-4,weekend,4-depart-weekend-009,Str. Țigaretei – traseu circular,0,4-depart
-4,weekend,4-depart-weekend-010,Str. Țigaretei – traseu circular,0,4-depart
-4,weekend,4-depart-weekend-011,Str. Țigaretei – traseu circular,0,4-depart
-4,weekend,4-depart-weekend-012,Str. Țigaretei – traseu circular,0,4-depart
-4,weekend,4-depart-weekend-013,Str. Țigaretei – traseu circular,0,4-depart
-4,weekend,4-depart-weekend-014,Str. Țigaretei – traseu circular,0,4-depart
-4,weekend,4-depart-weekend-015,Str. Țigaretei – traseu circular,0,4-depart
-4,weekend,4-depart-weekend-016,Str. Țigaretei – traseu circular,0,4-depart
-4,weekend,4-depart-weekend-017,Str. Țigaretei – traseu circular,0,4-depart
-4,weekend,4-depart-weekend-018,Str. Țigaretei – traseu circular,0,4-depart
+3,weekday,3-depart-to-coseni-weekday-001,Coșeni / Szotyor,1,3-depart-to-coseni
+3,weekday,3-depart-to-coseni-weekday-002,Coșeni / Szotyor,1,3-depart-to-coseni
+3,weekday,3-depart-to-coseni-weekday-003,Coșeni / Szotyor,1,3-depart-to-coseni
+3,weekday,3-depart-to-coseni-weekday-004,Coșeni / Szotyor,1,3-depart-to-coseni
+3,weekday,3-depart-to-coseni-weekday-005,Coșeni / Szotyor,1,3-depart-to-coseni
+3,weekday,3-depart-to-coseni-weekday-006,Coșeni / Szotyor,1,3-depart-to-coseni
+3,weekday,3-depart-to-coseni-weekday-007,Coșeni / Szotyor,1,3-depart-to-coseni
+3,weekday,3-depart-to-coseni-weekday-008,Coșeni / Szotyor,1,3-depart-to-coseni
+3,weekday,3-depart-to-coseni-weekday-009,Coșeni / Szotyor,1,3-depart-to-coseni
+3,weekday,3-depart-to-coseni-weekday-010,Coșeni / Szotyor,1,3-depart-to-coseni
+3,weekday,3-depart-to-coseni-weekday-011,Coșeni / Szotyor,1,3-depart-to-coseni
+3,weekday,3-depart-to-coseni-weekday-012,Coșeni / Szotyor,1,3-depart-to-coseni
+3,weekday,3-depart-to-coseni-weekday-013,Coșeni / Szotyor,1,3-depart-to-coseni
+3,weekday,3-depart-to-coseni-weekday-014,Coșeni / Szotyor,1,3-depart-to-coseni
+3,weekday,3-depart-to-coseni-weekday-015,Coșeni / Szotyor,1,3-depart-to-coseni
+3,weekend,3-depart-to-coseni-weekend-001,Coșeni / Szotyor,1,3-depart-to-coseni
+3,weekend,3-depart-to-coseni-weekend-002,Coșeni / Szotyor,1,3-depart-to-coseni
+3,weekend,3-depart-to-coseni-weekend-003,Coșeni / Szotyor,1,3-depart-to-coseni
+3,weekend,3-depart-to-coseni-weekend-004,Coșeni / Szotyor,1,3-depart-to-coseni
+3,weekend,3-depart-to-coseni-weekend-005,Coșeni / Szotyor,1,3-depart-to-coseni
+3,weekend,3-depart-to-coseni-weekend-006,Coșeni / Szotyor,1,3-depart-to-coseni
+3,weekend,3-depart-to-coseni-weekend-007,Coșeni / Szotyor,1,3-depart-to-coseni
+3,weekend,3-depart-to-coseni-weekend-008,Coșeni / Szotyor,1,3-depart-to-coseni
+3,weekday,3-depart-from-coseni-weekday-001,Str. Fabricii / Gyár utca,1,3-depart-from-coseni
+3,weekday,3-depart-from-coseni-weekday-002,Str. Fabricii / Gyár utca,1,3-depart-from-coseni
+3,weekday,3-depart-from-coseni-weekday-003,Str. Fabricii / Gyár utca,1,3-depart-from-coseni
+3,weekday,3-depart-from-coseni-weekday-004,Str. Fabricii / Gyár utca,1,3-depart-from-coseni
+3,weekday,3-depart-from-coseni-weekday-005,Str. Fabricii / Gyár utca,1,3-depart-from-coseni
+3,weekday,3-depart-from-coseni-weekday-006,Str. Fabricii / Gyár utca,1,3-depart-from-coseni
+3,weekday,3-depart-from-coseni-weekday-007,Str. Fabricii / Gyár utca,1,3-depart-from-coseni
+3,weekday,3-depart-from-coseni-weekday-008,Str. Fabricii / Gyár utca,1,3-depart-from-coseni
+3,weekday,3-depart-from-coseni-weekday-009,Str. Fabricii / Gyár utca,1,3-depart-from-coseni
+3,weekday,3-depart-from-coseni-weekday-010,Str. Fabricii / Gyár utca,1,3-depart-from-coseni
+3,weekday,3-depart-from-coseni-weekday-011,Str. Fabricii / Gyár utca,1,3-depart-from-coseni
+3,weekday,3-depart-from-coseni-weekday-012,Str. Fabricii / Gyár utca,1,3-depart-from-coseni
+3,weekday,3-depart-from-coseni-weekday-013,Str. Fabricii / Gyár utca,1,3-depart-from-coseni
+3,weekday,3-depart-from-coseni-weekday-014,Str. Fabricii / Gyár utca,1,3-depart-from-coseni
+3,weekday,3-depart-from-coseni-weekday-015,Str. Fabricii / Gyár utca,1,3-depart-from-coseni
+3,weekend,3-depart-from-coseni-weekend-001,Str. Fabricii / Gyár utca,1,3-depart-from-coseni
+3,weekend,3-depart-from-coseni-weekend-002,Str. Fabricii / Gyár utca,1,3-depart-from-coseni
+3,weekend,3-depart-from-coseni-weekend-003,Str. Fabricii / Gyár utca,1,3-depart-from-coseni
+3,weekend,3-depart-from-coseni-weekend-004,Str. Fabricii / Gyár utca,1,3-depart-from-coseni
+3,weekend,3-depart-from-coseni-weekend-005,Str. Fabricii / Gyár utca,1,3-depart-from-coseni
+3,weekend,3-depart-from-coseni-weekend-006,Str. Fabricii / Gyár utca,1,3-depart-from-coseni
+3,weekend,3-depart-from-coseni-weekend-007,Str. Fabricii / Gyár utca,1,3-depart-from-coseni
+3,weekend,3-depart-from-coseni-weekend-008,Str. Fabricii / Gyár utca,1,3-depart-from-coseni
+4,weekday,4-depart-to-campul-frumos-weekday-001,Câmpul Frumos / Szépmező,1,4-depart-to-campul-frumos
+4,weekday,4-depart-to-campul-frumos-weekday-002,Câmpul Frumos / Szépmező,1,4-depart-to-campul-frumos
+4,weekday,4-depart-to-campul-frumos-weekday-003,Câmpul Frumos / Szépmező,1,4-depart-to-campul-frumos
+4,weekday,4-depart-to-campul-frumos-weekday-004,Câmpul Frumos / Szépmező,1,4-depart-to-campul-frumos
+4,weekday,4-depart-to-campul-frumos-weekday-005,Câmpul Frumos / Szépmező,1,4-depart-to-campul-frumos
+4,weekday,4-depart-to-campul-frumos-weekday-006,Câmpul Frumos / Szépmező,1,4-depart-to-campul-frumos
+4,weekday,4-depart-to-campul-frumos-weekday-007,Câmpul Frumos / Szépmező,1,4-depart-to-campul-frumos
+4,weekday,4-depart-to-campul-frumos-weekday-008,Câmpul Frumos / Szépmező,1,4-depart-to-campul-frumos
+4,weekday,4-depart-to-campul-frumos-weekday-009,Câmpul Frumos / Szépmező,1,4-depart-to-campul-frumos
+4,weekday,4-depart-to-campul-frumos-weekday-010,Câmpul Frumos / Szépmező,1,4-depart-to-campul-frumos
+4,weekday,4-depart-to-campul-frumos-weekday-011,Câmpul Frumos / Szépmező,1,4-depart-to-campul-frumos
+4,weekday,4-depart-to-campul-frumos-weekday-012,Câmpul Frumos / Szépmező,1,4-depart-to-campul-frumos
+4,weekday,4-depart-to-campul-frumos-weekday-013,Câmpul Frumos / Szépmező,1,4-depart-to-campul-frumos
+4,weekday,4-depart-to-campul-frumos-weekday-014,Câmpul Frumos / Szépmező,1,4-depart-to-campul-frumos
+4,weekday,4-depart-to-campul-frumos-weekday-015,Câmpul Frumos / Szépmező,1,4-depart-to-campul-frumos
+4,weekday,4-depart-to-campul-frumos-weekday-016,Câmpul Frumos / Szépmező,1,4-depart-to-campul-frumos
+4,weekend,4-depart-to-campul-frumos-weekend-001,Câmpul Frumos / Szépmező,1,4-depart-to-campul-frumos
+4,weekend,4-depart-to-campul-frumos-weekend-002,Câmpul Frumos / Szépmező,1,4-depart-to-campul-frumos
+4,weekend,4-depart-to-campul-frumos-weekend-003,Câmpul Frumos / Szépmező,1,4-depart-to-campul-frumos
+4,weekend,4-depart-to-campul-frumos-weekend-004,Câmpul Frumos / Szépmező,1,4-depart-to-campul-frumos
+4,weekend,4-depart-to-campul-frumos-weekend-005,Câmpul Frumos / Szépmező,1,4-depart-to-campul-frumos
+4,weekend,4-depart-to-campul-frumos-weekend-006,Câmpul Frumos / Szépmező,1,4-depart-to-campul-frumos
+4,weekend,4-depart-to-campul-frumos-weekend-007,Câmpul Frumos / Szépmező,1,4-depart-to-campul-frumos
+4,weekend,4-depart-to-campul-frumos-weekend-008,Câmpul Frumos / Szépmező,1,4-depart-to-campul-frumos
+4,weekend,4-depart-to-campul-frumos-weekend-009,Câmpul Frumos / Szépmező,1,4-depart-to-campul-frumos
+4,weekday,4-depart-from-campul-frumos-weekday-001,Str. Fabricii / Gyár utca,1,4-depart-from-campul-frumos
+4,weekday,4-depart-from-campul-frumos-weekday-002,Str. Fabricii / Gyár utca,1,4-depart-from-campul-frumos
+4,weekday,4-depart-from-campul-frumos-weekday-003,Str. Fabricii / Gyár utca,1,4-depart-from-campul-frumos
+4,weekday,4-depart-from-campul-frumos-weekday-004,Str. Fabricii / Gyár utca,1,4-depart-from-campul-frumos
+4,weekday,4-depart-from-campul-frumos-weekday-005,Str. Fabricii / Gyár utca,1,4-depart-from-campul-frumos
+4,weekday,4-depart-from-campul-frumos-weekday-006,Str. Fabricii / Gyár utca,1,4-depart-from-campul-frumos
+4,weekday,4-depart-from-campul-frumos-weekday-007,Str. Fabricii / Gyár utca,1,4-depart-from-campul-frumos
+4,weekday,4-depart-from-campul-frumos-weekday-008,Str. Fabricii / Gyár utca,1,4-depart-from-campul-frumos
+4,weekday,4-depart-from-campul-frumos-weekday-009,Str. Fabricii / Gyár utca,1,4-depart-from-campul-frumos
+4,weekday,4-depart-from-campul-frumos-weekday-010,Str. Fabricii / Gyár utca,1,4-depart-from-campul-frumos
+4,weekday,4-depart-from-campul-frumos-weekday-011,Str. Fabricii / Gyár utca,1,4-depart-from-campul-frumos
+4,weekday,4-depart-from-campul-frumos-weekday-012,Str. Fabricii / Gyár utca,1,4-depart-from-campul-frumos
+4,weekday,4-depart-from-campul-frumos-weekday-013,Str. Fabricii / Gyár utca,1,4-depart-from-campul-frumos
+4,weekday,4-depart-from-campul-frumos-weekday-014,Str. Fabricii / Gyár utca,1,4-depart-from-campul-frumos
+4,weekday,4-depart-from-campul-frumos-weekday-015,Str. Fabricii / Gyár utca,1,4-depart-from-campul-frumos
+4,weekday,4-depart-from-campul-frumos-weekday-016,Str. Fabricii / Gyár utca,1,4-depart-from-campul-frumos
+4,weekend,4-depart-from-campul-frumos-weekend-001,Str. Fabricii / Gyár utca,1,4-depart-from-campul-frumos
+4,weekend,4-depart-from-campul-frumos-weekend-002,Str. Fabricii / Gyár utca,1,4-depart-from-campul-frumos
+4,weekend,4-depart-from-campul-frumos-weekend-003,Str. Fabricii / Gyár utca,1,4-depart-from-campul-frumos
+4,weekend,4-depart-from-campul-frumos-weekend-004,Str. Fabricii / Gyár utca,1,4-depart-from-campul-frumos
+4,weekend,4-depart-from-campul-frumos-weekend-005,Str. Fabricii / Gyár utca,1,4-depart-from-campul-frumos
+4,weekend,4-depart-from-campul-frumos-weekend-006,Str. Fabricii / Gyár utca,1,4-depart-from-campul-frumos
+4,weekend,4-depart-from-campul-frumos-weekend-007,Str. Fabricii / Gyár utca,1,4-depart-from-campul-frumos
+4,weekend,4-depart-from-campul-frumos-weekend-008,Str. Fabricii / Gyár utca,1,4-depart-from-campul-frumos
+4,weekend,4-depart-from-campul-frumos-weekend-009,Str. Fabricii / Gyár utca,1,4-depart-from-campul-frumos
 5,weekday,5-depart-weekday-001,Str. József Attila – traseu circular,0,5-depart
 5,weekday,5-depart-weekday-002,Str. József Attila – traseu circular,0,5-depart
 5,weekday,5-depart-weekday-003,Str. József Attila – traseu circular,0,5-depart

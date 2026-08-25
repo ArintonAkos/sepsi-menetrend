@@ -1,0 +1,30 @@
+{
+  "3-depart": [
+    {
+      "id": "to-coseni",
+      "start": 0,
+      "end": 17,
+      "destination": "Coșeni / Szotyor"
+    },
+    {
+      "id": "from-coseni",
+      "start": 16,
+      "end": 31,
+      "destination": "Str. Fabricii / Gyár utca"
+    }
+  ],
+  "4-depart": [
+    {
+      "id": "to-campul-frumos",
+      "start": 0,
+      "end": 17,
+      "destination": "Câmpul Frumos / Szépmező"
+    },
+    {
+      "id": "from-campul-frumos",
+      "start": 19,
+      "end": 31,
+      "destination": "Str. Fabricii / Gyár utca"
+    }
+  ]
+}

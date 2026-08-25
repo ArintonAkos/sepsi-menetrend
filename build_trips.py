@@ -11,6 +11,7 @@ import json
 import sys
 from pathlib import Path
 
+from build_map import duration_seconds_for, load_directions
 from trip_reconstruction import reconstruct_direction
 
 ROOT = Path(__file__).resolve().parent
@@ -33,34 +34,34 @@ def offsets_for(direction):
     """Seconds from leaving the first stop to reaching each later stop."""
     legs = json.loads(
         (ROOT / f"line-{direction['line']}" /
-         f"{direction['direction']}-durations.json").read_text(encoding="utf-8")
+         f"{direction.get('source_direction', direction['direction'])}-durations.json").read_text(encoding="utf-8")
     )["legs"]
+    legs = duration_seconds_for(direction, legs)
     out = [0]
-    for i, leg in enumerate(legs):
-        out.append(out[-1] + leg["seconds"] + (DWELL_SECONDS if i else 0))
+    for i, seconds in enumerate(legs):
+        out.append(out[-1] + seconds + (DWELL_SECONDS if i else 0))
     return out
 
 
 def main():
     timetable = json.loads((ROOT / "timetable.json").read_text(encoding="utf-8"))
     trips, reports, skipped = {}, [], []
-    for line in ORDER:
-        for name in ("depart", "return"):
-            path = ROOT / f"line-{line}" / f"{name}.json"
-            if not path.exists():
-                continue
-            direction = json.loads(path.read_text(encoding="utf-8"))
-            key = f"{line}-{name}"
-            offsets = offsets_for(direction)
-            calls, report = reconstruct_direction(direction, timetable["timepoints"], offsets)
-            if not any(calls.values()):
-                skipped.append(f"{key}: no reconstructable official times")
-                continue
-            record = {"line": line, "direction": name, "offsets": offsets,
-                      "weekday": calls["weekday"], "weekend": calls["weekend"],
-                      "unmatched": report}
-            trips[key] = record
-            reports.extend({"route": key, **item} for item in report)
+    for direction in load_directions():
+        line, name = direction["line"], direction["direction"]
+        key = f"{line}-{name}"
+        offsets = offsets_for(direction)
+        calls, report = reconstruct_direction(direction, timetable["timepoints"], offsets)
+        if not any(calls.values()):
+            skipped.append(f"{key}: no reconstructable official times")
+            continue
+        record = {"line": line, "direction": name,
+                  "source_direction": direction.get("source_direction", name),
+                  "destination": direction.get("destination"),
+                  "offsets": offsets,
+                  "weekday": calls["weekday"], "weekend": calls["weekend"],
+                  "unmatched": report}
+        trips[key] = record
+        reports.extend({"route": key, **item} for item in report)
 
     bundle = {
         "source": timetable["source"],

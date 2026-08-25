@@ -265,11 +265,12 @@ def main():
     platforms = topology["platforms"]
     write_platforms(topology, PLATFORMS)
     raw_trips_data = json.loads((ROOT / "trips.json").read_text(encoding="utf-8"))["trips"]
+    # `build_trips` consumes these same already-overridden, destination-bound
+    # directions.  Removing a source-only call for a second time here would
+    # shift every subsequent physical platform and time one position left.
     trips_data = {
-        f"{direction['line']}-{direction['direction']}": without_removed_calls(
-            raw_trips_data[f"{direction['line']}-{direction['direction']}"],
-            direction.get("removed_call_indexes", []),
-        )
+        f"{direction['line']}-{direction['direction']}":
+            raw_trips_data[f"{direction['line']}-{direction['direction']}"]
         for direction in directions
         if f"{direction['line']}-{direction['direction']}" in raw_trips_data
     }
@@ -333,6 +334,18 @@ def main():
     for d in directions:
         key = f"{d['line']}-{d['direction']}"
         points = d["shape"]
+        if "shape_source_stops" in d:
+            # Destination segments share the source route's geometry, but a
+            # segment must not draw the rest of the circular line.  Anchor the
+            # full ordered source once, then retain precisely its endpoint arc.
+            full_anchors = anchor_vertices(d["shape_source_stops"], points)
+            by_source_index = dict(zip(d["shape_source_indexes"], full_anchors))
+            retained = [by_source_index[index] for index in d["source_stop_indexes"]]
+            first, last = retained[0], retained[-1]
+            points = points[first:last + 1]
+            anchors = [index - first for index in retained]
+        else:
+            anchors = anchor_vertices(d["stops"], points)
         along, running = [0.0], 0.0
         for i in range(1, len(points)):
             running += metres(points[i - 1], points[i])
@@ -343,7 +356,7 @@ def main():
                 "shape_pt_lon": f"{point[1]:.6f}", "shape_pt_sequence": i,
                 "shape_dist_traveled": f"{along[i]:.1f}",
             })
-        stop_distance[key] = [along[v] for v in anchor_vertices(d["stops"], points)]
+        stop_distance[key] = [along[v] for v in anchors]
 
     # ---- trips and stop times ----
     trip_rows, time_rows = [], []

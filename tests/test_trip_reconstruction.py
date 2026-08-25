@@ -2,6 +2,7 @@ import unittest
 
 from trip_reconstruction import (
     align_events,
+    bound_board_columns,
     load_turnarounds,
     reconstruct_direction,
     turnaround_role,
@@ -71,6 +72,54 @@ class DirectionReconstructionTests(unittest.TestCase):
         self.assertEqual(trips["weekday"][0]["calls"], [480, 484, 489])
         self.assertEqual(trips["weekday"][0]["published"], [True, True, False])
         self.assertEqual(trips["weekday"][1]["calls"], [510, 514, 519])
+        self.assertEqual(report, [])
+
+    def test_binds_equal_stop_names_to_the_destination_pass(self):
+        """A circular route's destination identifies the physical pass, not its label."""
+        route = {
+            "line": "4", "direction": "depart-from-campul",
+            "source_direction": "depart",
+            "destination": "Str. Fabricii / Gyár utca",
+            "stops": [
+                {"name": {"ro": "Câmpul Frumos"}},
+                {"name": {"ro": "Str. Constructorilor 2"}},
+                {"name": {"ro": "Str. Constructorilor 1"}},
+            ],
+        }
+        entries = [
+            {**self.board("4", "Str. Constructorilor 2", ("04:21", False)),
+             "destination": "Str. Fabricii / Gyár utca"},
+            {**self.board("4", "Str. Constructorilor 2", ("05:19", False)),
+             "destination": "Câmpul Frumos / Szépmező"},
+        ]
+
+        columns = bound_board_columns(route, entries)
+
+        self.assertEqual(len(columns), 1)
+        self.assertEqual(columns[0]["destination"], "Str. Fabricii / Gyár utca")
+
+    def test_uses_a_bound_literal_time_instead_of_the_nearby_estimate(self):
+        route = {
+            "line": "4", "direction": "depart-from-campul",
+            "source_direction": "depart",
+            "destination": "Str. Fabricii / Gyár utca",
+            "stops": [
+                {"name": {"ro": "Câmpul Frumos"}},
+                {"name": {"ro": "Str. Constructorilor 2"}},
+                {"name": {"ro": "Str. Constructorilor 1"}},
+            ],
+        }
+        entries = [
+            {**self.board("4", "Câmpul Frumos", ("04:19", False)),
+             "destination": "Str. Fabricii / Gyár utca"},
+            {**self.board("4", "Str. Constructorilor 2", ("04:21", False)),
+             "destination": "Str. Fabricii / Gyár utca"},
+        ]
+
+        trips, report = reconstruct_direction(route, entries, [0, 2 * 60, 4 * 60])
+
+        self.assertEqual(trips["weekday"][0]["calls"], [259, 261, 263])
+        self.assertEqual(trips["weekday"][0]["published"], [True, True, False])
         self.assertEqual(report, [])
 
     def test_prefers_a_direct_d_time_over_the_marked_base_line_duplicate(self):

@@ -35,7 +35,8 @@ from collections import Counter, defaultdict
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from build_map import best_label, palette  # noqa: E402
+from build_map import best_label, load_directions, palette  # noqa: E402
+from build_platforms import load_osm_platforms, load_overrides, resolve_platforms  # noqa: E402
 
 ROOT = Path(__file__).resolve().parent
 GTFS = ROOT / "gtfs"
@@ -73,7 +74,7 @@ def pattern_key(trip, rows):
             tuple(row["stop_id"] for row in rows), offsets)
 
 
-def official_boards(timetable):
+def official_boards(timetable, bindings=None, *, strict=True):
     """Keep the operator's stop boards separate from generated trip estimates.
 
     A board is a literal published column at one station. It is deliberately
@@ -95,11 +96,51 @@ def official_boards(timetable):
                     hour += 24
                 minutes.append(hour * 60 + minute)
             services[service] = sorted(minutes)
+        key = (entry["line"], entry.get("direction", "depart"), entry["stop_ro"], entry["destination"])
+        stop_id = bindings.get(key) if bindings is not None else None
+        if bindings is not None and strict and not stop_id:
+            raise ValueError(f"unbound official board: {key}")
         out.append({
+            **({"stopId": stop_id} if stop_id else {}),
             "stopRo": entry["stop_ro"], "lineId": entry["line"],
             "destination": entry["destination"], **services,
         })
     return sorted(out, key=lambda b: (b["stopRo"], b["lineId"], b["destination"]))
+
+
+def official_board_bindings(timetable, directions, topology, platform_stop_ids):
+    """Bind source columns where route topology proves one physical platform.
+
+    A destination-specific segment is intentionally narrower than its source
+    route.  It can therefore map equal display names on opposing kerbs without
+    guessing from coordinates or copying one column to both.  Legacy source
+    directions that genuinely have only one matching platform receive the same
+    safe binding; ambiguous columns remain unbound until their route segment is
+    audited rather than becoming wrong timetable data.
+    """
+    bindings = {}
+    for entry in timetable.get("timepoints", []):
+        key = (entry["line"], entry.get("direction", "depart"),
+               entry["stop_ro"], entry["destination"])
+        candidates = set()
+        for direction in directions:
+            if direction["line"] != entry["line"]:
+                continue
+            source_direction = direction.get("source_direction", direction["direction"])
+            if source_direction != entry.get("direction", source_direction):
+                continue
+            if (direction.get("destination") is not None and
+                    direction["destination"] != entry["destination"]):
+                continue
+            for index, stop in enumerate(direction["stops"]):
+                if stop["name"]["ro"] == entry["stop_ro"]:
+                    platform = topology["call_platforms"][(
+                        direction["line"], direction["direction"], index,
+                    )]
+                    candidates.add(platform_stop_ids[platform])
+        if len(candidates) == 1:
+            bindings[key] = candidates.pop()
+    return bindings
 
 
 K = math.cos(math.radians(LAT0))
@@ -374,6 +415,18 @@ def main():
         stops.append(entry)
         stations[entry["stationId"]].append(entry)
 
+    # `build_gtfs.py` allocates P1… in this stable platform-id order. Resolve
+    # the same topology here so a literal source board can retain that physical
+    # identity in the offline browser bundle.
+    directions = load_directions()
+    topology = resolve_platforms(directions, load_osm_platforms(), load_overrides())
+    platform_stop_ids = {
+        platform["id"]: f"P{index}"
+        for index, platform in enumerate(topology["platforms"], 1)
+    }
+    board_bindings = official_board_bindings(timetable, directions, topology,
+                                             platform_stop_ids)
+
     station_list = []
     for sid, members in stations.items():
         name = members[0]["name"]
@@ -505,7 +558,7 @@ def main():
         "validFrom": feed.get("feed_start_date", ""),
         "lines": lines, "stops": stops, "stations": station_list,
         "patterns": list(patterns.values()), "trips": trips, "walks": walks,
-        "officialBoards": official_boards(timetable),
+        "officialBoards": official_boards(timetable, board_bindings, strict=False),
     }
     broken = [p["id"] for p in network["patterns"]
               if any(b < a for a, b in zip(p["shapeIndex"], p["shapeIndex"][1:]))]
