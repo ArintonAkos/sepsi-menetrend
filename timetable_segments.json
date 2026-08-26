@@ -1,4 +1,18 @@
 {
+  "2-depart": [
+    {
+      "id": "to-gara",
+      "start": 22,
+      "end": 11,
+      "destination": "Gara / Vasútállomás"
+    },
+    {
+      "id": "from-gara",
+      "start": 11,
+      "end": 26,
+      "destination": "Str. Bartók Béla / Bartók Béla utca"
+    }
+  ],
   "3-depart": [
     {
       "id": "to-coseni",
@@ -25,6 +39,20 @@
       "start": 18,
       "end": 31,
       "destination": "Str. Fabricii / Gyár utca"
+    }
+  ],
+  "5-depart": [
+    {
+      "id": "to-arena",
+      "start": 26,
+      "end": 15,
+      "destination": "Arena Sepsi / Sepsi Aréna"
+    },
+    {
+      "id": "from-arena",
+      "start": 15,
+      "end": 28,
+      "destination": "Str. József Attila / József Attila utca"
     }
   ],
   "6-depart": [

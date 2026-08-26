@@ -24,13 +24,22 @@ def expand_timetable_segments(directions, raw):
                 raise ValueError(f"{key}: duplicate segment {identity}")
             seen.add(identity)
             start, end = segment["start"], segment["end"]
-            if start > end:
-                raise ValueError(f"{key}/{identity}: reversed source indexes")
-            selected = [
-                (stop, source_index)
-                for stop, source_index in zip(direction["stops"], direction["source_stop_indexes"])
-                if start <= source_index <= end
-            ]
+            source_calls = list(zip(direction["stops"], direction["source_stop_indexes"]))
+            source_by_index = {source_index: stop for stop, source_index in source_calls}
+            available = [source_index for _stop, source_index in source_calls]
+            if start not in source_by_index or end not in source_by_index:
+                raise ValueError(f"{key}/{identity}: source indexes are not retained")
+
+            if start <= end:
+                selected_indexes = [index for index in available if start <= index <= end]
+            else:
+                # Circular route pages choose an arbitrary start point.  A
+                # displayed run may begin late in that source order, pass the
+                # repeated terminal, and continue at index zero.  Keep that
+                # real travel order; sorting it would turn the route backwards.
+                selected_indexes = ([index for index in available if index >= start]
+                                    + [index for index in available if index != 0 and index <= end])
+            selected = [(source_by_index[index], index) for index in selected_indexes]
             if len(selected) < 2:
                 raise ValueError(f"{key}/{identity}: fewer than two retained calls")
             expanded = deepcopy(direction)

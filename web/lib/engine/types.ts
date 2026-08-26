@@ -89,6 +89,9 @@ export interface OfficialBoard {
   destination: string;
   weekday: Minute[];
   weekend: Minute[];
+  /** Base-line departures the operator explicitly marks as a D extension. */
+  markedWeekday?: Minute[];
+  markedWeekend?: Minute[];
 }
 
 /** A routed footpath between two stops, from OSRM/Valhalla - storable. */

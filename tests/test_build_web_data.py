@@ -29,6 +29,28 @@ class OfficialBoardTests(unittest.TestCase):
                 "times": {"weekday": ["04:21"], "weekend": []},
             }]}, {})
 
+    def test_combines_split_official_cards_on_the_same_physical_pole(self):
+        timetable = {"timepoints": [
+            {"source_station_id": 61, "line": "5D", "direction": "depart",
+             "stop_ro": "Gara CFR", "destination": "Câmpul Frumos / Szépmező",
+             "times": {"weekday": ["09:54"], "weekend": []}},
+            {"source_station_id": 62, "line": "5D", "direction": "depart",
+             "stop_ro": "Gara CFR", "destination": "Câmpul Frumos / Szépmező",
+             "times": {"weekday": ["06:02"], "weekend": []}},
+        ]}
+        bindings = {
+            (61, "5D", "depart", "Gara CFR", "Câmpul Frumos / Szépmező"): "P61",
+            (62, "5D", "depart", "Gara CFR", "Câmpul Frumos / Szépmező"): "P61",
+        }
+
+        boards = official_boards(timetable, bindings)
+
+        self.assertEqual(boards, [{
+            "stopId": "P61", "stopRo": "Gara CFR", "lineId": "5D",
+            "destination": "Câmpul Frumos / Szépmező",
+            "weekday": [362, 594], "weekend": [],
+        }])
+
     def test_binds_destination_specific_circular_columns_to_different_platforms(self):
         directions = [
             {"line": "4", "direction": "depart-to-campul", "source_direction": "depart",
@@ -56,6 +78,38 @@ class OfficialBoardTests(unittest.TestCase):
                                    "Câmpul Frumos / Szépmező")], "P75")
         self.assertEqual(bindings[("4", "depart", "Str. Constructorilor 2",
                                    "Str. Fabricii / Gyár utca")], "P76")
+
+    def test_keeps_every_column_of_one_source_pole_on_that_pole(self):
+        """A source station id identifies one physical pole, even if a route
+        geometry fails to include one of that pole's special D columns."""
+        directions = [
+            {"line": "6", "direction": "depart", "destination": "Str. Bartók Béla / Bartók Béla utca",
+             "stops": [{"name": {"ro": "Debren"}}, {"name": {"ro": "Str. Bartók Béla"}}]},
+            {"line": "10", "direction": "depart", "destination": "Arcuș / Árkos",
+             "stops": [{"name": {"ro": "Debren"}}, {"name": {"ro": "Arcuș"}}]},
+            {"line": "2D", "direction": "depart", "destination": "Câmpul Frumos / Szépmező",
+             "stops": [{"name": {"ro": "Debren"}}, {"name": {"ro": "Câmpul Frumos"}}]},
+        ]
+        topology = {"call_platforms": {
+            ("6", "depart", 0): "return-kerb",
+            ("10", "depart", 0): "return-kerb",
+            # The old route shape knew the D call only on the opposite kerb.
+            ("2D", "depart", 0): "outbound-kerb",
+        }, "platforms": []}
+        timetable = {"timepoints": [
+            {"source_station_id": 30, "line": "6", "direction": "depart", "stop_ro": "Debren",
+             "destination": "Str. Bartók Béla / Bartók Béla utca"},
+            {"source_station_id": 30, "line": "10", "direction": "depart", "stop_ro": "Debren",
+             "destination": "Arcuș / Árkos"},
+            {"source_station_id": 30, "line": "2D", "direction": "depart", "stop_ro": "Debren",
+             "destination": "Câmpul Frumos / Szépmező"},
+        ]}
+
+        bindings = official_board_bindings(timetable, directions, topology,
+                                           {"return-kerb": "P18", "outbound-kerb": "P17"})
+
+        self.assertEqual(bindings[(30, "2D", "return", "Debren",
+                                   "Str. Bartók Béla / Bartók Béla utca")], "P18")
 
     def test_binds_a_circular_board_to_the_pass_nearest_its_displayed_destination(self):
         directions = [{

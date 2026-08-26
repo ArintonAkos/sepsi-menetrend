@@ -499,7 +499,7 @@ export default function Planner({ network, places, reach, box, fares, bikeStatio
       query = encodeTrip({
         from: from && { name: from.name, at: from.at },
         to: to && { name: to.name, at: to.at },
-        time: timeCustomized ? time : null,
+        time,
         mode: mode !== "departAt" ? mode : null,
         journey: sharedJourney,
       });
@@ -620,7 +620,7 @@ export default function Planner({ network, places, reach, box, fares, bikeStatio
       nextQuery = encodeTrip({
         from: from && { name: from.name, at: from.at },
         to: to && { name: to.name, at: to.at },
-        time: timeCustomized ? time : null,
+        time,
         mode: mode !== "departAt" ? mode : null,
         journey: sharedJourney,
       });
@@ -630,7 +630,7 @@ export default function Planner({ network, places, reach, box, fares, bikeStatio
     if (currentQuery !== nextQuery) {
       window.history.replaceState(null, "", base + nextQuery);
     }
-  }, [from, to, time, mode, timeCustomized, sharedJourney, timetableState, boardStop, mounted, linkRead]);
+  }, [from, to, time, mode, sharedJourney, timetableState, boardStop, mounted, linkRead]);
 
   /* ---- pin picking. The map reports its centre; we name it. ---- */
   const onCentreChange = useCallback((at: LngLat) => { if (picking) setPinAt(at); }, [picking, setPinAt]);
@@ -974,7 +974,7 @@ export default function Planner({ network, places, reach, box, fares, bikeStatio
         )}
 
         <div className={styles.topRight} ref={gearRef}>
-          {/* <button className={styles.round} aria-label={t.timetables}
+          <button className={styles.round} aria-label={t.timetables}
                   onClick={() => setTimetableState((s) => ({
                     ...s,
                     open: true,
@@ -985,7 +985,7 @@ export default function Planner({ network, places, reach, box, fares, bikeStatio
               <rect x="3.5" y="4.5" width="17" height="16" rx="3" />
               <path d="M3.5 9.5h17M8 3v3M16 3v3M8 13h3M8 17h3M14 13h2M14 17h2" />
             </svg>
-          </button> */}
+          </button>
           <InstallApp t={t} />
           {planning && (
             <button className={styles.round} aria-label={t.share} onClick={share}>

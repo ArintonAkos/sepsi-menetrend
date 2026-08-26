@@ -92,11 +92,14 @@ class PlatformResolutionTests(unittest.TestCase):
             {"manual-6-to-arena-lapte", "manual-6-from-arena-lapte"},
         )
 
-        line_five = next(item for item in directions
-                         if item["line"] == "5" and item["direction"] == "depart")
+        to_arena = next(item for item in directions
+                        if item["line"] == "5" and item["direction"] == "depart-to-arena")
+        from_arena = next(item for item in directions
+                          if item["line"] == "5" and item["direction"] == "depart-from-arena")
         milk_calls = [
-            topology["call_platforms"][("5", "depart", index)]
-            for index, stop in enumerate(line_five["stops"])
+            topology["call_platforms"][("5", direction["direction"], index)]
+            for direction in (to_arena, from_arena)
+            for index, stop in enumerate(direction["stops"])
             if stop["name"]["ro"] == "Fabrica de Lapte"
         ]
         self.assertEqual(
@@ -116,6 +119,51 @@ class PlatformResolutionTests(unittest.TestCase):
             {platform["id"] for platform in sport_platforms},
             {"osm-1561627779", "osm-1248719235"},
         )
+
+    def test_line_2d_uses_the_opposite_kalvin_kerb_toward_campul_frumos(self):
+        directions = load_directions()
+        topology = resolve_platforms(directions, load_osm_platforms(), load_overrides())
+
+        def kalvin_platform(direction_name):
+            direction = next(item for item in directions
+                             if item["line"] == "2D" and item["direction"] == direction_name)
+            index = next(index for index, stop in enumerate(direction["stops"])
+                         if stop["name"]["ro"] == "Piața Kálvin")
+            return topology["call_platforms"][("2D", direction_name, index)]
+
+        self.assertEqual(kalvin_platform("depart"),
+                         "source-piatakalvin-45.870900-25.788700")
+        self.assertEqual(kalvin_platform("return"),
+                         "source-piatakalvin-45.870900-25.788500")
+
+    def test_line_2d_uses_the_outbound_ciucului_two_kerb_toward_campul_frumos(self):
+        directions = load_directions()
+        topology = resolve_platforms(directions, load_osm_platforms(), load_overrides())
+        direction = next(item for item in directions
+                         if item["line"] == "2D" and item["direction"] == "depart")
+        index = next(index for index, stop in enumerate(direction["stops"])
+                     if stop["name"]["ro"] == "Str. Ciucului 2")
+
+        self.assertEqual(
+            topology["call_platforms"][("2D", "depart", index)],
+            "source-strciucului2-45.871400-25.795100",
+        )
+
+    def test_debren_keeps_the_2d_and_six_return_directions_on_the_other_kerb(self):
+        directions = load_directions()
+        topology = resolve_platforms(directions, load_osm_platforms(), load_overrides())
+
+        def platform_for(line, direction_name):
+            direction = next(item for item in directions
+                             if item["line"] == line and item["direction"] == direction_name)
+            index = next(index for index, stop in enumerate(direction["stops"])
+                         if stop["name"]["ro"] == "Debren")
+            return topology["call_platforms"][(line, direction_name, index)]
+
+        self.assertEqual(platform_for("2D", "depart"), "osm-1706007748")
+        self.assertEqual(platform_for("2D", "return"), "osm-1706007749")
+        self.assertEqual(platform_for("6", "depart-to-arena"), "osm-1706007748")
+        self.assertEqual(platform_for("6", "depart-from-arena"), "osm-1706007749")
 
 
 if __name__ == "__main__":

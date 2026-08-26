@@ -130,6 +130,22 @@ describe("the board at a stop", () => {
 });
 
 describe("a line's whole day", () => {
+  it("combines reconstructed pieces of the same physical direction", () => {
+    const synthetic = fixture();
+    synthetic.patterns.push({
+      id: "P1-later-column", lineId: "1", shapeId: "S1-later-column",
+      headsign: { ro: "spre C", hu: "C felé" },
+      stopIds: ["A", "B", "C"], offsets: [0, 6, 11],
+      published: [false, true, true],
+      shape: [[25.760, 45.86], [25.800, 45.86]], shapeIndex: [0, 0, 1],
+    });
+    synthetic.trips.push({ patternId: "P1-later-column", service: "weekday", start: 485 });
+
+    const grid = timetable(prepare(synthetic), ["P1", "P1-later-column"], "weekday")!;
+    expect(grid.runs.map((run) => run[0])).toEqual([480, 485, 510, 540]);
+    expect(grid.publishedRuns[1]).toEqual([false, true, true]);
+  });
+
   it("is a grid of runs by stop", () => {
     const grid = timetable(ctx, net.patterns[0].id, "weekday")!;
     expect(grid.runs.length).toBeGreaterThan(0);

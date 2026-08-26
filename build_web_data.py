@@ -39,7 +39,10 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from build_map import anchor_vertices, best_label, load_directions, palette  # noqa: E402
 from build_platforms import load_osm_platforms, load_overrides, resolve_platforms  # noqa: E402
-from timetable_overrides import apply_timetable_overrides  # noqa: E402
+from timetable_overrides import (  # noqa: E402
+    apply_timetable_overrides, filter_opposite_platform_columns,
+    merge_same_platform_columns,
+)
 
 ROOT = Path(__file__).resolve().parent
 GTFS = ROOT / "gtfs"
@@ -77,7 +80,7 @@ def pattern_key(trip, rows):
             tuple(row["stop_id"] for row in rows), offsets)
 
 
-def official_boards(timetable, bindings=None, *, strict=True):
+def official_boards(timetable, bindings=None, *, strict=True, directions=None):
     """Keep the operator's stop boards separate from generated trip estimates.
 
     A board is a literal published column at one station. It is deliberately
@@ -87,28 +90,63 @@ def official_boards(timetable, bindings=None, *, strict=True):
     false trip topology.
     """
     out = []
+    entries = []
     for entry in apply_timetable_overrides(timetable.get("timepoints", [])):
+        key = board_binding_key(entry)
+        stop_id = bindings.get(key) if bindings is not None else None
+        if bindings is not None and strict and not stop_id:
+            raise ValueError(f"unbound official board: {key}")
+        entries.append({**entry, **({"_platform": stop_id} if stop_id else {})})
+
+    if directions is not None:
+        entries = filter_opposite_platform_columns(entries, directions)
+    for entry in merge_same_platform_columns(entries):
         services = {}
+        marked_services = {}
         for service in ("weekday", "weekend"):
             minutes = []
-            for text in entry.get("times", {}).get(service, []):
+            marked = []
+            events = entry.get("events", {}).get(service)
+            if events is None:
+                events = [{"time": text, "marked": False}
+                          for text in entry.get("times", {}).get(service, [])]
+            for event in events:
+                text = event["time"]
                 hour, minute = (int(part) for part in text.split(":"))
                 # The operator's 00:xx departures are the end of this service
                 # day, not buses before its 04:00 opening.
                 if hour < 4:
                     hour += 24
-                minutes.append(hour * 60 + minute)
+                value = hour * 60 + minute
+                minutes.append(value)
+                if event.get("marked", False):
+                    marked.append(value)
             services[service] = sorted(minutes)
-        key = (entry["line"], entry.get("direction", "depart"), entry["stop_ro"], entry["destination"])
-        stop_id = bindings.get(key) if bindings is not None else None
-        if bindings is not None and strict and not stop_id:
-            raise ValueError(f"unbound official board: {key}")
+            marked_services[service] = sorted(marked)
+        stop_id = entry.get("_platform")
         out.append({
             **({"stopId": stop_id} if stop_id else {}),
             "stopRo": entry["stop_ro"], "lineId": entry["line"],
             "destination": entry["destination"], **services,
+            **({"markedWeekday": marked_services["weekday"]}
+               if marked_services["weekday"] else {}),
+            **({"markedWeekend": marked_services["weekend"]}
+               if marked_services["weekend"] else {}),
         })
     return sorted(out, key=lambda b: (b["stopRo"], b["lineId"], b["destination"]))
+
+
+def board_binding_key(entry):
+    """Identity of one literal column on the operator's stop board.
+
+    The same stop name and line can occur on opposite kerbs.  The source page
+    gives those poles different numeric ids, which is the only unambiguous
+    identity at import time.  Keep old hand-built fixtures compatible too.
+    """
+    base = (entry["line"], entry.get("direction", "depart"),
+            entry["stop_ro"], entry["destination"])
+    source_station_id = entry.get("source_station_id")
+    return (source_station_id, *base) if source_station_id is not None else base
 
 
 _DESTINATION_NOISE = {"str", "strada", "utca", "cfr", "cap", "linie", "linia"}
@@ -230,11 +268,46 @@ def official_board_bindings(timetable, directions, topology, platform_stop_ids):
     breaker where the destination alone cannot choose a pass.  A tied or
     source-route-missing case stays unbound for review.
     """
+    entries = list(apply_timetable_overrides(timetable.get("timepoints", [])))
+    candidates_by_entry = {
+        id(entry): _board_candidates(entry, directions, topology, platform_stop_ids)
+        for entry in entries
+    }
     bindings = {}
-    for entry in apply_timetable_overrides(timetable.get("timepoints", [])):
-        key = (entry["line"], entry.get("direction", "depart"),
-               entry["stop_ro"], entry["destination"])
-        candidates = _board_candidates(entry, directions, topology, platform_stop_ids)
+    bound = set()
+
+    # One source station id is one actual pole. A D extension can be absent
+    # from the older route geometry, but its own official column must stay on
+    # the pole identified by the other literal columns in the same source
+    # station. This prevents two same-name Debren boards being merged.
+    by_source_station = defaultdict(list)
+    for entry in entries:
+        if entry.get("source_station_id") is not None:
+            by_source_station[entry["source_station_id"]].append(entry)
+    for grouped in by_source_station.values():
+        scores = defaultdict(lambda: [0, 0])
+        for entry in grouped:
+            closest = {}
+            for candidate in candidates_by_entry[id(entry)]:
+                distance = candidate["distance"]
+                distance = distance if distance is not None else 10_000
+                closest[candidate["stop_id"]] = min(closest.get(candidate["stop_id"], distance), distance)
+            for stop_id, distance in closest.items():
+                scores[stop_id][0] += 1
+                scores[stop_id][1] += distance
+        ranked = sorted(scores.items(), key=lambda item: (-item[1][0], item[1][1]))
+        if len(ranked) < 2 or ranked[0][1][0] > ranked[1][1][0]:
+            if ranked:
+                stop_id = ranked[0][0]
+                for entry in grouped:
+                    bindings[board_binding_key(entry)] = stop_id
+                    bound.add(id(entry))
+
+    for entry in entries:
+        if id(entry) in bound:
+            continue
+        key = board_binding_key(entry)
+        candidates = candidates_by_entry[id(entry)]
         platform_ids = {candidate["stop_id"] for candidate in candidates}
         if len(platform_ids) == 1:
             bindings[key] = platform_ids.pop()
@@ -538,6 +611,13 @@ def main():
     }
     board_bindings = official_board_bindings(timetable, directions, topology,
                                              platform_stop_ids)
+    board_directions = [{
+        **direction,
+        "callPlatforms": [
+            topology["call_platforms"][(direction["line"], direction["direction"], index)]
+            for index in range(len(direction["stops"]))
+        ],
+    } for direction in directions]
 
     station_list = []
     for sid, members in stations.items():
@@ -670,7 +750,8 @@ def main():
         "validFrom": feed.get("feed_start_date", ""),
         "lines": lines, "stops": stops, "stations": station_list,
         "patterns": list(patterns.values()), "trips": trips, "walks": walks,
-        "officialBoards": official_boards(timetable, board_bindings, strict=False),
+        "officialBoards": official_boards(timetable, board_bindings, strict=False,
+                                           directions=board_directions),
     }
     broken = [p["id"] for p in network["patterns"]
               if any(b < a for a, b in zip(p["shapeIndex"], p["shapeIndex"][1:]))]

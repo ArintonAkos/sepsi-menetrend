@@ -1,2 +1,2 @@
 feed_publisher_name,feed_publisher_url,feed_lang,default_lang,feed_start_date,feed_end_date,feed_version
-MultiTrans-GTFS,https://multitrans.ro,ro,ro,20260807,20271231,2026-08-25
+MultiTrans-GTFS,https://multitrans.ro,ro,ro,20260807,20271231,2026-08-26

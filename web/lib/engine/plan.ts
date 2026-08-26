@@ -517,12 +517,16 @@ export function generalisedCost(j: Journey, req: PlanRequest): number {
  *  which. A journey survives only if nothing else leaves no earlier, arrives no
  *  later and walks no further - with at least one of those strictly better.
  */
-function undominated(journeys: Journey[]): Journey[] {
+export function recommendationFrontier(journeys: Journey[]): Journey[] {
   return journeys.filter((one) => !journeys.some((other) =>
     other !== one
     && other.depart >= one.depart
     && other.arrive <= one.arrive
-    && other.walkMinutes <= one.walkMinutes
+    /* A one- to three-minute kerb crossing is cheaper than needlessly taking
+       another bus and changing again.  Keep larger walking differences as a
+       real trade-off for the slider, but do not preserve a loop merely because
+       it avoids walking across the road. */
+    && other.walkMinutes <= one.walkMinutes + (other.transfers < one.transfers ? 3 : 0)
     && other.transfers <= one.transfers
     && (other.depart > one.depart || other.arrive < one.arrive
         || other.walkMinutes < one.walkMinutes || other.transfers < one.transfers)));
@@ -603,7 +607,7 @@ export function plan(ctx: PlanContext, req: PlanRequest, limit = 8): Journey[] {
   /* Added after the sweep, not during it: it has no stop to be found at, and
      it must not be dropped by a bus itinerary that happens to walk less. */
   const afoot = onFootAlone(req);
-  const all = undominated([...found.values()]);
+  const all = recommendationFrontier([...found.values()]);
   if (afoot) all.push(afoot);
   all.sort((a, b) =>
     generalisedCost(a, req) - generalisedCost(b, req) ||
@@ -664,7 +668,7 @@ export function planWithWalking(ctx: PlanContext, req: PlanRequest,
     }
   }
 
-  const all = undominated([...found.values()]);
+  const all = recommendationFrontier([...found.values()]);
   if (walking.direct && walking.direct.minutes <= MAX_DIRECT_WALK) {
     const depart = req.mode === "departAt" ? req.time : req.time - walking.direct.minutes;
     all.push({
@@ -783,25 +787,50 @@ export function boardAt(ctx: PlanContext, stopId: string,
 /** One run's whole day, as the grid a printed timetable uses. */
 export interface Timetable {
   patternId: string;
+  /** The reconstructed pieces combined into this one rider-facing direction. */
+  patternIds: string[];
   lineId: string;
   headsign: { ro: string; hu: string };
   stopIds: string[];
   /** Per stop: whether the operator publishes its times or we worked them out. */
   published: boolean[];
+  /** Per run and per stop. Reconstructed pieces can complement each other, so
+   * a star belongs to one cell, never to every run in the same row. */
+  publishedRuns: boolean[][];
   /** One row per departure, one column per stop, in the order they are called. */
   runs: Minute[][];
 }
 
-export function timetable(ctx: PlanContext, patternId: string,
+export function timetable(ctx: PlanContext, patternId: string | readonly string[],
                           service: ServiceId): Timetable | null {
-  const pattern = ctx.patterns.get(patternId);
-  if (!pattern) return null;
-  const runs = (ctx.tripsOf.get(patternId) ?? [])
+  const patternIds = typeof patternId === "string" ? [patternId] : [...patternId];
+  const patterns = patternIds.map((id) => ctx.patterns.get(id));
+  if (!patterns.length || patterns.some((pattern) => !pattern)) return null;
+  const pattern = patterns[0]!;
+
+  /* Reconstruction may split one public direction into pieces because two
+     official boards expose complementary time anchors. They may share a table
+     only when a rider sees the exact same direction and stop sequence. */
+  if (patterns.some((candidate) => candidate!.lineId !== pattern.lineId
+      || candidate!.headsign.ro !== pattern.headsign.ro
+      || candidate!.headsign.hu !== pattern.headsign.hu
+      || candidate!.stopIds.length !== pattern.stopIds.length
+      || candidate!.stopIds.some((id, index) => id !== pattern.stopIds[index]))) {
+    return null;
+  }
+
+  const rows = patterns.flatMap((candidate) => (ctx.tripsOf.get(candidate!.id) ?? [])
     .filter((trip) => trip.service === service)
-    .sort((a, b) => a.start - b.start)
-    .map((trip) => pattern.offsets.map((offset) => trip.start + offset));
+    .map((trip) => ({
+      run: candidate!.offsets.map((offset) => trip.start + offset),
+      published: candidate!.published,
+    })))
+    .sort((a, b) => a.run[0]! - b.run[0]!);
+
   return {
-    patternId, lineId: pattern.lineId, headsign: pattern.headsign,
-    stopIds: pattern.stopIds, published: pattern.published, runs,
+    patternId: pattern.id, patternIds, lineId: pattern.lineId, headsign: pattern.headsign,
+    stopIds: pattern.stopIds, published: pattern.published,
+    publishedRuns: rows.map((row) => row.published),
+    runs: rows.map((row) => row.run),
   };
 }

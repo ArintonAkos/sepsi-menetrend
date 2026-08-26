@@ -1,4 +1,27 @@
 {
+  "ignoreColumns": [
+    {
+      "sourceStationIds": [46],
+      "line": "3",
+      "direction": "depart",
+      "stop": "Fabrica de Țigarete",
+      "destination": "Str. Fabricii / Gyár utca"
+    },
+    {
+      "sourceStationIds": [46],
+      "line": "4",
+      "direction": "depart",
+      "stop": "Fabrica de Țigarete",
+      "destination": "Str. Fabricii / Gyár utca"
+    },
+    {
+      "sourceStationIds": [99],
+      "line": "5D",
+      "direction": "depart",
+      "stop": "Autoliv",
+      "destination": "Câmpul Frumos / Szépmező"
+    }
+  ],
   "rewriteColumns": [
     {
       "line": "2D",
@@ -10,6 +33,37 @@
         "Str. Gábor Áron",
         "Str. Vânătorilor 1",
         "Str. Vânătorilor 2"
+      ],
+      "direction": "return",
+      "destination": "Str. Bartók Béla / Bartók Béla utca"
+    },
+    {
+      "line": "2D",
+      "fromDirection": "depart",
+      "fromDestination": "Câmpul Frumos / Szépmező",
+      "sourceStationIds": [
+        9,
+        26,
+        29,
+        30,
+        31,
+        32,
+        39,
+        40,
+        62,
+        97
+      ],
+      "stops": [
+        "Cartierul Ciucului",
+        "Str. Dealului",
+        "Str. Sporturilor",
+        "Debren",
+        "Str. Ciucului 1",
+        "Str. Ciucului 2",
+        "Lic. Plugor Sándor",
+        "Piața Kálvin",
+        "Gara CFR",
+        "Institutul de Proiectări"
       ],
       "direction": "return",
       "destination": "Str. Bartók Béla / Bartók Béla utca"

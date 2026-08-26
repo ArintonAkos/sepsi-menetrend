@@ -216,6 +216,11 @@ def main():
             }
             entries.append(
                 {
+                    # The public page has a separate stable id for each
+                    # physical pole, even when both sides are called exactly
+                    # the same (for example the two Debren stops). Keep it:
+                    # a name alone cannot safely put its columns on a kerb.
+                    "source_station_id": station["id"],
                     "line": number,
                     "direction": direction,
                     "stop_ro": romanian,

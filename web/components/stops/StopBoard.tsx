@@ -43,15 +43,36 @@ export default function StopBoard({
     }
     return officialBoardAt(ctx.net.officialBoards ?? [], stop.id, stop.name.ro, service, headsigns);
   }, [board, ctx.net.officialBoards, stop.id, stop.name.ro, service]);
+  /* On the source board a star in e.g. line 2 means "this exact departure
+     continues as 2D". The direct 2D column names the same departure more
+     usefully, so avoid showing it twice. This is distinct from our own
+     estimated-time notation, which is never mixed into an official board. */
+  const officialRows = official.map((column) => {
+    const marked = new Set(service === "weekday"
+      ? column.markedWeekday ?? [] : column.markedWeekend ?? []);
+    const extension = new Set(official
+      .filter((candidate) => candidate.lineId === `${column.lineId}D`)
+      .flatMap((candidate) => candidate[service]));
+    return {
+      column,
+      times: column[service].filter((at) => !marked.has(at) || !extension.has(at)),
+    };
+  }).filter((row) => row.times.length > 0);
+  /* A physical pole's published columns are the whole public timetable for
+     that side of the street.  Route reconstruction has estimated calls for
+     planning through unprinted intermediate stops, but appending them here
+     creates fictional duplicate directions beside literal operator columns.
+     Therefore estimate only when this pole has no official board at all. */
+  const inferred = officialRows.length === 0 ? board : [];
   /* Buses that finish here are worth listing - somebody is being collected -
      but they are not something you board, so they go last under their own
      heading rather than sitting between two departures of the same line. */
-  const leaving = board.filter((column) => !column.terminates);
-  const ending = board.filter((column) => column.terminates);
+  const leaving = inferred.filter((column) => !column.terminates);
+  const ending = inferred.filter((column) => column.terminates);
   const stops = ctx.stops;
   const name = lang === "hu" ? stop.name.hu : stop.name.ro;
   const other = lang === "hu" ? stop.name.ro : stop.name.hu;
-  const estimated = official.length === 0 && board.some((column) => !column.published);
+  const estimated = officialRows.length === 0 && inferred.length > 0;
 
   return (
     <section className={styles.sheet} aria-label={name} style={pullDismiss.style} {...pullDismiss.handlers}>
@@ -64,9 +85,8 @@ export default function StopBoard({
       </div>
 
       <div className={styles.body}>
-        {official.length > 0 ? official.map((column, i) => {
+        {officialRows.map(({ column, times }, i) => {
           const shade = shadeOf(lines.get(column.lineId), false);
-          const times = column[service];
           const next = times.find((at) => at >= now);
           const dimPast = next !== undefined;
           return (
@@ -89,8 +109,8 @@ export default function StopBoard({
               </div>
             </div>
           );
-        }) : <>
-        {board.length === 0 && <p className={styles.empty}>{t.noService}</p>}
+        })}
+        {inferred.length > 0 && <>
         {[...leaving, ...ending].map((column, i) => {
           const first = column.terminates && i === leaving.length;
           const shade = shadeOf(lines.get(column.lineId), false);
@@ -128,7 +148,7 @@ export default function StopBoard({
                     <span key={at}
                           className={`${styles.time} ${at === next ? styles.soon : ""}`
                                      + `${dimPast && at < now ? " " + styles.past : ""}`}>
-                      {formatHHMM(at)}{column.published ? "" : "*"}
+                      {formatHHMM(at)}*
                     </span>
                   ))}
                 </div>
@@ -138,6 +158,7 @@ export default function StopBoard({
           );
         })}
         </>}
+        {officialRows.length === 0 && inferred.length === 0 && <p className={styles.empty}>{t.noService}</p>}
         {estimated && <p className={styles.note}>{t.estimated}</p>}
       </div>
     </section>

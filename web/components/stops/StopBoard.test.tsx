@@ -75,6 +75,42 @@ describe("a stop's board", () => {
     expect(screen.queryByText("05:19")).toBeNull();
   });
 
+  it("does not mix inferred route calls into a physical board with official columns", () => {
+    const returnDebren = net.stops.find((candidate) => candidate.id === "P18")!;
+    render(<StopBoard stop={returnDebren} ctx={ctx}
+                      lines={new Map(net.lines.map((line) => [line.id, line]))}
+                      service="weekday" now={8 * 60} lang="hu" t={STRINGS.hu}
+                      onClose={() => {}} />);
+
+    // 2, 2D and 6 all genuinely call at this kerb toward the Bartók side.
+    expect(screen.getAllByText("→ Str. Bartók Béla / Bartók Béla utca")).toHaveLength(3);
+    expect(screen.queryByText("Câmpul Frumos → Str. Bartók Béla")).toBeNull();
+    expect(screen.queryByText(/csillaggal/i)).toBeNull();
+  });
+
+  it("keeps the two separately published Debren boards on their own kerbs", () => {
+    const lines = new Map(net.lines.map((line) => [line.id, line]));
+    const outbound = net.stops.find((candidate) => candidate.id === "P17")!;
+    const first = render(<StopBoard stop={outbound} ctx={ctx} lines={lines}
+                                    service="weekday" now={8 * 60} lang="hu" t={STRINGS.hu}
+                                    onClose={() => {}} />);
+    expect(first.getByText("→ Gara / Vasútállomás")).toBeInTheDocument();
+    expect(first.getByText("→ Arena Sepsi / Sepsi Aréna")).toBeInTheDocument();
+    expect(first.queryByText("→ Arcuș / Árkos")).toBeNull();
+    first.unmount();
+
+    const returnKerb = net.stops.find((candidate) => candidate.id === "P18")!;
+    render(<StopBoard stop={returnKerb} ctx={ctx} lines={lines}
+                      service="weekday" now={8 * 60} lang="hu" t={STRINGS.hu}
+                      onClose={() => {}} />);
+    expect(screen.getByText("→ Arcuș / Árkos")).toBeInTheDocument();
+    expect(screen.getAllByText("→ Str. Bartók Béla / Bartók Béla utca")).toHaveLength(3);
+    // The operator marks 04:50 as a 2D extension. It belongs in the explicit
+    // 2D column once, not both in the base 2 column and in 2D.
+    expect(screen.getAllByText("04:50")).toHaveLength(1);
+    expect(screen.queryByText("→ Gara / Vasútállomás")).toBeNull();
+  });
+
   it("gives a circular line one row per pass, not one merged column", () => {
     /* Line 3 comes through Gara CFR twice a loop, 25 minutes apart. Merged,
        it advertises a service twice as frequent as the one that runs - and

@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { prepare } from "../plan";
-import { planMultimodal, type MultimodalDependencies } from "../multimodal";
-import type { LngLat, Network, PlanRequest, WalkingContext } from "../types";
+import { planMultimodal, suppressPointlessBikeHybrids, type MultimodalDependencies } from "../multimodal";
+import type { Journey, LngLat, Network, PlanRequest, WalkingContext } from "../types";
 import type { BikeAvailability, BikeStation } from "../../sepsibike";
 import type { FootPath } from "../../walking-router";
 
@@ -82,7 +82,37 @@ const availability = (docks = stations()): BikeAvailability => ({
 });
 const deps = (docks = stations()): MultimodalDependencies => ({ availability: availability(docks), routes: routes() });
 
+const directBus: Journey = {
+  legs: [
+    { kind: "walk", fromStopId: null, toStopId: "A", metres: 600, minutes: 5, path: [origin, a] },
+    { kind: "ride", lineId: "1", patternId: "one", fromIndex: 0, toIndex: 1, board: 18 * 60 + 7, alight: 18 * 60 + 19 },
+    { kind: "walk", fromStopId: "B", toStopId: null, metres: 350, minutes: 3, path: [b, destination] },
+  ],
+  depart: 18 * 60 + 4, arrive: 18 * 60 + 22, walkMinutes: 8, transfers: 0,
+};
+
+const pointlessBikeBus: Journey = {
+  legs: [
+    { kind: "walk", fromStopId: null, toStopId: null, metres: 40, minutes: 1, path: [origin, dockA] },
+    { kind: "bike", startStationId: "02", finishStationId: "01", depart: 18 * 60 + 5, arrive: 18 * 60 + 23,
+      metres: 1377, minutes: 18, seconds: 1080, ascentMetres: 0, descentMetres: 0, path: [dockA, dockB], costLei: 0, stale: false },
+    { kind: "walk", fromStopId: null, toStopId: "A", metres: 127, minutes: 2, path: [dockB, a] },
+    { kind: "ride", lineId: "2", patternId: "two", fromIndex: 0, toIndex: 1, board: 18 * 60 + 36, alight: 18 * 60 + 48 },
+    { kind: "walk", fromStopId: "B", toStopId: null, metres: 281, minutes: 4, path: [b, destination] },
+  ],
+  depart: 18 * 60 + 4, arrive: 18 * 60 + 52, walkMinutes: 7, transfers: 0,
+};
+
 describe("multimodal planner", () => {
+  it("hides a bike-plus-bus detour when a bus is much faster for only one extra walking minute", () => {
+    expect(suppressPointlessBikeHybrids([directBus, pointlessBikeBus])).toEqual([directBus]);
+  });
+
+  it("keeps a bike-plus-bus option when it materially reduces walking", () => {
+    const helpfulBikeBus = { ...pointlessBikeBus, walkMinutes: 2 };
+    expect(suppressPointlessBikeHybrids([directBus, helpfulBikeBus])).toEqual([directBus, helpfulBikeBus]);
+  });
+
   it("returns a direct dock-to-dock bike journey in the common leg model", async () => {
     const found = await planMultimodal(prepare(network()), request(8 * 60, new Set(["no-bus"])), walking, deps());
     expect(found.map((journey) => journey.legs.map((leg) => leg.kind).join(","))).toContain("walk,bike,walk");

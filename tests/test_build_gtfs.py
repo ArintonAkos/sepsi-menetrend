@@ -36,6 +36,17 @@ class GtfsCsvTests(unittest.TestCase):
 
 
 class GtfsTopologyTests(unittest.TestCase):
+    def test_wraparound_segment_keeps_the_tail_then_head_of_circular_shape(self):
+        points = [[float(index), 0.0] for index in range(7)]
+
+        shape, anchors = build_gtfs.segment_shape(
+            points, [0, 1, 2, 3, 4, 5], [3, 4, 5, 1, 2],
+        )
+
+        self.assertEqual(shape, [points[3], points[4], points[5], points[6],
+                                 points[0], points[1], points[2]])
+        self.assertEqual(anchors, [0, 1, 2, 5, 6])
+
     def build_in_temporary_directory(self):
         previous_out, previous_archive, previous_platforms = (
             build_gtfs.OUT, build_gtfs.ARCHIVE, build_gtfs.PLATFORMS,

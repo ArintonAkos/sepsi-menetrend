@@ -1,6 +1,9 @@
 import unittest
 
 from trip_reconstruction import (
+    _compatible_columns,
+    _fill_estimated_calls,
+    _seed_starts,
     align_events,
     bound_board_columns,
     load_turnarounds,
@@ -10,6 +13,16 @@ from trip_reconstruction import (
 
 
 class EventAlignmentTests(unittest.TestCase):
+    def test_keeps_two_published_runs_four_minutes_apart_separate(self):
+        """The current 1D board really has 12:46 and 12:50 departures."""
+        self.assertEqual(_seed_starts([(766, "gara"), (770, "gara")]), [766, 770])
+
+    def test_does_not_bridge_three_nearby_estimates_into_one_run(self):
+        """A 12:49 estimate for the 12:46 run must not swallow 12:50."""
+        self.assertEqual(_seed_starts([
+            (749, "institut"), (750, "gara"), (751, "autoliv"), (754, "gara"),
+        ]), [750, 754])
+
     def test_pairs_each_published_event_with_its_matching_trip(self):
         self.assertEqual(
             align_events(predicted=[480, 510], observed=[484, 514], tolerance=8),
@@ -97,6 +110,54 @@ class DirectionReconstructionTests(unittest.TestCase):
 
         self.assertEqual(len(columns), 1)
         self.assertEqual(columns[0]["destination"], "Str. Fabricii / Gyár utca")
+
+    def test_rejects_a_same_named_board_from_the_opposite_physical_kerb(self):
+        route = {
+            "line": "6", "direction": "depart-to-arena",
+            "source_direction": "depart", "destination": "Arena Sepsi / Sepsi Aréna",
+            "callPlatforms": ["debren-arena-side"],
+            "stops": [{"name": {"ro": "Debren"}}],
+        }
+        entries = [
+            {**self.board("6", "Debren", ("08:20", False)),
+             "destination": "Arena Sepsi / Sepsi Aréna", "_platform": "debren-arena-side"},
+            {**self.board("6", "Debren", ("08:21", False)),
+             "destination": "Arena Sepsi / Sepsi Aréna", "_platform": "debren-bartok-side"},
+        ]
+
+        self.assertEqual(bound_board_columns(route, entries), [entries[0]])
+
+    def test_assigns_same_name_columns_to_the_matching_physical_pass(self):
+        route = {
+            "line": "L", "direction": "depart", "circular": True,
+            "callPlatforms": ["first-kerb", "middle", "second-kerb"],
+            "stops": [
+                {"name": {"ro": "A"}}, {"name": {"ro": "X"}},
+                {"name": {"ro": "A"}},
+            ],
+        }
+        entries = [
+            {**self.board("L", "A", ("08:00", False)), "_platform": "first-kerb"},
+            {**self.board("L", "A", ("08:12", False)), "_platform": "second-kerb"},
+            {**self.board("L", "X", ("08:05", False)), "_platform": "middle"},
+        ]
+
+        trips, report = reconstruct_direction(route, entries, [0, 5 * 60, 12 * 60])
+
+        self.assertEqual(trips["weekday"][0]["calls"], [480, 485, 492])
+        self.assertEqual(trips["weekday"][0]["published"], [True, True, True])
+        self.assertEqual(report, [])
+
+    def test_only_reads_the_column_on_the_requested_physical_kerb(self):
+        entries = [
+            {**self.board("L", "A", ("08:00", False)), "_platform": "first-kerb"},
+            {**self.board("L", "A", ("08:12", False)), "_platform": "second-kerb"},
+        ]
+
+        columns = _compatible_columns("L", "depart", True, "A", entries,
+                                      "weekday", platform="second-kerb")
+
+        self.assertEqual([column["_platform"] for column in columns], ["second-kerb"])
 
     def test_uses_a_bound_literal_time_instead_of_the_nearby_estimate(self):
         route = {
@@ -225,9 +286,27 @@ class DirectionReconstructionTests(unittest.TestCase):
 
         trips, report = reconstruct_direction(self.route, schedules, self.offsets)
 
-        self.assertEqual(trips["weekday"][0]["calls"], [480, 482, 487])
+        # The contradictory 07:59 may not bend a valid 08:00-originating run;
+        # the remaining calls keep their measured-duration shape.
+        self.assertEqual(trips["weekday"][0]["calls"], [480, 484, 489])
         self.assertEqual(trips["weekday"][0]["published"], [True, False, False])
         self.assertTrue(any(item["reason"] == "would break time order" for item in report))
+
+    def test_rebalances_soft_calls_between_two_published_clock_anchors(self):
+        """A road-duration estimate may not make a later official time look
+        impossible.  Only the two literal endpoint clocks are hard facts."""
+        trip = {
+            "start": 408,
+            "calls": [410, 409, 413],
+            "_baseline_calls": [408, 409, 413],
+            "published": [True, False, True],
+        }
+
+        _fill_estimated_calls(trip)
+
+        self.assertEqual(trip["calls"], [410, 411, 413])
+        self.assertEqual(trip["start"], 410)
+        self.assertNotIn("_baseline_calls", trip)
 
     def test_leaves_a_trip_unmatched_when_that_stop_has_no_printed_time(self):
         self.assertEqual(

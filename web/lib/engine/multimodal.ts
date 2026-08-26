@@ -4,7 +4,7 @@
  * departure times. */
 import { isBikeStationUsable, type BikeAvailability, type BikeRouteFunctions, type BikeStation } from "../sepsibike";
 import { bikeFare, canStartBikeRide } from "../sepsibike-timing";
-import { MAX_ACCESS_MINUTES, MAX_DIRECT_WALK, MAX_RIDES, MIN_TRANSFER, WALK_PACE, generalisedCost, removeNoProgressLoops, type PlanContext } from "./plan";
+import { MAX_ACCESS_MINUTES, MAX_DIRECT_WALK, MAX_RIDES, MIN_TRANSFER, WALK_PACE, generalisedCost, recommendationFrontier, removeNoProgressLoops, type PlanContext } from "./plan";
 import type { BikeLeg, Journey, Leg, LngLat, Minute, PlanRequest, RideLeg, WalkLeg, WalkingContext } from "./types";
 
 /** Two rentals already cover first/last mile plus one transfer; a third makes
@@ -89,6 +89,31 @@ function signature(journey: Journey) {
 
 function readyAt(label: Label) {
   return label.minute + (label.legs.at(-1)?.kind === "ride" ? MIN_TRANSFER : 0);
+}
+
+const hasBike = (journey: Journey) => journey.legs.some((leg) => leg.kind === "bike");
+const hasBus = (journey: Journey) => journey.legs.some((leg) => leg.kind === "ride");
+
+/** A bicycle is a useful connection only when it buys something tangible.
+ *
+ * The exhaustive multimodal search is deliberately allowed to find every
+ * physically possible bike-to-bus combination.  But the result list is a
+ * recommendation, not a dump of that search space.  Do not offer a long bike
+ * detour merely to save one or two minutes on foot when a later-departing bus
+ * reaches the destination materially earlier.  Three walking minutes remains
+ * a real trade-off; five arrival minutes is enough to make the slow hybrid
+ * clearly worse instead of merely different.
+ */
+export function suppressPointlessBikeHybrids(journeys: Journey[]): Journey[] {
+  return journeys.filter((journey) => {
+    if (!hasBike(journey) || !hasBus(journey)) return true;
+    return !journeys.some((other) => other !== journey
+      && !hasBike(other)
+      && other.depart >= journey.depart
+      && other.arrive + 5 <= journey.arrive
+      && other.walkMinutes <= journey.walkMinutes + 3
+      && other.transfers <= journey.transfers);
+  });
 }
 
 /**
@@ -279,11 +304,8 @@ export async function planMultimodal(
     }
   }
 
-  const all = [...found.values()].filter((journey) => ![...found.values()].some((other) => other !== journey
-    && other.depart >= journey.depart && other.arrive <= journey.arrive
-    && other.walkMinutes <= journey.walkMinutes && other.transfers <= journey.transfers
-    && (other.depart > journey.depart || other.arrive < journey.arrive
-      || other.walkMinutes < journey.walkMinutes || other.transfers < journey.transfers)))
+  const candidates = suppressPointlessBikeHybrids([...found.values()]);
+  const all = recommendationFrontier(candidates)
     .sort((left, right) => generalisedCost(left, request) - generalisedCost(right, request)
       || (request.mode === "departAt" ? left.arrive - right.arrive || left.depart - right.depart
         : right.depart - left.depart || right.arrive - left.arrive));

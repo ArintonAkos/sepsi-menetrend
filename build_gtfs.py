@@ -113,6 +113,30 @@ def without_removed_calls(record, removed_indexes):
     return result
 
 
+def segment_shape(points, full_anchors, retained_source_indexes, source_indexes=None):
+    """Slice a route shape in actual travel order, including a circular wrap.
+
+    The source route JSON is allowed to start at any stop on a circular line.
+    A destination-specific journey can therefore run from the tail of that
+    geometry through its closing point and continue at the head.  GTFS shapes
+    must preserve that order; a plain ``points[first:last]`` makes the
+    post-wrap stop distances point outside the emitted shape.
+    """
+    if source_indexes is None:
+        source_indexes = list(range(len(full_anchors)))
+    by_source_index = dict(zip(source_indexes, full_anchors))
+    retained = [by_source_index[index] for index in retained_source_indexes]
+    first, last = retained[0], retained[-1]
+    if first <= last:
+        return points[first:last + 1], [index - first for index in retained]
+
+    tail = points[first:]
+    head = points[:last + 1]
+    offset = len(tail)
+    return tail + head, [index - first if index >= first else offset + index
+                         for index in retained]
+
+
 def timing_points(directions, built, timetable):
     """Which (line, direction, stop index) the operator actually prints a time for.
 
@@ -340,11 +364,10 @@ def main():
             # segment must not draw the rest of the circular line.  Anchor the
             # full ordered source once, then retain precisely its endpoint arc.
             full_anchors = anchor_vertices(d["shape_source_stops"], points)
-            by_source_index = dict(zip(d["shape_source_indexes"], full_anchors))
-            retained = [by_source_index[index] for index in d["source_stop_indexes"]]
-            first, last = retained[0], retained[-1]
-            points = points[first:last + 1]
-            anchors = [index - first for index in retained]
+            points, anchors = segment_shape(
+                points, full_anchors, d["source_stop_indexes"],
+                d["shape_source_indexes"],
+            )
         else:
             anchors = anchor_vertices(d["stops"], points)
         along, running = [0.0], 0.0

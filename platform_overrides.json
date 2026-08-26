@@ -27,15 +27,44 @@
       "name": {"ro": "Fabrica de Lapte", "hu": "Tejgyár"},
       "point": [45.875100, 25.800450]
     },
-    "5:depart:14": {
+    "5:depart-to-arena:16": {
       "id": "manual-6-to-arena-lapte",
       "name": {"ro": "Fabrica de Lapte", "hu": "Tejgyár"},
       "point": [45.875100, 25.800950]
     },
-    "5:depart:16": {
+    "5:depart-from-arena:1": {
       "id": "manual-6-from-arena-lapte",
       "name": {"ro": "Fabrica de Lapte", "hu": "Tejgyár"},
       "point": [45.875100, 25.800450]
+    },
+    "2D:depart:5": {
+      "id": "source-piatakalvin-45.870900-25.788700",
+      "name": {"ro": "Piața Kálvin", "hu": "Kálvin tér"},
+      "point": [45.870900, 25.788700]
+    },
+    "2D:depart:7": {
+      "id": "source-strciucului2-45.871400-25.795100",
+      "name": {"ro": "Str. Ciucului 2", "hu": "Csíki utca 2"},
+      "point": [45.871400, 25.795100]
+    },
+    "2D:return:9": {
+      "id": "source-piatakalvin-45.870900-25.788500",
+      "name": {"ro": "Piața Kálvin", "hu": "Kálvin tér"},
+      "point": [45.870900, 25.788500]
+    },
+    "2D:return:5": {
+      "id": "osm-1706007749",
+      "name": {"ro": "Debren", "hu": "Debren"},
+      "point": [45.8670161, 25.7960357],
+      "osm_id": 1706007749,
+      "source": "osm"
+    },
+    "6:depart-from-arena:4": {
+      "id": "osm-1706007749",
+      "name": {"ro": "Debren", "hu": "Debren"},
+      "point": [45.8670161, 25.7960357],
+      "osm_id": 1706007749,
+      "source": "osm"
     }
   },
   "source_aliases": {

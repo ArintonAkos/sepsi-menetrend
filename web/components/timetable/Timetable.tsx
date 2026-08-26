@@ -9,6 +9,14 @@ import type { Lang, Strings } from "@/lib/i18n";
 import { Back } from "../common/icons";
 import styles from "./Timetable.module.css";
 
+interface Direction {
+  /** A stable representative, also suitable for the share URL. */
+  id: string;
+  headsign: { ro: string; hu: string };
+  /** One public direction can have several reconstructed timing pieces. */
+  patternIds: string[];
+}
+
 /**
  * Every departure the operator publishes, as a grid.
  *
@@ -45,16 +53,32 @@ export default function Timetable({
   const [lineId, setLineId] = useState(validInitialLine);
   const [service, setService] = useState<ServiceId>(initialService ?? "weekday");
 
-  /* A line can run more than one shape - the 3 loops one way, the 3D another -
-     and they are separate timetables however the operator numbers them. */
+  /* A line can run more than one public direction. Reconstruction can also
+     produce several timing pieces for one direction, which belong in one grid
+     when their sign and complete stop order agree. */
   const directions = useMemo(
-    () => network.patterns.filter((p) => p.lineId === lineId),
+    () => {
+      const groups = new Map<string, Direction>();
+      for (const pattern of network.patterns) {
+        if (pattern.lineId !== lineId) continue;
+        const key = JSON.stringify([pattern.headsign.ro, pattern.headsign.hu, pattern.stopIds]);
+        const existing = groups.get(key);
+        if (existing) existing.patternIds.push(pattern.id);
+        else groups.set(key, {
+          id: pattern.id,
+          headsign: pattern.headsign,
+          patternIds: [pattern.id],
+        });
+      }
+      return [...groups.values()];
+    },
     [network.patterns, lineId]);
   const [patternId, setPatternId] = useState<string | null>(initialPattern ?? null);
-  const chosen = directions.find((p) => p.id === patternId) ?? directions[0];
+  const chosen = directions.find((direction) => direction.patternIds.includes(patternId ?? ""))
+    ?? directions[0];
 
   const grid = useMemo(
-    () => (chosen ? timetable(ctx, chosen.id, service) : null),
+    () => (chosen ? timetable(ctx, chosen.patternIds, service) : null),
     [ctx, chosen, service]);
 
   const selectLine = (id: string) => {
@@ -113,10 +137,10 @@ export default function Timetable({
 
         {directions.length > 1 && (
           <div className={styles.seg}>
-            {directions.map((p) => (
-              <button key={p.id} aria-pressed={p.id === chosen?.id}
-                      onClick={() => selectPattern(p.id)}>
-                → {lang === "hu" ? p.headsign.hu : p.headsign.ro}
+            {directions.map((direction) => (
+              <button key={direction.id} aria-pressed={direction.id === chosen?.id}
+                      onClick={() => selectPattern(direction.id)}>
+                → {lang === "hu" ? direction.headsign.hu : direction.headsign.ro}
               </button>
             ))}
           </div>
@@ -151,16 +175,20 @@ export default function Timetable({
                 {grid.stopIds.map((id, row) => (
                   <tr key={`${id}-${row}`}>
                     <th className={styles.stopCell} scope="row">{stopName(id)}</th>
-                    {grid.runs.map((run, i) => (
-                      <td key={i} className={grid.published[row] ? "" : styles.guess}>
-                        {formatHHMM(run[row])}{grid.published[row] ? "" : "*"}
+                    {grid.runs.map((run, i) => {
+                      const published = grid.publishedRuns[i]?.[row] ?? grid.published[row];
+                      return (
+                      <td key={i} className={published ? "" : styles.guess}>
+                        {formatHHMM(run[row])}{published ? "" : "*"}
                       </td>
-                    ))}
+                      );
+                    })}
                   </tr>
                 ))}
               </tbody>
             </table>
-            {grid.published.includes(false) && <p className={styles.note}>{t.estimated}</p>}
+            {grid.publishedRuns.some((run) => run.includes(false))
+              && <p className={styles.note}>{t.estimated}</p>}
           </>
         )}
       </div>

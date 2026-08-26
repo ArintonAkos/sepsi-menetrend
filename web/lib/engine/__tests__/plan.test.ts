@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 import * as engine from "../plan";
-import { prepare, plan, stopsNear, metresBetween, nextDepartures, MIN_TRANSFER }
+import { prepare, plan, stopsNear, metresBetween, nextDepartures, MIN_TRANSFER, recommendationFrontier }
   from "../plan";
 import { formatHHMM } from "../time";
 import type { Journey, PlanRequest, RideLeg, WalkingContext } from "../types";
@@ -263,6 +263,19 @@ describe("spur routes", () => {
 });
 
 describe("dominated journeys", () => {
+  it("prefers waiting and a short platform walk over two extra bus changes", () => {
+    const longDetour: Journey = {
+      legs: [], depart: 14 * 60 + 53, arrive: 15 * 60 + 40,
+      walkMinutes: 23, transfers: 2,
+    };
+    const crossAndWait: Journey = {
+      legs: [], depart: 15 * 60 + 3, arrive: 15 * 60 + 40,
+      walkMinutes: 24, transfers: 1,
+    };
+
+    expect(recommendationFrontier([longDetour, crossAndWait])).toEqual([crossAndWait]);
+  });
+
   it("drops an option another one beats on every count", () => {
     /* Riding past your stop to the terminus and walking back is a genuine
        itinerary and never the one you want when the same bus, from the same

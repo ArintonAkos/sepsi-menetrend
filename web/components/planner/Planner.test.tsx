@@ -154,6 +154,14 @@ describe("Planner", () => {
     expect(screen.queryByText(/Nincs járat/)).not.toBeInTheDocument();
   });
 
+  it("puts even the current default time in the reusable route link", async () => {
+    window.history.replaceState(null, "", "/");
+    const user = await setup();
+    await startPlanning(user);
+
+    await waitFor(() => expect(window.location.search).toMatch(/(?:^|&)at=\d{2}%3A\d{2}(?:&|$)/));
+  });
+
   it("shows an explicit planning state instead of stale network results", async () => {
     const user = await setup();
     walkingMock.pending = true;
@@ -589,7 +597,7 @@ describe("walking the whole way", () => {
   });
 });
 
-describe.skip("the timetables", () => {
+describe("the timetables", () => {
   it("opens on a line and gives the whole screen to it", async () => {
     /* A timetable is a document to read, not a control to work alongside the
        map, so it takes over rather than sharing the space. */
@@ -597,6 +605,9 @@ describe.skip("the timetables", () => {
     await user.click(screen.getByLabelText("Menetrendek"));
     expect(await screen.findByRole("heading", { name: "Menetrendek" })).toBeInTheDocument();
     expect(screen.queryByLabelText("Honnan")).not.toBeInTheDocument();
+    expect(screen.getAllByRole("button", {
+      name: "→ Cap Linie Simeria → Gara CFR",
+    })).toHaveLength(1);
 
     const grid = screen.getByRole("table");
     // stops down the page, runs across it - the other way round puts thirty

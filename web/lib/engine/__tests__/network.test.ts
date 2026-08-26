@@ -344,9 +344,10 @@ describe("the real network", () => {
     const five = options
       .find((j) => rides(j).some((r) => r.lineId === "5"));
     expect(five, "no line 5 itinerary at all").toBeTruthy();
-    // Current official calls make this line-5 alternative arrive earlier;
-    // keep the real-feed regression anchored to the regenerated timetable.
-    expect(formatHHMM(five!.arrive)).toBe("05:46");
+    // Keep the real-feed regression anchored to the literal, current stop
+    // boards.  The old 05:46 value came from a single unsegmented loop and
+    // combined two different displayed destinations into one fictitious run.
+    expect(formatHHMM(five!.arrive)).toBe("06:39");
 
     const last = [...five!.legs].reverse().find((l) => l.kind === "ride") as RideLeg;
     const pattern = net.patterns.find((p) => p.id === last.patternId)!;

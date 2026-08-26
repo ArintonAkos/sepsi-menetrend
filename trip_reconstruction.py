@@ -95,16 +95,19 @@ def _events(entry, service, *, marked=None):
     return sorted(events, key=_minute)
 
 
-def _compatible_columns(line, direction, circular, stop_name, entries, service):
+def _compatible_columns(line, direction, circular, stop_name, entries, service, *, platform=None):
     """Prefer an explicit D column; a marked base event is only its fallback."""
     # A non-circular line has two physical directions.  A clock for the other
     # direction must never be copied onto this path.  Circular lines have one
     # ordered circuit; their changing destination display is not a second path.
     belongs_here = lambda entry: (circular or
                                   entry.get("direction", direction) == direction)
+    at_platform = lambda entry: (platform is None or entry.get("_platform") is None
+                                 or entry.get("_platform") == platform)
     direct = [entry for entry in entries if entry["line"] == line
               and belongs_here(entry)
               and entry["stop_ro"] == stop_name and _events(entry, service)]
+    direct = [entry for entry in direct if at_platform(entry)]
     if direct:
         # Base lines contain the D extension in the same printed column.  A
         # normal line must see only its unmarked events; the D line keeps its
@@ -117,7 +120,8 @@ def _compatible_columns(line, direction, circular, stop_name, entries, service):
         return [{**entry, "_marked": True}
                 for entry in entries if entry["line"] == base
                 and belongs_here(entry)
-                and entry["stop_ro"] == stop_name and _events(entry, service, marked=True)]
+                and entry["stop_ro"] == stop_name and at_platform(entry)
+                and _events(entry, service, marked=True)]
 
     return []
 
@@ -133,29 +137,72 @@ def bound_board_columns(direction, entries):
     """
     source_direction = direction.get("source_direction", direction["direction"])
     destination = direction.get("destination")
-    return [entry for entry in entries
-            if entry["line"] in ({direction["line"], direction["line"][:-1]}
-                                  if direction["line"].endswith("D")
-                                  else {direction["line"]})
-            and entry.get("direction", source_direction) == source_direction
-            and (destination is None or entry.get("destination") == destination)]
+    compatible = [entry for entry in entries
+                  if entry["line"] in ({direction["line"], direction["line"][:-1]}
+                                        if direction["line"].endswith("D")
+                                        else {direction["line"]})
+                  and entry.get("direction", source_direction) == source_direction
+                  and (destination is None or entry.get("destination") == destination)]
+
+    # Route geometry can still have an old coordinate on the wrong kerb.  Do
+    # not throw away its literal clock merely for that reason.  But when the
+    # source provides two columns for the same name and one *does* match the
+    # reviewed physical call, the other one is conclusively the opposite side.
+    platforms_by_name = {}
+    for index, stop in enumerate(direction["stops"]):
+        platform = (direction.get("callPlatforms") or [])[index:index + 1]
+        if platform:
+            platforms_by_name.setdefault(stop["name"]["ro"], set()).add(platform[0])
+    result = []
+    for entry in compatible:
+        wanted = platforms_by_name.get(entry["stop_ro"], set())
+        matching_column_exists = any(
+            other["stop_ro"] == entry["stop_ro"]
+            and other.get("_platform") in wanted
+            for other in compatible
+        )
+        if (entry.get("_platform") is not None and wanted
+                and entry["_platform"] not in wanted and matching_column_exists):
+            continue
+        result.append(entry)
+    return result
 
 
 def _seed_starts(candidates):
-    """Coalesce estimates of the same run without joining neighbouring runs."""
+    """Coalesce estimates of the same run without joining neighbouring runs.
+
+    Each candidate carries the literal board column that produced it.  Close
+    estimates from *different* stops are normal rounding noise, but two close
+    events from one printed column are two actual departures and may never be
+    averaged into one.
+    """
     if not candidates:
         return []
-    groups = [[value] for value in sorted(candidates)]
+    normalised = [value if isinstance(value, tuple) else (value, index)
+                  for index, value in enumerate(candidates)]
+    groups = [[value] for value in sorted(normalised)]
     merged = [groups[0]]
     for group in groups[1:]:
-        # Road-duration estimates are rounded and can differ a few minutes
-        # between adjacent stop boards. Five minutes is deliberately below the
-        # network's shortest regular headway, so two actual runs stay separate.
-        if group[0] - merged[-1][-1] <= 5:
+        previous = merged[-1]
+        used_columns = {column for _minute_value, column in previous}
+        # Road-duration estimates from neighbouring stop boards can differ a
+        # few minutes. Five minutes is safe only while they are distinct board
+        # columns; the current 1D board proves that one column can contain two
+        # real departures four minutes apart.
+        if group[0][0] - previous[-1][0] <= 5 and group[0][1] not in used_columns:
             merged[-1].extend(group)
         else:
             merged.append(group)
-    return [round(sum(group) / len(group)) for group in merged]
+    return [round(sum(value for value, _column in group) / len(group))
+            for group in merged]
+
+
+def _column_identity(entry):
+    source = entry.get("source_station_ids")
+    if source is None:
+        source = [entry.get("source_station_id")]
+    return (tuple(source), entry["line"], entry.get("direction", "depart"),
+            entry["stop_ro"], entry["destination"], entry.get("_platform"))
 
 
 def _column_score(predicted, entry, service, tolerance):
@@ -163,6 +210,51 @@ def _column_score(predicted, entry, service, tolerance):
     pairs = align_events(predicted, observed, tolerance)
     gap = sum(abs(predicted[trip] - observed[event]) for trip, event in pairs)
     return len(pairs), gap, pairs, observed
+
+
+def _nearest_published_call(trip, index, step):
+    """Find the next hard timetable anchor in one direction."""
+    candidate = index + step
+    while 0 <= candidate < len(trip["published"]):
+        if trip["published"][candidate]:
+            return candidate, trip["calls"][candidate]
+        candidate += step
+    return None
+
+
+def _fill_estimated_calls(trip):
+    """Re-fit soft duration estimates around the literal clock anchors.
+
+    The former implementation treated an old road-duration prediction as if
+    it were an official departure.  A genuine board time could therefore be
+    rejected merely because it landed after an estimated neighbouring call.
+    Only two published values constrain one another; every other call is
+    re-scaled between the surrounding hard anchors afterwards.
+    """
+    baseline = trip.pop("_baseline_calls")
+    calls, published = trip["calls"], trip["published"]
+    anchors = [index for index, exact in enumerate(published) if exact]
+    if not anchors:
+        trip["start"] = calls[0]
+        return
+
+    for index, exact in enumerate(published):
+        if exact:
+            continue
+        left = next((anchor for anchor in reversed(anchors) if anchor < index), None)
+        right = next((anchor for anchor in anchors if anchor > index), None)
+        if left is not None and right is not None:
+            baseline_span = baseline[right] - baseline[left]
+            if baseline_span > 0:
+                ratio = (baseline[index] - baseline[left]) / baseline_span
+                calls[index] = round(calls[left] + ratio * (calls[right] - calls[left]))
+            else:
+                calls[index] = calls[left]
+        elif left is not None:
+            calls[index] = calls[left] + baseline[index] - baseline[left]
+        else:
+            calls[index] = calls[right] - (baseline[right] - baseline[index])
+    trip["start"] = calls[0]
 
 
 def reconstruct_direction(direction, entries, offsets, tolerance=12):
@@ -176,6 +268,8 @@ def reconstruct_direction(direction, entries, offsets, tolerance=12):
     entries = bound_board_columns(direction, entries)
     names = [stop["name"]["ro"] for stop in direction["stops"]]
     offset_minutes = [round(seconds / 60) for seconds in offsets]
+    call_platforms = direction.get("callPlatforms", [])
+    platform_at = lambda index: call_platforms[index] if index < len(call_platforms) else None
     occurrences = {name: names.count(name) for name in set(names)}
     circular = bool(direction.get("circular"))
     result, report = {"weekday": [], "weekend": []}, []
@@ -189,7 +283,8 @@ def reconstruct_direction(direction, entries, offsets, tolerance=12):
                                              circular, name, entries, service):
                 events = _events(entry, service)
                 if events:
-                    candidates.extend(_minute(event) - offset_minutes[index]
+                    candidates.extend((_minute(event) - offset_minutes[index],
+                                       _column_identity(entry))
                                       for event in events)
         if not candidates:
             has_service = any(_events(entry, service) for entry in entries
@@ -204,6 +299,7 @@ def reconstruct_direction(direction, entries, offsets, tolerance=12):
         starts = _seed_starts(candidates)
         trips = [{"start": start,
                   "calls": [start + offset for offset in offset_minutes],
+                  "_baseline_calls": [start + offset for offset in offset_minutes],
                   "published": [False] * len(names)}
                  for start in starts]
 
@@ -218,10 +314,15 @@ def reconstruct_direction(direction, entries, offsets, tolerance=12):
             for column in columns:
                 choices = []
                 for index in indices:
+                    platform = platform_at(index)
+                    if (len(indices) > 1 and platform is not None and column.get("_platform") is not None
+                            and column["_platform"] != platform):
+                        continue
                     predicted = [trip["calls"][index] for trip in trips]
                     score = _column_score(predicted, column, service, tolerance)
                     choices.append((score[0], score[1], index, score))
-                proposals.append((column, choices))
+                if choices:
+                    proposals.append((column, choices))
 
             if not any(matches for _column, choices in proposals
                        for matches, _gap, _index, _score in choices):
@@ -233,6 +334,8 @@ def reconstruct_direction(direction, entries, offsets, tolerance=12):
             # A repeated physical stop appears twice on a loop page.  A single
             # board column can describe only one pass through it, so assign it
             # to its best-fitting occurrence and never copy its times to both.
+            same_physical_pass = (len(indices) > 1 and
+                                  len({platform_at(index) for index in indices}) == 1)
             claimed = set()
             ranked = sorted(proposals,
                             key=lambda proposal: max((choice[0], -choice[1])
@@ -242,28 +345,41 @@ def reconstruct_direction(direction, entries, offsets, tolerance=12):
                 available = [choice for choice in choices if choice[2] not in claimed]
                 if not available:
                     continue
-                matches, gap, index, best = max(available,
-                                                key=lambda choice: (choice[0], -choice[1]))
+                # If the source gives only one literal column for the same
+                # physical kerb twice in a loop segment, it is the first pass
+                # through that segment by default.  Duration estimates may
+                # decide neither the kerb nor the pass; they are only a
+                # tie-breaker once the public topology has done so.
+                matches, gap, index, best = max(
+                    available,
+                    key=(lambda choice: (choice[0], -choice[2], -choice[1]))
+                    if same_physical_pass else
+                    (lambda choice: (choice[0], -choice[1])),
+                )
                 if matches == 0:
                     continue
                 claimed.add(index)
                 for trip_index, event_index in best[2]:
                     observed = best[3][event_index]
-                    before = trips[trip_index]["calls"][index - 1] if index else None
-                    after = (trips[trip_index]["calls"][index + 1]
-                             if index + 1 < len(names) else None)
-                    if ((before is not None and observed < before) or
-                            (after is not None and observed > after)):
+                    previous = _nearest_published_call(trips[trip_index], index, -1)
+                    following = _nearest_published_call(trips[trip_index], index, 1)
+                    if ((previous is not None and observed < previous[1]) or
+                            (following is not None and observed > following[1])):
                         report.append({
                             "line": direction["line"],
                             "direction": direction["direction"],
                             "service": service,
                             "stop": name,
                             "reason": "would break time order",
+                            "observed": observed,
+                            **({"previous": previous[1]} if previous is not None else {}),
+                            **({"following": following[1]} if following is not None else {}),
                         })
                         continue
                     trips[trip_index]["calls"][index] = observed
                     trips[trip_index]["published"][index] = True
+        for trip in trips:
+            _fill_estimated_calls(trip)
         result[service] = trips
 
     return result, report
