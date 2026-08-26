@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { prepare } from "../plan";
-import { planMultimodal, suppressPointlessBikeHybrids, type MultimodalDependencies } from "../multimodal";
+import { multimodalSearchStarts, planMultimodal, suppressPointlessBikeHybrids, type MultimodalDependencies } from "../multimodal";
 import type { Journey, LngLat, Network, PlanRequest, WalkingContext } from "../types";
 import type { BikeAvailability, BikeStation } from "../../sepsibike";
 import type { FootPath } from "../../walking-router";
@@ -104,6 +104,40 @@ const pointlessBikeBus: Journey = {
 };
 
 describe("multimodal planner", () => {
+  it("uses the same bounded arrive-by time window as the bus planner", () => {
+    /* Checking every minute meant 121 complete bike-plus-transit searches.
+       The previous implementation created millions of microtasks and froze
+       the interface for seconds. The transit planner samples this two-hour
+       window every ten minutes; multimodal planning must obey that bound too. */
+    expect(multimodalSearchStarts({ ...request(8 * 60), mode: "arriveBy" }))
+      .toEqual([360, 370, 380, 390, 400, 410, 420, 430, 440, 450, 460, 470, 480]);
+  });
+
+  it("stops an obsolete multimodal search before it schedules routing work", async () => {
+    const controller = new AbortController();
+    controller.abort();
+    let walkCalls = 0;
+    const found = await planMultimodal(prepare(network()), request(), walking, {
+      availability: availability(),
+      routes: {
+        walk: async (...args) => { walkCalls += 1; return routes().walk(...args); },
+        ride: routes().ride,
+      },
+      signal: controller.signal,
+    });
+    expect(found).toEqual([]);
+    expect(walkCalls).toBe(0);
+  });
+
+  it("keeps a direct bike arrive-by option at the actual latest departure", async () => {
+    const found = await planMultimodal(prepare(network()), {
+      ...request(8 * 60, new Set(["no-bus"])), mode: "arriveBy",
+    }, walking, deps());
+    const directBike = found.find((journey) => journey.legs.some((leg) => leg.kind === "bike")
+      && !journey.legs.some((leg) => leg.kind === "ride"));
+    expect(directBike?.arrive).toBe(8 * 60);
+  });
+
   it("hides a bike-plus-bus detour when a bus is much faster for only one extra walking minute", () => {
     expect(suppressPointlessBikeHybrids([directBus, pointlessBikeBus])).toEqual([directBus]);
   });

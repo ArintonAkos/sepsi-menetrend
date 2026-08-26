@@ -85,8 +85,11 @@ export default function Planner({ network, places, reach, box, fares, bikeStatio
     () => ({ box, reach, stops: network.stops.map((s) => s.at) }),
     [box, reach, network]);
 
-  const [lang, setLangState] = useState<Lang>(() =>
-    readLang(typeof window === "undefined" ? null : globalThis.localStorage ?? null));
+  /* The static HTML is hydrated before the browser may read any device-only
+     preference. Every persisted choice therefore starts from the same value
+     on Netlify and in the browser, then is restored in one client effect. */
+  const [preferencesReady, setPreferencesReady] = useState(false);
+  const [lang, setLangState] = useState<Lang>("hu");
   const setLang = useCallback((l: Lang) => {
     setLangState(l);
     writeLang(globalThis.localStorage ?? null, l);
@@ -100,15 +103,7 @@ export default function Planner({ network, places, reach, box, fares, bikeStatio
     return () => window.removeEventListener(LANG_CHANGE_EVENT, handleLang);
   }, []);
 
-  const [theme, setThemeState] = useState<Theme>(() => {
-    if (typeof window === "undefined") return "auto";
-    try {
-      const saved = localStorage.getItem("sepsi.theme");
-      return saved === "light" || saved === "dark" || saved === "auto" ? saved : "auto";
-    } catch {
-      return "auto";
-    }
-  });
+  const [theme, setThemeState] = useState<Theme>("auto");
   const setTheme = useCallback((th: Theme) => {
     setThemeState(th);
     try { localStorage.setItem("sepsi.theme", th); } catch {}
@@ -140,8 +135,7 @@ export default function Planner({ network, places, reach, box, fares, bikeStatio
   const [bikeAvailability, setBikeAvailability] = useState<BikeAvailability>(() => ({
     stations: bikeStations, source: "snapshot", fetchedAt: bikeSnapshotAt, stale: true,
   }));
-  const [showBikeOptions, setShowBikeOptions] = useState(() =>
-    globalThis.localStorage?.getItem("sepsibike-options") === "on");
+  const [showBikeOptions, setShowBikeOptions] = useState(false);
   const [bikeBoard, setBikeBoard] = useState<
     { stationId: string; anchor: HTMLElement | null; dismiss: () => void } | null>(null);
   const [closingBikeBoard, setClosingBikeBoard] = useState(false);
@@ -360,10 +354,19 @@ export default function Planner({ network, places, reach, box, fares, bikeStatio
 
   /* Where you have been before. On the device only - this is a list of where
      somebody goes, which is about as personal as this app gets. */
-  /* Read once, lazily: localStorage is not there during the static render, and
-     hydrating from it in an effect would flash an empty list first. */
-  const [recent, setRecent] = useState<Recent[]>(() =>
-    typeof window === "undefined" ? [] : read(window.localStorage));
+  const [recent, setRecent] = useState<Recent[]>([]);
+  useEffect(() => {
+    setLangState(readLang(globalThis.localStorage ?? null));
+    try {
+      const savedTheme = localStorage.getItem("sepsi.theme");
+      if (savedTheme === "light" || savedTheme === "dark" || savedTheme === "auto") {
+        setThemeState(savedTheme);
+      }
+      setShowBikeOptions(localStorage.getItem("sepsibike-options") === "on");
+      setRecent(read(localStorage));
+    } catch {}
+    setPreferencesReady(true);
+  }, []);
   const keep = useCallback((place: { name: string; at: LngLat }) => {
     setRecent((list) => {
       const next = remember(list, place);
@@ -570,12 +573,15 @@ export default function Planner({ network, places, reach, box, fares, bikeStatio
     const [hours, minutes] = time.split(":").map(Number);
     const request = { from: from.at, to: to.at, time: hours * 60 + minutes, service: serviceForDate(date),
       mode, walkAversion: settledAversion, lines: visibleLines } as const;
+    const controller = new AbortController();
     const result = showBikeOptions
       ? planMultimodal(ctx, request, walking.value, { availability: bikeAvailability,
-        routes: { walk: routeOnFoot, ride: routeByBike, ridesFrom: routesByBikeFrom }, walkFrom: routesFrom })
+        routes: { walk: routeOnFoot, ride: routeByBike, ridesFrom: routesByBikeFrom },
+        walkFrom: routesFrom, signal: controller.signal })
       : Promise.resolve(planWithWalking(ctx, request, walking.value));
-    result.then((journeys) => { if (!cancelled) setPlanned({ key: multimodalKey, journeys }); });
-    return () => { cancelled = true; };
+    result.then((journeys) => { if (!cancelled) setPlanned({ key: multimodalKey, journeys }); })
+      .catch(() => { if (!cancelled) setPlanned({ key: multimodalKey, journeys: [] }); });
+    return () => { cancelled = true; controller.abort(); };
   }, [ctx, from, to, time, date, mode, settledAversion, visibleLines, walking, walkingKey,
     multimodalKey, showBikeOptions, bikeAvailability]);
   const journeys = planned?.key === multimodalKey ? planned.journeys : [];
@@ -584,7 +590,10 @@ export default function Planner({ network, places, reach, box, fares, bikeStatio
      paths and the subsequent timetable search have caught up, showing either
      the old answer or the whole network looks like an answer, but isn't one. */
   const routeLoading = planning && (walking?.key !== walkingKey || planned?.key !== multimodalKey);
-  useEffect(() => { globalThis.localStorage?.setItem("sepsibike-options", showBikeOptions ? "on" : "off"); }, [showBikeOptions]);
+  useEffect(() => {
+    if (!preferencesReady) return;
+    globalThis.localStorage?.setItem("sepsibike-options", showBikeOptions ? "on" : "off");
+  }, [preferencesReady, showBikeOptions]);
 
   const planKey = [from?.name, to?.name, time, date.toDateString(), mode,
                    settledAversion, [...visibleLines].sort().join(","),

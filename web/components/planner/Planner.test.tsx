@@ -732,6 +732,18 @@ describe("a shared link", () => {
       .not.toContain("Vasútállomás");
   });
 
+  it("does not read saved browser preferences while producing server markup", () => {
+    /* A saved setting belongs to the browser, not to Netlify's static render.
+       Reading it in the first render makes the client tree differ from the
+       HTML it has to hydrate. The real browser then reports React #418. */
+    localStorage.setItem("sepsibike-options", "on");
+    const getItem = vi.spyOn(Storage.prototype, "getItem");
+    renderToString(
+      <Planner network={network} places={places} reach={reach} box={box} fares={fares} />);
+    expect(getItem).not.toHaveBeenCalled();
+    getItem.mockRestore();
+  });
+
   it("ignores a link that carries nothing", async () => {
     at("/?from=&to=nonsense");
     await setup();

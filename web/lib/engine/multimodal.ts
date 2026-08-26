@@ -10,9 +10,28 @@ import type { BikeLeg, Journey, Leg, LngLat, Minute, PlanRequest, RideLeg, WalkL
 /** Two rentals already cover first/last mile plus one transfer; a third makes
  * a city journey slower and explodes the state space without helping riders. */
 const MAX_RENTALS = 2;
+const SEARCH_WINDOW_MINUTES = 120;
+const SEARCH_STEP_MINUTES = 10;
+
+/** Match the bounded two-hour sweep used by the transit-only planner. Running
+ * a whole city-scale bike search once per minute made arrive-by planning
+ * create millions of queued microtasks and lock the browser. */
+export function multimodalSearchStarts(request: PlanRequest): Minute[] {
+  return request.mode === "departAt"
+    ? [request.time]
+    : Array.from({ length: SEARCH_WINDOW_MINUTES / SEARCH_STEP_MINUTES + 1 },
+      (_, index) => request.time - SEARCH_WINDOW_MINUTES + index * SEARCH_STEP_MINUTES)
+        .filter((minute) => minute >= 0);
+}
+
+const yieldToBrowser = () => new Promise<void>((resolve) => setTimeout(resolve, 0));
+const monotonicNow = () => globalThis.performance?.now?.() ?? Date.now();
+
 export interface MultimodalDependencies {
   availability: BikeAvailability;
   routes: BikeRouteFunctions;
+  /** The UI cancels an obsolete search immediately when its inputs change. */
+  signal?: AbortSignal;
   /** Optional worker batch endpoint.  It turns all walk candidates from one
    * node into one Dijkstra run instead of N identical graph searches. */
   walkFrom?: (from: LngLat, destinations: LngLat[], maxMetres?: number) => Promise<Array<{
@@ -94,6 +113,26 @@ function readyAt(label: Label) {
 const hasBike = (journey: Journey) => journey.legs.some((leg) => leg.kind === "bike");
 const hasBus = (journey: Journey) => journey.legs.some((leg) => leg.kind === "ride");
 
+/** The bounded arrive-by sweep finds the correct bike geometry but can land a
+ * bike-only journey a few minutes early. With no vehicle timetable to catch,
+ * that slack belongs to the rider: move the whole rental forward to the exact
+ * requested arrival, while still respecting the 22:00 pickup limit. */
+function alignDirectBikeWithDeadline(journey: Journey, request: PlanRequest): Journey {
+  if (request.mode !== "arriveBy" || hasBus(journey) || !hasBike(journey)) return journey;
+  const shift = request.time - journey.arrive;
+  if (shift <= 0) return journey;
+  const bike = journey.legs.find((leg): leg is BikeLeg => leg.kind === "bike");
+  if (!bike || !canStartBikeRide(bike.depart + shift)) return journey;
+  return {
+    ...journey,
+    depart: journey.depart + shift,
+    arrive: request.time,
+    legs: journey.legs.map((leg) => leg.kind === "bike"
+      ? { ...leg, depart: leg.depart + shift, arrive: leg.arrive + shift }
+      : { ...leg }),
+  };
+}
+
 /** A bicycle is a useful connection only when it buys something tangible.
  *
  * The exhaustive multimodal search is deliberately allowed to find every
@@ -173,10 +212,14 @@ export async function planMultimodal(
   const allStops = [...ctx.stops.values()];
 
   const found = new Map<string, Journey>();
-  const starts = request.mode === "departAt" ? [request.time]
-    : Array.from({ length: 121 }, (_, index) => request.time - 120 + index).filter((minute) => minute >= 0);
+  const starts = multimodalSearchStarts(request);
+  /* Promise continuations alone run before input and painting. Budget each
+     synchronous label slice too, otherwise a dense combination still makes a
+     visibly frozen page even after the time-window bound above. */
+  let sliceEndsAt = monotonicNow() + 8;
 
   for (const start of starts) {
+    if (dependencies.signal?.aborted) return [];
     const queue: Label[] = [];
     const best = new Map<string, Label[]>();
     const enqueue = (label: Label) => {
@@ -209,6 +252,12 @@ export async function planMultimodal(
     }
 
     while (queue.length) {
+      if (dependencies.signal?.aborted) return [];
+      if (monotonicNow() >= sliceEndsAt) {
+        await yieldToBrowser();
+        if (dependencies.signal?.aborted) return [];
+        sliceEndsAt = monotonicNow() + 8;
+      }
       queue.sort((left, right) => left.minute - right.minute || left.walkMinutes - right.walkMinutes);
       const label = queue.shift()!;
       const current = best.get(`${label.at}|${label.rides}|${label.rentals}`) ?? [];
@@ -302,9 +351,14 @@ export async function planMultimodal(
         }
       }
     }
+    /* Give input, map gestures and React a chance between the bounded search
+       runs. The actual map routing remains in workers; this prevents the
+       combinator from monopolising the browser while it combines their paths. */
+    await yieldToBrowser();
   }
 
-  const candidates = suppressPointlessBikeHybrids([...found.values()]);
+  const candidates = suppressPointlessBikeHybrids(
+    [...found.values()].map((journey) => alignDirectBikeWithDeadline(journey, request)));
   const all = recommendationFrontier(candidates)
     .sort((left, right) => generalisedCost(left, request) - generalisedCost(right, request)
       || (request.mode === "departAt" ? left.arrive - right.arrive || left.depart - right.depart
