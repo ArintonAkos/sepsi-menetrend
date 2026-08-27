@@ -187,6 +187,30 @@ describe("plan", () => {
     const keys = found.map((j) => `${show(j)}|${lines(j)}`);
     expect(new Set(keys).size).toBe(keys.length);
   });
+
+  it("boards a stop on the doorstep, not the terminus the line starts from", () => {
+    /* One trip, so there is no earlier bus to switch to: RAPTOR joins line 1 at
+       A, its first call. The rider is a longer walk from A than from B, the very
+       next stop on the same trip - the bus is at B the same minute either way,
+       so the journey must board at B and save the extra minute on foot. */
+    const net = fixture();
+    net.trips = [{ patternId: "P1", service: "weekday", start: 8 * 60 + 15 }];
+    const context = prepare(net);
+    const walking: WalkingContext = {
+      access: new Map([
+        ["A", { metres: 240, minutes: 3, path: [ORIGIN, [25.760, 45.86]] }],
+        ["B", { metres: 160, minutes: 2, path: [ORIGIN, [25.780, 45.86]] }],
+      ]),
+      egress: new Map([["C", { metres: 80, minutes: 1, path: [[25.800, 45.86], NEAR_C] }]]),
+      direct: null,
+    };
+
+    const [best] = engine.planWithWalking(context, ask({ to: NEAR_C }), walking);
+    const ride = best.legs.find((l) => l.kind === "ride") as RideLeg;
+
+    expect(ride.fromIndex).toBe(1);
+    expect(best.legs[0]).toMatchObject({ kind: "walk", minutes: 2, metres: 160 });
+  });
 });
 
 describe("no-progress transit reversals", () => {

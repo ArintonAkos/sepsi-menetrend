@@ -329,7 +329,7 @@ function stayOn(ctx: PlanContext, chain: Hop[], destination: LngLat): Hop[] | nu
 function toJourney(ctx: PlanContext, chain: Hop[], destination: LngLat,
                    egress: WalkingLeg, at: LngLat,
                    exactEgress?: ReadonlyMap<string, WalkingLeg>,
-                   preserveExactAccess = false): Journey | null {
+                   exactAccess?: ReadonlyMap<string, WalkingLeg>): Journey | null {
   const legs: Leg[] = [];
   let depart = Infinity;
   let arrive = 0;
@@ -356,7 +356,24 @@ function toJourney(ctx: PlanContext, chain: Hop[], destination: LngLat,
       let fromIndex = boardLate(p, hop.fromIndex, hop.toIndex);
       const access = legs.length === 1 && legs[0].kind === "walk"
         && legs[0].fromStopId === null ? legs[0] : null;
-      if (access && !preserveExactAccess) {
+      if (access && exactAccess) {
+        /* RAPTOR joins a pattern at the first call it can reach, which on a line
+           that starts from a distant terminus means walking hundreds of metres
+           past the stop on the doorstep. Every later call on this trip is free -
+           the bus is there the same minute - so re-seat to the call with the
+           shortest walk that was actually measured. */
+        let shortest = (exactAccess.get(p.stopIds[fromIndex]) ?? access).minutes;
+        let nearer: WalkingLeg | null = null;
+        for (let i = fromIndex + 1; i < hop.toIndex; i++) {
+          const walk = exactAccess.get(p.stopIds[i]);
+          if (walk && walk.minutes < shortest) { shortest = walk.minutes; nearer = walk; fromIndex = i; }
+        }
+        if (nearer) {
+          walkMinutes += nearer.minutes - access.minutes;
+          legs[0] = { kind: "walk", fromStopId: null, toStopId: p.stopIds[fromIndex],
+                      metres: nearer.metres, minutes: nearer.minutes, path: nearer.path };
+        }
+      } else if (access) {
         fromIndex = boardNearest(ctx, p, hop.fromIndex, hop.toIndex, access.path[0]);
         const stop = ctx.stops.get(p.stopIds[fromIndex])!;
         const metres = Math.round(metresBetween(access.path[0], stop.at) * DETOUR);
@@ -825,7 +842,7 @@ export function planWithWalking(ctx: PlanContext, req: PlanRequest,
         const chain = rebuild(rounds, sid, k);
         if (!chain) continue;
         const candidate = toJourney(ctx, chain, req.to, egress, stop.at,
-                                    walking.egress, true);
+                                    walking.egress, walking.access);
         if (!candidate) continue;
         const journey = removeNoProgressLoops(ctx, candidate, req, walking);
         const key = signature(ctx, journey);
