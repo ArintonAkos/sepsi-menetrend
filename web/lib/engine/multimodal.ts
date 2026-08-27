@@ -448,6 +448,19 @@ export async function planMultimodal(
   const allStops = [...ctx.stops.values()];
 
   const found = new Map<string, Journey>();
+  /* The same ride/bike shape can be reached with very different walking: a
+     clean dock-to-door leg, or a wander through a stop that merges into one
+     long walk with an identical signature. Keep the gentler journey - ties to
+     the earlier arrival - instead of whichever the search wrote last. */
+  const keep = (journey: Journey) => {
+    if (request.mode !== "departAt" && journey.arrive > request.time) return;
+    const key = signature(journey);
+    const prev = found.get(key);
+    if (!prev || journey.walkMinutes < prev.walkMinutes
+        || (journey.walkMinutes === prev.walkMinutes && journey.arrive < prev.arrive)) {
+      found.set(key, journey);
+    }
+  };
   const starts = multimodalSearchStarts(request);
   /* Promise continuations alone run before input and painting. Budget each
      synchronous label slice too, otherwise a dense combination still makes a
@@ -484,7 +497,7 @@ export async function planMultimodal(
         legs: [footLeg(null, null, walking.direct)], depart: start,
         arrive: start + walking.direct.minutes, walkMinutes: walking.direct.minutes, transfers: 0,
       };
-      if (request.mode === "departAt" || direct.arrive <= request.time) found.set(signature(direct), direct);
+      keep(direct);
     }
 
     while (queue.length) {
@@ -507,7 +520,7 @@ export async function planMultimodal(
           const end: Label = { ...label, minute: label.minute + egress.minutes,
             legs: [...label.legs, footLeg(id, null, egress)], walkMinutes: label.walkMinutes + egress.minutes };
           const journey = removeNoProgressLoops(ctx, toJourney(end, start), request, walking);
-          if (request.mode === "departAt" || journey.arrive <= request.time) found.set(signature(journey), journey);
+          keep(journey);
         }
         for (const transfer of ctx.walksFrom.get(id) ?? []) {
           const minutes = Math.max(1, Math.round(transfer.seconds / 60));
@@ -550,7 +563,7 @@ export async function planMultimodal(
           const end: Label = { ...label, minute: label.minute + endRoute.minutes,
             legs: [...label.legs, footLeg(null, null, endRoute)], walkMinutes: label.walkMinutes + endRoute.minutes };
           const journey = removeNoProgressLoops(ctx, toJourney(end, start), request, walking);
-          if (request.mode === "departAt" || journey.arrive <= request.time) found.set(signature(journey), journey);
+          keep(journey);
         }
         const nearbyStops = allStops;
         const nearbyStopRoutes = await walksFrom(pointOf(station), nearbyStops.map((stop) => stop.at));

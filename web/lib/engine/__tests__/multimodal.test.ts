@@ -176,6 +176,27 @@ describe("multimodal planner", () => {
     expect(found.map((journey) => journey.legs.map((leg) => leg.kind).join(","))).toContain("walk,bike,walk");
   });
 
+  it("keeps the shorter walk when the same shape is also reachable via a detour stop", async () => {
+    /* From the destination dock the rider can walk straight to the door, or
+       wander to stop D first and walk on - the two merge to one long walk with
+       an identical signature. The gentler one must survive, not whichever the
+       search happened to write last. */
+    const base = routes();
+    const detourRoutes = {
+      ...base,
+      walk: async (from: LngLat, to: LngLat) =>
+        key(from, to) === key(dockB, d) ? foot(dockB, d, 850, 11) : base.walk(from, to),
+    };
+
+    const found = await planMultimodal(
+      prepare(network()), request(8 * 60, new Set(["no-bus"])), walking,
+      { availability: availability(), routes: detourRoutes });
+
+    const bikeJourney = found.find((journey) => journey.legs.some((leg) => leg.kind === "bike"));
+    expect(bikeJourney).toBeDefined();
+    expect(bikeJourney!.walkMinutes).toBe(20);
+  });
+
   it("can use a docked bike between two bus legs", async () => {
     const found = await planMultimodal(prepare(network()), request(), walking, deps());
     const mixed = found.find((journey) => journey.legs.map((leg) => leg.kind).join(",")
