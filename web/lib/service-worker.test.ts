@@ -119,6 +119,17 @@ describe("offline worker", () => {
     expect(put).not.toHaveBeenCalled();
   });
 
+  it("still returns the shell when writing it to the cache fails", async () => {
+    const boot = bootServiceWorker({ fetch: async () => new Response("fresh shell") });
+    boot.put.mockRejectedValue(new Error("quota"));
+
+    const response = boot.dispatch({ method: "GET", mode: "navigate",
+      url: "https://sepsimenetrend.ro/?from=a&to=b" });
+
+    expect(await (await response)!.text()).toBe("fresh shell");
+    await Promise.allSettled(boot.waitUntil);
+  });
+
   it("always fetches the worker bootstrap fresh and never caches it", async () => {
     /* Every worker is started from this one script with only the URL fragment
        different; the Cache API matches ignoring the fragment, so a cached copy

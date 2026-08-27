@@ -71,7 +71,9 @@ self.addEventListener("fetch", (event) => {
       fetch(request, { cache: "no-store" })
         .then((response) => {
           const copy = response.clone();
-          caches.open(CACHE).then((cache) => cache.put("/", copy));
+          event.waitUntil(
+            caches.open(CACHE).then((cache) => cache.put("/", copy)).catch(() => {}),
+          );
           return response;
         })
         .catch(() => caches.match("/").then((hit) => hit ?? Response.error())),
@@ -107,7 +109,9 @@ self.addEventListener("fetch", (event) => {
     caches.match(request).then((hit) => hit ?? fetch(request).then((response) => {
       if (response.ok && response.type === "basic") {
         const copy = response.clone();
-        caches.open(CACHE).then((cache) => cache.put(request, copy));
+        event.waitUntil(
+          caches.open(CACHE).then((cache) => cache.put(request, copy)).catch(() => {}),
+        );
       }
       return response;
     })),
