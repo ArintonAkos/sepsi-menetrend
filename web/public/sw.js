@@ -50,6 +50,16 @@ self.addEventListener("fetch", (event) => {
   // Mapbox tiles, styles and geocoding: network only, never stored
   if (url.origin !== self.location.origin) return;
 
+  /* All three workers (planner, walking, bicycle) are started from this one
+     bootstrap script - only the URL fragment differs, and it carries which
+     chunks that worker must import. The Cache API matches ignoring the
+     fragment, so a cached copy gets handed to the wrong worker and their
+     message channels cross. Always fetch it fresh; never store it. */
+  if (url.pathname.includes("/turbopack-worker-")) {
+    event.respondWith(fetch(request));
+    return;
+  }
+
   // a navigation offline should still open the planner
   if (request.mode === "navigate") {
     event.respondWith(

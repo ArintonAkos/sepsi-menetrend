@@ -74,4 +74,18 @@ describe("PlannerWorkerClient", () => {
 
     await expect(planned).rejects.toThrow("invalid planner worker response");
   });
+
+  it("ignores a foreign worker message that only shares the request id", async () => {
+    Object.defineProperty(globalThis, "Worker", { configurable: true, value: FakeWorker });
+    const client = new PlannerWorkerClient();
+
+    const planned = client.plan({ network: fixture(), request: request(), walking });
+    // a walking-worker reply that happens to carry the same id, then the real one
+    FakeWorker.instance!.emit({ id: 1, routes: [] } as never);
+    FakeWorker.instance!.emit({ type: "result", id: 1,
+      journeys: [{ legs: [], depart: 5, arrive: 6, walkMinutes: 0, transfers: 0 }] });
+
+    await expect(planned).resolves.toEqual(
+      [{ legs: [], depart: 5, arrive: 6, walkMinutes: 0, transfers: 0 }]);
+  });
 });

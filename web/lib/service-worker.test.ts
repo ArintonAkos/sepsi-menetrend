@@ -118,4 +118,22 @@ describe("offline worker", () => {
 
     expect(put).not.toHaveBeenCalled();
   });
+
+  it("always fetches the worker bootstrap fresh and never caches it", async () => {
+    /* Every worker is started from this one script with only the URL fragment
+       different; the Cache API matches ignoring the fragment, so a cached copy
+       would be handed to the wrong worker. */
+    const { dispatch, fetch, put, caches } = bootServiceWorker({
+      cached: () => new Response("someone else's bootstrap", { status: 200 }),
+      fetch: async () => new Response("fresh bootstrap", { status: 200 }),
+    });
+
+    const response = dispatch({ method: "GET", mode: "cors",
+      url: "https://sepsimenetrend.ro/_next/static/chunks/turbopack-worker-abc123.js#params=%5B%5D" });
+
+    expect(await (await response)!.text()).toBe("fresh bootstrap");
+    expect(fetch).toHaveBeenCalled();
+    expect(put).not.toHaveBeenCalled();
+    expect(caches.match).not.toHaveBeenCalled();
+  });
 });

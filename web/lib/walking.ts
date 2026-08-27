@@ -40,11 +40,16 @@ function routingWorker() {
   if (worker) return worker;
   worker = new Worker(new URL("./walking.worker.ts", import.meta.url));
   worker.addEventListener("message", (event: MessageEvent<Response>) => {
-    const request = pending.get(event.data.id);
+    const data = event.data;
+    const request = pending.get(data?.id);
     if (!request) return;
-    pending.delete(event.data.id);
-    if (event.data.error) request.reject(new Error(event.data.error));
-    else request.resolve(event.data.routes);
+    if (data.error) { pending.delete(data.id); request.reject(new Error(data.error)); return; }
+    /* A worker started from the shared bootstrap script can end up hearing
+       another worker's replies. A real answer here always carries a routes
+       array; anything else is not ours, so keep waiting for the one that is. */
+    if (!Array.isArray(data.routes)) return;
+    pending.delete(data.id);
+    request.resolve(data.routes);
   });
   worker.addEventListener("error", (event: ErrorEvent) => {
     /* A worker that never runs its own code cannot report through the message

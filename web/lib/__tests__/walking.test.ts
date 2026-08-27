@@ -5,7 +5,7 @@ import type { Stop } from "@/lib/engine/types";
  *  every batch request with one entry per destination, and reports a graph-load
  *  failure the way the real worker does - an empty result carrying an error. */
 class FakeWalkingWorker {
-  static behaviour: "ok" | "graph-failed" | "worker-error" = "ok";
+  static behaviour: "ok" | "graph-failed" | "worker-error" | "cross-talk" = "ok";
   private listeners = new Map<string, Array<(event: unknown) => void>>();
 
   addEventListener(type: string, listener: (event: unknown) => void) {
@@ -31,6 +31,10 @@ class FakeWalkingWorker {
         return;
       }
       const count = (request.destinations ?? request.origins ?? []).length;
+      if (FakeWalkingWorker.behaviour === "cross-talk") {
+        // a planner result that happens to share this id, arriving first
+        this.fire("message", { data: { type: "result", id: request.id, journeys: [] } });
+      }
       this.fire("message", { data: { id: request.id, routes: Array.from({ length: count }, () => null) } });
     });
   }
@@ -61,6 +65,17 @@ describe("walkingContext", () => {
     await expect(
       walkingContext([25.78, 45.86], [25.79, 45.86], [stop("A", [25.785, 45.86])]),
     ).rejects.toThrow(/walking graph/i);
+  });
+
+  it("ignores a foreign worker message that only shares the request id", async () => {
+    useFakeWorker();
+    FakeWalkingWorker.behaviour = "cross-talk";
+    const { routesTo } = await import("@/lib/walking");
+
+    const routes = await routesTo([25.79, 45.86], [[25.785, 45.86], [25.786, 45.86]]);
+
+    expect(Array.isArray(routes)).toBe(true);
+    expect(routes).toHaveLength(2);
   });
 
   it("names the browser error when the worker script fails to start", async () => {

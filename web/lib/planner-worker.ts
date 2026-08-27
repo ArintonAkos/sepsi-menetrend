@@ -47,14 +47,18 @@ export class PlannerWorkerClient {
     const worker = new Worker(new URL("./planner.worker.ts", import.meta.url));
     worker.addEventListener("message", (event: MessageEvent<PlannerWorkerResponse>) => {
       const message = event.data;
-      const pending = this.pending.get(message.id);
+      const pending = this.pending.get(message?.id);
       if (!pending) return;
-      this.pending.delete(message.id);
-      if (message.type === "error") pending.reject(new Error(message.message));
-      else if (message.type === "result" && Array.isArray(message.journeys)) {
-        pending.resolve(message.journeys);
-      } else {
-        pending.reject(new Error("invalid planner worker response"));
+      /* A worker started from the shared bootstrap script can hear another
+         worker's replies. Only "error" and "result" are ours; anything else
+         belongs to a different worker that happens to share this id. */
+      if (message.type === "error") {
+        this.pending.delete(message.id);
+        pending.reject(new Error(message.message));
+      } else if (message.type === "result") {
+        this.pending.delete(message.id);
+        if (Array.isArray(message.journeys)) pending.resolve(message.journeys);
+        else pending.reject(new Error("invalid planner worker response"));
       }
     });
     worker.addEventListener("error", () => {
