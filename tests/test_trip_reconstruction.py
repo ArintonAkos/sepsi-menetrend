@@ -3,6 +3,7 @@ import unittest
 from trip_reconstruction import (
     _compatible_columns,
     _fill_estimated_calls,
+    _smooth_peer_baseline,
     _seed_starts,
     align_events,
     bound_board_columns,
@@ -28,6 +29,13 @@ class EventAlignmentTests(unittest.TestCase):
             align_events(predicted=[480, 510], observed=[484, 514], tolerance=8),
             [(0, 0), (1, 1)],
         )
+
+    def test_smooths_an_unpublished_gap_between_learned_peer_calls(self):
+        road_baseline = [250, 251, 252, 253, 255]
+        baseline = [255, 256, 252, 258, 259]
+
+        self.assertTrue(_smooth_peer_baseline(baseline, {0, 1, 3, 4}, road_baseline))
+        self.assertEqual(baseline, [255, 256, 257, 258, 259])
 
 
 class DirectionReconstructionTests(unittest.TestCase):
@@ -307,6 +315,50 @@ class DirectionReconstructionTests(unittest.TestCase):
         self.assertEqual(trip["calls"], [410, 411, 413])
         self.assertEqual(trip["start"], 410)
         self.assertNotIn("_baseline_calls", trip)
+
+    def test_learns_missing_calls_from_complete_runs_of_the_same_direction(self):
+        """A one-anchor run should inherit the observed stop-to-stop times of
+        other literal columns, before falling back to road-duration offsets."""
+        schedules = [
+            self.board("2D", "A", ("08:00", False)),
+            self.board("2D", "B", ("08:06", False), ("08:56", False)),
+            self.board("2D", "C", ("08:12", False)),
+        ]
+
+        trips, report = reconstruct_direction(self.route, schedules, self.offsets)
+        sparse = next(trip for trip in trips["weekday"] if trip["published"] == [False, True, False])
+
+        # Road durations say 4 then 5 minutes. The complete 08:00 run proves
+        # this direction actually takes six minutes on each segment.
+        self.assertEqual(sparse["calls"], [530, 536, 542])
+        self.assertEqual(report, [])
+
+    def test_peer_baseline_is_relative_to_this_run_not_the_peer_clock(self):
+        """A peer's clock must not be copied as an absolute baseline.
+
+        This run reaches C three minutes later than the road estimate.  D's
+        observed six-minute C→D run time has to be added to this run's *road*
+        baseline at C, otherwise `_fill_estimated_calls` adds that three-minute
+        displacement a second time.
+        """
+        route = {**self.route, "stops": [
+            {"name": {"ro": "A", "hu": "A"}},
+            {"name": {"ro": "B", "hu": "B"}},
+            {"name": {"ro": "C", "hu": "C"}},
+            {"name": {"ro": "D", "hu": "D"}},
+        ]}
+        schedules = [
+            self.board("2D", "A", ("05:00", False), ("06:00", False)),
+            self.board("2D", "C", ("05:12", False), ("06:11", False)),
+            self.board("2D", "D", ("05:18", False)),
+        ]
+
+        trips, report = reconstruct_direction(route, schedules, [0, 4 * 60, 8 * 60, 12 * 60])
+        sparse = next(trip for trip in trips["weekday"] if trip["calls"][2] == 371)
+
+        self.assertEqual(sparse["calls"], [360, 366, 371, 377])
+        self.assertEqual(sparse["published"], [True, False, True, False])
+        self.assertEqual(report, [])
 
     def test_leaves_a_trip_unmatched_when_that_stop_has_no_printed_time(self):
         self.assertEqual(

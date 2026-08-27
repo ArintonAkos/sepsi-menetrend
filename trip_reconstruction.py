@@ -257,6 +257,98 @@ def _fill_estimated_calls(trip):
     trip["start"] = calls[0]
 
 
+def _median(values):
+    values = sorted(values)
+    middle = len(values) // 2
+    if len(values) % 2:
+        return values[middle]
+    return round((values[middle - 1] + values[middle]) / 2)
+
+
+def _smooth_peer_baseline(baseline, learned, road_baseline=None, protected=()):
+    """Connect peer-learned points through the original road-time profile.
+
+    A repeated stop can lack a literal peer value while its two neighbours do
+    have one.  Leaving that one old road-only value in place can make the
+    inferred baseline turn backwards.  Re-scale the untouched part of each
+    bracket by its original road-duration proportions.  If the peer evidence
+    itself would require time to turn backwards, reject the entire learned
+    profile and retain the conservative road-duration baseline instead.
+    """
+    original = baseline[:] if road_baseline is None else road_baseline[:]
+    # Literal anchors constrain the final re-fit.  Their road-profile position
+    # must remain untouched, otherwise a learned value on either side shifts
+    # that anchor a second time when `_fill_estimated_calls` scales the span.
+    controls = sorted(set(learned) | set(protected))
+    for left, right in zip(controls, controls[1:]):
+        if baseline[right] < baseline[left]:
+            baseline[:] = original
+            return False
+        old_span = original[right] - original[left]
+        new_span = baseline[right] - baseline[left]
+        if old_span <= 0:
+            continue
+        for index in range(left + 1, right):
+            if index not in learned:
+                ratio = (original[index] - original[left]) / old_span
+                baseline[index] = round(baseline[left] + ratio * new_span)
+
+    if any(right < left for left, right in zip(baseline, baseline[1:])):
+        baseline[:] = original
+        return False
+    return True
+
+
+def _learn_peer_baselines(trips):
+    """Replace road-only soft offsets with observed timetable offsets.
+
+    A sparse source column still gives one literal time for its run.  Other
+    runs of the *same direction and service* often publish a pair of the same
+    calls, and their difference is a better model of the bus's actual running
+    time than the road-duration guess.  Only literal values participate; an
+    earlier estimate must never become evidence for a later estimate.
+    """
+    deltas = {}
+    for trip in trips:
+        anchors = [index for index, exact in enumerate(trip["published"]) if exact]
+        for source in anchors:
+            for target in anchors:
+                if source == target:
+                    continue
+                deltas.setdefault((source, target), []).append(
+                    trip["calls"][target] - trip["calls"][source])
+
+    for trip in trips:
+        baseline = trip["_baseline_calls"]
+        road_baseline = baseline[:]
+        learned = set()
+        anchors = [index for index, exact in enumerate(trip["published"]) if exact]
+        for target, exact in enumerate(trip["published"]):
+            if exact:
+                continue
+            # A nearby literal anchor describes the same small section of the
+            # journey.  Mixing a distant anchor with it distorts the profile
+            # whenever this particular run accumulated delay earlier on the
+            # route (especially around a loop).  Use the closest anchors only;
+            # ties on the two sides are still averaged below.
+            usable = [source for source in anchors if (source, target) in deltas]
+            if not usable:
+                continue
+            nearest_distance = min(abs(source - target) for source in usable)
+            usable = [source for source in usable
+                      if abs(source - target) == nearest_distance]
+            # `_fill_estimated_calls` consumes this as a relative profile: it
+            # adds `baseline[target] - baseline[source]` to this run's actual
+            # published anchor.  Keep the peer's observed duration, but place
+            # it on *this* run's road baseline.  Copying the peer's absolute
+            # clock here would count any earlier timetable displacement twice.
+            candidates = [baseline[source] + _median(deltas[(source, target)])
+                          for source in usable]
+            baseline[target] = _median(candidates)
+            learned.add(target)
+        _smooth_peer_baseline(baseline, learned, road_baseline, anchors)
+
+
 def reconstruct_direction(direction, entries, offsets, tolerance=12):
     """Reconstruct each service's ordered calls from literal board columns.
 
@@ -378,6 +470,7 @@ def reconstruct_direction(direction, entries, offsets, tolerance=12):
                         continue
                     trips[trip_index]["calls"][index] = observed
                     trips[trip_index]["published"][index] = True
+        _learn_peer_baselines(trips)
         for trip in trips:
             _fill_estimated_calls(trip)
         result[service] = trips
