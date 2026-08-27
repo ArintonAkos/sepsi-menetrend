@@ -118,6 +118,30 @@ describe("plan", () => {
     expect(found[0].depart).toBe(Math.max(...found.map((j) => j.depart)));
   });
 
+  it("finds the last valid trip even when it falls between sampled start minutes", () => {
+    /* The old arrive-by implementation seeded a forward search every ten
+       minutes.  From 08:00 it caught 08:03; from 08:10 it caught 08:12, which
+       arrives late.  The only correct 08:18-deadline answer is 08:07. */
+    const net = fixture();
+    net.trips = [
+      { patternId: "P1", service: "weekday", start: 8 * 60 + 3 },
+      { patternId: "P1", service: "weekday", start: 8 * 60 + 7 },
+      { patternId: "P1", service: "weekday", start: 8 * 60 + 12 },
+    ];
+    const walking: WalkingContext = {
+      access: new Map([["A", { metres: 80, minutes: 1, path: [ORIGIN, [25.760, 45.86]] }]]),
+      egress: new Map([["C", { metres: 80, minutes: 1, path: [[25.800, 45.86], NEAR_C] }]]),
+      direct: null,
+    };
+
+    const found = engine.planWithWalking(prepare(net), ask({
+      to: NEAR_C, mode: "arriveBy", time: 8 * 60 + 18,
+    }), walking);
+
+    expect(found[0]).toMatchObject({ depart: 8 * 60 + 6, arrive: 8 * 60 + 18 });
+    expect((found[0].legs.find((leg) => leg.kind === "ride") as RideLeg).board).toBe(8 * 60 + 7);
+  });
+
   it("obeys the weekday / weekend split", () => {
     // the only weekend run is at 10:00, so asking at 08:00 must not surface a
     // weekday bus - it should reach forward to the 10:00 one instead

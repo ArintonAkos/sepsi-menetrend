@@ -104,13 +104,8 @@ const pointlessBikeBus: Journey = {
 };
 
 describe("multimodal planner", () => {
-  it("uses the same bounded arrive-by time window as the bus planner", () => {
-    /* Checking every minute meant 121 complete bike-plus-transit searches.
-       The previous implementation created millions of microtasks and froze
-       the interface for seconds. The transit planner samples this two-hour
-       window every ten minutes; multimodal planning must obey that bound too. */
-    expect(multimodalSearchStarts({ ...request(8 * 60), mode: "arriveBy" }))
-      .toEqual([360, 370, 380, 390, 400, 410, 420, 430, 440, 450, 460, 470, 480]);
+  it("uses one exact start for a depart-at search", () => {
+    expect(multimodalSearchStarts(request(8 * 60))).toEqual([480]);
   });
 
   it("stops an obsolete multimodal search before it schedules routing work", async () => {
@@ -136,6 +131,35 @@ describe("multimodal planner", () => {
     const directBike = found.find((journey) => journey.legs.some((leg) => leg.kind === "bike")
       && !journey.legs.some((leg) => leg.kind === "ride"));
     expect(directBike?.arrive).toBe(8 * 60);
+  });
+
+  it("finds an exact bike-to-bus arrive-by connection between sampled minutes", async () => {
+    /* The useful departure is 07:59: walk ten minutes to the dock, ride five
+       minutes, walk one minute, then catch the 08:15 bus. A 10-minute forward
+       sweep checks 07:51 and 08:01, so it can never discover this connection. */
+    const found = await planMultimodal(prepare(network()), {
+      ...request(8 * 60 + 21), mode: "arriveBy",
+    }, walking, deps());
+    const mixed = found.find((journey) => journey.legs.some((leg) => leg.kind === "bike")
+      && journey.legs.some((leg) => leg.kind === "ride"));
+
+    expect(mixed).toMatchObject({ depart: 7 * 60 + 59, arrive: 8 * 60 + 21 });
+    expect(mixed?.legs.map((leg) => leg.kind)).toEqual(["walk", "bike", "walk", "ride", "walk"]);
+  });
+
+  it("finds an exact bus-to-bike-to-bus arrive-by connection", async () => {
+    const mixedNetwork = network();
+    mixedNetwork.trips = [
+      { patternId: "one", service: "weekday", start: 8 * 60 + 2 },
+      { patternId: "two", service: "weekday", start: 8 * 60 + 18 },
+    ];
+    const found = await planMultimodal(prepare(mixedNetwork), {
+      ...request(8 * 60 + 24), mode: "arriveBy",
+    }, walking, deps());
+    const mixed = found.find((journey) => journey.legs.map((leg) => leg.kind).join(",")
+      === "walk,ride,walk,bike,walk,ride,walk");
+
+    expect(mixed).toMatchObject({ depart: 8 * 60 + 1, arrive: 8 * 60 + 24 });
   });
 
   it("hides a bike-plus-bus detour when a bus is much faster for only one extra walking minute", () => {

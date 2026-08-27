@@ -18,6 +18,7 @@ import JourneyList from "../journey/JourneyList";
 import JourneyDetail from "../journey/JourneyDetail";
 import { prepare, planWithWalking, metresBetween, nextDepartures } from "@/lib/engine/plan";
 import { planMultimodal } from "@/lib/engine/multimodal";
+import { PlannerWorkerClient, plannerWorkerSupported } from "@/lib/planner-worker";
 import { buildIndex } from "@/lib/engine/search";
 import { bikeStationsToPlaces, type BikeAvailability,
          type BikeStation } from "@/lib/sepsibike";
@@ -69,6 +70,8 @@ export default function Planner({ network, places, reach, box, fares, bikeStatio
   bikeSnapshotAt?: string;
 }) {
   const ctx = useMemo(() => { primeStops(network); return prepare(network); }, [network]);
+  const plannerWorker = useRef<PlannerWorkerClient | null>(null);
+  useEffect(() => () => plannerWorker.current?.dispose(), []);
   const allPlaces = useMemo(() => [...places, ...bikeStationsToPlaces(bikeStations)], [places, bikeStations]);
   const index = useMemo(() => buildIndex(allPlaces), [allPlaces]);
   /* Villages are indexed by Mapbox under their Romanian names only, so the
@@ -574,15 +577,20 @@ export default function Planner({ network, places, reach, box, fares, bikeStatio
     const request = { from: from.at, to: to.at, time: hours * 60 + minutes, service: serviceForDate(date),
       mode, walkAversion: settledAversion, lines: visibleLines } as const;
     const controller = new AbortController();
-    const result = showBikeOptions
-      ? planMultimodal(ctx, request, walking.value, { availability: bikeAvailability,
-        routes: { walk: routeOnFoot, ride: routeByBike, ridesFrom: routesByBikeFrom },
-        walkFrom: routesFrom, signal: controller.signal })
-      : Promise.resolve(planWithWalking(ctx, request, walking.value));
+    const result = plannerWorkerSupported()
+      ? (plannerWorker.current ??= new PlannerWorkerClient()).plan({
+          network, request, walking: walking.value,
+          bike: showBikeOptions ? bikeAvailability : undefined,
+        })
+      : showBikeOptions
+        ? planMultimodal(ctx, request, walking.value, { availability: bikeAvailability,
+          routes: { walk: routeOnFoot, ride: routeByBike, ridesFrom: routesByBikeFrom },
+          walkFrom: routesFrom, signal: controller.signal })
+        : Promise.resolve(planWithWalking(ctx, request, walking.value));
     result.then((journeys) => { if (!cancelled) setPlanned({ key: multimodalKey, journeys }); })
       .catch(() => { if (!cancelled) setPlanned({ key: multimodalKey, journeys: [] }); });
     return () => { cancelled = true; controller.abort(); };
-  }, [ctx, from, to, time, date, mode, settledAversion, visibleLines, walking, walkingKey,
+  }, [ctx, network, from, to, time, date, mode, settledAversion, visibleLines, walking, walkingKey,
     multimodalKey, showBikeOptions, bikeAvailability]);
   const journeys = planned?.key === multimodalKey ? planned.journeys : [];
   const options = useMemo(() => mergePlannerOptions(journeys, mode), [journeys, mode]);

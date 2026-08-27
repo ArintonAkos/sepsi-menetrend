@@ -633,6 +633,175 @@ export function plan(ctx: PlanContext, req: PlanRequest, limit = 8): Journey[] {
   return distinct.slice(0, limit);
 }
 
+/** A reverse label says how late a previous vehicle may arrive at this kerb.
+ *
+ * `originLatest` is deliberately separate: walking from the door to the first
+ * bus does not need the two-minute interchange buffer, while a bus arriving
+ * before that first bus does.  Keeping both values is what lets the backward
+ * scan enforce exactly the same transfer rule as the forward RAPTOR scan. */
+interface ReverseLabel {
+  latest: Minute;
+  originLatest: Minute;
+  legs: Leg[];
+}
+
+function reverseWalk(from: string, to: string, walk: Walk): WalkingLeg {
+  return {
+    metres: walk.metres,
+    minutes: Math.max(1, Math.round(walk.seconds / 60)),
+    path: [...walk.path].reverse(),
+  };
+}
+
+function addLaterLabel(round: Map<string, ReverseLabel>, stopId: string,
+                        candidate: ReverseLabel): boolean {
+  const previous = round.get(stopId);
+  if (previous && (previous.latest > candidate.latest
+      || (previous.latest === candidate.latest
+        && previous.originLatest >= candidate.originLatest))) return false;
+  round.set(stopId, candidate);
+  return true;
+}
+
+function mergeWalkingLegs(legs: Leg[]): Leg[] {
+  const merged: Leg[] = [];
+  for (const leg of legs) {
+    const previous = merged.at(-1);
+    if (leg.kind === "walk" && previous?.kind === "walk") {
+      previous.toStopId = leg.toStopId;
+      previous.metres += leg.metres;
+      previous.minutes += leg.minutes;
+      previous.path = [...previous.path, ...leg.path.slice(1)];
+    } else {
+      merged.push(leg.kind === "walk" ? { ...leg, path: [...leg.path] } : leg);
+    }
+  }
+  return merged;
+}
+
+function reverseJourney(label: ReverseLabel, stopId: string,
+                        access: WalkingLeg): Journey | null {
+  if (access.minutes > label.originLatest) return null;
+  const legs = mergeWalkingLegs([
+    { kind: "walk" as const, fromStopId: null, toStopId: stopId, ...access },
+    ...label.legs,
+  ]);
+  const rides = legs.filter((leg): leg is RideLeg => leg.kind === "ride");
+  if (!rides.length) return null;
+  const lastRide = rides.at(-1)!;
+  const lastRideIndex = legs.lastIndexOf(lastRide);
+  const finalWalk = legs.slice(lastRideIndex + 1)
+    .reduce((minutes, leg) => minutes + (leg.kind === "walk" ? leg.minutes : 0), 0);
+  return {
+    legs,
+    depart: label.originLatest - access.minutes,
+    arrive: lastRide.alight + finalWalk,
+    walkMinutes: legs.reduce((minutes, leg) => minutes + (leg.kind === "walk" ? leg.minutes : 0), 0),
+    transfers: rides.length - 1,
+  };
+}
+
+/**
+ * Transit RAPTOR run in reverse for "arrive by" requests.
+ *
+ * Forward sampling is tempting but cannot see a trip that sits between two
+ * sample minutes when the next one misses the deadline.  Here the timetable
+ * itself is the search space: every run is inspected backwards from the exact
+ * egress deadline, so the latest feasible published trip is always considered.
+ */
+function reversePlanWithWalking(ctx: PlanContext, req: PlanRequest,
+                                walking: WalkingContext, limit: number): Journey[] {
+  const rounds: Array<Map<string, ReverseLabel>> = [new Map()];
+  for (const [stopId, egress] of walking.egress) {
+    addLaterLabel(rounds[0], stopId, {
+      latest: req.time - egress.minutes,
+      originLatest: req.time - egress.minutes,
+      legs: [{ kind: "walk", fromStopId: stopId, toStopId: null, ...egress }],
+    });
+  }
+
+  const found = new Map<string, Journey>();
+  for (let rides = 1; rides <= MAX_RIDES; rides++) {
+    const previous = rounds[rides - 1];
+    if (!previous.size) break;
+    const round = new Map<string, ReverseLabel>();
+
+    for (const pattern of ctx.patterns.values()) {
+      if (req.lines?.size && !req.lines.has(pattern.lineId)) continue;
+      const trips = (ctx.tripsOf.get(pattern.id) ?? []).filter((trip) => trip.service === req.service);
+      if (!trips.length) continue;
+      for (const trip of trips) {
+        for (let toIndex = 1; toIndex < pattern.stopIds.length; toIndex++) {
+          const tail = previous.get(pattern.stopIds[toIndex]);
+          const alight = trip.start + pattern.offsets[toIndex];
+          if (!tail || alight > tail.latest) continue;
+          for (let fromIndex = 0; fromIndex < toIndex; fromIndex++) {
+            const board = trip.start + pattern.offsets[fromIndex];
+            const ride: RideLeg = {
+              kind: "ride", lineId: pattern.lineId, patternId: pattern.id,
+              fromIndex, toIndex, board, alight,
+            };
+            addLaterLabel(round, pattern.stopIds[fromIndex], {
+              latest: board - MIN_TRANSFER,
+              originLatest: board,
+              legs: [ride, ...tail.legs],
+            });
+          }
+        }
+      }
+    }
+
+    /* Kerb-to-kerb transfers are physical walks, not a second bus.  The graph
+       stores both directions, therefore an outgoing edge from the current
+       platform is the incoming edge we need for the reverse scan. */
+    for (const [at, tail] of [...round]) {
+      for (const edge of ctx.walksFrom.get(at) ?? []) {
+        const walk = reverseWalk(edge.to, at, edge);
+        addLaterLabel(round, edge.to, {
+          latest: tail.latest - MIN_TRANSFER - walk.minutes,
+          originLatest: tail.latest - walk.minutes,
+          legs: [{ kind: "walk", fromStopId: edge.to, toStopId: at, ...walk }, ...tail.legs],
+        });
+      }
+    }
+    rounds.push(round);
+
+    for (const [stopId, label] of round) {
+      const access = walking.access.get(stopId);
+      if (!access) continue;
+      const journey = reverseJourney(label, stopId, access);
+      if (!journey || journey.arrive > req.time) continue;
+      const normalised = removeNoProgressLoops(ctx, journey, req, walking);
+      const key = signature(ctx, normalised);
+      const old = found.get(key);
+      if (!old || normalised.depart > old.depart
+          || (normalised.depart === old.depart && normalised.walkMinutes < old.walkMinutes)) {
+        found.set(key, normalised);
+      }
+    }
+  }
+
+  const all = recommendationFrontier([...found.values()]);
+  if (walking.direct && walking.direct.minutes <= MAX_DIRECT_WALK) {
+    all.push({
+      legs: [{ kind: "walk", fromStopId: null, toStopId: null, ...walking.direct }],
+      depart: req.time - walking.direct.minutes, arrive: req.time,
+      walkMinutes: walking.direct.minutes, transfers: 0,
+    });
+  }
+  all.sort((left, right) => generalisedCost(left, req) - generalisedCost(right, req)
+    || right.depart - left.depart || left.arrive - right.arrive);
+
+  const shapes = new Set<string>();
+  return all.filter((journey) => {
+    const shape = journey.legs.filter((leg): leg is RideLeg => leg.kind === "ride")
+      .map((leg) => `${leg.patternId}:${leg.fromIndex}>${leg.toIndex}`).join("+") || "walk";
+    if (shapes.has(shape)) return false;
+    shapes.add(shape);
+    return true;
+  }).slice(0, limit);
+}
+
 /** Plan only from pedestrian routes that have already been found on a real
  * walkable network.  Unlike the legacy `plan` entry point, this function never
  * measures a straight line or mutates a walk after choosing an itinerary. */
@@ -640,11 +809,10 @@ export function planWithWalking(ctx: PlanContext, req: PlanRequest,
                                 walking: WalkingContext, limit = 8): Journey[] {
   if (!walking.access.size || !walking.egress.size) return [];
 
+  if (req.mode === "arriveBy") return reversePlanWithWalking(ctx, req, walking, limit);
+
   const step = 10, span = 120;
-  const starts: Minute[] = req.mode === "departAt"
-    ? Array.from({ length: span / step + 1 }, (_, i) => req.time + i * step)
-    : Array.from({ length: span / step + 1 }, (_, i) => req.time - span + i * step)
-        .filter((m) => m >= 0);
+  const starts: Minute[] = Array.from({ length: span / step + 1 }, (_, i) => req.time + i * step);
 
   const found = new Map<string, Journey>();
   for (const start of starts) {
@@ -660,7 +828,6 @@ export function planWithWalking(ctx: PlanContext, req: PlanRequest,
                                     walking.egress, true);
         if (!candidate) continue;
         const journey = removeNoProgressLoops(ctx, candidate, req, walking);
-        if (req.mode !== "departAt" && journey.arrive > req.time) continue;
         const key = signature(ctx, journey);
         const previous = found.get(key);
         if (!previous || journey.walkMinutes < previous.walkMinutes) found.set(key, journey);
