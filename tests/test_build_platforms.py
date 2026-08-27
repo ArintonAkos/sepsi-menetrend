@@ -149,6 +149,24 @@ class PlatformResolutionTests(unittest.TestCase):
             "source-strciucului2-45.871400-25.795100",
         )
 
+    def test_line_seven_shares_line_one_domb_utca_kerbs(self):
+        """Lines 1 and 7 run Str. Dealului the same way: `depart` toward Gara,
+        `return` away from it. Their Domb utca calls must land on the same
+        physical kerb per direction - line 7's were on the wrong sides."""
+        directions = load_directions()
+        topology = resolve_platforms(directions, load_osm_platforms(), load_overrides())
+
+        def domb(line, direction_name):
+            direction = next(item for item in directions
+                             if item["line"] == line and item["direction"] == direction_name)
+            index = next(index for index, stop in enumerate(direction["stops"])
+                         if stop["name"]["ro"] == "Str. Dealului")
+            return topology["call_platforms"][(line, direction_name, index)]
+
+        self.assertEqual(domb("7", "depart"), domb("1", "depart"))
+        self.assertEqual(domb("7", "return"), domb("1", "return"))
+        self.assertNotEqual(domb("7", "depart"), domb("7", "return"))
+
     def test_debren_keeps_the_2d_and_six_return_directions_on_the_other_kerb(self):
         directions = load_directions()
         topology = resolve_platforms(directions, load_osm_platforms(), load_overrides())

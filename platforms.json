@@ -315,8 +315,8 @@
         },
         {
           "line": "7",
-          "direction": "return",
-          "index": 9
+          "direction": "depart",
+          "index": 2
         }
       ]
     },
@@ -690,8 +690,8 @@
         },
         {
           "line": "7",
-          "direction": "depart",
-          "index": 2
+          "direction": "return",
+          "index": 9
         }
       ]
     },

@@ -65,6 +65,20 @@
       "point": [45.8670161, 25.7960357],
       "osm_id": 1706007749,
       "source": "osm"
+    },
+    "7:depart:2": {
+      "id": "osm-1248719255",
+      "name": {"ro": "Str. Dealului", "hu": "Domb utca"},
+      "point": [45.8589078, 25.7768231],
+      "osm_id": 1248719255,
+      "source": "osm"
+    },
+    "7:return:9": {
+      "id": "osm-1561627883",
+      "name": {"ro": "Str. Dealului", "hu": "Domb utca"},
+      "point": [45.8593666, 25.7760244],
+      "osm_id": 1561627883,
+      "source": "osm"
     }
   },
   "source_aliases": {
