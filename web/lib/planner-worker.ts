@@ -51,7 +51,11 @@ export class PlannerWorkerClient {
       if (!pending) return;
       this.pending.delete(message.id);
       if (message.type === "error") pending.reject(new Error(message.message));
-      else pending.resolve(message.journeys);
+      else if (message.type === "result" && Array.isArray(message.journeys)) {
+        pending.resolve(message.journeys);
+      } else {
+        pending.reject(new Error("invalid planner worker response"));
+      }
     });
     worker.addEventListener("error", () => {
       const error = new Error("planner worker failed");

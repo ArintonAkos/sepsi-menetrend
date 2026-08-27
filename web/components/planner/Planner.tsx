@@ -592,7 +592,11 @@ export default function Planner({ network, places, reach, box, fares, bikeStatio
     return () => { cancelled = true; controller.abort(); };
   }, [ctx, network, from, to, time, date, mode, settledAversion, visibleLines, walking, walkingKey,
     multimodalKey, showBikeOptions, bikeAvailability]);
-  const journeys = planned?.key === multimodalKey ? planned.journeys : [];
+  /* A dedicated worker crosses a runtime boundary, so TypeScript's declared
+     protocol is not enough by itself. Never let a malformed response make the
+     result renderer call .map() on an undefined value. */
+  const journeys = planned?.key === multimodalKey && Array.isArray(planned.journeys)
+    ? planned.journeys : [];
   const options = useMemo(() => mergePlannerOptions(journeys, mode), [journeys, mode]);
   /* A result belongs to one exact search request.  Until both the OSM walking
      paths and the subsequent timetable search have caught up, showing either

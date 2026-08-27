@@ -22,6 +22,10 @@ const bike = (depart: number, arrive: number): Journey => ({
 });
 
 describe("planner options", () => {
+  it("treats a missing journey list as no results instead of crashing the planner", () => {
+    expect(mergePlannerOptions(undefined, "departAt")).toEqual([]);
+  });
+
   it("exposes comparable times for ordinary and bicycle-containing journeys", () => {
     const options: PlannerOption[] = [
       { kind: "journey", journey: transit(600, 630) },

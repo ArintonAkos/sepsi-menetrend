@@ -11,10 +11,10 @@ export function plannerOptionTimes(option: PlannerOption): { depart: Minute; arr
  * One chronological list for walking, bus-only, direct-bike and mixed routes.
  */
 export function mergePlannerOptions(
-  journeys: Journey[],
+  journeys: Journey[] | undefined,
   mode: PlanMode,
 ): PlannerOption[] {
-  const options: PlannerOption[] = journeys.map((journey) => ({ kind: "journey", journey }));
+  const options: PlannerOption[] = (journeys ?? []).map((journey) => ({ kind: "journey", journey }));
 
   return options.sort((a, b) => {
     const left = plannerOptionTimes(a);

@@ -1,4 +1,4 @@
-import { afterEach, describe, expect, it, vi } from "vitest";
+import { afterEach, describe, expect, it } from "vitest";
 import { PlannerWorkerClient } from "./planner-worker";
 import { fixture, NEAR_C, ORIGIN } from "./engine/__tests__/fixture";
 import type { Journey, PlanRequest, WalkingContext } from "./engine/types";
@@ -63,5 +63,15 @@ describe("PlannerWorkerClient", () => {
 
     await expect(first).resolves.toEqual([]);
     await expect(second).resolves.toEqual([{ legs: [], depart: 2, arrive: 3, walkMinutes: 0, transfers: 0 }]);
+  });
+
+  it("rejects a malformed successful worker response instead of resolving undefined", async () => {
+    Object.defineProperty(globalThis, "Worker", { configurable: true, value: FakeWorker });
+    const client = new PlannerWorkerClient();
+
+    const planned = client.plan({ network: fixture(), request: request(), walking });
+    FakeWorker.instance!.emit({ type: "result", id: 1 });
+
+    await expect(planned).rejects.toThrow("invalid planner worker response");
   });
 });
