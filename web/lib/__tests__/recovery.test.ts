@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { resetApp } from "@/lib/recovery";
+import { clearCaches, resetApp } from "@/lib/recovery";
 
 describe("resetApp", () => {
   afterEach(() => { vi.unstubAllGlobals(); });
@@ -51,5 +51,29 @@ describe("resetApp", () => {
     await resetApp(vi.fn());
 
     expect(gtag).toHaveBeenCalledWith("event", "app_reset", undefined);
+  });
+});
+
+describe("clearCaches", () => {
+  afterEach(() => { vi.unstubAllGlobals(); });
+
+  it("deletes every Cache Storage entry without touching the worker", async () => {
+    const deleted: string[] = [];
+    const getRegistrations = vi.fn();
+    vi.stubGlobal("caches", {
+      keys: async () => ["sepsi-1", "sepsi-2"],
+      delete: async (name: string) => { deleted.push(name); return true; },
+    });
+    vi.stubGlobal("navigator", { serviceWorker: { getRegistrations } });
+
+    await clearCaches();
+
+    expect(deleted.sort()).toEqual(["sepsi-1", "sepsi-2"]);
+    expect(getRegistrations).not.toHaveBeenCalled();
+  });
+
+  it("does not throw when Cache Storage is unavailable", async () => {
+    vi.stubGlobal("caches", undefined);
+    await expect(clearCaches()).resolves.toBeUndefined();
   });
 });

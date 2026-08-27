@@ -25,7 +25,7 @@ import { bikeStationsToPlaces, type BikeAvailability,
 import { mergePlannerOptions } from "@/lib/planner-options";
 import { formatHHMM, minutesOfDay, serviceForDate } from "@/lib/engine/time";
 import { formatCoordinates, insideArea, reverse } from "@/lib/geocode";
-import { isStraightLine, routeOnFoot, routesFrom, walkingContext } from "@/lib/walking";
+import { isStraightLine, resetWalkingRouter, routeOnFoot, routesFrom, walkingContext } from "@/lib/walking";
 import { routeByBike, routesByBikeFrom } from "@/lib/bicycle";
 import StopBoard from "../stops/StopBoard";
 import BikeStationBoard from "../bike/BikeStationBoard";
@@ -38,7 +38,7 @@ import { useDrawer } from "../hooks/useDrawer";
 import { usePullToDismiss } from "../hooks/usePullToDismiss";
 import { forget, read, remember, write, type Recent } from "@/lib/history";
 import { report } from "@/lib/telemetry";
-import { resetApp } from "@/lib/recovery";
+import { clearCaches, resetApp } from "@/lib/recovery";
 import { STRINGS, type Lang } from "@/lib/i18n";
 import { readLang, writeLang, LANG_CHANGE_EVENT } from "@/lib/lang";
 import type { FareTable } from "@/lib/engine/fares";
@@ -491,9 +491,16 @@ export default function Planner({ network, places, reach, box, fares, bikeStatio
     return () => { cancelled = true; };
   }, [from, to, network.stops, walkingKey, walkingAttempt]);
 
-  const retryWalking = useCallback(() => {
+  /* A plain re-attempt goes back through the Service Worker, which hands out
+     the same broken cache entry that caused the failure - most often a worker
+     script iOS terminated mid-download. Clearing the cache first makes the
+     re-attempt fetch everything fresh from the network. */
+  const retryWalking = useCallback(async () => {
     setWalking(null);
     setWalkingError(false);
+    report("walking_graph_retry");
+    resetWalkingRouter();
+    await clearCaches();
     setWalkingAttempt((n) => n + 1);
   }, []);
 

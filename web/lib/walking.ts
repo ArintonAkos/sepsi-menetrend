@@ -23,6 +23,19 @@ const pending = new Map<number, { resolve: (routes: Array<FootPath | null>) => v
 const cache = new Map<string, FootPath | null>();
 const contextCache = new Map<string, WalkingContext>();
 
+/** Drop the routing worker and every cached answer, so the next request builds
+ *  a fresh worker over a freshly downloaded graph. The recovery path calls this
+ *  before a retry: a worker that failed to load its script is otherwise reused
+ *  for the life of the tab. */
+export function resetWalkingRouter() {
+  for (const request of pending.values()) request.reject(new Error("walking router reset"));
+  pending.clear();
+  worker?.terminate?.();
+  worker = null;
+  cache.clear();
+  contextCache.clear();
+}
+
 function routingWorker() {
   if (worker) return worker;
   worker = new Worker(new URL("./walking.worker.ts", import.meta.url));

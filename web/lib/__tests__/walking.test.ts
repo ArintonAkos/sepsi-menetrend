@@ -67,4 +67,18 @@ describe("walkingContext", () => {
     expect(context.access.size).toBe(0);
     expect(context.egress.size).toBe(0);
   });
+
+  it("builds a fresh worker after a reset", async () => {
+    const built: FakeWalkingWorker[] = [];
+    class Tracked extends FakeWalkingWorker { constructor() { super(); built.push(this); } }
+    Object.defineProperty(globalThis, "Worker",
+      { configurable: true, writable: true, value: Tracked });
+    const { routesFrom, resetWalkingRouter } = await import("@/lib/walking");
+
+    await routesFrom([25.78, 45.86], [[25.785, 45.86]]);
+    resetWalkingRouter();
+    await routesFrom([25.78, 45.86], [[25.785, 45.86]]);
+
+    expect(built).toHaveLength(2);
+  });
 });

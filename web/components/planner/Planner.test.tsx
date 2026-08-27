@@ -18,8 +18,9 @@ import type { BikeSnapshot, BikeStation } from "@/lib/sepsibike";
 const walkingMock = vi.hoisted(() => ({ pending: false, failuresLeft: 0, calls: 0 }));
 const planningMock = vi.hoisted(() => ({ calls: 0 }));
 const resetMock = vi.hoisted(() => vi.fn());
+const clearCachesMock = vi.hoisted(() => vi.fn().mockResolvedValue(undefined));
 
-vi.mock("@/lib/recovery", () => ({ resetApp: resetMock }));
+vi.mock("@/lib/recovery", () => ({ resetApp: resetMock, clearCaches: clearCachesMock }));
 
 vi.mock("@/lib/walking", async (importOriginal) => {
   const actual = await importOriginal<typeof import("@/lib/walking")>();
@@ -117,6 +118,7 @@ describe("Planner", () => {
     walkingMock.calls = 0;
     planningMock.calls = 0;
     resetMock.mockClear();
+    clearCachesMock.mockClear();
     delete (globalThis as { gtag?: unknown }).gtag;
   });
 
@@ -244,7 +246,7 @@ describe("Planner", () => {
       expect(gtag).toHaveBeenCalledWith("event", "walking_graph_load_failed", expect.anything());
     });
 
-    it("retries and shows journeys once the data loads", async () => {
+    it("clears the cache and shows journeys when the retry succeeds", async () => {
       const user = await setup();
       walkingMock.failuresLeft = 1;
       await startPlanning(user);
@@ -254,6 +256,7 @@ describe("Planner", () => {
       await user.click(screen.getByRole("button", { name: /^Újra$/ }));
 
       await waitFor(() => expect(walkingMock.calls).toBeGreaterThan(callsBefore));
+      expect(clearCachesMock).toHaveBeenCalled();
       expect(await screen.findByText("leghamarabb ér oda")).toBeInTheDocument();
       expect(screen.queryByText(/Nem sikerült betölteni/)).not.toBeInTheDocument();
     });

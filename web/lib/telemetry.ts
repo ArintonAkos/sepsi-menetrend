@@ -12,6 +12,7 @@ type Gtag = (command: "event", name: string, params?: Record<string, unknown>) =
 
 export type DiagnosticEvent =
   | "walking_graph_load_failed"
+  | "walking_graph_retry"
   | "walking_graph_recovered"
   | "planner_worker_failed"
   | "plan_empty"
