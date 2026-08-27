@@ -948,17 +948,21 @@ export default function Planner({ network, places, reach, box, fares, bikeStatio
           ))}
 
       <main className={styles.map}>
-        <TransitMap network={network} patterns={patterns} lines={lineMap} lang={lang}
-                    area={area} resizeKey={mapNudge}
-                    covered={narrow && detail !== null ? drawer.height : 0}
-                    onStopPick={(stopId, anchor, dismiss) =>
-                      setBoard(stopId ? { stopId, anchor, dismiss } : null)}
-                    bikeStations={bikeAvailability.stations}
-                    onBikeStationPick={(stationId, anchor, dismiss) =>
-                      setBikeBoard(stationId ? { stationId, anchor, dismiss } : null)}
-                    journey={shown} visibleLines={visibleLines} dark={dark}
-                    routeLoading={routeLoading}
-                    picking={picking !== null} onCentreChange={onCentreChange} />
+        {/* The lazy map chunk can be ready before the first client render even
+            though it was absent from the static HTML.  Keep the same loading
+            shell through hydration, then mount the map in the next render. */}
+        {mounted ? <TransitMap network={network} patterns={patterns} lines={lineMap} lang={lang}
+                               area={area} resizeKey={mapNudge}
+                               covered={narrow && detail !== null ? drawer.height : 0}
+                               onStopPick={(stopId, anchor, dismiss) =>
+                                 setBoard(stopId ? { stopId, anchor, dismiss } : null)}
+                               bikeStations={bikeAvailability.stations}
+                               onBikeStationPick={(stationId, anchor, dismiss) =>
+                                 setBikeBoard(stationId ? { stationId, anchor, dismiss } : null)}
+                               journey={shown} visibleLines={visibleLines} dark={dark}
+                               routeLoading={routeLoading}
+                               picking={picking !== null} onCentreChange={onCentreChange} />
+                 : <div className="mapLoading" />}
 
         {picking && (
           <>

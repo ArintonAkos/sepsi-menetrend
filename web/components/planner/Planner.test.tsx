@@ -2,6 +2,8 @@
  *  something. The map is stubbed out - jsdom has no WebGL. */
 import { afterEach, describe, it, expect, beforeAll, beforeEach, vi } from "vitest";
 import { cleanup, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
+import { act } from "react";
+import { hydrateRoot } from "react-dom/client";
 import { renderToString } from "react-dom/server";
 import userEvent from "@testing-library/user-event";
 import { readFileSync } from "node:fs";
@@ -730,6 +732,33 @@ describe("a shared link", () => {
       <Planner network={network} places={places} reach={reach} box={box} fares={fares} />);
     expect(html, "the link was read while the markup was being produced")
       .not.toContain("Vasútállomás");
+  });
+
+  it("hydrates a shared link over the static entry screen", async () => {
+    /* Netlify serves the same prerendered entry screen for every URL.  A
+       search link is applied only after that HTML has hydrated, otherwise
+       React replaces the root with error #418 before planning can start. */
+    at("/");
+    const html = renderToString(
+      <Planner network={network} places={places} reach={reach} box={box} fares={fares} />);
+    const host = document.createElement("div");
+    host.innerHTML = html;
+    document.body.append(host);
+    at("/?from=25.780637,45.867923,Fecske%20utca%202&to=25.809993,45.860084,Sil%C3%B3%20utca%201&at=14:51");
+    const error = vi.spyOn(console, "error").mockImplementation(() => {});
+
+    let root: ReturnType<typeof hydrateRoot>;
+    await act(async () => {
+      root = hydrateRoot(host,
+        <Planner network={network} places={places} reach={reach} box={box} fares={fares} />);
+      await new Promise((resolve) => setTimeout(resolve, 40));
+    });
+
+    expect(error.mock.calls.flat().join("\n")).not.toMatch(/Hydration failed|418/);
+    expect(host.querySelector("input")).toHaveValue("Fecske utca 2");
+    await act(async () => { root!.unmount(); });
+    error.mockRestore();
+    host.remove();
   });
 
   it("does not read saved browser preferences while producing server markup", () => {
