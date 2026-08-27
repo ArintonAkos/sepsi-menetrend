@@ -53,7 +53,12 @@ self.addEventListener("fetch", (event) => {
   // a navigation offline should still open the planner
   if (request.mode === "navigate") {
     event.respondWith(
-      fetch(request)
+      /* The HTML shell names hashed JavaScript bundles.  A stale browser HTTP
+         cache can therefore hand back a shell from a deploy whose chunks are
+         already gone, which looks like a random broken search on refresh.
+         Revalidate it online; only a real network failure may use the saved
+         offline shell below. */
+      fetch(request, { cache: "no-store" })
         .then((response) => {
           const copy = response.clone();
           caches.open(CACHE).then((cache) => cache.put("/", copy));

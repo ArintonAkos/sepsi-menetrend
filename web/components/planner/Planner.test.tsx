@@ -755,7 +755,11 @@ describe("a shared link", () => {
     });
 
     expect(error.mock.calls.flat().join("\n")).not.toMatch(/Hydration failed|418/);
-    expect(host.querySelector("input")).toHaveValue("Fecske utca 2");
+    const fields = host.querySelectorAll<HTMLInputElement>("input");
+    expect(fields[0]).toHaveValue("Fecske utca 2");
+    expect(fields[1]).toHaveValue("Siló utca 1");
+    expect(within(host).getByRole("button", { name: "Indulás 14:51" }))
+      .toBeInTheDocument();
     await act(async () => { root!.unmount(); });
     error.mockRestore();
     host.remove();
