@@ -482,11 +482,13 @@ export default function Planner({ network, places, reach, box, fares, bikeStatio
         walkingHadFailed.current = false;
         report("walking_graph_recovered");
       }
-    }).catch(() => {
+    }).catch((error: unknown) => {
       if (cancelled) return;
       walkingHadFailed.current = true;
       setWalkingError(true);
-      report("walking_graph_load_failed", { attempt: walkingAttempt });
+      const message = error instanceof Error ? error.message : String(error);
+      console.warn("[planner] could not load walking data:", message);
+      report("walking_graph_load_failed", { attempt: walkingAttempt, message });
     });
     return () => { cancelled = true; };
   }, [from, to, network.stops, walkingKey, walkingAttempt]);

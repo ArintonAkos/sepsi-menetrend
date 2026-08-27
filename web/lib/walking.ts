@@ -46,8 +46,13 @@ function routingWorker() {
     if (event.data.error) request.reject(new Error(event.data.error));
     else request.resolve(event.data.routes);
   });
-  worker.addEventListener("error", () => {
-    const error = new Error("walking router worker failed");
+  worker.addEventListener("error", (event: ErrorEvent) => {
+    /* A worker that never runs its own code cannot report through the message
+       channel, so name what the browser gave us here - it is usually the
+       whole story (a chunk that 404s, a syntax error in a truncated script). */
+    const detail = [event.message, event.filename && `${event.filename}:${event.lineno}`]
+      .filter(Boolean).join(" ");
+    const error = new Error(`walking router worker failed to start${detail ? `: ${detail}` : ""}`);
     for (const request of pending.values()) request.reject(error);
     pending.clear();
     worker = null;
