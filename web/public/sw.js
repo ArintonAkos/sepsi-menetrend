@@ -69,6 +69,30 @@ self.addEventListener("fetch", (event) => {
     return;
   }
 
+  /* The data files change between deploys, and a truncated or stale entry here
+     breaks planning silently - an empty result that reads as "no service".
+     Serve the cached copy at once for speed and offline use, but always
+     revalidate in the background so a bad entry is corrected on the next load.
+     A retry with a cache-busting query (see loadWalkingGraph) skips the cached
+     copy entirely and is answered from the network. */
+  if (url.pathname.startsWith("/data/")) {
+    event.respondWith(
+      caches.open(CACHE).then(async (cache) => {
+        const cached = await cache.match(request);
+        const fresh = fetch(request).then(async (response) => {
+          if (response.ok && !url.search) await cache.put(request, response.clone());
+          return response;
+        });
+        if (cached) {
+          event.waitUntil(fresh.catch(() => {}));
+          return cached;
+        }
+        return fresh;
+      }),
+    );
+    return;
+  }
+
   event.respondWith(
     caches.match(request).then((hit) => hit ?? fetch(request).then((response) => {
       if (response.ok && response.type === "basic") {

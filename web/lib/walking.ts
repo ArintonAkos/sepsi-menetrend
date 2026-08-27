@@ -73,14 +73,16 @@ export async function routeOnFoot(from: LngLat, to: LngLat,
   }
 }
 
+/* No catch here, unlike `routeOnFoot`: these two feed `walkingContext`, and a
+   failure to load the graph at all must reach it as a rejection. Swallowing it
+   into a list of nulls is what made a broken download look like "no buses run
+   here" - an empty journey list with nothing to act on. */
 export async function routesFrom(point: LngLat, stops: LngLat[], maxMetres?: number) {
-  try { return await ask({ type: "from", from: point, destinations: stops, maxMetres }); }
-  catch { return stops.map(() => null); }
+  return ask({ type: "from", from: point, destinations: stops, maxMetres });
 }
 
 export async function routesTo(point: LngLat, stops: LngLat[]) {
-  try { return await ask({ type: "to", destination: point, origins: stops }); }
-  catch { return stops.map(() => null); }
+  return ask({ type: "to", destination: point, origins: stops });
 }
 
 /** Find all the pedestrian inputs for transit planning before RAPTOR runs.

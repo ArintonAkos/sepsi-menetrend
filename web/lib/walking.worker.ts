@@ -1,6 +1,7 @@
 /// <reference lib="webworker" />
 
-import { WalkingRouter, type FootPath, type WalkingGraph } from "./walking-router";
+import { loadWalkingGraph } from "./walking-graph";
+import { WalkingRouter, type FootPath } from "./walking-router";
 import type { LngLat } from "./engine/types";
 
 type Request =
@@ -13,12 +14,13 @@ type Response = { id: number; routes: Array<FootPath | null>; error?: string };
 let router: Promise<WalkingRouter> | null = null;
 
 function loadRouter() {
-  router ??= fetch("/data/walking-graph.json")
-    .then((response) => {
-      if (!response.ok) throw new Error(`walking graph: HTTP ${response.status}`);
-      return response.json() as Promise<WalkingGraph>;
-    })
-    .then((graph) => new WalkingRouter(graph));
+  if (!router) {
+    router = loadWalkingGraph()
+      .then((graph) => new WalkingRouter(graph))
+      // a failed load must not stick: drop the rejected promise so the next
+      // request starts a fresh attempt instead of replaying the old error
+      .catch((error) => { router = null; throw error; });
+  }
   return router;
 }
 

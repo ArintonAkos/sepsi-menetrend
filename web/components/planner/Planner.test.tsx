@@ -15,15 +15,25 @@ import type { Place } from "@/lib/engine/search";
 import type { FareTable } from "@/lib/engine/fares";
 import type { BikeSnapshot, BikeStation } from "@/lib/sepsibike";
 
-const walkingMock = vi.hoisted(() => ({ pending: false }));
+const walkingMock = vi.hoisted(() => ({ pending: false, failuresLeft: 0, calls: 0 }));
 const planningMock = vi.hoisted(() => ({ calls: 0 }));
+const resetMock = vi.hoisted(() => vi.fn());
+
+vi.mock("@/lib/recovery", () => ({ resetApp: resetMock }));
 
 vi.mock("@/lib/walking", async (importOriginal) => {
   const actual = await importOriginal<typeof import("@/lib/walking")>();
   return {
     ...actual,
-    walkingContext: (...args: Parameters<typeof actual.walkingContext>) =>
-      walkingMock.pending ? new Promise<never>(() => {}) : actual.walkingContext(...args),
+    walkingContext: (...args: Parameters<typeof actual.walkingContext>) => {
+      walkingMock.calls += 1;
+      if (walkingMock.pending) return new Promise<never>(() => {});
+      if (walkingMock.failuresLeft > 0) {
+        walkingMock.failuresLeft -= 1;
+        return Promise.reject(new Error("walking graph unavailable after 3 attempts"));
+      }
+      return actual.walkingContext(...args);
+    },
   };
 });
 
@@ -103,7 +113,11 @@ describe("Planner", () => {
   beforeEach(() => {
     localStorage.clear();
     walkingMock.pending = false;
+    walkingMock.failuresLeft = 0;
+    walkingMock.calls = 0;
     planningMock.calls = 0;
+    resetMock.mockClear();
+    delete (globalThis as { gtag?: unknown }).gtag;
   });
 
   it("opens on the two fields and nothing else", async () => {
@@ -206,6 +220,52 @@ describe("Planner", () => {
     fireEvent.change(screen.getByDisplayValue(/^\d{2}:\d{2}$/), { target: { value: "03:00" } });
     await user.keyboard("{Escape}");
     expect(await screen.findByText(/Nincs járat/)).toBeInTheDocument();
+  });
+
+  describe("when the walking data cannot be loaded", () => {
+    it("shows a recoverable error instead of an empty journey list", async () => {
+      const user = await setup();
+      walkingMock.failuresLeft = 99;
+      await startPlanning(user);
+
+      expect(await screen.findByText(/Nem sikerült betölteni/)).toBeInTheDocument();
+      expect(screen.queryByText(/Nincs járat/)).not.toBeInTheDocument();
+      expect(screen.getByRole("button", { name: /^Újra$/ })).toBeInTheDocument();
+    });
+
+    it("reports the failure for diagnostics", async () => {
+      const gtag = vi.fn();
+      (globalThis as { gtag?: unknown }).gtag = gtag;
+      const user = await setup();
+      walkingMock.failuresLeft = 99;
+      await startPlanning(user);
+      await screen.findByText(/Nem sikerült betölteni/);
+
+      expect(gtag).toHaveBeenCalledWith("event", "walking_graph_load_failed", expect.anything());
+    });
+
+    it("retries and shows journeys once the data loads", async () => {
+      const user = await setup();
+      walkingMock.failuresLeft = 1;
+      await startPlanning(user);
+      await screen.findByText(/Nem sikerült betölteni/);
+      const callsBefore = walkingMock.calls;
+
+      await user.click(screen.getByRole("button", { name: /^Újra$/ }));
+
+      await waitFor(() => expect(walkingMock.calls).toBeGreaterThan(callsBefore));
+      expect(await screen.findByText("leghamarabb ér oda")).toBeInTheDocument();
+      expect(screen.queryByText(/Nem sikerült betölteni/)).not.toBeInTheDocument();
+    });
+  });
+
+  it("offers an app reset from settings", async () => {
+    const user = await setup();
+    await user.click(screen.getByLabelText("Beállítások"));
+
+    await user.click(await screen.findByRole("button", { name: /Alkalmazás újratöltése/ }));
+
+    expect(resetMock).toHaveBeenCalled();
   });
 
   it("switches the whole interface to Romanian", async () => {

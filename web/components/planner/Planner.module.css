@@ -210,6 +210,18 @@
 .planning i { width: 25px; height: 25px; border: 3px solid var(--hair);
   border-top-color: var(--ink); border-radius: 50%; animation: planSpin .75s linear infinite; }
 @keyframes planSpin { to { transform: rotate(360deg); } }
+
+.dataError { min-height: 156px; display: grid; place-content: center; justify-items: center;
+  gap: 8px; padding: 24px 16px; text-align: center; }
+.dataErrorTitle { margin: 0; font-size: 14px; font-weight: 700; color: var(--ink); }
+.dataErrorHint { margin: 0; font-size: 12px; color: var(--muted); }
+.dataErrorActions { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 6px; }
+.dataErrorRetry, .dataErrorReset { font-size: 13px; font-weight: 600; border-radius: 9px;
+  padding: 9px 16px; cursor: pointer;
+  transition: transform var(--tap) var(--ease), background var(--tap) var(--ease); }
+.dataErrorRetry { color: var(--paper); background: var(--ink); }
+.dataErrorReset { color: var(--ink); background: var(--sunk); border: 1px solid var(--border); }
+.dataErrorRetry:active, .dataErrorReset:active { transform: scale(0.97); }
 .seg { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); align-items: stretch;
   min-height: 42px; background: var(--sunk); border-radius: 11px; padding: 3px; gap: 2px; }
 .seg button { min-width: 0; min-height: 36px; display: grid; place-items: center; font-size: 13px; line-height: 1;

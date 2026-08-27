@@ -37,6 +37,8 @@ import { useDismiss } from "../hooks/useDismiss";
 import { useDrawer } from "../hooks/useDrawer";
 import { usePullToDismiss } from "../hooks/usePullToDismiss";
 import { forget, read, remember, write, type Recent } from "@/lib/history";
+import { report } from "@/lib/telemetry";
+import { resetApp } from "@/lib/recovery";
 import { STRINGS, type Lang } from "@/lib/i18n";
 import { readLang, writeLang, LANG_CHANGE_EVENT } from "@/lib/lang";
 import type { FareTable } from "@/lib/engine/fares";
@@ -461,14 +463,39 @@ export default function Planner({ network, places, reach, box, fares, bikeStatio
      corrected journey from keeping a timetable it could never actually meet. */
   const walkingKey = from && to ? `${from.at.join(",")}>${to.at.join(",")}` : "";
   const [walking, setWalking] = useState<{ key: string; value: WalkingContext } | null>(null);
+  /* The pedestrian graph is the one runtime download planning cannot proceed
+     without. When it fails - a poisoned cache entry, a blocked request - the
+     old code carried on with empty walks and the search returned nothing,
+     which read as "no buses run here". Now the failure is shown, with a way
+     out of it, and only that path re-downloads the graph. */
+  const [walkingError, setWalkingError] = useState(false);
+  const [walkingAttempt, setWalkingAttempt] = useState(0);
+  const walkingHadFailed = useRef(false);
   useEffect(() => {
     if (!from || !to) return;
     let cancelled = false;
     walkingContext(from.at, to.at, network.stops).then((value) => {
-      if (!cancelled) setWalking({ key: walkingKey, value });
+      if (cancelled) return;
+      setWalking({ key: walkingKey, value });
+      setWalkingError(false);
+      if (walkingHadFailed.current) {
+        walkingHadFailed.current = false;
+        report("walking_graph_recovered");
+      }
+    }).catch(() => {
+      if (cancelled) return;
+      walkingHadFailed.current = true;
+      setWalkingError(true);
+      report("walking_graph_load_failed", { attempt: walkingAttempt });
     });
     return () => { cancelled = true; };
-  }, [from, to, network.stops, walkingKey]);
+  }, [from, to, network.stops, walkingKey, walkingAttempt]);
+
+  const retryWalking = useCallback(() => {
+    setWalking(null);
+    setWalkingError(false);
+    setWalkingAttempt((n) => n + 1);
+  }, []);
 
   /* The static catalogue works immediately and offline. A successful endpoint
      response replaces only its availability counts; it never blocks planning. */
@@ -587,8 +614,19 @@ export default function Planner({ network, places, reach, box, fares, bikeStatio
           routes: { walk: routeOnFoot, ride: routeByBike, ridesFrom: routesByBikeFrom },
           walkFrom: routesFrom, signal: controller.signal })
         : Promise.resolve(planWithWalking(ctx, request, walking.value));
-    result.then((journeys) => { if (!cancelled) setPlanned({ key: multimodalKey, journeys }); })
-      .catch(() => { if (!cancelled) setPlanned({ key: multimodalKey, journeys: [] }); });
+    result.then((journeys) => {
+      if (cancelled) return;
+      setPlanned({ key: multimodalKey, journeys });
+      /* The walking graph loaded and the search still found nothing. Usually
+         that is a genuine "too far, too late" - but a spike here is the first
+         sign of a data problem the error path above never caught. */
+      if (!journeys.length) report("plan_empty");
+    }).catch((error) => {
+      if (cancelled) return;
+      setPlanned({ key: multimodalKey, journeys: [] });
+      report("planner_worker_failed",
+        { message: error instanceof Error ? error.message : "unknown" });
+    });
     return () => { cancelled = true; controller.abort(); };
   }, [ctx, network, from, to, time, date, mode, settledAversion, visibleLines, walking, walkingKey,
     multimodalKey, showBikeOptions, bikeAvailability]);
@@ -900,7 +938,16 @@ export default function Planner({ network, places, reach, box, fares, bikeStatio
 
         {planning && <div className={styles.scroll}>
           {detail === null ? (
-            routeLoading ? (
+            walkingError ? (
+              <div className={styles.dataError} role="alert">
+                <p className={styles.dataErrorTitle}>{t.dataError}</p>
+                <p className={styles.dataErrorHint}>{t.dataErrorHint}</p>
+                <div className={styles.dataErrorActions}>
+                  <button className={styles.dataErrorRetry} onClick={retryWalking}>{t.retry}</button>
+                  <button className={styles.dataErrorReset} onClick={() => resetApp()}>{t.resetApp}</button>
+                </div>
+              </div>
+            ) : routeLoading ? (
               <div className={styles.planning} role="status" aria-live="polite">
                 <i aria-hidden />
                 <span>{t.planning}</span>
@@ -1114,6 +1161,13 @@ export default function Planner({ network, places, reach, box, fares, bikeStatio
                     closePanel();
                   }}>
                     {t.cookieSettings}
+                  </button>
+                </div>
+                <div className={styles.setRow}>
+                  <span>{t.troubleshoot}</span>
+                  <p className={styles.setNote}>{t.troubleshootNote}</p>
+                  <button className={styles.cookieReset} onClick={() => resetApp()}>
+                    {t.resetApp}
                   </button>
                 </div>
                 <button className={styles.sheetDone} onClick={closePanel}>{t.done}</button>
