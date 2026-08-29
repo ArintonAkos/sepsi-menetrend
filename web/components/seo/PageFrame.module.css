@@ -1,0 +1,117 @@
+/* The SEO pages wear the app's own chrome tokens (app/globals.css) so a
+   visitor arriving from search lands on the same warm paper and olive ink as
+   the planner. Nothing here has a fixed height or loads an image, and the
+   frame is a plain block flow - the body streams in below the breadcrumb
+   without moving it, so there is nothing to shift (near-zero CLS). */
+
+.frame {
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 16px 16px 48px;
+  color: var(--ink);
+}
+
+.crumbs {
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.crumbList {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 6px;
+}
+
+.crumb {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+}
+
+/* Styled separator - decorative, kept out of the accessible tree and never
+   drawn before the first crumb. */
+.crumb + .crumb::before {
+  content: "\203A"; /* › */
+  color: var(--hair);
+}
+
+.crumbList a {
+  color: var(--ink-2);
+  text-decoration: none;
+}
+
+.crumbList a:hover {
+  text-decoration: underline;
+}
+
+.crumbList [aria-current="page"] {
+  color: var(--muted);
+}
+
+/* The olive pill, same background/text pairing as LegalPage's back-to-planner
+   button, so the one accent colour stays consistent across the site. */
+.langSwitch {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  margin: 12px 0 4px;
+  padding: 5px 14px;
+  border-radius: 999px;
+  background: var(--panel);
+  color: #FBFAF7;
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: opacity var(--tap) var(--ease);
+}
+
+.langSwitch:active {
+  opacity: 0.9;
+}
+
+.body {
+  margin-top: 16px;
+}
+
+.footer {
+  margin-top: 40px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--muted);
+}
+
+.disclaimer {
+  margin: 0;
+  font-weight: 700;
+  color: var(--ink-2);
+}
+
+.footerLinks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 16px;
+}
+
+.footerLinks a {
+  color: var(--ink-2);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.footerLinks a:hover {
+  text-decoration: underline;
+}
+
+.operator {
+  color: var(--muted);
+}

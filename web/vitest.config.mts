@@ -10,7 +10,12 @@ export default defineConfig({
       {
         // the engine is plain TypeScript and must stay runnable without a DOM
         resolve: { alias },
-        test: { name: "engine", environment: "node", include: ["lib/**/*.test.ts"] },
+        test: {
+          name: "engine", environment: "node", include: ["lib/**/*.test.ts"],
+          // the lib/seo/* modules do heavy top-level RAPTOR planning and
+          // occasionally time out under parallel load - clear the default 5s
+          testTimeout: 20_000,
+        },
       },
       {
         plugins: [react()],
