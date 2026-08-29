@@ -330,9 +330,32 @@ No orphan pages; everything reachable from `/` within two clicks.
 
 ## Tests and verification
 
+Regression guards (the planner and the existing pages must not change
+behaviour):
+
+- The full existing suite (`npm test`) stays green untouched — engine,
+  real-feed, and `Planner` tests.
+- Snapshot the homepage's rendered `<head>` and the crawlable `/`,
+  `/terms/`, `/privacy/` output; the diff after this work is limited to the
+  added `hreflang`/alternate links and the footer link block, nothing else.
+- A test asserts query-string plans still decode: `/?from=…&to=…&at=…`,
+  `/?line=1&service=weekday`, `/?stop=P22`, `/?lang=ro` all still drive the
+  planner (exercises `lib/share.ts` + `Planner` unchanged).
+- A service-worker test asserts a content-page navigation never writes the
+  `/` cache key and never returns the planner shell for a content URL, and
+  that `/` still resolves offline.
+- `sitemap.xml` and `robots.txt` still parse and still contain the original
+  three URLs.
+
 Build / static:
 
 - `npm run build` succeeds; run twice, `out/` diff is empty.
+- Every generated `page.tsx` and `opengraph-image.tsx` renders at build
+  without throwing for every param — a build that would ship a broken page
+  fails instead.
+- A headless smoke crawl of `out/` opens every page type in both languages
+  and asserts: no uncaught exception, no console error, no failed
+  same-origin request.
 - Every expected URL is present in `out/`, each with a non-empty `<title>`,
   meta description, `<h1>`, a self-canonical, and an `hreflang` pair that
   resolves to real files (reciprocity script).
