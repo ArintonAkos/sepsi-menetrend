@@ -20,6 +20,20 @@ describe("buildPlaces", () => {
     expect(places.length).toBeGreaterThan(40);
     expect(places.length).toBeLessThan(net.stops.length);
   });
+
+  it("carries an independent, unique Romanian slug for every place", () => {
+    const slugsRo = places.map((p) => p.slugRo);
+    expect(slugsRo.every((s) => s.length > 0)).toBe(true);
+    expect(new Set(slugsRo).size).toBe(slugsRo.length);
+    // one RO slug per HU slug - same clustering, only the name string differs
+    expect(slugsRo.length).toBe(places.length);
+    // the RO slug is derived from name.ro exactly as slug is from name.hu
+    const arena = places.find((p) => p.slug === "sepsi-arena")!;
+    expect(arena.name.ro).toBe("Arena Sepsi");
+    expect(arena.slugRo).toBe("arena-sepsi");
+    const station = places.find((p) => p.slug === "vasutallomas")!;
+    expect(station.slugRo).toBe("gara-cfr");
+  });
   it("carries both language names", () => {
     const arena = places.find((p) => p.name.hu.includes("Aréna"));
     expect(arena?.name.ro).toMatch(/Arena/);

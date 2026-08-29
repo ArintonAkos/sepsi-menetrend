@@ -18,7 +18,10 @@ import { enrichLine, boardFor, type SeoLang } from "./lines";
 import { slugify, disambiguate } from "./slug";
 
 export interface RoutePair {
+  /** Canonical pair slug from the HU names; `slugRo` is the independent RO
+   *  counterpart. A RO route URL carries `slugRo`. */
   slug: string;
+  slugRo: string;
   a: Place;
   b: Place;
 }
@@ -51,6 +54,11 @@ const byText = (a: string, b: string): number => (a < b ? -1 : a > b ? 1 : 0);
  *  names folded to slugs, sorted, joined - so (a,b) and (b,a) are one page. */
 export function pairSlug(a: Place, b: Place): string {
   return [slugify(a.name.hu), slugify(b.name.hu)].sort(byText).join("-");
+}
+
+/** Same shape as `pairSlug` on the Romanian names - the RO route URL. */
+export function pairSlugRo(a: Place, b: Place): string {
+  return [slugify(a.name.ro), slugify(b.name.ro)].sort(byText).join("-");
 }
 
 /** `prepare` walks every stop, pattern, trip and footpath, and `notablePairs`
@@ -164,14 +172,19 @@ export function notablePairs(net: Network): RoutePair[] {
   // slugify is idempotent, so the base it produces is exactly `pairSlug`).
   connected.sort((p, q) => byText(pairSlug(p.a, p.b), pairSlug(q.a, q.b)));
   const slugs = disambiguate(connected, (p) => pairSlug(p.a, p.b));
+  // Separate pass: HU and RO collision suffixes are independent.
+  const slugsRo = disambiguate(connected, (p) => pairSlugRo(p.a, p.b));
 
-  const result: RoutePair[] = connected.map((p) => ({ slug: slugs.get(p)!, a: p.a, b: p.b }));
+  const result: RoutePair[] = connected.map((p) => ({
+    slug: slugs.get(p)!, slugRo: slugsRo.get(p)!, a: p.a, b: p.b,
+  }));
   result.sort((x, y) => byText(x.slug, y.slug));
   pairLists.set(net, result);
   return result.slice();
 }
 
-/** The pair a slug names, by equality - never by taking the slug apart. */
+/** The pair a slug names, by equality - never by taking the slug apart. A RO
+ *  route URL carries `slugRo`, so match on either language's slug. */
 export function routeBySlug(net: Network, slug: string): RoutePair | undefined {
-  return notablePairs(net).find((p) => p.slug === slug);
+  return notablePairs(net).find((p) => p.slug === slug || p.slugRo === slug);
 }

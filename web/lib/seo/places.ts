@@ -9,7 +9,11 @@ import type { LngLat, Network } from "@/lib/engine/types";
 import { slugify, disambiguate } from "./slug";
 
 export interface Place {
+  /** URL slug from the HU name; `slugRo` is the independent RO counterpart -
+   *  Romanian speakers do not search Hungarian words, so each language gets
+   *  its own path. The two collision-suffix passes are unrelated. */
   slug: string;
+  slugRo: string;
   /** Internal dedup identity: folded HU name + rounded centroid. Survives a
    *  feed rebuild that renumbers stop ids; never shown to anyone. */
   key: string;
@@ -139,9 +143,12 @@ export function buildPlaces(network: Network): Place[] {
       byText(slugify(a.huName), slugify(b.huName)) || byText(a.stopIds[0], b.stopIds[0]),
   );
 
+  // Two independent passes: a RO collision suffix is unrelated to the HU one.
   const slugs = disambiguate(clusters, (c) => c.huName);
+  const slugsRo = disambiguate(clusters, (c) => c.roName);
   const places: Place[] = clusters.map((c) => ({
     slug: slugs.get(c)!,
+    slugRo: slugsRo.get(c)!,
     key: `${slugify(c.huName)}@${c.at.map((n) => n.toFixed(3)).join(",")}`,
     name: { hu: c.huName, ro: c.roName },
     at: c.at,

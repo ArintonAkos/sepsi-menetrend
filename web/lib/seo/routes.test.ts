@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { loadNetwork } from "./network";
 import { buildPlaces, NOTABLE_PLACE_SLUGS } from "./places";
-import { notablePairs, routeBySlug, journeyBetween, pairSlug } from "./routes";
+import { notablePairs, routeBySlug, journeyBetween, pairSlug, pairSlugRo } from "./routes";
 
 const net = loadNetwork();
 
@@ -34,6 +34,24 @@ describe("notablePairs", () => {
     expect(second).toEqual(first);
     // a fresh array - a consumer sorting or splicing it cannot corrupt the memo
     expect(second).not.toBe(first);
+  });
+
+  it("carries an independent Romanian slug, symmetric and unique, resolvable both ways", () => {
+    const notable = buildPlaces(net).filter((p) => NOTABLE_PLACE_SLUGS.includes(p.slug));
+    const [x, y] = notable;
+    expect(pairSlugRo(x, y)).toBe(pairSlugRo(y, x));
+
+    const pairs = notablePairs(net);
+    const slugsRo = pairs.map((p) => p.slugRo);
+    expect(slugsRo.every((s) => s.length > 0)).toBe(true);
+    expect(new Set(slugsRo).size).toBe(slugsRo.length);
+    // one RO pair slug per HU pair slug - same pairs, only the name string differs
+    expect(slugsRo.length).toBe(pairs.length);
+
+    // a RO route URL carries slugRo; routeBySlug resolves it to the same pair
+    const viaHu = routeBySlug(net, "arkos-kozpont-autoliv")!;
+    expect(viaHu.slugRo).toBe("autoliv-centru-arcus");
+    expect(routeBySlug(net, "autoliv-centru-arcus")).toBe(viaHu);
   });
 });
 
