@@ -1,0 +1,73 @@
+/** The page inventory - the single source of truth for "which SEO pages exist
+ *  and what each one's language twin is".
+ *
+ *  `app/sitemap.ts` and the post-build `verify-seo` check both read from here,
+ *  so a page missing from this list is missing from the sitemap and trips the
+ *  orphan check. Hungarian is canonical (`path` === `hu`); Romanian is additive
+ *  under `/ro/`. Every path ends in `/` - the site is exported with
+ *  `trailingSlash: true`. */
+import type { Network } from "@/lib/engine/types";
+import { loadNetwork } from "./network";
+import { buildPlaces } from "./places";
+import { notablePairs } from "./routes";
+
+export interface PageEntry {
+  /** Canonical HU path; always equal to `hu`, kept separate so a caller asking
+   *  for "the canonical URL" needn't know which language that is. */
+  path: string;
+  hu: string;
+  ro: string;
+  /** ISO date from `net.generated`. */
+  lastModified: string;
+  priority: number;
+}
+
+/** `"20260807"` -> `"2026-08-07"`. A stamp that isn't 8 digits falls back to
+ *  today rather than sinking the whole build over a bad feed field. */
+function isoDate(generated: string): string {
+  return /^\d{8}$/.test(generated)
+    ? `${generated.slice(0, 4)}-${generated.slice(4, 6)}-${generated.slice(6, 8)}`
+    : new Date().toISOString().slice(0, 10);
+}
+
+/** Fixed pages, in descending sitemap-priority order - this is also the order
+ *  they appear in `allPages`. */
+const STATIC: readonly { hu: string; ro: string; priority: number }[] = [
+  { hu: "/", ro: "/ro/", priority: 1.0 }, // planner
+  { hu: "/buszmenetrend/", ro: "/ro/orar-autobuz/", priority: 0.8 }, // pillar guide
+  { hu: "/vonalak/", ro: "/ro/linii/", priority: 0.8 }, // line index
+  { hu: "/megallok/", ro: "/ro/statii/", priority: 0.7 }, // stop index
+  { hu: "/dijszabas/", ro: "/ro/tarife/", priority: 0.7 }, // fares
+  { hu: "/multi-trans/", ro: "/ro/multi-trans/", priority: 0.7 }, // operator
+  { hu: "/sepsibike/", ro: "/ro/sepsibike/", priority: 0.6 }, // bike share
+  { hu: "/gyik/", ro: "/ro/intrebari-frecvente/", priority: 0.6 }, // faq
+  { hu: "/terms/", ro: "/ro/termeni/", priority: 0.4 },
+  { hu: "/privacy/", ro: "/ro/confidentialitate/", priority: 0.4 },
+];
+
+/** Every SEO page, deterministically ordered: static pages, then one per line
+ *  (feed order), per place (`buildPlaces` order), per route pair
+ *  (`notablePairs` order). The sources are each already ordered, so no sort. */
+export function allPages(net: Network = loadNetwork()): PageEntry[] {
+  const lastModified = isoDate(net.generated);
+  const entry = (hu: string, ro: string, priority: number): PageEntry => ({
+    path: hu,
+    hu,
+    ro,
+    lastModified,
+    priority,
+  });
+
+  return [
+    ...STATIC.map((s) => entry(s.hu, s.ro, s.priority)),
+    // line id is used verbatim in both languages ("1D" stays "1D")
+    ...net.lines.map((l) => entry(`/vonalak/${l.id}/`, `/ro/linii/${l.id}/`, 0.7)),
+    // the RO path carries the place's own RO slug, never the HU one
+    ...buildPlaces(net).map((p) =>
+      entry(`/megallok/${p.slug}/`, `/ro/statii/${p.slugRo}/`, 0.6),
+    ),
+    ...notablePairs(net).map((r) =>
+      entry(`/utvonal/${r.slug}/`, `/ro/trasee/${r.slugRo}/`, 0.5),
+    ),
+  ];
+}
