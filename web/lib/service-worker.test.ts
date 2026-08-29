@@ -130,6 +130,78 @@ describe("offline worker", () => {
     await Promise.allSettled(boot.waitUntil);
   });
 
+  it("never writes the / shell when navigating to a content page", async () => {
+    /* The ~370 bilingual SEO pages are ordinary navigations too. Only "/" may
+       own the shell cache; a content page written to "/" would clobber the
+       planner shell for every rider on their next launch. */
+    const { dispatch, put, waitUntil } = bootServiceWorker({
+      fetch: async () => new Response("line 1 timetable"),
+    });
+
+    const response = dispatch({ method: "GET", mode: "navigate",
+      url: "https://sepsimenetrend.ro/vonalak/1/" });
+
+    expect(await (await response)!.text()).toBe("line 1 timetable");
+    await Promise.allSettled(waitUntil);
+    expect(put).not.toHaveBeenCalled();
+  });
+
+  it("shows the offline card, not the planner shell, for a content page offline", async () => {
+    const offlineCard = new Response("offline card");
+    const { dispatch, caches } = bootServiceWorker({
+      cached: (url) => (url === "/offline.html" ? offlineCard : undefined),
+      fetch: async () => { throw new TypeError("offline"); },
+    });
+
+    const response = dispatch({ method: "GET", mode: "navigate",
+      url: "https://sepsimenetrend.ro/vonalak/1/" });
+
+    expect(await response).toBe(offlineCard);
+    expect(caches.match).toHaveBeenCalledWith("/offline.html");
+    expect(caches.match).not.toHaveBeenCalledWith("/");
+  });
+
+  it("still serves the cached / shell for a root navigation offline", async () => {
+    const shell = new Response("cached shell");
+    const { dispatch } = bootServiceWorker({
+      cached: (url) => (url === "/" ? shell : undefined),
+      fetch: async () => { throw new TypeError("offline"); },
+    });
+
+    const response = dispatch({ method: "GET", mode: "navigate",
+      url: "https://sepsimenetrend.ro/" });
+
+    expect(await response).toBe(shell);
+  });
+
+  it("treats a shared /?from=...&to=... planner link as the shell offline", async () => {
+    /* url.pathname of a shared deep link is still "/", so it keeps the shell
+       treatment - only real content paths take the new branch. */
+    const shell = new Response("cached shell");
+    const { dispatch } = bootServiceWorker({
+      cached: (url) => (url === "/" ? shell : undefined),
+      fetch: async () => { throw new TypeError("offline"); },
+    });
+
+    const response = dispatch({ method: "GET", mode: "navigate",
+      url: "https://sepsimenetrend.ro/?from=a&to=b" });
+
+    expect(await response).toBe(shell);
+  });
+
+  it("does not write the / shell when navigating to the terms page", async () => {
+    const { dispatch, put, waitUntil } = bootServiceWorker({
+      fetch: async () => new Response("terms page"),
+    });
+
+    const response = dispatch({ method: "GET", mode: "navigate",
+      url: "https://sepsimenetrend.ro/terms/" });
+
+    expect(await (await response)!.text()).toBe("terms page");
+    await Promise.allSettled(waitUntil);
+    expect(put).not.toHaveBeenCalled();
+  });
+
   it("always fetches the worker bootstrap fresh and never caches it", async () => {
     /* Every worker is started from this one script with only the URL fragment
        different; the Cache API matches ignoring the fragment, so a cached copy

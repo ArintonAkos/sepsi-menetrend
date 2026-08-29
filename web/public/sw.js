@@ -12,6 +12,7 @@ const VERSION = "__VERSION__";
 const CACHE = `sepsi-${VERSION}`;
 const SHELL = [
   "/",
+  "/offline.html",
   "/data/network.json",
   "/data/places.json",
   "/data/fares.json",
@@ -62,6 +63,18 @@ self.addEventListener("fetch", (event) => {
 
   // a navigation offline should still open the planner
   if (request.mode === "navigate") {
+    /* Only "/" is the app shell, so only "/" may own the shell cache key.
+       Every planner navigation - including a shared "/?from=...&to=..." deep
+       link, whose pathname is still "/" - revalidates and rewrites that one
+       key. The ~370 bilingual content pages are ordinary navigations too; if
+       one wrote to "/" it would clobber the cached planner shell, and a "/"
+       fallback offline would hand a rider the planner when they asked for a
+       timetable page. Content pages get a plain fetch and the static offline
+       card - never the "/" key, never the "/" shell. */
+    if (url.pathname !== "/") {
+      event.respondWith(fetch(request).catch(() => caches.match("/offline.html")));
+      return;
+    }
     event.respondWith(
       /* The HTML shell names hashed JavaScript bundles.  A stale browser HTTP
          cache can therefore hand back a shell from a deploy whose chunks are

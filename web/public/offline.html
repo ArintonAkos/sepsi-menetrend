@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="hu">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nincs internet · Fără conexiune</title>
+<style>
+  :root { color-scheme: light dark; }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    padding: 2rem;
+    box-sizing: border-box;
+    font: 16px/1.55 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    text-align: center;
+    background: #f7f7f5;
+    color: #1a1a1a;
+  }
+  h1 { font-size: 1.2rem; margin: 0; }
+  p { margin: 0; max-width: 34ch; }
+  p.ro { color: #555; }
+  a {
+    margin-top: 0.6rem;
+    padding: 0.55rem 1.1rem;
+    border-radius: 0.5rem;
+    background: #1a5fb4;
+    color: #fff;
+    font-weight: 600;
+    text-decoration: none;
+  }
+  @media (prefers-color-scheme: dark) {
+    body { background: #16181c; color: #e8e8e8; }
+    p.ro { color: #a0a0a0; }
+    a { background: #3584e4; }
+  }
+</style>
+</head>
+<body>
+  <h1>Nincs internetkapcsolat</h1>
+  <p>Ez az oldal internet nélkül nem érhető el. Az útvonaltervező offline is működik.</p>
+  <p class="ro" lang="ro">Această pagină nu este disponibilă fără internet. Planificatorul de rute funcționează și offline.</p>
+  <a href="/">Útvonaltervező · Planificator de rute</a>
+</body>
+</html>
