@@ -21,6 +21,7 @@
   # Pinned rather than inherited: a build that silently moves to a different
   # major is a build that breaks on a Tuesday for no reason anyone can see.
   NODE_VERSION = "22"
+  NEXT_PUBLIC_SITE_URL = "https://sepsimenetrend.ro"
 
 # There is deliberately no @netlify/plugin-nextjs here. This is a plain static
 # export - `output: "export"` in next.config.ts - so the Next.js runtime has
