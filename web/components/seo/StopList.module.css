@@ -1,0 +1,23 @@
+/* Shares the SEO-page chrome tokens (app/globals.css). A plain ordered list -
+   no fixed height, no image - so it streams in without shifting the page. */
+
+.list {
+  margin: 0;
+  padding-left: 1.6em;
+  display: grid;
+  gap: 2px;
+}
+
+.item {
+  line-height: 1.5;
+  color: var(--muted);
+}
+
+.item a {
+  color: var(--ink-2);
+  text-decoration: none;
+}
+
+.item a:hover {
+  text-decoration: underline;
+}

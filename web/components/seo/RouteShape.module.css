@@ -1,0 +1,9 @@
+/* The shape scales to its container's width and takes whatever height the
+   viewBox aspect ratio implies - no fixed height, nothing to shift. */
+
+.svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible; /* the padded viewBox already covers the stroke, but be safe */
+}
