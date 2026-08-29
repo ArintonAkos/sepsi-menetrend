@@ -27,6 +27,14 @@ describe("notablePairs", () => {
   it("routeBySlug is an equality lookup, not a parse", () => {
     expect(routeBySlug(net, "no-such-route-pair")).toBeUndefined();
   });
+
+  it("hands out an equal but independent list every call", () => {
+    const first = notablePairs(net);
+    const second = notablePairs(net);
+    expect(second).toEqual(first);
+    // a fresh array - a consumer sorting or splicing it cannot corrupt the memo
+    expect(second).not.toBe(first);
+  });
 });
 
 describe("journeyBetween", () => {
@@ -37,5 +45,27 @@ describe("journeyBetween", () => {
       .filter((j) => j && j.legs.some((l) => l.lineLabel));
     expect(withBus.length).toBeGreaterThan(0);
     expect(withBus[0]!.totalMin).toBeGreaterThan(0);
+  });
+
+  it("pins the representative journey for Árkos központ → Autoliv end to end", () => {
+    // Exact feed-derived values, like lines.test.ts - locks the walking-context
+    // build, the ride-leg mapping and the boardFor wiring in one shot. `pair.a`
+    // is the name-slug-first place, i.e. Árkos központ.
+    const pair = routeBySlug(net, "arkos-kozpont-autoliv");
+    expect(pair).toBeDefined();
+    expect(pair!.a.name.hu).toBe("Árkos központ");
+
+    const summary = journeyBetween(net, pair!.a, pair!.b, "hu");
+    expect(summary).toEqual({
+      legs: [
+        { lineLabel: "10-es busz", fromName: "Árkos központ", toName: "Csíki utca 2", rideMin: 7, stops: 6 },
+        { lineLabel: "2D-s busz", fromName: "Csíki utca 2", toName: "Autoliv", rideMin: 11, stops: 5 },
+      ],
+      walkMin: 2,
+      totalMin: 32,
+      transfers: 1,
+      firstDep: 330,
+      lastDep: 1290,
+    });
   });
 });

@@ -135,12 +135,14 @@ export function journeyBetween(
 }
 
 /** Every unordered pair of notable places connected by transit in at least one
- *  direction, each with a canonical order-independent slug, sorted by slug. */
+ *  direction, each with a canonical order-independent slug, sorted by slug.
+ *  The memo holds the canonical array; callers get a copy, so a consumer that
+ *  sorts or splices the result in place cannot corrupt it. */
 const pairLists = new WeakMap<Network, RoutePair[]>();
 
 export function notablePairs(net: Network): RoutePair[] {
   const cached = pairLists.get(net);
-  if (cached) return cached;
+  if (cached) return cached.slice();
 
   const notable = buildPlaces(net).filter((p) => NOTABLE_PLACE_SLUGS.includes(p.slug));
 
@@ -166,7 +168,7 @@ export function notablePairs(net: Network): RoutePair[] {
   const result: RoutePair[] = connected.map((p) => ({ slug: slugs.get(p)!, a: p.a, b: p.b }));
   result.sort((x, y) => byText(x.slug, y.slug));
   pairLists.set(net, result);
-  return result;
+  return result.slice();
 }
 
 /** The pair a slug names, by equality - never by taking the slug apart. */
