@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useSyncExternalStore } from "react";
+import { useEffect, useState, useSyncExternalStore } from "react";
 import Link from "next/link";
 import { readLang, writeLang, LANG_CHANGE_EVENT } from "@/lib/lang";
 import type { Lang } from "@/lib/i18n";
@@ -26,10 +26,17 @@ function getLangServerSnapshot(): Lang {
 
 interface LegalPageProps {
   type: "terms" | "privacy";
+  /** Fixes the language of the `/ro/` route twins: the server render and the
+   *  first client render must be Romanian so a crawler and the initial paint
+   *  agree. Once the visitor uses the in-page switch, their stored preference
+   *  takes over. Omitted on `/terms/` and `/privacy/`, which stay store-driven. */
+  lang?: "hu" | "ro";
 }
 
-export default function LegalPage({ type }: LegalPageProps) {
-  const lang = useSyncExternalStore(subscribeLang, getLangSnapshot, getLangServerSnapshot);
+export default function LegalPage({ type, lang: forcedLang }: LegalPageProps) {
+  const storedLang = useSyncExternalStore(subscribeLang, getLangSnapshot, getLangServerSnapshot);
+  const [switched, setSwitched] = useState(false);
+  const lang = forcedLang && !switched ? forcedLang : storedLang;
 
   useEffect(() => {
     try {
@@ -43,6 +50,7 @@ export default function LegalPage({ type }: LegalPageProps) {
   }, []);
 
   const changeLang = (newLang: Lang) => {
+    if (forcedLang) setSwitched(true); // let the visitor leave the forced language
     writeLang(globalThis.localStorage ?? null, newLang);
   };
 
