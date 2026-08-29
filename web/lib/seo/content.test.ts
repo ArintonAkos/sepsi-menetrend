@@ -51,4 +51,24 @@ describe("GUIDES", () => {
     expect(flat(GUIDES.pillar.body.hu)).toContain("sepsiszentgyörgy");
     expect(flat(GUIDES.pillar.body.ro)).toContain("sfântu gheorghe");
   });
+
+  // Every language half of every guide, flattened to one lowercase string.
+  const allHu = () => Object.values(GUIDES).map((g) => flat([g.title.hu, g.description.hu, g.body.hu, g.faq?.hu ?? []]));
+  const allRo = () => Object.values(GUIDES).map((g) => flat([g.title.ro, g.description.ro, g.body.ro, g.faq?.ro ?? []]));
+
+  // "péntek" is a noun; modifying another noun it needs the -i relational
+  // suffix ("pénteki ingyenes utazás"). The adverbial "pénteken ingyenes" and
+  // the noun-head "ingyenes péntek" are fine - only bare "péntek <adjective>"
+  // is the grammar bug this round fixed.
+  it("uses the -i suffix for adjectival 'péntek' in the Hungarian prose", () => {
+    for (const text of allHu()) expect(text).not.toMatch(/péntek ingyenes/);
+  });
+
+  // The Romanian prose addresses the reader informally (tu), matching the
+  // Hungarian half and the app UI - no polite 2nd-person-plural verbs directed
+  // at the reader (găsiți, verificați, consultați, puteți, ...).
+  const POLITE_PLURAL = /\b(?:puteți|găsiți|verificați|consultați|folosiți|alegeți|instalați|adăugați|cumpărați|urcați|mergeți|trimiteți|căutați)\b/;
+  it("keeps the Romanian prose in the informal register", () => {
+    for (const text of allRo()) expect(text).not.toMatch(POLITE_PLURAL);
+  });
 });

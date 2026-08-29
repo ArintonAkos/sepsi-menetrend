@@ -2,7 +2,7 @@
  *
  *  Facts here are pinned by the task brief and `web/public/data/fares.json`:
  *  city ticket 2,5 lej / 50 perc via 24pay, Árkos (10-es) 4 lej / 60 perc,
- *  péntek ingyenes a Multi-Trans közlése szerint. Prices are quoted "a
+ *  pénteken ingyenes a Multi-Trans közlése szerint. Prices are quoted "a
  *  multitrans.ro szerint" because the tariff page may be stale. */
 import type { GuideCopy, GuideKey } from "./content";
 
@@ -28,7 +28,7 @@ export const HU: Record<GuideKey, GuideCopy> = {
     slug: "buszmenetrend",
     title: "Sepsiszentgyörgyi buszmenetrend – Multi-Trans vonalak",
     description:
-      "A sepsiszentgyörgyi városi buszhálózat áttekintése: a Multi-Trans tizenkét vonala végállomásokkal, a jegyárak, az árkosi zóna és a péntek ingyenes utazás.",
+      "A sepsiszentgyörgyi városi buszhálózat áttekintése: a Multi-Trans tizenkét vonala végállomásokkal, a jegyárak, az árkosi zóna és a pénteki ingyenes utazás.",
     body: [
       { h2: "Miről szól ez az oldal?" },
       {
@@ -81,7 +81,7 @@ export const HU: Record<GuideKey, GuideCopy> = {
       },
       { h2: "Az árkosi járat (10-es vonal)" },
       {
-        p: "Árkos külön község, ezért a 10-es vonal díjhatárt lép át. Az árkosi jegy a multitrans.ro szerint 4 lej, és 60 percig érvényes. A városi jegy nem érvényes az árkosi szakaszra.",
+        p: "Árkos külön község, ezért a 10-es vonal díjhatárt lép át. Az árkosi jegy a multitrans.ro szerint 4 lej, és 60 percig érvényes. Az árkosi szakaszhoz a 4 lejes, 60 percig érvényes jegy szükséges.",
       },
       { h2: "Ingyenes péntek" },
       {
@@ -160,7 +160,7 @@ export const HU: Record<GuideKey, GuideCopy> = {
     body: [
       { h2: "Gyakori kérdések a sepsiszentgyörgyi buszokról" },
       {
-        p: "Az alábbi válaszok a jegyárakról, a péntek ingyenes utazásról, a jegyvásárlásról és a gyakran keresett úti célokról szólnak.",
+        p: "Az alábbi válaszok a jegyárakról, a pénteki ingyenes utazásról, a jegyvásárlásról és a gyakran keresett úti célokról szólnak.",
       },
       {
         p: "A válaszok a multitrans.ro menetrendjén és a Multi-Trans nyilvános közlésein alapulnak. Hivatalos, naprakész információért nézd meg a multitrans.ro oldalt.",

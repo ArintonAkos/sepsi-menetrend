@@ -36,7 +36,7 @@ export const RO: Record<GuideKey, GuideCopy> = {
       },
       { h2: "Multi-Trans și rețeaua urbană" },
       {
-        p: "Rețeaua de autobuz urban din Sfântu Gheorghe (Sepsiszentgyörgy), reședința județului Covasna, este operată de Multi-Trans S.A. Compania are douăsprezece linii de autobuz, în oraș și spre comuna vecină Arcuș. Aici găsiți mersul autobuzelor Multi-Trans pe fiecare linie și stație.",
+        p: "Rețeaua de autobuz urban din Sfântu Gheorghe (Sepsiszentgyörgy), reședința județului Covasna, este operată de Multi-Trans S.A. Compania are douăsprezece linii de autobuz, în oraș și spre comuna vecină Arcuș. Aici găsești mersul autobuzelor Multi-Trans pe fiecare linie și stație.",
       },
       { h2: "Liniile și capetele de traseu" },
       {
@@ -45,7 +45,7 @@ export const RO: Record<GuideKey, GuideCopy> = {
       { ul: LINES_RO },
       { h2: "Bilete și zona Arcuș" },
       {
-        p: "Biletul urban costă 2,5 lei conform multitrans.ro și este valabil 50 de minute de la urcare, cu schimbări incluse. Se cumpără prin aplicația 24pay. Linia 10 trece în comuna Arcuș, o zonă tarifară separată: acolo biletul este 4 lei și este valabil 60 de minute.",
+        p: "Biletul urban costă 2,5 lei conform multitrans.ro și este valabil 50 de minute de la urcare, inclusiv dacă schimbi autobuzul. Se cumpără prin aplicația 24pay. Linia 10 trece în comuna Arcuș, o zonă tarifară separată: acolo biletul este 4 lei și este valabil 60 de minute.",
       },
       { h2: "Vinerea gratuită" },
       {
@@ -81,7 +81,7 @@ export const RO: Record<GuideKey, GuideCopy> = {
       },
       { h2: "Cursa spre Arcuș (linia 10)" },
       {
-        p: "Arcuș este comună separată, deci linia 10 trece o graniță tarifară. Biletul spre Arcuș costă 4 lei conform multitrans.ro și este valabil 60 de minute. Biletul urban nu este valabil pe porțiunea din Arcuș.",
+        p: "Arcuș este o comună separată, deci linia 10 traversează o graniță tarifară. Biletul spre Arcuș costă 4 lei conform multitrans.ro și este valabil 60 de minute. Pentru porțiunea din Arcuș este nevoie de biletul de 4 lei, valabil 60 de minute.",
       },
       { h2: "Vinerea gratuită" },
       {
@@ -106,7 +106,7 @@ export const RO: Record<GuideKey, GuideCopy> = {
       },
       { h2: "Liniile" },
       {
-        p: "Multi-Trans operează douăsprezece linii de autobuz urbane în Sfântu Gheorghe. Linia 10 trece în Arcuș, care este comună separată și zonă tarifară separată. Lista completă a liniilor cu capete de traseu se află pe pagina de prezentare a orarului.",
+        p: "Multi-Trans operează douăsprezece linii de autobuz urbane în Sfântu Gheorghe. Linia 10 trece în Arcuș, care este o comună separată și o zonă tarifară separată. Lista completă a liniilor cu capete de traseu se află pe pagina de prezentare a orarului.",
       },
       { h2: "Acest site este neoficial" },
       {
@@ -114,11 +114,11 @@ export const RO: Record<GuideKey, GuideCopy> = {
       },
       { h2: "De ce există?" },
       {
-        p: "Orarul oficial este disponibil în PDF-uri și pe panourile din stații. Acest site îl face căutabil automat și adaugă hartă și planificator de traseu. Sursa datelor rămâne Multi-Trans.",
+        p: "Orarul oficial este disponibil în PDF-uri și pe panourile din stații. Acest site îl face căutabil automat și adaugă o hartă și un planificator de traseu. Sursa datelor rămâne Multi-Trans.",
       },
       { h2: "Unde găsesc informația oficială?" },
       {
-        p: "Pentru tarife, modificări de orar și anunțuri oficiale, verificați multitrans.ro și pagina de Facebook Multi-Trans. În caz de diferență, comunicarea operatorului este cea valabilă.",
+        p: "Pentru tarife, modificări de orar și anunțuri oficiale, verifică multitrans.ro și pagina de Facebook Multi-Trans. În caz de diferență, comunicarea operatorului este cea valabilă.",
       },
     ],
   },
@@ -139,7 +139,7 @@ export const RO: Record<GuideKey, GuideCopy> = {
       },
       { h2: "Cât costă?" },
       {
-        p: "Primele 0–30 de minute sunt gratuite. Închirierea mai lungă se tarifează; tariful actual apare în aplicația SepsiBike. Se taxează timpul dintre deblocarea și predarea bicicletei – mersul pe jos până la stație nu se include.",
+        p: "Primele 0–30 de minute sunt gratuite. Închirierea mai lungă se tarifează; tariful actual apare în aplicația SepsiBike. Se taxează timpul dintre deblocarea și predarea bicicletei – mersul pe jos până la stație nu este inclus în tarif.",
       },
       { h2: "Când se poate ridica o bicicletă?" },
       {
@@ -163,7 +163,7 @@ export const RO: Record<GuideKey, GuideCopy> = {
         p: "Răspunsurile de mai jos privesc tarifele, călătoria gratuită de vineri, cumpărarea biletului și destinațiile căutate frecvent.",
       },
       {
-        p: "Răspunsurile se bazează pe orarul de pe multitrans.ro și pe anunțurile publice Multi-Trans. Pentru informații oficiale și actuale, consultați multitrans.ro.",
+        p: "Răspunsurile se bazează pe orarul de pe multitrans.ro și pe anunțurile publice Multi-Trans. Pentru informații oficiale și actuale, consultă multitrans.ro.",
       },
     ],
     faq: [
@@ -189,7 +189,7 @@ export const RO: Record<GuideKey, GuideCopy> = {
       },
       {
         q: "Există curse de noapte?",
-        a: "Nu există curse de noapte separate. Ultimele plecări sunt de obicei seara; verificați ora ultimei curse pe pagina liniei respective.",
+        a: "Nu există curse de noapte separate. Ultimele plecări sunt de obicei seara; verifică ora ultimei curse pe pagina liniei respective.",
       },
       {
         q: "Acesta este site-ul oficial Multi-Trans?",
