@@ -15,6 +15,24 @@
     certFile = "certificates/dev.pem"
     keyFile = "certificates/dev-key.pem"
 
+# Old path shapes kept alive with a 301 so external links and search results
+# survive the rename: `/hu/*` was the Hungarian prefix before it moved to the
+# bare root, and `/lines` `/stops` were the English segment names.
+[[redirects]]
+  from = "/hu/*"
+  to = "/:splat"
+  status = 301
+
+[[redirects]]
+  from = "/lines/*"
+  to = "/vonalak/:splat"
+  status = 301
+
+[[redirects]]
+  from = "/stops/*"
+  to = "/megallok/:splat"
+  status = 301
+
 [[headers]]
   for = "/sw.js"
   [headers.values]
