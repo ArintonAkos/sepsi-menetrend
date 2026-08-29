@@ -168,8 +168,9 @@ helpful note rather than filler.
   - `routes.ts` — notable-pair enumeration; build-time journey via
     `lib/engine/plan.ts`; prose assembly.
   - `metadata.ts` — title / description templates, canonical, `hreflang`
-    alternates, OG.
+    alternates, OG tags.
   - `jsonld.ts` — `BreadcrumbList`, `FAQPage`, homepage `WebSite`.
+  - `og.tsx` — the shared Open Graph card template (see Open Graph images).
   - `content.{hu,ro}.ts` — guide-page prose.
 - Rendering reuses existing components and CSS modules where they fit
   (`components/stops/StopBoard`, `components/timetable/Timetable` display
@@ -180,6 +181,12 @@ helpful note rather than filler.
 
 ## i18n, metadata, structured data
 
+- **Hungarian is the default language.** The root and every bare path stay
+  Hungarian; `x-default` points at the Hungarian URL; the site name, manifest,
+  and homepage are unchanged. Romanian is strictly additive under `/ro/`.
+  A first-time visitor with a Romanian browser is still offered Romanian by
+  the existing client-side `lib/lang.ts` heuristic on the planner, but the
+  canonical, crawled, shared default is Hungarian.
 - `<html lang>` is set correctly per subtree — `ro` under `/ro/`, `hu`
   elsewhere. The root layout owns the single `<html>` and hard-codes `hu`;
   in the app router a nested layout cannot re-declare it. Mechanism decided in
@@ -190,7 +197,8 @@ helpful note rather than filler.
   in the root layout that reads `sepsi.lang` must not fight the static value
   on content pages.
 - Every page: self-canonical; `hreflang` `hu` / `ro` / `x-default` (→ hu),
-  reciprocal on both sides; per-page OG/Twitter title + the existing `og.png`.
+  reciprocal on both sides; per-page OG/Twitter title and description; per-page
+  OG image (see below).
 - Title / description templates (keyword-forward, readable, HU ≠ RO wording):
 
   | | Hungarian | Romanian |
@@ -203,6 +211,39 @@ helpful note rather than filler.
 - Structured data: `BreadcrumbList` on every content page; `FAQPage` on route
   pages and the FAQ; `WebSite` once on the homepage. Deliberately **no**
   `Organization` markup and no invented transit schema.
+
+## Open Graph images
+
+The share preview on Messenger, WhatsApp, Facebook and Telegram is `og:image`
+(1200×630). Today every page shares one static `public/og.png`. Content pages
+get a **generated card, in the page's own language and shaped to the page**.
+
+- Built with the `opengraph-image.tsx` file convention + `next/og`
+  `ImageResponse`, colocated with each route segment (and its `/ro/` twin), so
+  a PNG is emitted per route **at build time**. Pinned `dynamic = "force-static"`
+  like `sitemap.ts` / `manifest.ts`; reads only local `network.json`, no
+  request-time API. The shared template lives in `lib/seo/og.tsx`; each route's
+  file supplies the data.
+- One font file covering Latin Extended (Hungarian `ő ű`, Romanian `ș ț ă â`)
+  is bundled and embedded — Satori renders tofu for glyphs it has no font for.
+- Per page type, per language:
+  - **Line** — big line-number badge in the line's own colour, terminus →
+    terminus, "menetrend" / "orar", the mini route shape.
+  - **Place** — stop name, the line badges that call there,
+    "buszindulások" / "plecări".
+  - **Route** — "A → B" with a bus glyph, "Sepsiszentgyörgy" / "Sfântu
+    Gheorghe".
+  - **Fares** — the ticket price and validity.
+  - **Pillar / Multi-Trans / bike / FAQ** — topical title card, unofficial
+    tag.
+  - **Homepage** — keep the current `og.png` (or reissue it in the same
+    template for one visual language); Hungarian.
+- `twitter:image` reuses the same file.
+- Every card carries the wordmark and a small "nem hivatalos / neoficial" tag,
+  consistent with the on-page disclaimer.
+- Build-cost risk: ~370 Satori renders add to build time. Measure in phase 1;
+  if it is heavy, keep bespoke cards for line / route / guide / home and let
+  place pages fall back to one per-language template image.
 
 ## The "not official" treatment
 
@@ -278,11 +319,14 @@ No orphan pages; everything reachable from `/` within two clicks.
   this work.
 - Offline behaviour is preserved: the planner shell and its data still cache
   and work offline exactly as now.
-- No new third-party request on any content page (no map tiles, no fonts
-  beyond what the site already ships).
-- Build stays deterministic: same `network.json` → byte-identical `out/`.
-- Diacritics render correctly in both languages, in HTML text and in slugs
-  (slugs are ASCII-folded).
+- No new third-party request on any content page (no map tiles; no fonts
+  beyond what the site already ships and the one bundled OG-image font, which
+  is embedded at build time, not fetched).
+- Hungarian stays the site default and `x-default`; Romanian is additive only.
+- Build stays deterministic: same `network.json` → byte-identical `out/`,
+  generated OG PNGs included.
+- Diacritics render correctly in both languages — in HTML text, in generated
+  OG images, and folded to ASCII in slugs.
 
 ## Tests and verification
 
@@ -294,6 +338,10 @@ Build / static:
   resolves to real files (reciprocity script).
 - No orphan pages: link-crawl `out/` from `/`.
 - JSON-LD parses and validates.
+- Every page references an OG image that exists in `out/`, is 1200×630, well
+  under 8 MB, and shows no missing-glyph boxes for `ő ű ș ț ă â`. Spot-check a
+  line / place / route / guide card per language against a share-preview
+  debugger.
 - `npm test` green, including new `lib/seo/` unit tests: slugging, diacritic
   folding, station de-dup, line-name enrichment, notable-pair selection,
   build-time journey for a known pair.
@@ -320,10 +368,11 @@ what was verified.
 ## Rollout / phasing
 
 1. `lib/seo/` module + tests; sitemap/robots/redirects/SW changes; the `/ro/`
-   layout and language wiring; guide pages + pillar + indexes.
-2. Line pages (both languages).
-3. Place pages (both languages).
-4. Route pages (both languages).
+   layout and language wiring; the OG-image template + bundled font; guide
+   pages + pillar + indexes.
+2. Line pages + their OG cards (both languages).
+3. Place pages + their OG cards (both languages).
+4. Route pages + their OG cards (both languages).
 5. Planner footer links; full verification pass; hand back.
 
 Each phase is independently shippable and independently verifiable.
