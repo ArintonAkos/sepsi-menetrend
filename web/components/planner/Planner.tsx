@@ -1126,7 +1126,7 @@ export default function Planner({ network, places, reach, box, fares, bikeStatio
                 {recent.length > 0 && (
                   <div className={styles.setRow}>
                     <span>{t.recent}</span>
-                    <button className={styles.clear} onClick={() => {
+                    <button className={styles.cookieReset} onClick={() => {
                       setRecent([]);
                       write(globalThis.localStorage ?? null, []);
                     }}>{t.clearHistory}</button>
