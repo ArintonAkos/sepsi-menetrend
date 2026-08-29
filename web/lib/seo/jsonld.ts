@@ -45,7 +45,9 @@ export function websiteLd(lang: "hu" | "ro"): object {
 }
 
 /** Serialised for a `<script type="application/ld+json">` body (caller sets the
- *  tag). Plain `JSON.stringify` - the content is our own static prose. */
+ *  tag). `<` is escaped to `<` so a feed-derived name or a hand-written FAQ
+ *  answer containing `</script` cannot close the tag early and turn the rest of
+ *  the page into live HTML; `<` parses straight back to `<`. */
 export function jsonLdScript(obj: object): string {
-  return JSON.stringify(obj);
+  return JSON.stringify(obj).replace(/</g, "\\u003c");
 }

@@ -22,6 +22,10 @@ describe("pageMetadata", () => {
     expect(rec(m.openGraph).type).toBe("website");
     expect(rec(m.openGraph).siteName).toBe("Sepsi Menetrend");
     expect(rec(m.twitter).card).toBe("summary_large_image");
+    // pinned: the anti-impersonation fields, and where the brief's `author`
+    // deviated to Next 16's `authors` / `publisher`
+    expect(m.authors).toEqual([{ name: "Sepsi Menetrend" }]);
+    expect(m.publisher).toBe("Sepsi Menetrend");
   });
 
   it("makes the Hungarian page its own canonical and keeps hu_HU locale", () => {
@@ -138,5 +142,11 @@ describe("jsonLdScript", () => {
     expect(JSON.parse(jsonLdScript(crumb))).toEqual(crumb);
     const faq = faqLd([{ q: "q?", a: "a." }]);
     expect(JSON.parse(jsonLdScript(faq))).toEqual(faq);
+  });
+
+  it("escapes < so embedded data cannot close the script tag", () => {
+    const s = jsonLdScript({ a: "x</script><script>alert(1)</script>" });
+    expect(s).not.toMatch(/<\/script/i);
+    expect(JSON.parse(jsonLdScript({ a: "1 < 2" }))).toEqual({ a: "1 < 2" });
   });
 });
