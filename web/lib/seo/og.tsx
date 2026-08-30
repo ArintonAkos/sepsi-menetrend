@@ -14,6 +14,8 @@ import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 import { ImageResponse } from "next/og";
 import { GUIDES } from "./content";
+import { loadNetwork } from "./network";
+import { enrichLine, lineDirections } from "./lines";
 
 export const OG_SIZE = { width: 1200, height: 630 };
 export const OG_CONTENT_TYPE = "image/png";
@@ -179,6 +181,26 @@ export async function renderOg(props: OgProps): Promise<ImageResponse> {
   return new ImageResponse(tree, {
     ...OG_SIZE,
     fonts: [{ name: "og", data, style: "normal", weight: 400 }],
+  });
+}
+
+/** The share card for a line page. Badge is the id in the line's own colour
+ *  (`light`/`lightText` - the on-screen pair, already contrast-checked); the
+ *  faint trace behind it is the primary direction's shape, so lines read apart
+ *  at a glance in a feed. Heading is the spoken label, sub is the two termini. */
+export function lineOg(id: string, lang: "hu" | "ro"): Promise<ImageResponse> {
+  const net = loadNetwork();
+  const line = enrichLine(net, id, lang);
+  const raw = net.lines.find((l) => l.id === id)!;
+  const dirs = lineDirections(net, id);
+  const shape = net.patterns.find((p) => p.id === dirs[0]?.patternId)?.shape;
+  return renderOg({
+    kind: "line",
+    lang,
+    heading: line.label,
+    sub: `${line.termini[0]} – ${line.termini[1]}`,
+    badge: { text: id, bg: raw.light, fg: raw.lightText },
+    shape,
   });
 }
 

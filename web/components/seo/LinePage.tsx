@@ -51,8 +51,8 @@ const huArticle = (id: string, sentenceStart = false): string => {
 };
 
 /** `<head>` for a line page. Title and description are templated per language
- *  from the feed's spoken label and termini. No OG card here - Task 18 adds one
- *  and flips `ownOgImage`. */
+ *  from the feed's spoken label and termini. Each line ships its own
+ *  `opengraph-image` card, so `ownOgImage` strips the default `/og.png`. */
 export function lineMetadata(id: string, lang: SeoLang): Metadata {
   const net = loadNetwork();
   const { label, termini } = enrichLine(net, id, lang);
@@ -73,7 +73,14 @@ export function lineMetadata(id: string, lang: SeoLang): Metadata {
             + `stații, zi lucrătoare și weekend. Sfântu Gheorghe, Multi-Trans.`,
         };
 
-  return pageMetadata({ huPath: huPath(id), roPath: roPath(id), lang, title, description });
+  return pageMetadata({
+    huPath: huPath(id),
+    roPath: roPath(id),
+    lang,
+    title,
+    description,
+    ownOgImage: true,
+  });
 }
 
 const T = {
