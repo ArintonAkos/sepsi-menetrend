@@ -986,6 +986,19 @@ export default function Planner({ network, places, reach, box, fares, bikeStatio
           )}
         </div>}
 
+        {/* Always in the static tree so the content pages are reachable from `/`
+            without the settings panel being opened - Googlebot renders JS but
+            never taps a gear. It flows at the bottom of the rail column, clear
+            of the map and its Mapbox attribution. The human-facing copies of
+            these links live in the settings panel. */}
+        <footer className={styles.seoFooter}>
+          <a href={seoRo ? "/ro/orar-autobuz/" : "/buszmenetrend/"}>{seoT.timetablesLink}</a>
+          <a href={seoRo ? "/ro/linii/" : "/vonalak/"}>{seoT.linesLink}</a>
+          <a href={seoRo ? "/ro/tarife/" : "/dijszabas/"}>{seoT.faresLink}</a>
+          <a href={seoRo ? "/ro/termeni/" : "/terms/"}>{seoT.terms}</a>
+          <a href={seoRo ? "/ro/confidentialitate/" : "/privacy/"}>{seoT.privacy}</a>
+        </footer>
+
       </aside>
 
       {stopSheet && (board!.anchor
@@ -1201,16 +1214,6 @@ export default function Planner({ network, places, reach, box, fares, bikeStatio
           </>)}
         </div>
       </main>
-      {/* Always mounted so the content pages are reachable from `/` in the
-          static HTML - Googlebot renders JS but never opens the settings
-          panel. A real, faint element in the bottom-left corner, never hidden. */}
-      <footer className={styles.seoFooter}>
-        <a href={seoRo ? "/ro/orar-autobuz/" : "/buszmenetrend/"}>{seoT.timetablesLink}</a>
-        <a href={seoRo ? "/ro/linii/" : "/vonalak/"}>{seoT.linesLink}</a>
-        <a href={seoRo ? "/ro/tarife/" : "/dijszabas/"}>{seoT.faresLink}</a>
-        <a href={seoRo ? "/ro/termeni/" : "/terms/"}>{seoT.terms}</a>
-        <a href={seoRo ? "/ro/confidentialitate/" : "/privacy/"}>{seoT.privacy}</a>
-      </footer>
     </div>
   );
 }

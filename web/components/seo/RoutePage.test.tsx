@@ -22,6 +22,11 @@ describe("RoutePage", () => {
     expect(h1).toHaveTextContent("Árkos központtól Vasútállomásig busszal");
     expect(h1.textContent).not.toMatch(/-tól|-ig/);
 
+    // the FAQ question carries the same grammatical forms, not "…-tól …-ig?"
+    expect(
+      screen.getByText("Melyik busz megy Árkos központtól Vasútállomásig?"),
+    ).toBeInTheDocument();
+
     const ctas = screen.getAllByRole("link", { name: /tervező|nyisd/i });
     expect(ctas.length).toBeGreaterThan(0);
     expect(

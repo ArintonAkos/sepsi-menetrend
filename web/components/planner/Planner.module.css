@@ -247,23 +247,20 @@
   color: var(--muted);
 }
 
-/* Crawlable link to the content pages. A real, visible element - faint, tiny
-   and tucked into the bottom-left corner under the map chrome, never hidden
-   (no display:none / visibility:hidden / off-screen). It sits behind the rail
-   and map (z-index 0), out of the fixed full-viewport layout's way. */
+/* Crawlable links to the content pages, kept in the static markup so `/` links
+   them without the settings panel being opened. It flows as the last row of the
+   rail column - a real, visible element (no display:none / visibility:hidden /
+   off-screen), genuinely visible when the column is scrolled to the bottom, and
+   structurally unable to overlap the map or its Mapbox attribution. */
 .seoFooter {
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  z-index: 0;
+  flex: none;
   display: flex;
   flex-wrap: wrap;
-  padding: 3px 10px;
+  padding: 8px 12px;
+  border-top: 1px solid var(--border);
   font-size: 11px;
   line-height: 1.5;
   color: var(--muted);
-  opacity: 0.5;
-  pointer-events: auto;
 }
 .seoFooter a {
   color: inherit;

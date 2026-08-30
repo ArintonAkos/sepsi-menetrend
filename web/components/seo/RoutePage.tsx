@@ -143,7 +143,7 @@ function faqFor(
       ? `A(z) ${lines[0]} közlekedik ezen az útvonalon.`
       : `${cap(lines[0])}, ${lines.slice(1).join(", ")} (${primary.transfers} átszállással).`;
     return [
-      { q: `Melyik busz megy ${A.name.hu}-tól ${B.name.hu}-ig?`, a: which },
+      { q: `Melyik busz megy ${huRoutePhrase(A, B)}?`, a: which },
       { q: "Mennyi ideig tart az út?", a: `Körülbelül ${primary.totalMin} perc.` },
       {
         q: "Mennyibe kerül a jegy?",
@@ -184,7 +184,7 @@ export function routeMetadata(pairSlug: string, lang: SeoLang): Metadata {
     ? {
         title: `${routeTitle(A, B, "hu")} – Sepsiszentgyörgy`,
         description:
-          `Hogyan juss el ${A.name.hu}-tól ${B.name.hu}-ig Multi-Trans busszal `
+          `Hogyan juss el ${huRoutePhrase(A, B)} Multi-Trans busszal `
           + "Sepsiszentgyörgyön: járatok, átszállások, menetidő és az első/utolsó indulás.",
       }
     : {
