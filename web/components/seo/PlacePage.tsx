@@ -4,7 +4,7 @@ import PageFrame from "@/components/seo/PageFrame";
 import BoardTable from "@/components/seo/BoardTable";
 import { pageMetadata } from "@/lib/seo/metadata";
 import { loadNetwork } from "@/lib/seo/network";
-import { enrichLine, boardFor, type Board, type SeoLang } from "@/lib/seo/lines";
+import { enrichLine, type Board, type SeoLang } from "@/lib/seo/lines";
 import { buildPlaces, placeOf, type Place } from "@/lib/seo/places";
 import type { LngLat, Network } from "@/lib/engine/types";
 import styles from "./PlacePage.module.css";
@@ -45,6 +45,7 @@ const T = {
     lines: "Vonalak",
     nearby: "Közeli megállók",
     minutes: "perc",
+    approx: "kb.",
     cta: "Nyisd meg a megállót a tervezőben",
     intro: (name: string, labels: string) =>
       `${name} egyike Sepsiszentgyörgy Multi-Trans buszmegállóinak.`
@@ -57,6 +58,7 @@ const T = {
     lines: "Linii",
     nearby: "Stații din apropiere",
     minutes: "min",
+    approx: "aprox.",
     cta: "Deschide stația în planificator",
     intro: (name: string, labels: string) =>
       `Stația ${name} este una dintre stațiile de autobuz Multi-Trans din Sfântu Gheorghe.`
@@ -123,20 +125,32 @@ interface BoardColumn {
   board: Board;
 }
 
-/** One printed column per (line, kerb) pair at this place, in feed order.
- *  A pair with no board is skipped. */
+/** Ascending, de-duplicated union of a printed column and its marked extras -
+ *  the marked departures are D-extension trips the operator lists on the same
+ *  column and they leave this stop for real. Mirrors the private
+ *  `mergeDepartures` in `lib/seo/lines`; kept local so the page renders each
+ *  row directly instead of `boardFor`, which resolves only ONE column per
+ *  (line, kerb) and so silently drops the second direction at a hub. */
+const mergeCol = (base: number[] = [], marked?: number[]): number[] =>
+  [...new Set([...base, ...(marked ?? [])])].sort((a, z) => a - z);
+
+/** Every printed column at this place: one per distinct (line, kerb,
+ *  destination) row in `officialBoards`, in feed order. A kerb the feed binds
+ *  two opposite-direction rows to (hub stops - Vasútállomás, Autoliv, Lábasház)
+ *  yields a board for each direction, not just the first. Empty columns skipped. */
 function boardColumns(net: Network, place: Place): BoardColumn[] {
   const mine = new Set(place.stopIds);
   const seen = new Set<string>();
   const cols: BoardColumn[] = [];
   for (const b of net.officialBoards ?? []) {
     if (!b.stopId || !mine.has(b.stopId)) continue;
-    const key = `${b.lineId}|${b.stopId}`;
+    const key = `${b.lineId}|${b.stopId}|${b.destination}`;
     if (seen.has(key)) continue;
     seen.add(key);
-    const board = boardFor(net, b.lineId, b.stopId);
-    if (!board) continue;
-    cols.push({ lineId: b.lineId, destination: b.destination, board });
+    const weekday = mergeCol(b.weekday, b.markedWeekday);
+    const weekend = mergeCol(b.weekend, b.markedWeekend);
+    if (weekday.length === 0 && weekend.length === 0) continue;
+    cols.push({ lineId: b.lineId, destination: b.destination, board: { weekday, weekend } });
   }
   return cols;
 }
@@ -145,14 +159,26 @@ interface Nearby {
   place: Place;
   metres: number;
   minutes: number;
+  /** true = a straight-line guess (no stored footpath), shown with a "kb." hedge. */
+  estimated: boolean;
 }
 
 const NEARBY_MAX = 5;
+const WALK_PACE_M_PER_MIN = 80;
+/** Straight-line legs run longer on the ground - the engine's `DETOUR`
+ *  (lib/engine/plan.ts). Inlined so this page stays clear of the planner. */
+const DETOUR = 1.35;
+/** Past this crow-flies distance a place is not "nearby" in any useful sense.
+ *  If the feed has no footpath and nothing sits inside the radius, the page
+ *  says nothing rather than pointing at a stop 4 km up a valley. */
+const NEARBY_RADIUS_M = 1200;
 
 /** The nearest other places. `net.walks` is the good source - real pedestrian
- *  metres and seconds - but the feed only stores a footpath for some kerbs, so
- *  straight-line centroid distance backfills to keep every page's list useful.
- *  Walked minutes come off the stored path; the fallback assumes ~80 m/min. */
+ *  metres and seconds, shown as-is. Only ~17 places have a stored cross-place
+ *  footpath, so when fewer than three turn up a centroid straight-line distance
+ *  (× detour factor, ~80 m/min) backfills the list - but only within
+ *  `NEARBY_RADIUS_M`, and each such entry is flagged as an estimate. A place
+ *  with nothing real and nothing inside the radius gets no list at all. */
 function nearbyPlaces(net: Network, places: Place[], place: Place): Nearby[] {
   const mine = new Set(place.stopIds);
   const found = new Map<string, Nearby>();
@@ -166,6 +192,7 @@ function nearbyPlaces(net: Network, places: Place[], place: Place): Nearby[] {
       place: p,
       metres: Math.round(w.metres),
       minutes: Math.max(1, Math.round(w.seconds / 60)),
+      estimated: false,
     });
   }
 
@@ -173,10 +200,17 @@ function nearbyPlaces(net: Network, places: Place[], place: Place): Nearby[] {
     const rest = places
       .filter((p) => p.slug !== place.slug && !found.has(p.slug))
       .map((p) => ({ p, d: haversine(place.at, p.at) }))
+      .filter((x) => x.d <= NEARBY_RADIUS_M)
       .sort((a, b) => a.d - b.d);
     for (const { p, d } of rest) {
       if (found.size >= NEARBY_MAX) break;
-      found.set(p.slug, { place: p, metres: Math.round(d), minutes: Math.max(1, Math.round(d / 80)) });
+      const metres = Math.round(d * DETOUR);
+      found.set(p.slug, {
+        place: p,
+        metres,
+        minutes: Math.max(1, Math.round(metres / WALK_PACE_M_PER_MIN)),
+        estimated: true,
+      });
     }
   }
 
@@ -284,7 +318,7 @@ export default async function PlacePage({ lang, slug }: { lang: SeoLang; slug: s
               <li key={n.place.slug}>
                 <a href={placeHref(lang, n.place)}>{n.place.name[lang]}</a>{" "}
                 <span className={styles.dist}>
-                  {n.metres} m · {n.minutes} {t.minutes}
+                  {n.estimated ? `${t.approx} ` : ""}{n.metres} m · {n.minutes} {t.minutes}
                 </span>
               </li>
             ))}
