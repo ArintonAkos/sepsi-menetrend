@@ -28,6 +28,16 @@ describe("StopList", () => {
     expect(links[2]).toHaveAttribute("href", "/ro/statii/korhaz/");
   });
 
+  it("uses the /en/stops/ prefix for English", () => {
+    render(<StopList lang="en" stops={stops} />);
+    const links = screen.getAllByRole("link");
+    expect(links).toHaveLength(3);
+    for (const link of links) {
+      expect(link.getAttribute("href")).toMatch(/^\/en\/stops\/[^/]+\/$/);
+    }
+    expect(links[2]).toHaveAttribute("href", "/en/stops/korhaz/");
+  });
+
   it("renders an empty list without crashing", () => {
     const { container } = render(<StopList lang="hu" stops={[]} />);
     expect(container.querySelector("ol")).toBeTruthy();

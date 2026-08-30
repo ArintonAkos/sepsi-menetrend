@@ -1,13 +1,14 @@
 import { describe, it, expect } from "vitest";
 import { render, screen } from "@testing-library/react";
-import LinePage from "./LinePage";
+import LinePage, { lineMetadata } from "./LinePage";
+import type { SeoLang } from "@/lib/seo/lang";
 
 /** `LinePage` is an async server component - render its resolved tree the way
  *  the brief's tests do rather than as JSX. The `/Multi-Trans/` and
  *  `/planificator/` matchers in the brief's sketch are ambiguous against
  *  `PageFrame`'s disclaimer/footer, so the prose and CTA are pinned by a
  *  phrase unique to the body instead. */
-const renderLine = async (props: { lang: "hu" | "ro"; id: string }) =>
+const renderLine = async (props: { lang: SeoLang; id: string }) =>
   render(await LinePage(props));
 
 describe("LinePage", () => {
@@ -60,5 +61,22 @@ describe("LinePage", () => {
   it("offers the language twin link in the frame", async () => {
     const { container } = await renderLine({ lang: "ro", id: "1" });
     expect(container.querySelector('a[href="/vonalak/1/"]')).toBeTruthy();
+  });
+
+  it("renders an English line page: English title, English board headings, /en/ hrefs", async () => {
+    await renderLine({ lang: "en", id: "1" });
+
+    expect(screen.getByRole("heading", { level: 1 }).textContent).toMatch(/^Line 1/);
+    // one departure board per direction, so the English heading recurs
+    expect(screen.getAllByText("Weekday").length).toBeGreaterThan(0);
+
+    const hrefs = screen.getAllByRole("link").map((a) => a.getAttribute("href"));
+    expect(hrefs.some((h) => h?.startsWith("/en/stops/"))).toBe(true);
+    expect(hrefs).toContain("/?line=1&service=weekday&lang=en");
+  });
+
+  it("canonicalises the English line page to /en/lines/1/", () => {
+    const m = lineMetadata("1", "en");
+    expect(m.alternates?.canonical).toBe("https://sepsimenetrend.ro/en/lines/1/");
   });
 });

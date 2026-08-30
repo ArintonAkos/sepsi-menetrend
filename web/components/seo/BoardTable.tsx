@@ -1,3 +1,4 @@
+import type { SeoLang } from "@/lib/seo/lang";
 import styles from "./BoardTable.module.css";
 
 /** A static departure board for one line's SEO page: two labelled sections
@@ -8,7 +9,7 @@ import styles from "./BoardTable.module.css";
  *  static HTML with no client JS. The `/ro/` twin is built as Hungarian and
  *  language-stamped afterwards, so `lang` is passed in explicitly. */
 
-type Lang = "hu" | "ro";
+type Lang = SeoLang;
 
 interface BoardTableProps {
   lang: Lang;
@@ -20,6 +21,7 @@ interface BoardTableProps {
 const T = {
   hu: { weekday: "Hétköznap", weekend: "Hétvége", none: "nincs járat" },
   ro: { weekday: "Zi lucrătoare", weekend: "Weekend", none: "fără curse" },
+  en: { weekday: "Weekday", weekend: "Weekend", none: "no service" },
 } as const;
 
 /** Minutes -> "6:05". The wrap keeps a past-midnight trip (24:50 = 1490) on the

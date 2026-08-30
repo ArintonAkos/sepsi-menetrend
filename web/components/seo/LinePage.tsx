@@ -5,6 +5,7 @@ import StopList from "@/components/seo/StopList";
 import RouteShape from "@/components/seo/RouteShape";
 import { pageMetadata } from "@/lib/seo/metadata";
 import { loadNetwork } from "@/lib/seo/network";
+import { pickName } from "@/lib/seo/lang";
 import {
   enrichLine,
   lineDirections,
@@ -30,16 +31,19 @@ import styles from "./LinePage.module.css";
 const HOME: Record<SeoLang, { name: string; path: string }> = {
   hu: { name: "Sepsi Menetrend", path: "/" },
   ro: { name: "Sepsi Menetrend", path: "/ro/" },
+  en: { name: "Sepsi Menetrend", path: "/en/" },
 };
 
 /** The line-index crumb - label and path must match `IndexShell`/`urls.ts`. */
 const INDEX: Record<SeoLang, { name: string; path: string }> = {
   hu: { name: "Vonalak", path: "/vonalak/" },
   ro: { name: "Linii", path: "/ro/linii/" },
+  en: { name: "Lines", path: "/en/lines/" },
 };
 
 const huPath = (id: string) => `/vonalak/${id}/`;
 const roPath = (id: string) => `/ro/linii/${id}/`;
+const enPathFn = (id: string) => `/en/lines/${id}/`;
 
 /** Hungarian definite article for the spoken line name: "egyes"/"ötös" and the
  *  "egy…"/"öt…" D-lines open on a vowel and take "az", every other line "a".
@@ -66,16 +70,24 @@ export function lineMetadata(id: string, lang: SeoLang): Metadata {
             `${huArticle(id, true)} ${label} (${a} – ${b}) hivatalos buszmenetrendje: `
             + `indulási idők és megállók, hétköznap és hétvégén. Sepsiszentgyörgy, Multi-Trans.`,
         }
-      : {
+      : lang === "ro"
+      ? {
           title: `Linia ${id} – orar autobuz Sfântu Gheorghe`,
           description:
             `Orarul oficial al liniei ${id} (${a} – ${b}): ore de plecare și `
             + `stații, zi lucrătoare și weekend. Sfântu Gheorghe, Multi-Trans.`,
+        }
+      : {
+          title: `Line ${id} – bus schedule Sfântu Gheorghe`,
+          description:
+            `Official schedule for line ${id} (${a} – ${b}): departure times and stops, `
+            + `weekday and weekend. Sfântu Gheorghe, Multi-Trans.`,
         };
 
   return pageMetadata({
     huPath: huPath(id),
     roPath: roPath(id),
+    enPath: enPathFn(id),
     lang,
     title,
     description,
@@ -108,6 +120,18 @@ const T = {
     fareLead: "Tarif bilet",
     fareSource: " (conform multitrans.ro)",
   },
+  en: {
+    freeFriday: "City services are free on Fridays (per Multi-Trans announcements).",
+    cta: "Open in the planner",
+    weekday: "on weekdays",
+    weekend: "at weekends",
+    span: (svc: string, first: string, last: string) =>
+      `First departure ${svc} ${first}, last ${last}.`,
+    noWeekend: "No weekend service.",
+    headway: (n: number) => `Roughly every ${n} minutes.`,
+    fareLead: "Ticket price",
+    fareSource: " (per multitrans.ro)",
+  },
 } as const;
 
 /** First/last per service plus a headway when the board is regular enough to
@@ -133,7 +157,9 @@ function fareChip(lang: SeoLang, id: string, hedge: boolean): string {
   const amount =
     lang === "hu"
       ? arcus ? "4 lej / 60 perc" : "2,5 lej / 50 perc"
-      : arcus ? "4 lei / 60 min" : "2,5 lei / 50 min";
+      : lang === "ro"
+      ? arcus ? "4 lei / 60 min" : "2,5 lei / 50 min"
+      : arcus ? "4 lei / 60 min" : "2.5 lei / 50 min";
   const t = T[lang];
   return `${t.fareLead}: ${amount}${hedge ? t.fareSource : ""}.`;
 }
@@ -146,10 +172,10 @@ function stopEntries(places: Place[], stopIds: string[], lang: SeoLang) {
   let prev = "";
   for (const sid of stopIds) {
     const p = placeOf(places, sid);
-    const slug = (lang === "hu" ? p?.slug : p?.slugRo) ?? sid;
+    const slug = (lang === "ro" ? p?.slugRo : p?.slug) ?? sid;
     if (slug === prev) continue;
     prev = slug;
-    out.push({ name: p?.name[lang] ?? sid, slug });
+    out.push({ name: p ? pickName(p.name, lang) : sid, slug });
   }
   return out;
 }
@@ -167,10 +193,17 @@ function intro(lang: SeoLang, id: string, label: string, termini: [string, strin
       + `A fenti indulási idők a Multi-Trans hivatalos tábláiról származnak; élőben az útvonaltervező számol.`
     );
   }
+  if (lang === "ro") {
+    return (
+      `${cap(label)} este una dintre liniile de autobuz urbane Multi-Trans din Sfântu Gheorghe `
+      + `și circulă între ${a} și ${b}. În zilele lucrătoare are curse mai dese, în weekend mai rare. `
+      + `Orele de plecare de mai sus provin de pe afișele oficiale Multi-Trans; calculul live îl face planificatorul.`
+    );
+  }
   return (
-    `${cap(label)} este una dintre liniile de autobuz urbane Multi-Trans din Sfântu Gheorghe `
-    + `și circulă între ${a} și ${b}. În zilele lucrătoare are curse mai dese, în weekend mai rare. `
-    + `Orele de plecare de mai sus provin de pe afișele oficiale Multi-Trans; calculul live îl face planificatorul.`
+    `Line ${id} is one of Multi-Trans's city bus routes in Sfântu Gheorghe, `
+    + `running between ${a} and ${b}. It runs more often on weekdays and less at weekends. `
+    + `The departure times above are from the official Multi-Trans stop signs; the route planner does the live calculation.`
   );
 }
 
@@ -181,12 +214,16 @@ export default async function LinePage({ lang, id }: { lang: SeoLang; id: string
   const { label, title, termini } = enrichLine(net, id, lang);
   const dirs = lineDirections(net, id);
 
-  const selfPath = lang === "hu" ? huPath(id) : roPath(id);
+  const selfPath =
+    lang === "hu" ? huPath(id) : lang === "ro" ? roPath(id) : enPathFn(id);
+  // `PageFrame` is still a two-way (hu/ro) switch this phase; Task C12 swaps it
+  // to the full triple. Until then English's nearest twin link is the Hungarian
+  // page, and `PageFrame` renders with Hungarian chrome for `en`.
   const twinPath = lang === "hu" ? roPath(id) : huPath(id);
 
   return (
     <PageFrame
-      lang={lang}
+      lang={lang === "en" ? "hu" : lang}
       kind="line"
       twinPath={twinPath}
       crumbs={[HOME[lang], INDEX[lang], { name: label, path: selfPath }]}
@@ -201,7 +238,7 @@ export default async function LinePage({ lang, id }: { lang: SeoLang; id: string
 
         return (
           <section key={dir.patternId} className={styles.direction}>
-            <h2 className={styles.headsign}>{dir.headsign[lang]}</h2>
+            <h2 className={styles.headsign}>{pickName(dir.headsign, lang)}</h2>
 
             {board ? (
               <BoardTable lang={lang} weekday={board.weekday} weekend={board.weekend} />
@@ -212,7 +249,7 @@ export default async function LinePage({ lang, id }: { lang: SeoLang; id: string
             <p className={styles.note}>{T[lang].freeFriday}</p>
 
             <p className={styles.cta}>
-              <a href={`/?line=${id}&service=weekday${lang === "ro" ? "&lang=ro" : ""}`}>{T[lang].cta}</a>
+              <a href={`/?line=${id}&service=weekday${lang === "hu" ? "" : `&lang=${lang}`}`}>{T[lang].cta}</a>
             </p>
 
             <StopList lang={lang} stops={stops} />

@@ -1,3 +1,4 @@
+import type { SeoLang } from "@/lib/seo/lang";
 import styles from "./StopList.module.css";
 
 /** An ordered list of a line's stops, each linking to that stop's own SEO page.
@@ -7,7 +8,7 @@ import styles from "./StopList.module.css";
  *  built as Hungarian then language-stamped, so `lang` is passed in explicitly;
  *  `slug` is already the language-correct one from the caller. */
 
-type Lang = "hu" | "ro";
+type Lang = SeoLang;
 
 interface StopListProps {
   lang: Lang;
@@ -15,7 +16,7 @@ interface StopListProps {
 }
 
 // Must match the stop-page inventory in `lib/seo/urls.ts`.
-const BASE = { hu: "/megallok/", ro: "/ro/statii/" } as const;
+const BASE = { hu: "/megallok/", ro: "/ro/statii/", en: "/en/stops/" } as const;
 
 export default function StopList({ lang, stops }: StopListProps) {
   const base = BASE[lang];

@@ -31,6 +31,14 @@ describe("BoardTable", () => {
     expect(screen.getByText("7:00")).toBeInTheDocument();
   });
 
+  it("labels both sections and the empty state in English", () => {
+    render(<BoardTable lang="en" weekday={[365, 395]} weekend={[]} />);
+    expect(screen.getByText("Weekday")).toBeInTheDocument();
+    expect(screen.getByText("Weekend")).toBeInTheDocument();
+    expect(screen.getByText("6:05")).toBeInTheDocument();
+    expect(screen.getByText(/no service/)).toBeInTheDocument();
+  });
+
   it("wraps a past-midnight departure back onto the clock", () => {
     // 1490 = 24:50 -> 0:50
     render(<BoardTable lang="hu" weekday={[1490]} weekend={[]} />);
