@@ -11,7 +11,7 @@ describe("sitemap", () => {
     const line1 = entries.find((e) => e.url.endsWith("/vonalak/1/"))!;
     expect(line1.alternates?.languages?.ro).toBe(`${SITE}/ro/linii/1/`);
     expect(entries.find((e) => e.url === `${SITE}/`)).toBeTruthy();
-    expect(entries.find((e) => e.url.endsWith("/terms/"))).toBeTruthy();
+    expect(entries.find((e) => e.url.endsWith("/felhasznalasi-feltetelek/"))).toBeTruthy();
   });
 
   it("emits one <loc> per language per inventory page", () => {

@@ -133,8 +133,8 @@ export default function Analytics({ gaId }: { gaId?: string }) {
         <p className={styles.message}>
           {t.message}{" "}
           <span className={styles.legalLinks}>
-            {t.more} <a href="/privacy/" target="_blank" rel="noopener noreferrer">{t.privacyLink}</a> {t.and}{" "}
-            <a href="/terms/" target="_blank" rel="noopener noreferrer">{t.termsLink}</a>.
+            {t.more} <a href="/adatvedelem/" target="_blank" rel="noopener noreferrer">{t.privacyLink}</a> {t.and}{" "}
+            <a href="/felhasznalasi-feltetelek/" target="_blank" rel="noopener noreferrer">{t.termsLink}</a>.
           </span>
         </p>
         <div className={styles.actions}>

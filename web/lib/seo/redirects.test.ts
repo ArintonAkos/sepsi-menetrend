@@ -9,6 +9,8 @@ const rules = [
   { from: "/hu/*", to: "/:splat" },
   { from: "/lines/*", to: "/vonalak/:splat" },
   { from: "/stops/*", to: "/megallok/:splat" },
+  { from: "/terms/*", to: "/felhasznalasi-feltetelek/:splat" },
+  { from: "/privacy/*", to: "/adatvedelem/:splat" },
 ];
 
 function esc(s: string): string {

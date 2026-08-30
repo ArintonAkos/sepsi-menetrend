@@ -27,8 +27,8 @@ export default function HomeFooter({ lang }: { lang: "hu" | "ro" }) {
           ["/dijszabas/", "Jegyárak"],
           ["/multi-trans/", "A Multi-Transról"],
           ["/gyik/", "Gyakori kérdések"],
-          ["/terms/", "Felhasználási feltételek"],
-          ["/privacy/", "Adatkezelési tájékoztató"],
+          ["/felhasznalasi-feltetelek/", "Felhasználási feltételek"],
+          ["/adatvedelem/", "Adatkezelési tájékoztató"],
         ];
   const other = lang === "ro" ? { href: "/", label: "Magyar" } : { href: "/ro/", label: "Română" };
 

@@ -33,6 +33,16 @@
   to = "/megallok/:splat"
   status = 301
 
+[[redirects]]
+  from = "/terms/*"
+  to = "/felhasznalasi-feltetelek/:splat"
+  status = 301
+
+[[redirects]]
+  from = "/privacy/*"
+  to = "/adatvedelem/:splat"
+  status = 301
+
 [[headers]]
   for = "/sw.js"
   [headers.values]

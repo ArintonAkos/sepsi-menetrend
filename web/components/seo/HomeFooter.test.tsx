@@ -7,7 +7,8 @@ describe("HomeFooter", () => {
     render(<HomeFooter lang="hu" />);
     const hrefs = screen.getAllByRole("link").map((a) => a.getAttribute("href"));
     for (const p of ["/buszmenetrend/", "/vonalak/", "/megallok/", "/utvonal/",
-                     "/dijszabas/", "/multi-trans/", "/gyik/", "/terms/", "/privacy/"]) {
+                     "/dijszabas/", "/multi-trans/", "/gyik/",
+                     "/felhasznalasi-feltetelek/", "/adatvedelem/"]) {
       expect(hrefs).toContain(p);
     }
     expect(hrefs).toContain("/ro/");                 // language switch

@@ -2,12 +2,12 @@ import type { Metadata } from "next";
 import { LegalPage } from "@/components";
 import { pageMetadata } from "@/lib/seo/metadata";
 
-/** Romanian twin of `/terms/`. `LegalPage` is forced to `ro` so the page
+/** Romanian twin of `/felhasznalasi-feltetelek/`. `LegalPage` is forced to `ro` so the page
  *  server-renders the Romanian legal text; `localize-html.mjs` stamps
  *  `lang="ro"` onto the built HTML afterwards. */
 export async function generateMetadata(): Promise<Metadata> {
   return pageMetadata({
-    huPath: "/terms/",
+    huPath: "/felhasznalasi-feltetelek/",
     roPath: "/ro/termeni/",
     lang: "ro",
     title: "Termeni și condiții de utilizare · Sepsi Menetrend",

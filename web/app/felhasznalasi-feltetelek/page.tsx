@@ -5,8 +5,13 @@ export const metadata: Metadata = {
   title: "Felhasználási Feltételek · Termeni și Condiții",
   description: "A Sepsi Menetrend felhasználási feltételei, felelősségkizárási nyilatkozata és jogi információi.",
   alternates: {
-    canonical: "/terms/",
-    languages: { hu: "/terms/", ro: "/ro/termeni/", "x-default": "/terms/" },
+    canonical: "/felhasznalasi-feltetelek/",
+    languages: {
+      hu: "/felhasznalasi-feltetelek/",
+      ro: "/ro/termeni/",
+      en: "/en/terms/",
+      "x-default": "/felhasznalasi-feltetelek/",
+    },
   },
 };
 

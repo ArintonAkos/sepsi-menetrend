@@ -29,7 +29,8 @@ interface LegalPageProps {
   /** Fixes the language of the `/ro/` route twins: the server render and the
    *  first client render must be Romanian so a crawler and the initial paint
    *  agree. Once the visitor uses the in-page switch, their stored preference
-   *  takes over. Omitted on `/terms/` and `/privacy/`, which stay store-driven. */
+   *  takes over. Omitted on `/felhasznalasi-feltetelek/` and `/adatvedelem/`,
+   *  which stay store-driven. */
   lang?: "hu" | "ro";
 }
 
@@ -104,11 +105,11 @@ export default function LegalPage({ type, lang: forcedLang }: LegalPageProps) {
           <nav className={styles.footerNav}>
             <div className={styles.footerLinks}>
               {type === "terms" ? (
-                <Link href="/privacy/" className={styles.otherPageLink}>
+                <Link href="/adatvedelem/" className={styles.otherPageLink}>
                   {lang === "ro" ? "→ Politica de confidențialitate și cookie-uri" : "→ Adatkezelési és süti tájékoztató"}
                 </Link>
               ) : (
-                <Link href="/terms/" className={styles.otherPageLink}>
+                <Link href="/felhasznalasi-feltetelek/" className={styles.otherPageLink}>
                   {lang === "ro" ? "→ Termeni și condiții de utilizare" : "→ Felhasználási feltételek"}
                 </Link>
               )}

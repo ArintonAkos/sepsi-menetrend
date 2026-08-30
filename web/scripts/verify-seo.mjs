@@ -111,16 +111,17 @@ const NO_STATIC_H1 = new Set(["/", "/ro/"]);
  *   - `/` + `/ro/`   the planner. `/` now emits a reciprocal hreflang triple
  *     (its `/ro/` twin always did) - locked by lib/seo/homepage-head.test.ts.
  *     Their homepage->pillar link is asserted directly in step 5b below.
- *   - `/terms/` + `/privacy/`   canonical HU, with Romanian twins as pages
- *     (`/ro/termeni/`, `/ro/confidentialitate/`); all four now carry the
- *     reciprocal `alternates`, still left off the generic sitemap walk.
+ *   - `/felhasznalasi-feltetelek/` + `/adatvedelem/`   canonical HU, with
+ *     Romanian twins as pages (`/ro/termeni/`, `/ro/confidentialitate/`); all
+ *     four now carry the reciprocal `alternates`, still left off the generic
+ *     sitemap walk.
  *   - `/ro/termeni/` + `/ro/confidentialitate/`   those twins.
  *  This is the brief's own orphan-check exclusion list. */
 const EXEMPT = new Set([
   "/",
   "/ro/",
-  "/terms/",
-  "/privacy/",
+  "/felhasznalasi-feltetelek/",
+  "/adatvedelem/",
   "/ro/termeni/",
   "/ro/confidentialitate/",
 ]);

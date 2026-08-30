@@ -42,8 +42,8 @@ const STATIC: readonly { hu: string; ro: string; priority: number }[] = [
   { hu: "/multi-trans/", ro: "/ro/multi-trans/", priority: 0.7 }, // operator
   { hu: "/sepsibike/", ro: "/ro/sepsibike/", priority: 0.6 }, // bike share
   { hu: "/gyik/", ro: "/ro/intrebari-frecvente/", priority: 0.6 }, // faq
-  { hu: "/terms/", ro: "/ro/termeni/", priority: 0.4 },
-  { hu: "/privacy/", ro: "/ro/confidentialitate/", priority: 0.4 },
+  { hu: "/felhasznalasi-feltetelek/", ro: "/ro/termeni/", priority: 0.4 },
+  { hu: "/adatvedelem/", ro: "/ro/confidentialitate/", priority: 0.4 },
 ];
 
 /** Every SEO page, deterministically ordered: static pages, then one per line

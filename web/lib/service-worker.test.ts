@@ -195,7 +195,7 @@ describe("offline worker", () => {
     });
 
     const response = dispatch({ method: "GET", mode: "navigate",
-      url: "https://sepsimenetrend.ro/terms/" });
+      url: "https://sepsimenetrend.ro/felhasznalasi-feltetelek/" });
 
     expect(await (await response)!.text()).toBe("terms page");
     await Promise.allSettled(waitUntil);

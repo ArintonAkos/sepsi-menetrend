@@ -60,8 +60,8 @@ describe("allPages", () => {
     expect(page!.priority).toBe(0.5);
   });
 
-  it("maps /terms/ to its Romanian twin", () => {
-    const terms = pages.find((p) => p.path === "/terms/");
+  it("maps /felhasznalasi-feltetelek/ to its Romanian twin", () => {
+    const terms = pages.find((p) => p.path === "/felhasznalasi-feltetelek/");
     expect(terms?.ro).toBe("/ro/termeni/");
     expect(terms?.priority).toBe(0.4);
   });

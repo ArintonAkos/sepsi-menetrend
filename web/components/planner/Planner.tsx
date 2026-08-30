@@ -1165,9 +1165,9 @@ export default function Planner({ network, places, reach, box, fares, bikeStatio
                   <span>{t.source}</span>
                   <p className={styles.setNote}>{t.disclaimer}</p>
                   <div className={styles.legalLinks}>
-                    <a href={contentHref("/terms/", "/ro/termeni/")} target="_blank" rel="noopener noreferrer">{t.terms}</a>
+                    <a href={contentHref("/felhasznalasi-feltetelek/", "/ro/termeni/")} target="_blank" rel="noopener noreferrer">{t.terms}</a>
                     <span>·</span>
-                    <a href={contentHref("/privacy/", "/ro/confidentialitate/")} target="_blank" rel="noopener noreferrer">{t.privacy}</a>
+                    <a href={contentHref("/adatvedelem/", "/ro/confidentialitate/")} target="_blank" rel="noopener noreferrer">{t.privacy}</a>
                   </div>
                   <div className={styles.legalLinks}>
                     <a href={contentHref("/buszmenetrend/", "/ro/orar-autobuz/")} target="_blank" rel="noopener noreferrer">{t.timetablesLink}</a>
