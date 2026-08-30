@@ -1,0 +1,253 @@
+/** Post-build structural gate for the generated SEO surface.
+ *
+ *  ~356 crawlable URLs (both languages) are produced from `network.json` by a
+ *  dozen `page.tsx` files. A stray path typo, a half-wired hreflang pair, a
+ *  stranded page or a share card that 404s would all ship silently. This walks
+ *  the finished `out/` and fails the build (exit 1, one line per problem) on any
+ *  of them; on success it prints a single green line and exits 0.
+ *
+ *  Runs after `og-ext.mjs` (so the `opengraph-image` -> `.png` retarget is done)
+ *  and before `stamp-sw.mjs` (so a failed build never earns a fingerprint).
+ *
+ *  Dependency-free - Node built-ins only. Regex/string parsing of HTML is fine:
+ *  these are our own generated files, not arbitrary markup. The expected-URL
+ *  list is `out/sitemap.xml` (Task 5's `allPages` is TypeScript and a plain
+ *  `.mjs` cannot import it); everything else is derived from files in `out/`.
+ */
+import { existsSync, readFileSync, readdirSync, statSync } from "node:fs";
+import { join } from "node:path";
+
+const OUT = "out";
+
+if (!existsSync(OUT)) {
+  console.error("verify-seo: out/ not found - run `next build` first");
+  process.exit(1);
+}
+const SITEMAP = join(OUT, "sitemap.xml");
+if (!existsSync(SITEMAP)) {
+  console.error("verify-seo: out/sitemap.xml not found - the export is incomplete");
+  process.exit(1);
+}
+
+const failures = [];
+const fail = (msg) => failures.push(msg);
+
+/** Origin of the deploy, read off the sitemap so a `NEXT_PUBLIC_SITE_URL`
+ *  override still resolves. Every `<loc>` is absolute. */
+const sitemapXml = readFileSync(SITEMAP, "utf8");
+const locs = [...sitemapXml.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]);
+const ORIGIN = new URL(locs[0]).origin;
+
+/** A URL (absolute or root-relative) -> its path, query and hash dropped. */
+const toPath = (u) => {
+  try {
+    return new URL(u, ORIGIN).pathname;
+  } catch {
+    return u;
+  }
+};
+
+/** The HTML file a page path is served from: `/` -> out/index.html,
+ *  `/x/y/` -> out/x/y/index.html. */
+const pageFile = (path) =>
+  path === "/" ? join(OUT, "index.html") : join(OUT, path.replace(/\/$/, ""), "index.html");
+
+/** The file an asset path (an OG image) points at, verbatim under `out/`. */
+const assetFile = (path) => join(OUT, path);
+
+const read = (file) => readFileSync(file, "utf8");
+
+// --- <head> / link parsing ------------------------------------------------
+
+/** Every `<link rel="{rel}">` tag's `hreflang` (lower-cased) and `href`.
+ *  Next emits the attribute as `hrefLang` - HTML is case-insensitive, so match
+ *  loosely. */
+function linkTags(html, rel) {
+  const tags = html.match(/<link\b[^>]*>/gi) ?? [];
+  const out = [];
+  for (const tag of tags) {
+    const relM = /\brel="([^"]*)"/i.exec(tag);
+    if (!relM || relM[1].toLowerCase() !== rel) continue;
+    out.push({
+      hreflang: /\bhreflang="([^"]*)"/i.exec(tag)?.[1]?.toLowerCase(),
+      href: /\bhref="([^"]*)"/i.exec(tag)?.[1],
+    });
+  }
+  return out;
+}
+
+const canonicalOf = (html) => linkTags(html, "canonical")[0]?.href;
+
+/** The page's hreflang set as `{ hu, ro, "x-default" }` of paths. */
+function alternatesOf(html) {
+  const out = {};
+  for (const { hreflang, href } of linkTags(html, "alternate")) {
+    if (hreflang && href) out[hreflang] = toPath(href);
+  }
+  return out;
+}
+
+const metaContent = (html, attr, value) =>
+  new RegExp(`<meta\\s+${attr}="${value}"\\s+content="([^"]*)"`, "i").exec(html)?.[1];
+
+/** Root-relative `<a href>` targets in a page's body, query/hash stripped. */
+function anchorPaths(html) {
+  const out = new Set();
+  for (const m of html.matchAll(/<a\b[^>]*\bhref="(\/[^"]*)"/gi)) {
+    let p = m[1].split("?")[0].split("#")[0];
+    if (p === "") p = "/";
+    out.add(p);
+  }
+  return out;
+}
+
+// --- exemptions ----------------------------------------------------------
+
+/** The planner app renders its `<h1>` after hydration - the static export has
+ *  none, and `app/page.tsx` is frozen. */
+const NO_STATIC_H1 = new Set(["/", "/ro/"]);
+
+/** Pages the hreflang and orphan rules deliberately skip:
+ *   - `/` + `/ro/`   the planner. `/` emits no hreflang at all - locked by
+ *     lib/seo/homepage-head.test.ts; the planner predates this subsystem.
+ *   - `/terms/` + `/privacy/`   stay canonical HU. Task 9 added Romanian twins
+ *     as pages (`/ro/termeni/`, `/ro/confidentialitate/`) but never wired the
+ *     reciprocal HU-side `alternates`, so the pairing is one-way by design.
+ *   - `/ro/termeni/` + `/ro/confidentialitate/`   those twins - they point back
+ *     one-way, which the HU side never reciprocates.
+ *  This is the brief's own orphan-check exclusion list. */
+const EXEMPT = new Set([
+  "/",
+  "/ro/",
+  "/terms/",
+  "/privacy/",
+  "/ro/termeni/",
+  "/ro/confidentialitate/",
+]);
+
+// --- the page list ------------------------------------------------------
+
+const pages = locs.map((loc) => {
+  const path = toPath(loc);
+  return { loc, path, file: pageFile(path) };
+});
+
+// 1. Every sitemap URL has a file.
+for (const p of pages) {
+  if (!existsSync(p.file)) fail(`missing page: ${p.path} -> ${p.file}`);
+}
+
+// 2. Per-page head checks + 3. hreflang integrity + 6. OG image resolves.
+const altSets = new Map(); // "huPath|roPath" -> first triple seen, for reciprocity
+
+for (const p of pages) {
+  if (!existsSync(p.file)) continue;
+  const html = read(p.file);
+
+  // 2a. non-empty <title>
+  const title = /<title>([^<]*)<\/title>/i.exec(html)?.[1]?.trim();
+  if (!title) fail(`${p.path}: empty or missing <title>`);
+
+  // 2b. non-empty meta description
+  const desc = metaContent(html, "name", "description")?.trim();
+  if (!desc) fail(`${p.path}: empty or missing <meta name="description">`);
+
+  // 2c. exactly one <h1
+  const h1s = (html.match(/<h1[\s/>]/gi) ?? []).length;
+  if (h1s !== 1 && !NO_STATIC_H1.has(p.path)) {
+    fail(`${p.path}: expected exactly one <h1>, found ${h1s}`);
+  }
+
+  // 2d. self-canonical
+  const canon = canonicalOf(html);
+  if (!canon) {
+    fail(`${p.path}: missing <link rel="canonical">`);
+  } else if (toPath(canon) !== p.path) {
+    fail(`${p.path}: canonical points at ${toPath(canon)}, not itself`);
+  }
+
+  // 6. og:image resolves to a file in out/
+  const ogImage = metaContent(html, "property", "og:image");
+  if (!ogImage) {
+    fail(`${p.path}: missing <meta property="og:image">`);
+  } else {
+    const imgPath = toPath(ogImage);
+    if (!existsSync(assetFile(imgPath))) {
+      fail(`${p.path}: og:image ${imgPath} has no file in out/`);
+    }
+  }
+
+  // 3. hreflang - skipped for the deliberately one-way pages.
+  if (EXEMPT.has(p.path)) continue;
+
+  const alt = alternatesOf(html);
+  if (!alt.hu || !alt.ro || !alt["x-default"]) {
+    fail(`${p.path}: incomplete hreflang set (need hu, ro, x-default)`);
+    continue;
+  }
+  // every alternate target must exist
+  for (const [lang, target] of Object.entries(alt)) {
+    if (!existsSync(pageFile(target))) {
+      fail(`${p.path}: hreflang ${lang} -> ${target} has no file`);
+    }
+  }
+  // x-default is the Hungarian URL; one of the pair is this page itself
+  if (alt["x-default"] !== alt.hu) {
+    fail(`${p.path}: x-default ${alt["x-default"]} != hu alternate ${alt.hu}`);
+  }
+  if (p.path !== alt.hu && p.path !== alt.ro) {
+    fail(`${p.path}: hreflang names ${alt.hu} / ${alt.ro}, neither is this page`);
+  }
+  // reciprocity: the partner must carry the identical triple
+  const key = `${alt.hu}|${alt.ro}`;
+  const triple = `hu=${alt.hu} ro=${alt.ro} x-default=${alt["x-default"]}`;
+  const seen = altSets.get(key);
+  if (seen && seen.triple !== triple) {
+    fail(`${p.path}: hreflang ${triple} disagrees with ${seen.path} (${seen.triple})`);
+  } else if (!seen) {
+    altSets.set(key, { path: p.path, triple });
+  }
+}
+
+// 4. Language attribute per subtree, across every built HTML file.
+function* htmlFiles(dir) {
+  for (const name of readdirSync(dir)) {
+    const full = join(dir, name);
+    if (statSync(full).isDirectory()) yield* htmlFiles(full);
+    else if (name.endsWith(".html")) yield full;
+  }
+}
+for (const file of htmlFiles(OUT)) {
+  const underRo = file === join(OUT, "ro") || file.startsWith(join(OUT, "ro") + "/");
+  const want = underRo ? "ro" : "hu";
+  if (!new RegExp(`<html lang="${want}"`).test(read(file))) {
+    fail(`${file}: missing <html lang="${want}"> (post-build localise step)`);
+  }
+}
+
+// 5. Orphan check: every content page reachable within 2 hops of the hubs.
+const HUB_PATHS = ["/", "/buszmenetrend/", "/ro/", "/ro/orar-autobuz/"];
+const reachable = new Set(HUB_PATHS);
+const hop1 = new Set();
+for (const hub of HUB_PATHS) {
+  const file = pageFile(hub);
+  if (existsSync(file)) for (const a of anchorPaths(read(file))) hop1.add(a);
+}
+for (const a of hop1) reachable.add(a);
+for (const a of hop1) {
+  const file = pageFile(a);
+  if (existsSync(file)) for (const b of anchorPaths(read(file))) reachable.add(b);
+}
+const orphans = pages
+  .map((p) => p.path)
+  .filter((path) => !EXEMPT.has(path) && !reachable.has(path));
+for (const path of orphans) fail(`orphan: ${path} is not reachable within 2 hops of the hubs`);
+
+// --- verdict ------------------------------------------------------------
+
+if (failures.length > 0) {
+  console.error(`verify-seo: ${failures.length} problem(s) in out/\n`);
+  for (const f of failures) console.error(`  - ${f}`);
+  process.exit(1);
+}
+console.log(`verify-seo: ${pages.length} pages checked, all green`);

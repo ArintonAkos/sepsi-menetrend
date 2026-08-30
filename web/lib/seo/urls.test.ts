@@ -83,7 +83,7 @@ describe("allPages", () => {
   });
 
   it("counts static + lines + places + routes and nothing else", () => {
-    const STATIC = 10; // planner + 5 guides + 2 indexes + terms + privacy
+    const STATIC = 11; // planner + 5 guides + 3 indexes + terms + privacy
     const expected =
       STATIC + net.lines.length + buildPlaces(net).length + notablePairs(net).length;
     expect(pages.length).toBe(expected);

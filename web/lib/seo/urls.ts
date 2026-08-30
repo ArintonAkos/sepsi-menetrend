@@ -37,6 +37,7 @@ const STATIC: readonly { hu: string; ro: string; priority: number }[] = [
   { hu: "/buszmenetrend/", ro: "/ro/orar-autobuz/", priority: 0.8 }, // pillar guide
   { hu: "/vonalak/", ro: "/ro/linii/", priority: 0.8 }, // line index
   { hu: "/megallok/", ro: "/ro/statii/", priority: 0.7 }, // stop index
+  { hu: "/utvonal/", ro: "/ro/trasee/", priority: 0.7 }, // route index
   { hu: "/dijszabas/", ro: "/ro/tarife/", priority: 0.7 }, // fares
   { hu: "/multi-trans/", ro: "/ro/multi-trans/", priority: 0.7 }, // operator
   { hu: "/sepsibike/", ro: "/ro/sepsibike/", priority: 0.6 }, // bike share

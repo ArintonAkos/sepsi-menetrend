@@ -4,13 +4,15 @@ import PageFrame from "@/components/seo/PageFrame";
 import { pageMetadata } from "@/lib/seo/metadata";
 import { loadNetwork } from "@/lib/seo/network";
 import { enrichLine } from "@/lib/seo/lines";
-import { buildPlaces } from "@/lib/seo/places";
+import { buildPlaces, type Place } from "@/lib/seo/places";
+import { notablePairs } from "@/lib/seo/routes";
 import { slugify } from "@/lib/seo/slug";
 import styles from "./IndexShell.module.css";
 
-/** The two index pages - `/vonalak/` (every line) and `/megallok/` (every
- *  place) - and their `/ro/` twins. They are the internal-linking backbone:
- *  every generated line and stop page hangs off one of these lists.
+/** The three index pages - `/vonalak/` (every line), `/megallok/` (every place)
+ *  and `/utvonal/` (every notable route pair) - and their `/ro/` twins. They are
+ *  the internal-linking backbone: every generated line, stop and route page
+ *  hangs off one of these lists.
  *
  *  Server components on purpose - crawl targets, shipped as static HTML with no
  *  client JS, plain `<a>` links (same reasoning as `PageFrame`). The `/ro/`
@@ -18,13 +20,14 @@ import styles from "./IndexShell.module.css";
  *  (`lib/seo/localize.ts`), so `lang` is passed in explicitly. */
 
 type Lang = "hu" | "ro";
-type Kind = "lines" | "stops";
+type Kind = "lines" | "stops" | "routes";
 
 /** HU/RO path pair per index. Must match the inventory in `lib/seo/urls.ts`
  *  exactly, or an index loses its canonical URL / language twin. */
 const PATHS: Record<Kind, { hu: string; ro: string }> = {
   lines: { hu: "/vonalak/", ro: "/ro/linii/" },
   stops: { hu: "/megallok/", ro: "/ro/statii/" },
+  routes: { hu: "/utvonal/", ro: "/ro/trasee/" },
 };
 
 /** The site-root crumb, per language. */
@@ -96,6 +99,34 @@ const COPY: Record<Kind, Record<Lang, {
         "Toate stațiile de autobuz din Sfântu Gheorghe, în ordine alfabetică. "
         + "Pe pagina fiecărei stații vezi liniile care opresc acolo și "
         + "următoarele plecări.",
+    },
+  },
+  routes: {
+    hu: {
+      crumb: "Útvonalak",
+      metaTitle: "Buszos útvonalak Sepsiszentgyörgyön · Multi-Trans",
+      metaDescription:
+        "Buszos útvonalak Sepsiszentgyörgy fő célpontjai között - vasútállomás, "
+        + "megyei kórház, Sepsi Aréna, Autoliv, Árkos -, kiindulóhely szerint "
+        + "csoportosítva, minden útvonalnak külön oldalával.",
+      h1: "Buszos útvonalak Sepsiszentgyörgyön",
+      intro:
+        "Multi-Trans városi busszal Sepsiszentgyörgy nevezetes pontjai között. "
+        + "Válaszd ki a kiindulóhelyet, majd az úti célt: minden útvonal saját "
+        + "oldalán ott a járat, az átszállások és a menetidő.",
+    },
+    ro: {
+      crumb: "Trasee",
+      metaTitle: "Trasee cu autobuzul în Sfântu Gheorghe · Multi-Trans",
+      metaDescription:
+        "Trasee de autobuz Multi-Trans între punctele importante din Sfântu "
+        + "Gheorghe - gara, spitalul județean, Arena Sepsi, Autoliv, Arcuș -, "
+        + "grupate după punctul de plecare, fiecare traseu cu pagina lui.",
+      h1: "Trasee cu autobuzul în Sfântu Gheorghe",
+      intro:
+        "Cu autobuzul urban Multi-Trans între punctele cunoscute din Sfântu "
+        + "Gheorghe. Alege punctul de plecare, apoi destinația: fiecare traseu "
+        + "are pagina lui, cu linia, schimbările și durata.",
     },
   },
 };
@@ -204,6 +235,59 @@ export function StopIndex({ lang }: { lang: Lang }) {
               .map((s) => (
                 <li key={s.href}>
                   <a href={s.href}>{s.name}</a>
+                </li>
+              ))}
+          </ul>
+        </section>
+      ))}
+    </Shell>
+  );
+}
+
+/** `/utvonal/` (+ `/ro/trasee/`): every notable route pair, grouped by origin
+ *  place - an `<h2>` per origin, then a list of "→ {destination}" links to that
+ *  pair's page. Pairs are unordered, so each one is listed under BOTH its
+ *  endpoints (once as "→ B" under A, once as "→ A" under B): that gives every
+ *  route page an inbound link from each endpoint's group and makes "routes from
+ *  the train station" a real list. Without this page the ~91 route pages are
+ *  orphans - nothing else links to them. */
+export function RouteIndex({ lang }: { lang: Lang }) {
+  const net = loadNetwork();
+  const base = lang === "hu" ? PATHS.routes.hu : PATHS.routes.ro;
+
+  // Keyed by origin `slug` (stable identity); the display name and links carry
+  // the localized text. `notablePairs` is sorted by slug, so insertion order -
+  // and therefore the pre-sort group order - is deterministic.
+  const groups = new Map<
+    string,
+    { key: string; name: string; links: { name: string; href: string }[] }
+  >();
+  const link = (origin: Place, dest: Place, slug: string) => {
+    let group = groups.get(origin.slug);
+    if (!group) {
+      group = { key: origin.slug, name: origin.name[lang], links: [] };
+      groups.set(origin.slug, group);
+    }
+    group.links.push({ name: dest.name[lang], href: `${base}${slug}/` });
+  };
+  for (const pair of notablePairs(net)) {
+    const slug = lang === "hu" ? pair.slug : pair.slugRo;
+    link(pair.a, pair.b, slug);
+    link(pair.b, pair.a, slug);
+  }
+  const origins = [...groups.values()].sort((a, b) => byText(a.name, b.name));
+
+  return (
+    <Shell kind="routes" lang={lang}>
+      {origins.map((origin) => (
+        <section key={origin.key} className={styles.group}>
+          <h2 className={styles.origin}>{origin.name}</h2>
+          <ul className={styles.stopList}>
+            {origin.links
+              .sort((a, b) => byText(a.name, b.name))
+              .map((l) => (
+                <li key={l.href}>
+                  <a href={l.href}>→ {l.name}</a>
                 </li>
               ))}
           </ul>

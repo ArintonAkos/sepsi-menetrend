@@ -74,18 +74,29 @@ function FaqSection({ items }: { items: { q: string; a: string }[] }) {
   );
 }
 
-/** Line-index links for the pillar page: every city line to its own page, plus
- *  the stop index and the fares guide. Paths differ per language and must match
- *  `lib/seo/urls.ts`. */
+/** Index/guide links for the pillar page, alongside the 12 line links: the
+ *  stop index, the route index and the other guides. The pillar is the crawl
+ *  hub for the whole subsystem (spec: "all 12 lines, the stop index, fares,
+ *  bike, FAQ, Multi-Trans"), so every guide and index hangs off it or it is
+ *  stranded - the route index in particular is what keeps the ~91 route pages
+ *  in reach. Paths differ per language and must match `lib/seo/urls.ts`. */
 const LINE_BASE: Record<Lang, string> = { hu: "/vonalak/", ro: "/ro/linii/" };
 const INDEX_LINKS: Record<Lang, { href: string; label: string }[]> = {
   hu: [
     { href: "/megallok/", label: "Megállók" },
+    { href: "/utvonal/", label: "Útvonalak" },
     { href: "/dijszabas/", label: "Díjszabás" },
+    { href: "/multi-trans/", label: "Multi-Trans" },
+    { href: "/sepsibike/", label: "SepsiBike" },
+    { href: "/gyik/", label: "GYIK" },
   ],
   ro: [
     { href: "/ro/statii/", label: "Stații" },
+    { href: "/ro/trasee/", label: "Trasee" },
     { href: "/ro/tarife/", label: "Tarife" },
+    { href: "/ro/multi-trans/", label: "Multi-Trans" },
+    { href: "/ro/sepsibike/", label: "SepsiBike" },
+    { href: "/ro/intrebari-frecvente/", label: "Întrebări frecvente" },
   ],
 };
 

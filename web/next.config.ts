@@ -1,3 +1,4 @@
+import { readFileSync } from "node:fs";
 import { networkInterfaces } from "node:os";
 import type { NextConfig } from "next";
 
@@ -25,6 +26,15 @@ const config: NextConfig = {
   images: { unoptimized: true },
   trailingSlash: true,
   allowedDevOrigins: localAddresses(),
+  // Next's default build id is random per build, which alone makes `out/`
+  // differ byte-for-byte between two builds of identical source - and that
+  // cascades into the service-worker fingerprint (`scripts/stamp-sw.mjs`). Pin
+  // it to the feed's own stamp so the id - and the output - change exactly when
+  // the data changes, which is the plan's determinism guarantee.
+  generateBuildId: () => {
+    const feed = JSON.parse(readFileSync("public/data/network.json", "utf8"));
+    return `sepsi-${feed.generated ?? feed.version ?? "0"}`;
+  },
 };
 
 export default config;
