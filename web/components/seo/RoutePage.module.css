@@ -1,0 +1,83 @@
+/* Same chrome tokens as the other SEO pages (app/globals.css). Plain block flow,
+   no images, no fixed heights - the journey prose and FAQ stream in without
+   shifting anything. */
+
+.h1 {
+  margin: 0 0 4px;
+  font-size: 20px;
+  line-height: 1.3;
+  color: var(--ink);
+}
+
+.intro {
+  margin: 0 0 8px;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--ink-2);
+}
+
+.direction {
+  margin: 24px 0;
+}
+
+.headsign {
+  margin: 0 0 8px;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.prose {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--ink-2);
+}
+
+.meta {
+  margin: 8px 0 0;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--muted);
+}
+
+.cta {
+  margin: 12px 0 0;
+}
+
+.cta a {
+  font-weight: 700;
+  color: var(--ink-2);
+}
+
+.divider {
+  margin: 32px 0 20px;
+  border: 0;
+  border-top: 1px solid var(--border);
+}
+
+.faqTitle {
+  margin: 0 0 4px;
+  font-size: 16px;
+  color: var(--ink);
+}
+
+/* FAQ: a definition list so question and answer stay associated for a reader
+   and a crawler alike. */
+.faq {
+  margin: 0.8em 0 0;
+  display: grid;
+  gap: 4px;
+}
+
+.faq dt {
+  margin-top: 1em;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.faq dd {
+  margin: 0;
+  line-height: 1.6;
+  color: var(--ink-2);
+}
