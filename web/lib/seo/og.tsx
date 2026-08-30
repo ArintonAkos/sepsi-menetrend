@@ -17,6 +17,9 @@ import { GUIDES } from "./content";
 import { loadNetwork } from "./network";
 import { enrichLine, lineDirections } from "./lines";
 import { buildPlaces } from "./places";
+// `routes.ts` pulls in places/lines/network/engine - none import this file, so
+// there is no cycle (verified Task 22).
+import { notablePairs } from "./routes";
 
 export const OG_SIZE = { width: 1200, height: 630 };
 export const OG_CONTENT_TYPE = "image/png";
@@ -225,6 +228,22 @@ export function placeOg(slug: string, lang: "hu" | "ro"): Promise<ImageResponse>
     lang,
     heading: place.name[lang],
     sub: lineIds.join(" · ") || (lang === "hu" ? "buszmegálló" : "stație de autobuz"),
+  });
+}
+
+/** The share card for a route page. Heading is the "A → B" direction in the
+ *  page's language - the same arrow the page's crumb and headings use; the sub
+ *  is just the city name. `pairSlug` is the HU slug on the HU card, `slugRo` on
+ *  the RO card (Ruling R15), so match on whichever the language carries. */
+export function routeOg(pairSlug: string, lang: "hu" | "ro"): Promise<ImageResponse> {
+  const net = loadNetwork();
+  const pair = notablePairs(net).find((p) => (lang === "ro" ? p.slugRo : p.slug) === pairSlug);
+  if (!pair) throw new Error(`routeOg: no pair for ${pairSlug} (${lang})`);
+  return renderOg({
+    kind: "route",
+    lang,
+    heading: `${pair.a.name[lang]} → ${pair.b.name[lang]}`,
+    sub: lang === "hu" ? "Sepsiszentgyörgy" : "Sfântu Gheorghe",
   });
 }
 

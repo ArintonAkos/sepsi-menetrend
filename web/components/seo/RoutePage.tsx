@@ -164,8 +164,8 @@ function resolvePair(pairSlug: string, lang: SeoLang): RoutePair {
 }
 
 /** `<head>` for a route page. The HU/RO path pair is the same one the page
- *  renders its twin link and breadcrumb from. No `ownOgImage` - the shared
- *  homepage card stands in until Task 22 adds a per-pair card. */
+ *  renders its twin link and breadcrumb from. Each pair ships its own
+ *  `opengraph-image` "A → B" card, so `ownOgImage` strips the default `/og.png`. */
 export function routeMetadata(pairSlug: string, lang: SeoLang): Metadata {
   const pair = resolvePair(pairSlug, lang);
   const { a: A, b: B } = pair;
@@ -190,6 +190,7 @@ export function routeMetadata(pairSlug: string, lang: SeoLang): Metadata {
     lang,
     title,
     description,
+    ownOgImage: true,
   });
 }
 
