@@ -1,0 +1,68 @@
+/* Same chrome tokens as the rest of the SEO pages (app/globals.css). Plain
+   block flow, no fixed height, no image - nothing here shifts the page. */
+
+.h1 {
+  margin: 0 0 0.2em;
+  font-size: 1.55rem;
+  line-height: 1.25;
+  color: var(--ink);
+}
+
+/* FAQ: a definition list so question and answer stay associated for a reader
+   and a crawler alike. */
+.faq {
+  margin: 1.8em 0 0;
+  display: grid;
+  gap: 4px;
+}
+
+.faq dt {
+  margin-top: 1em;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.faq dd {
+  margin: 0;
+  line-height: 1.6;
+  color: var(--ink-2);
+}
+
+/* Pillar line index. */
+.lines {
+  margin: 2em 0 0;
+}
+
+.lines ul {
+  margin: 0;
+  padding-left: 1.4em;
+  display: grid;
+  gap: 4px;
+}
+
+.lines li {
+  line-height: 1.5;
+  color: var(--ink-2);
+}
+
+.lines a {
+  color: var(--ink-2);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.lines a:hover {
+  text-decoration: underline;
+}
+
+.termini {
+  color: var(--muted);
+  font-weight: 400;
+}
+
+.indexLinks {
+  margin: 1.2em 0 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 16px;
+}

@@ -1,0 +1,31 @@
+/* Guide prose wears the SEO chrome tokens (app/globals.css). Plain block flow,
+   no fixed height, no image - the body streams in without shifting anything. */
+
+.body h2 {
+  margin: 1.6em 0 0.35em;
+  font-size: 1.15rem;
+  line-height: 1.3;
+  color: var(--ink);
+}
+
+.body h2:first-child {
+  margin-top: 0.6em;
+}
+
+.body p {
+  margin: 0.6em 0;
+  line-height: 1.6;
+  color: var(--ink-2);
+}
+
+.body ul {
+  margin: 0.6em 0;
+  padding-left: 1.4em;
+  display: grid;
+  gap: 4px;
+  color: var(--ink-2);
+}
+
+.body li {
+  line-height: 1.5;
+}
