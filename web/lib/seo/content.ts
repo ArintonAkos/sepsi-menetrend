@@ -9,6 +9,7 @@
  *  must match that table exactly or a guide loses its URL / language twin. */
 import { HU } from "./content.hu";
 import { RO } from "./content.ro";
+import { EN } from "./content.en";
 
 /** A rendered block. The page component walks the union and emits the matching
  *  element - `h2` a heading, `p` a paragraph, `ul` a bullet list. */
@@ -20,12 +21,12 @@ export interface Faq {
 }
 
 export interface GuidePage {
-  slug: { hu: string; ro: string };
-  title: { hu: string; ro: string };
-  description: { hu: string; ro: string };
-  body: { hu: Block[]; ro: Block[] };
-  /** Only the FAQ guide carries this; present in both languages when present. */
-  faq?: { hu: Faq[]; ro: Faq[] };
+  slug: { hu: string; ro: string; en: string };
+  title: { hu: string; ro: string; en: string };
+  description: { hu: string; ro: string; en: string };
+  body: { hu: Block[]; ro: Block[]; en: Block[] };
+  /** Only the FAQ guide carries this; present in all languages when present. */
+  faq?: { hu: Faq[]; ro: Faq[]; en: Faq[] };
 }
 
 export type GuideKey = "fares" | "multiTrans" | "bike" | "pillar" | "faq";
@@ -39,21 +40,23 @@ export interface GuideCopy {
   faq?: Faq[];
 }
 
-/** Pair the two language halves field by field. A guide that gives `faq` in one
- *  language must give it in both - the `GuideCopy` files are kept in sync by
- *  hand, and this throws rather than shipping a half-translated FAQ. */
+/** Pair the three language halves field by field. A guide that gives `faq` in
+ *  one language must give it in all three - the `GuideCopy` files are kept in
+ *  sync by hand, and this throws rather than shipping a half-translated FAQ. */
 function zip(key: GuideKey): GuidePage {
   const hu = HU[key];
   const ro = RO[key];
+  const en = EN[key];
   const page: GuidePage = {
-    slug: { hu: hu.slug, ro: ro.slug },
-    title: { hu: hu.title, ro: ro.title },
-    description: { hu: hu.description, ro: ro.description },
-    body: { hu: hu.body, ro: ro.body },
+    slug: { hu: hu.slug, ro: ro.slug, en: en.slug },
+    title: { hu: hu.title, ro: ro.title, en: en.title },
+    description: { hu: hu.description, ro: ro.description, en: en.description },
+    body: { hu: hu.body, ro: ro.body, en: en.body },
   };
-  if (hu.faq || ro.faq) {
-    if (!hu.faq || !ro.faq) throw new Error(`guide "${key}" has FAQ in one language only`);
-    page.faq = { hu: hu.faq, ro: ro.faq };
+  const faqs = [hu.faq, ro.faq, en.faq];
+  if (faqs.some(Boolean)) {
+    if (!faqs.every(Boolean)) throw new Error(`guide "${key}" has FAQ in some languages only`);
+    page.faq = { hu: hu.faq!, ro: ro.faq!, en: en.faq! };
   }
   return page;
 }

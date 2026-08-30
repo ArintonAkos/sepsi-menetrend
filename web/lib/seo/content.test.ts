@@ -1,5 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { GUIDES } from "./content";
+import { EN } from "./content.en";
 
 /** Flatten a block list to one lowercase string so a test can ask "is this
  *  phrase anywhere in the prose" without walking the union type. */
@@ -25,12 +26,12 @@ describe("GUIDES", () => {
   // The slugs are shared with the page inventory (lib/seo/urls.ts) and the
   // sitemap - a drift here means a guide 404s or loses its language twin.
   it("uses exactly the slugs from the page inventory", () => {
-    const expected: Record<keyof typeof GUIDES, { hu: string; ro: string }> = {
-      fares: { hu: "dijszabas", ro: "tarife" },
-      multiTrans: { hu: "multi-trans", ro: "multi-trans" },
-      bike: { hu: "sepsibike", ro: "sepsibike" },
-      pillar: { hu: "buszmenetrend", ro: "orar-autobuz" },
-      faq: { hu: "gyik", ro: "intrebari-frecvente" },
+    const expected: Record<keyof typeof GUIDES, { hu: string; ro: string; en: string }> = {
+      fares: { hu: "dijszabas", ro: "tarife", en: "fares" },
+      multiTrans: { hu: "multi-trans", ro: "multi-trans", en: "multi-trans" },
+      bike: { hu: "sepsibike", ro: "sepsibike", en: "sepsibike" },
+      pillar: { hu: "buszmenetrend", ro: "orar-autobuz", en: "bus-schedule" },
+      faq: { hu: "gyik", ro: "intrebari-frecvente", en: "faq" },
     };
     for (const key of Object.keys(expected) as (keyof typeof GUIDES)[]) {
       expect(GUIDES[key].slug).toEqual(expected[key]);
@@ -70,5 +71,24 @@ describe("GUIDES", () => {
   const POLITE_PLURAL = /\b(?:puteți|găsiți|verificați|consultați|folosiți|alegeți|instalați|adăugați|cumpărați|urcați|mergeți|trimiteți|căutați)\b/;
   it("keeps the Romanian prose in the informal register", () => {
     for (const text of allRo()) expect(text).not.toMatch(POLITE_PLURAL);
+  });
+});
+
+describe("English guide copy", () => {
+  it("has all five guides with non-empty English title, description and body", () => {
+    for (const key of ["fares", "multiTrans", "bike", "pillar", "faq"] as const) {
+      const g = GUIDES[key];
+      expect(g.title.en.length).toBeGreaterThan(0);
+      expect(g.description.en.length).toBeGreaterThan(0);
+      expect(g.body.en.length).toBeGreaterThan(0);
+    }
+  });
+  it("carries an English FAQ list on the faq guide, same length as HU", () => {
+    expect(GUIDES.faq.faq?.en.length).toBe(GUIDES.faq.faq?.hu.length);
+  });
+  it("uses the English category slugs", () => {
+    expect(EN.pillar.slug).toBe("bus-schedule");
+    expect(EN.faq.slug).toBe("faq");
+    expect(EN.fares.slug).toBe("fares");
   });
 });
