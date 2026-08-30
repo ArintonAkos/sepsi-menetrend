@@ -583,22 +583,11 @@ describe("the disclaimer", () => {
   it("offers links to the timetable pages from the settings panel", async () => {
     const user = await setup();
     await user.click(screen.getByLabelText("Beállítások"));
-    // the always-mounted SEO footer also links "Buszvonalak"; scope to the panel
-    const settings = screen.getByText("Nyelv").closest("div[class*='settings']") as HTMLElement;
-    expect(within(settings).getByRole("link", { name: "Buszvonalak" }))
+    // Hungarian is the default UI language, so the settings links point at the
+    // bare (Hungarian) paths. The `/` homepage footer (in app/page.tsx, not the
+    // planner) carries the crawlable copy.
+    expect(screen.getByRole("link", { name: "Buszvonalak" }))
       .toHaveAttribute("href", "/vonalak/");
-  });
-
-  it("renders a crawlable footer link to every content page, no click needed", async () => {
-    await setup();
-    // present in the static tree before the settings panel is ever opened
-    const footer = document.querySelector("footer");
-    expect(footer).not.toBeNull();
-    expect(footer!.hasAttribute("hidden")).toBe(false);
-    const hrefs = [...footer!.querySelectorAll("a")].map((a) => a.getAttribute("href"));
-    expect(hrefs).toEqual(expect.arrayContaining([
-      "/buszmenetrend/", "/vonalak/", "/dijszabas/", "/terms/", "/privacy/",
-    ]));
   });
 });
 
@@ -606,11 +595,20 @@ describe("the disclaimer", () => {
  *  `npm test` stays green without a build. Locks that the content pages are
  *  reachable from `/` in the HTML Googlebot actually sees. */
 describe("the built homepage links the content pages", () => {
-  const out = resolve(import.meta.dirname, "../../out/index.html");
-  it.skipIf(!existsSync(out))("has crawlable anchors to the pillar and the line index", () => {
-    const html = readFileSync(out, "utf8");
-    expect(html).toContain('href="/buszmenetrend/"');
-    expect(html).toContain('href="/vonalak/"');
+  const huOut = resolve(import.meta.dirname, "../../out/index.html");
+  const roOut = resolve(import.meta.dirname, "../../out/ro/index.html");
+  it.skipIf(!existsSync(huOut))("HU homepage has crawlable anchors to every content tier", () => {
+    const html = readFileSync(huOut, "utf8");
+    for (const p of ["/buszmenetrend/", "/vonalak/", "/megallok/", "/utvonal/", "/dijszabas/"]) {
+      expect(html).toContain(`href="${p}"`);
+    }
+  });
+  it.skipIf(!existsSync(roOut))("RO homepage links the Romanian pages, not the Hungarian ones", () => {
+    const html = readFileSync(roOut, "utf8");
+    for (const p of ["/ro/orar-autobuz/", "/ro/linii/", "/ro/statii/", "/ro/trasee/", "/ro/tarife/"]) {
+      expect(html).toContain(`href="${p}"`);
+    }
+    expect(html).not.toContain('href="/vonalak/"');
   });
 });
 

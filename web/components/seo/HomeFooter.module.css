@@ -1,0 +1,32 @@
+/* Sits below the viewport-tall planner: present in the static HTML and
+   reachable by scrolling, but out of the way of the app itself. */
+.footer {
+  background: var(--paper);
+  border-top: 1px solid var(--border);
+  padding: 20px 16px 28px;
+  font-size: 12px;
+  line-height: 1.7;
+  color: var(--muted);
+  text-align: center;
+}
+.links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 4px 14px;
+  max-width: 720px;
+  margin: 0 auto;
+}
+.links a,
+.meta a {
+  color: var(--ink-2, var(--ink));
+  text-decoration: none;
+}
+.links a:hover,
+.meta a:hover {
+  text-decoration: underline;
+}
+.meta {
+  margin: 10px auto 0;
+  max-width: 640px;
+}

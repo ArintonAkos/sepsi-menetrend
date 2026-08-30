@@ -1,6 +1,7 @@
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 import { Planner } from "@/components";
+import HomeFooter from "@/components/seo/HomeFooter";
 import type { FareTable } from "@/lib/engine/fares";
 import type { Place } from "@/lib/engine/search";
 import type { Network } from "@/lib/engine/types";
@@ -25,7 +26,9 @@ async function load<T>(name: string): Promise<T> {
   return JSON.parse(raw) as T;
 }
 
-export default async function Page() {
+/** Shared by `/` and `/ro/` - same planner and build-time data, only the
+ *  homepage footer's language differs (the `<head>` is set per route). */
+export async function HomePage({ lang }: { lang: "hu" | "ro" }) {
   const [network, places, fares, bikeSnapshot] = await Promise.all([
     load<Network>("network.json"),
     load<{ places: Place[]; reach: number;
@@ -33,7 +36,16 @@ export default async function Page() {
     load<FareTable>("fares.json"),
     load<BikeSnapshot>("sepsibike.json"),
   ]);
-  return <Planner network={network} places={places.places}
-                  reach={places.reach} box={places.bbox} fares={fares}
-                  bikeStations={bikeSnapshot.stations} bikeSnapshotAt={bikeSnapshot.snapshotAt} />;
+  return (
+    <>
+      <Planner network={network} places={places.places}
+               reach={places.reach} box={places.bbox} fares={fares}
+               bikeStations={bikeSnapshot.stations} bikeSnapshotAt={bikeSnapshot.snapshotAt} />
+      <HomeFooter lang={lang} />
+    </>
+  );
+}
+
+export default async function Page() {
+  return HomePage({ lang: "hu" });
 }

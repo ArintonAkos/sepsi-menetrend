@@ -4,7 +4,6 @@ import { useCallback, useEffect, useMemo, useRef, useState,
          useSyncExternalStore } from "react";
 import { createPortal } from "react-dom";
 import dynamic from "next/dynamic";
-import { usePathname } from "next/navigation";
 import { primeStops } from "../stops/stopLookup";
 
 /* Mapbox GL is by far the heaviest thing here and the panel does not need it.
@@ -118,13 +117,10 @@ export default function Planner({ network, places, reach, box, fares, bikeStatio
   const prefersDark = useSyncExternalStore(subscribeToScheme, schemeIsDark, () => false);
   const t = STRINGS[lang];
 
-  /* The crawlable footer links must be in the statically-rendered HTML - the
-     settings-panel copies are gated behind a click Googlebot never makes.
-     `usePathname` resolves at prerender for these static routes, so `out/ro/`
-     ships the Romanian targets and `out/` the Hungarian ones. Not tied to the
-     `lang` toggle: this is about which page was built, not the UI language. */
-  const seoRo = (usePathname() ?? "").startsWith("/ro");
-  const seoT = STRINGS[seoRo ? "ro" : "hu"];
+  /* Content-page links in the settings panel follow the chosen UI language:
+     a reader on Romanian gets the /ro/ pages, not the Hungarian ones. English
+     has no dedicated pages, so it falls back to the Hungarian paths. */
+  const contentHref = (hu: string, ro: string) => (lang === "ro" ? ro : hu);
 
   const [from, setFrom] = useState<Chosen | null>(null);
   const [to, setTo] = useState<Chosen | null>(null);
@@ -986,19 +982,6 @@ export default function Planner({ network, places, reach, box, fares, bikeStatio
           )}
         </div>}
 
-        {/* Always in the static tree so the content pages are reachable from `/`
-            without the settings panel being opened - Googlebot renders JS but
-            never taps a gear. It flows at the bottom of the rail column, clear
-            of the map and its Mapbox attribution. The human-facing copies of
-            these links live in the settings panel. */}
-        <footer className={styles.seoFooter}>
-          <a href={seoRo ? "/ro/orar-autobuz/" : "/buszmenetrend/"}>{seoT.timetablesLink}</a>
-          <a href={seoRo ? "/ro/linii/" : "/vonalak/"}>{seoT.linesLink}</a>
-          <a href={seoRo ? "/ro/tarife/" : "/dijszabas/"}>{seoT.faresLink}</a>
-          <a href={seoRo ? "/ro/termeni/" : "/terms/"}>{seoT.terms}</a>
-          <a href={seoRo ? "/ro/confidentialitate/" : "/privacy/"}>{seoT.privacy}</a>
-        </footer>
-
       </aside>
 
       {stopSheet && (board!.anchor
@@ -1182,16 +1165,16 @@ export default function Planner({ network, places, reach, box, fares, bikeStatio
                   <span>{t.source}</span>
                   <p className={styles.setNote}>{t.disclaimer}</p>
                   <div className={styles.legalLinks}>
-                    <a href="/terms/" target="_blank" rel="noopener noreferrer">{t.terms}</a>
+                    <a href={contentHref("/terms/", "/ro/termeni/")} target="_blank" rel="noopener noreferrer">{t.terms}</a>
                     <span>·</span>
-                    <a href="/privacy/" target="_blank" rel="noopener noreferrer">{t.privacy}</a>
+                    <a href={contentHref("/privacy/", "/ro/confidentialitate/")} target="_blank" rel="noopener noreferrer">{t.privacy}</a>
                   </div>
                   <div className={styles.legalLinks}>
-                    <a href="/buszmenetrend/" target="_blank" rel="noopener noreferrer">{t.timetablesLink}</a>
+                    <a href={contentHref("/buszmenetrend/", "/ro/orar-autobuz/")} target="_blank" rel="noopener noreferrer">{t.timetablesLink}</a>
                     <span>·</span>
-                    <a href="/vonalak/" target="_blank" rel="noopener noreferrer">{t.linesLink}</a>
+                    <a href={contentHref("/vonalak/", "/ro/linii/")} target="_blank" rel="noopener noreferrer">{t.linesLink}</a>
                     <span>·</span>
-                    <a href="/dijszabas/" target="_blank" rel="noopener noreferrer">{t.faresLink}</a>
+                    <a href={contentHref("/dijszabas/", "/ro/tarife/")} target="_blank" rel="noopener noreferrer">{t.faresLink}</a>
                   </div>
                   <button className={styles.cookieReset} onClick={() => {
                     try { localStorage.removeItem("sepsi.consent"); } catch {}
