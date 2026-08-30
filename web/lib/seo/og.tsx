@@ -16,6 +16,7 @@ import { ImageResponse } from "next/og";
 import { GUIDES } from "./content";
 import { loadNetwork } from "./network";
 import { enrichLine, lineDirections } from "./lines";
+import { buildPlaces } from "./places";
 
 export const OG_SIZE = { width: 1200, height: 630 };
 export const OG_CONTENT_TYPE = "image/png";
@@ -201,6 +202,29 @@ export function lineOg(id: string, lang: "hu" | "ro"): Promise<ImageResponse> {
     sub: `${line.termini[0]} – ${line.termini[1]}`,
     badge: { text: id, bg: raw.light, fg: raw.lightText },
     shape,
+  });
+}
+
+/** The share card for a place page. Heading is the stop name in the page's
+ *  language; sub is the ids of the lines that actually leave this kerb, from the
+ *  operator's boards (deduped, feed order) - the same authority the page prose
+ *  uses. A place with no board here falls back to a plain "bus stop" label. */
+export function placeOg(slug: string, lang: "hu" | "ro"): Promise<ImageResponse> {
+  const net = loadNetwork();
+  const place = buildPlaces(net).find((p) => (lang === "ro" ? p.slugRo : p.slug) === slug);
+  if (!place) throw new Error(`placeOg: no place for ${slug}`);
+  const lineIds = [
+    ...new Set(
+      (net.officialBoards ?? [])
+        .filter((b) => b.stopId && place.stopIds.includes(b.stopId))
+        .map((b) => b.lineId),
+    ),
+  ];
+  return renderOg({
+    kind: "place",
+    lang,
+    heading: place.name[lang],
+    sub: lineIds.join(" · ") || (lang === "hu" ? "buszmegálló" : "stație de autobuz"),
   });
 }
 

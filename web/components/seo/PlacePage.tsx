@@ -218,7 +218,9 @@ function nearbyPlaces(net: Network, places: Place[], place: Place): Nearby[] {
 }
 
 /** `<head>` for a place page. Title and description are templated per language
- *  from the place name and the lines that serve it. */
+ *  from the place name and the lines that serve it; the share card is this
+ *  page's own `opengraph-image` route, so `ownOgImage` strips the default
+ *  `/og.png` (without it Next never emits the file-convention `og:image`). */
 export function placeMetadata(slug: string, lang: SeoLang): Metadata {
   const net = loadNetwork();
   const place = resolvePlace(net, lang, slug);
@@ -251,6 +253,7 @@ export function placeMetadata(slug: string, lang: SeoLang): Metadata {
     lang,
     title,
     description,
+    ownOgImage: true,
   });
 }
 
