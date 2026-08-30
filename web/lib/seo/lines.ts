@@ -6,9 +6,10 @@
  *  departure board with a headway read off it. None of this is planning; the
  *  page links to the live planner for that. */
 import type { Network } from "@/lib/engine/types";
+import { pickName } from "./lang";
+import type { SeoLang } from "./lang";
 
-/** The SEO pages are bilingual only - the feed's name objects carry no `en`. */
-export type SeoLang = "hu" | "ro";
+export type { SeoLang };
 
 /** Spoken Hungarian line names take a suffix by vowel harmony, which no rule
  *  gets right from the digits alone ("hatos", not "hatas"). This feed's lines
@@ -38,7 +39,9 @@ function huLabel(id: string): string {
 /** `"1-es busz"` (hu) / `"linia 1"` (ro). The id keeps its case - "1D" stays
  *  "1D", not "1d". */
 function lineLabel(id: string, lang: SeoLang): string {
-  return lang === "hu" ? huLabel(id) : `linia ${id}`;
+  if (lang === "hu") return huLabel(id);
+  if (lang === "ro") return `linia ${id}`;
+  return `line ${id}`;
 }
 
 /** Upper-case the first character, leave the rest. A no-op on a label that
@@ -94,8 +97,10 @@ export function enrichLine(
   if (!line) throw new Error(`unknown line: ${lineId}`);
 
   const primary = lineDirections(net, lineId)[0];
-  const nameOf = (stopId: string | undefined): string =>
-    net.stops.find((s) => s.id === stopId)?.name[lang] ?? stopId ?? "";
+  const nameOf = (stopId: string | undefined): string => {
+    const s = net.stops.find((st) => st.id === stopId);
+    return s ? pickName(s.name, lang) : stopId ?? "";
+  };
   const termini: [string, string] = primary
     ? [nameOf(primary.stopIds[0]), nameOf(primary.stopIds.at(-1))]
     : ["", ""];

@@ -12,6 +12,12 @@ describe("enrichLine", () => {
     expect(enrichLine(net, "5D", "hu").label).toBe("5D-s busz");
   });
 
+  it("labels a line in English as 'line {id}', id case kept", () => {
+    expect(enrichLine(net, "1", "en").label).toBe("line 1");
+    const d = net.lines.find((l) => l.id.endsWith("D"));
+    if (d) expect(enrichLine(net, d.id, "en").label).toBe(`line ${d.id}`);
+  });
+
   it("titles the line with its primary-direction termini in the asked language", () => {
     const hu = enrichLine(net, "1", "hu");
     expect(hu.id).toBe("1");
