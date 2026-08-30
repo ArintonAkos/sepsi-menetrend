@@ -17,9 +17,17 @@ describe("homepage head", () => {
       expect(html).toContain(
         '<meta property="og:image" content="https://sepsimenetrend.ro/og.png"/>',
       );
-      // app/page.tsx never emitted hreflang - only the SEO pages do, via
-      // pageMetadata. Lock that the new subsystem left no partial alternate on `/`.
-      expect(html).not.toContain("hreflang");
+      // `/` now emits its own reciprocal hreflang triple (its `/ro/` twin
+      // always did) - Google ignores a one-way pairing.
+      expect(html).toContain(
+        '<link rel="alternate" hrefLang="hu" href="https://sepsimenetrend.ro/"/>',
+      );
+      expect(html).toContain(
+        '<link rel="alternate" hrefLang="ro" href="https://sepsimenetrend.ro/ro/"/>',
+      );
+      expect(html).toContain(
+        '<link rel="alternate" hrefLang="x-default" href="https://sepsimenetrend.ro/"/>',
+      );
     },
   );
 });

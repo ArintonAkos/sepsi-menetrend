@@ -211,7 +211,7 @@ export default async function LinePage({ lang, id }: { lang: SeoLang; id: string
             <p className={styles.note}>{T[lang].freeFriday}</p>
 
             <p className={styles.cta}>
-              <a href={`/?line=${id}&service=weekday`}>{T[lang].cta}</a>
+              <a href={`/?line=${id}&service=weekday${lang === "ro" ? "&lang=ro" : ""}`}>{T[lang].cta}</a>
             </p>
 
             <StopList lang={lang} stops={stops} />

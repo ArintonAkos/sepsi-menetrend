@@ -69,6 +69,20 @@ describe("stop index", () => {
     expect(arkos!.getAttribute("href")).toMatch(/^\/megallok\/arkos-kozpont\/$/);
   });
 
+  it("sorts accented names by their folded form within a group, not last", async () => {
+    const { container } = render(await (Stops as PageComponent)());
+    const gGroup = [...container.querySelectorAll("h2")]
+      .find((h) => h.textContent?.trim() === "G")!
+      .closest("section")!;
+    const names = [...gGroup.querySelectorAll("a")].map((a) => a.textContent!.trim());
+    // "Gábor Áron utca" folds to "gabor aron..." - it must come before "Gyár"
+    // and "Gyöngyvirág", not after them on the codepoint of "á" (U+00E1 > "y").
+    const gabor = names.findIndex((n) => n.startsWith("Gábor"));
+    const gyar = names.findIndex((n) => n.startsWith("Gyár"));
+    expect(gabor).toBeGreaterThanOrEqual(0);
+    expect(gyar).toBeGreaterThan(gabor);
+  });
+
   it("the RO twin links places by their own RO slug, not the HU one", async () => {
     const { container } = render(await (StopsRo as PageComponent)());
     const stopHrefs = childLinks(container, "/ro/statii/");

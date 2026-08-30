@@ -16,7 +16,11 @@ describe("RoutePage", () => {
   it("leads with a 'by bus' h1 and offers a planner CTA (HU)", async () => {
     await renderRoute({ lang: "hu", pair: HU_SLUG });
 
-    expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent(/busszal/);
+    const h1 = screen.getByRole("heading", { level: 1 });
+    expect(h1).toHaveTextContent(/busszal/);
+    // the grammatical ablative/terminative forms, not the templated "-tól/-ig"
+    expect(h1).toHaveTextContent("Árkos központtól Vasútállomásig busszal");
+    expect(h1.textContent).not.toMatch(/-tól|-ig/);
 
     const ctas = screen.getAllByRole("link", { name: /tervező|nyisd/i });
     expect(ctas.length).toBeGreaterThan(0);

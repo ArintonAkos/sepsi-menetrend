@@ -48,10 +48,26 @@
   [headers.values]
     Cache-Control = "public, max-age=0, must-revalidate"
 
+# `chunks/*` and `media/*` carry content hashes in their filenames and are
+# genuinely immutable. The build-id-scoped manifest files under
+# `/_next/static/<id>/` are NOT: `generateBuildId` pins the id to the feed date,
+# so a code-only redeploy reuses the id with different contents. They fall
+# through to the revalidating rule. Netlify applies the first matching block, so
+# the specific paths come first.
+[[headers]]
+  for = "/_next/static/chunks/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/_next/static/media/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
 [[headers]]
   for = "/_next/static/*"
   [headers.values]
-    Cache-Control = "public, max-age=31536000, immutable"
+    Cache-Control = "public, max-age=0, must-revalidate"
 
 [[headers]]
   for = "/data/*"

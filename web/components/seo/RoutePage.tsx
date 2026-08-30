@@ -13,6 +13,7 @@ import {
   type RouteSummary,
 } from "@/lib/seo/routes";
 import type { SeoLang } from "@/lib/seo/lines";
+import { huRoutePhrase } from "@/lib/seo/hu-place-forms";
 import type { Place } from "@/lib/seo/places";
 import type { Network } from "@/lib/engine/types";
 import styles from "./RoutePage.module.css";
@@ -65,8 +66,6 @@ const T = {
   hu: {
     cta: "Nyisd meg a tervezőben",
     faqTitle: "Gyakori kérdések",
-    h1: (a: string, b: string) => `${a}-tól ${b}-ig busszal`,
-    crumb: (a: string, b: string) => `${a} → ${b}`,
     intro: (a: string, b: string) =>
       `${a} és ${b} között Sepsiszentgyörgyön, Multi-Trans városi busszal - `
       + "járatok, átszállások és menetidő.",
@@ -75,14 +74,25 @@ const T = {
   ro: {
     cta: "Deschide în planificator",
     faqTitle: "Întrebări frecvente",
-    h1: (a: string, b: string) => `De la ${a} la ${b} cu autobuzul`,
-    crumb: (a: string, b: string) => `${a} → ${b}`,
     intro: (a: string, b: string) =>
       `Între ${a} și ${b} în Sfântu Gheorghe, cu autobuzul urban Multi-Trans - `
       + "linii, schimbări și durată.",
     dir: (from: string, to: string) => `${from} → ${to}`,
   },
 } as const;
+
+/** The page's A→B heading. HU uses the tabulated ablative/terminative forms
+ *  (`hu-place-forms`) - the templated "-tól/-ig" join was ungrammatical; RO's
+ *  "De la … la …" is already fine. */
+const routeTitle = (a: Place, b: Place, lang: SeoLang): string =>
+  lang === "hu"
+    ? `${huRoutePhrase(a, b)} busszal`
+    : `De la ${a.name.ro} la ${b.name.ro} cu autobuzul`;
+
+/** The trailing breadcrumb label: same grammar as the heading on the HU side,
+ *  the arrow form on the RO side. */
+const routeCrumb = (a: Place, b: Place, lang: SeoLang): string =>
+  lang === "hu" ? huRoutePhrase(a, b) : `${a.name.ro} → ${b.name.ro}`;
 
 /** One ride leg as a sentence. Templated, so the grammar is only approximate
  *  (Hungarian vowel harmony on the case endings is not resolved) - a later
@@ -131,7 +141,7 @@ function faqFor(
   if (lang === "hu") {
     const which = lines.length === 1
       ? `A(z) ${lines[0]} közlekedik ezen az útvonalon.`
-      : `${lines.join(", ")} (${primary.transfers} átszállással).`;
+      : `${cap(lines[0])}, ${lines.slice(1).join(", ")} (${primary.transfers} átszállással).`;
     return [
       { q: `Melyik busz megy ${A.name.hu}-tól ${B.name.hu}-ig?`, a: which },
       { q: "Mennyi ideig tart az út?", a: `Körülbelül ${primary.totalMin} perc.` },
@@ -143,7 +153,7 @@ function faqFor(
   }
   const which = lines.length === 1
     ? `${cap(lines[0])} circulă pe acest traseu.`
-    : `${lines.join(", ")} (cu ${primary.transfers} `
+    : `${cap(lines[0])}, ${lines.slice(1).join(", ")} (cu ${primary.transfers} `
       + `${primary.transfers === 1 ? "schimbare" : "schimbări"}).`;
   return [
     { q: `Ce autobuz merge de la ${A.name.ro} la ${B.name.ro}?`, a: which },
@@ -172,7 +182,7 @@ export function routeMetadata(pairSlug: string, lang: SeoLang): Metadata {
 
   const { title, description } = lang === "hu"
     ? {
-        title: `${A.name.hu}-tól ${B.name.hu}-ig busszal – Sepsiszentgyörgy`,
+        title: `${routeTitle(A, B, "hu")} – Sepsiszentgyörgy`,
         description:
           `Hogyan juss el ${A.name.hu}-tól ${B.name.hu}-ig Multi-Trans busszal `
           + "Sepsiszentgyörgyön: járatok, átszállások, menetidő és az első/utolsó indulás.",
@@ -221,9 +231,9 @@ export default async function RoutePage(
     <PageFrame
       lang={lang}
       twinPath={twinPath}
-      crumbs={[HOME[lang], { name: t.crumb(A.name[lang], B.name[lang]), path: selfPath }]}
+      crumbs={[HOME[lang], { name: routeCrumb(A, B, lang), path: selfPath }]}
     >
-      <h1 className={styles.h1}>{t.h1(A.name[lang], B.name[lang])}</h1>
+      <h1 className={styles.h1}>{routeTitle(A, B, lang)}</h1>
       <p className={styles.intro}>{t.intro(A.name[lang], B.name[lang])}</p>
 
       {dirs.map(({ from, to, summary }) => (

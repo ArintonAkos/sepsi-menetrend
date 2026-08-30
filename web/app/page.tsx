@@ -6,6 +6,17 @@ import type { Place } from "@/lib/engine/search";
 import type { Network } from "@/lib/engine/types";
 import type { BikeSnapshot } from "@/lib/sepsibike";
 
+/** `/`'s hreflang. `app/ro/page.tsx` already emits the reciprocal triple via
+ *  `pageMetadata`; without this the HU side answered with a bare canonical and
+ *  Google ignored the one-way pairing. Paths are relative to `metadataBase`
+ *  (`app/layout.tsx`). This only touches the `<head>` of `/`. */
+export const metadata: import("next").Metadata = {
+  alternates: {
+    canonical: "/",
+    languages: { hu: "/", ro: "/ro/", "x-default": "/" },
+  },
+};
+
 /** The bundle is read at build time and inlined into the page, so the first
  *  paint already has the whole timetable: no spinner, and it keeps working
  *  offline. It compresses to about 30 kB over the wire. */

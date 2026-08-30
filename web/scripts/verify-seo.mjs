@@ -107,14 +107,14 @@ function anchorPaths(html) {
  *  none, and `app/page.tsx` is frozen. */
 const NO_STATIC_H1 = new Set(["/", "/ro/"]);
 
-/** Pages the hreflang and orphan rules deliberately skip:
- *   - `/` + `/ro/`   the planner. `/` emits no hreflang at all - locked by
- *     lib/seo/homepage-head.test.ts; the planner predates this subsystem.
- *   - `/terms/` + `/privacy/`   stay canonical HU. Task 9 added Romanian twins
- *     as pages (`/ro/termeni/`, `/ro/confidentialitate/`) but never wired the
- *     reciprocal HU-side `alternates`, so the pairing is one-way by design.
- *   - `/ro/termeni/` + `/ro/confidentialitate/`   those twins - they point back
- *     one-way, which the HU side never reciprocates.
+/** Pages the generic hreflang and orphan rules skip:
+ *   - `/` + `/ro/`   the planner. `/` now emits a reciprocal hreflang triple
+ *     (its `/ro/` twin always did) - locked by lib/seo/homepage-head.test.ts.
+ *     Their homepage->pillar link is asserted directly in step 5b below.
+ *   - `/terms/` + `/privacy/`   canonical HU, with Romanian twins as pages
+ *     (`/ro/termeni/`, `/ro/confidentialitate/`); all four now carry the
+ *     reciprocal `alternates`, still left off the generic sitemap walk.
+ *   - `/ro/termeni/` + `/ro/confidentialitate/`   those twins.
  *  This is the brief's own orphan-check exclusion list. */
 const EXEMPT = new Set([
   "/",
@@ -242,6 +242,27 @@ const orphans = pages
   .map((p) => p.path)
   .filter((path) => !EXEMPT.has(path) && !reachable.has(path));
 for (const path of orphans) fail(`orphan: ${path} is not reachable within 2 hops of the hubs`);
+
+// 5b. The orphan check pre-seeds every HUB_PATH (including `/` and `/ro/`) as
+// reachable, so it can never notice a homepage that links nothing. Assert the
+// crawlable HTML of each planner homepage really carries an `<a href>` to its
+// pillar guide - the anchor the whole content-page graph hangs off.
+for (const [home, pillar] of [
+  ["/", "/buszmenetrend/"],
+  ["/ro/", "/ro/orar-autobuz/"],
+]) {
+  const file = pageFile(home);
+  if (!existsSync(file)) {
+    fail(`missing homepage: ${home}`);
+    continue;
+  }
+  if (!anchorPaths(read(file)).has(pillar)) {
+    fail(
+      `${home}: no crawlable <a href="${pillar}"> - the content pages are `
+      + `unreachable from the homepage (Googlebot renders JS but never clicks the gear)`,
+    );
+  }
+}
 
 // --- verdict ------------------------------------------------------------
 

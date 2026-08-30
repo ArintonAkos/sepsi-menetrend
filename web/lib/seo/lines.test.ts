@@ -22,7 +22,14 @@ describe("enrichLine", () => {
 
     const ro = enrichLine(net, "1", "ro");
     expect(ro.termini).toEqual(["Cap Linie Simeria", "Gara CFR"]);
-    expect(ro.title).toBe("linia 1 · Cap Linie Simeria – Gara CFR");
+    // label stays lowercase, title is sentence-cased for the <h1>/<title>
+    expect(ro.label).toBe("linia 1");
+    expect(ro.title).toBe("Linia 1 · Cap Linie Simeria – Gara CFR");
+  });
+
+  it("keeps the id's own case in the RO label - '1D', never '1d'", () => {
+    expect(enrichLine(net, "1D", "ro").label).toBe("linia 1D");
+    expect(enrichLine(net, "1D", "ro").title.startsWith("Linia 1D · ")).toBe(true);
   });
 });
 

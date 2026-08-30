@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import PageFrame from "@/components/seo/PageFrame";
 import { pageMetadata } from "@/lib/seo/metadata";
 import { loadNetwork } from "@/lib/seo/network";
-import { enrichLine } from "@/lib/seo/lines";
+import { enrichLine, sentenceCase } from "@/lib/seo/lines";
 import { buildPlaces, type Place } from "@/lib/seo/places";
 import { notablePairs } from "@/lib/seo/routes";
 import { slugify } from "@/lib/seo/slug";
@@ -135,6 +135,12 @@ const COPY: Record<Kind, Record<Lang, {
  *  (same reasoning as `lib/seo/places.ts`'s `byText`). */
 const byText = (a: string, b: string): number => (a < b ? -1 : a > b ? 1 : 0);
 
+/** Alphabetical order that folds accents first (`slugify`), raw name as the
+ *  tiebreak - so "Gábor Áron" sorts by "gabor aron", before "Gyöngyvirág",
+ *  not after it on the codepoint of "á". */
+const byName = (a: string, b: string): number =>
+  byText(slugify(a), slugify(b)) || byText(a, b);
+
 /** `<head>` for an index page. The HU/RO path pair is the same one the body
  *  renders its twin link and breadcrumb from - one table, no drift. */
 export function indexMetadata(kind: Kind, lang: Lang): Metadata {
@@ -186,7 +192,7 @@ export function LineIndex({ lang }: { lang: Lang }) {
                 style={{ background: l.colour }}
                 aria-hidden="true"
               />
-              <span className={styles.lineLabel}>{l.label}</span>
+              <span className={styles.lineLabel}>{sentenceCase(l.label)}</span>
               <span className={styles.termini}>
                 {l.termini[0]} – {l.termini[1]}
               </span>
@@ -231,7 +237,7 @@ export function StopIndex({ lang }: { lang: Lang }) {
           <ul className={styles.stopList}>
             {groups
               .get(letter)!
-              .sort((a, b) => byText(a.name, b.name))
+              .sort((a, b) => byName(a.name, b.name))
               .map((s) => (
                 <li key={s.href}>
                   <a href={s.href}>{s.name}</a>
@@ -275,7 +281,7 @@ export function RouteIndex({ lang }: { lang: Lang }) {
     link(pair.a, pair.b, slug);
     link(pair.b, pair.a, slug);
   }
-  const origins = [...groups.values()].sort((a, b) => byText(a.name, b.name));
+  const origins = [...groups.values()].sort((a, b) => byName(a.name, b.name));
 
   return (
     <Shell kind="routes" lang={lang}>
@@ -284,7 +290,7 @@ export function RouteIndex({ lang }: { lang: Lang }) {
           <h2 className={styles.origin}>{origin.name}</h2>
           <ul className={styles.stopList}>
             {origin.links
-              .sort((a, b) => byText(a.name, b.name))
+              .sort((a, b) => byName(a.name, b.name))
               .map((l) => (
                 <li key={l.href}>
                   <a href={l.href}>→ {l.name}</a>

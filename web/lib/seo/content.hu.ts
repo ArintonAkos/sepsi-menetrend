@@ -81,7 +81,7 @@ export const HU: Record<GuideKey, GuideCopy> = {
       },
       { h2: "Az árkosi járat (10-es vonal)" },
       {
-        p: "Árkos külön község, ezért a 10-es vonal díjhatárt lép át. Az árkosi jegy a multitrans.ro szerint 4 lej, és 60 percig érvényes. Az árkosi szakaszhoz a 4 lejes, 60 percig érvényes jegy szükséges.",
+        p: "Árkos külön község, ezért a 10-es vonal díjhatárt lép át. Az árkosi jegy a multitrans.ro szerint 4 lej, és 60 percig érvényes.",
       },
       { h2: "Ingyenes péntek" },
       {

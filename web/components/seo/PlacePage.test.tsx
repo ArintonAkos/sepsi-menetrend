@@ -51,6 +51,9 @@ describe("PlacePage", () => {
     expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent(/^Stația/);
     expect(screen.getAllByRole("table")).toHaveLength(4);
     expect(container.querySelector('a[href="/ro/linii/5/"]')).toBeTruthy();
+    // the planner handoff carries the RO language through
+    expect(container.querySelector('a[href^="/?stop="]')?.getAttribute("href"))
+      .toMatch(/&lang=ro$/);
     expect(childLinks(container, "/ro/statii/").length).toBeGreaterThan(0);
   });
 

@@ -15,7 +15,8 @@ import { join } from "node:path";
 import { ImageResponse } from "next/og";
 import { GUIDES } from "./content";
 import { loadNetwork } from "./network";
-import { enrichLine, lineDirections } from "./lines";
+import { enrichLine, lineDirections, sentenceCase } from "./lines";
+import { huRoutePhrase } from "./hu-place-forms";
 import { buildPlaces } from "./places";
 // `routes.ts` pulls in places/lines/network/engine - none import this file, so
 // there is no cycle (verified Task 22).
@@ -201,7 +202,7 @@ export function lineOg(id: string, lang: "hu" | "ro"): Promise<ImageResponse> {
   return renderOg({
     kind: "line",
     lang,
-    heading: line.label,
+    heading: sentenceCase(line.label),
     sub: `${line.termini[0]} – ${line.termini[1]}`,
     badge: { text: id, bg: raw.light, fg: raw.lightText },
     shape,
@@ -242,7 +243,11 @@ export function routeOg(pairSlug: string, lang: "hu" | "ro"): Promise<ImageRespo
   return renderOg({
     kind: "route",
     lang,
-    heading: `${pair.a.name[lang]} → ${pair.b.name[lang]}`,
+    // HU gets the grammatical ablative/terminative phrase, the same one the
+    // page's <h1> uses; RO's "A → B" arrow form is already fine.
+    heading: lang === "hu"
+      ? `${huRoutePhrase(pair.a, pair.b)} busszal`
+      : `${pair.a.name[lang]} → ${pair.b.name[lang]}`,
     sub: lang === "hu" ? "Sepsiszentgyörgy" : "Sfântu Gheorghe",
   });
 }

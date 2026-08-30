@@ -42,13 +42,19 @@ describe("LinePage", () => {
     ).toBeGreaterThan(0);
   });
 
-  it("links into the planner timetable for this line", async () => {
+  it("links into the planner timetable for this line, RO handoff kept RO", async () => {
     await renderLine({ lang: "ro", id: "1" });
     const ctas = screen.getAllByRole("link", { name: /deschide/i });
     expect(ctas.length).toBeGreaterThan(0);
     for (const cta of ctas) {
-      expect(cta).toHaveAttribute("href", "/?line=1&service=weekday");
+      expect(cta).toHaveAttribute("href", "/?line=1&service=weekday&lang=ro");
     }
+  });
+
+  it("leaves the HU line CTA without a lang override", async () => {
+    const { container } = await renderLine({ lang: "hu", id: "1" });
+    const cta = container.querySelector('a[href^="/?line="]');
+    expect(cta).toHaveAttribute("href", "/?line=1&service=weekday");
   });
 
   it("offers the language twin link in the frame", async () => {

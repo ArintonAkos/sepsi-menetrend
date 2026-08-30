@@ -35,10 +35,16 @@ function huLabel(id: string): string {
   return `${id}-es busz`;
 }
 
-/** `"1-es busz"` (hu) / `"linia 1"` (ro). */
+/** `"1-es busz"` (hu) / `"linia 1"` (ro). The id keeps its case - "1D" stays
+ *  "1D", not "1d". */
 function lineLabel(id: string, lang: SeoLang): string {
-  return lang === "hu" ? huLabel(id) : `linia ${id.toLowerCase()}`;
+  return lang === "hu" ? huLabel(id) : `linia ${id}`;
 }
+
+/** Upper-case the first character, leave the rest. A no-op on a label that
+ *  already starts with a digit ("1-es busz"). */
+export const sentenceCase = (s: string): string =>
+  s.charAt(0).toUpperCase() + s.slice(1);
 
 export interface LineDirection {
   patternId: string;
@@ -98,7 +104,7 @@ export function enrichLine(
   return {
     id: lineId,
     label,
-    title: `${label} · ${termini[0]} – ${termini[1]}`,
+    title: `${sentenceCase(label)} · ${termini[0]} – ${termini[1]}`,
     termini,
     colour: line.colour,
     textColour: line.textColour,

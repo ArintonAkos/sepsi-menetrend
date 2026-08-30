@@ -81,7 +81,7 @@ export const RO: Record<GuideKey, GuideCopy> = {
       },
       { h2: "Cursa spre Arcuș (linia 10)" },
       {
-        p: "Arcuș este o comună separată, deci linia 10 traversează o graniță tarifară. Biletul spre Arcuș costă 4 lei conform multitrans.ro și este valabil 60 de minute. Pentru porțiunea din Arcuș este nevoie de biletul de 4 lei, valabil 60 de minute.",
+        p: "Arcuș este o comună separată, deci linia 10 traversează o graniță tarifară. Biletul spre Arcuș costă 4 lei conform multitrans.ro și este valabil 60 de minute.",
       },
       { h2: "Vinerea gratuită" },
       {

@@ -330,7 +330,7 @@ export default async function PlacePage({ lang, slug }: { lang: SeoLang; slug: s
       ) : null}
 
       <p className={styles.cta}>
-        <a href={`/?stop=${place.stopIds[0]}`}>{t.cta}</a>
+        <a href={`/?stop=${place.stopIds[0]}${lang === "ro" ? "&lang=ro" : ""}`}>{t.cta}</a>
       </p>
 
       <hr className={styles.divider} />

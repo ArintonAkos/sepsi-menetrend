@@ -4,7 +4,10 @@ import { LegalPage } from "@/components";
 export const metadata: Metadata = {
   title: "Adatkezelési és Süti Tájékoztató · Confidențialitate și Cookie-uri",
   description: "A Sepsi Menetrend adatkezelési és süti (cookie) tájékoztatója, információk a helyi adatokról és a Google Analytics működéséről.",
-  alternates: { canonical: "/privacy/" },
+  alternates: {
+    canonical: "/privacy/",
+    languages: { hu: "/privacy/", ro: "/ro/confidentialitate/", "x-default": "/privacy/" },
+  },
 };
 
 export default function PrivacyPage() {
