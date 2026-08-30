@@ -5,6 +5,7 @@ import { pageMetadata } from "@/lib/seo/metadata";
 import { loadNetwork } from "@/lib/seo/network";
 import { enrichLine } from "@/lib/seo/lines";
 import { buildPlaces } from "@/lib/seo/places";
+import { slugify } from "@/lib/seo/slug";
 import styles from "./IndexShell.module.css";
 
 /** The two index pages - `/vonalak/` (every line) and `/megallok/` (every
@@ -166,18 +167,23 @@ export function LineIndex({ lang }: { lang: Lang }) {
   );
 }
 
-/** `/megallok/` (+ `/ro/statii/`): every place, grouped A-Z by the first letter
- *  of the display name in this language, each group an `<h2>` + a list of
- *  links. The RO path carries the place's own RO slug, never the HU one. */
+/** `/megallok/` (+ `/ro/statii/`): every place, grouped A-Z by the ASCII-folded
+ *  first letter of the display name in this language, each group an `<h2>` + a
+ *  list of links. The RO path carries the place's own RO slug, never the HU one. */
 export function StopIndex({ lang }: { lang: Lang }) {
   const net = loadNetwork();
   const base = lang === "hu" ? PATHS.stops.hu : PATHS.stops.ro;
 
   // buildPlaces is sorted by HU slug; regroup on the localized display name.
+  // Bucket by the ASCII-folded first letter so "Árkos központ" files under "A"
+  // and "Șugaș Băi" under "S" - a codepoint sort of the raw initial drops
+  // Á / É / Ș into their own buckets after "Z", where nobody scans for them.
+  // Only the bucket *key* is folded; the link text and within-group sort keep
+  // the accented display name. `|| "#"` guards a name that folds to empty.
   const groups = new Map<string, { name: string; href: string }[]>();
   for (const p of buildPlaces(net)) {
     const name = p.name[lang];
-    const letter = name.charAt(0).toUpperCase();
+    const letter = slugify(name).charAt(0).toUpperCase() || "#";
     const slug = lang === "hu" ? p.slug : p.slugRo;
     const bucket = groups.get(letter);
     const entry = { name, href: `${base}${slug}/` };
