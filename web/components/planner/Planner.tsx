@@ -1164,6 +1164,13 @@ export default function Planner({ network, places, reach, box, fares, bikeStatio
                     <span>·</span>
                     <a href="/privacy/" target="_blank" rel="noopener noreferrer">{t.privacy}</a>
                   </div>
+                  <div className={styles.legalLinks}>
+                    <a href="/buszmenetrend/" target="_blank" rel="noopener noreferrer">{t.timetablesLink}</a>
+                    <span>·</span>
+                    <a href="/vonalak/" target="_blank" rel="noopener noreferrer">{t.linesLink}</a>
+                    <span>·</span>
+                    <a href="/dijszabas/" target="_blank" rel="noopener noreferrer">{t.faresLink}</a>
+                  </div>
                   <button className={styles.cookieReset} onClick={() => {
                     try { localStorage.removeItem("sepsi.consent"); } catch {}
                     window.dispatchEvent(new Event("sepsi:consent"));

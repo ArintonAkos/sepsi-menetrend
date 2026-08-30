@@ -579,6 +579,12 @@ describe("the disclaimer", () => {
     await user.click(screen.getByLabelText("Beállítások"));
     expect(screen.getByText(/Nem a Multi-Trans SA hivatalos/)).toBeInTheDocument();
   });
+
+  it("offers links to the timetable pages from the settings panel", async () => {
+    const user = await setup();
+    await user.click(screen.getByLabelText("Beállítások"));
+    expect(screen.getByRole("link", { name: "Buszvonalak" })).toHaveAttribute("href", "/vonalak/");
+  });
 });
 
 describe("the itinerary markup", () => {
