@@ -13,6 +13,7 @@ import {
   type RouteSummary,
 } from "@/lib/seo/routes";
 import type { SeoLang } from "@/lib/seo/lines";
+import { pickName } from "@/lib/seo/lang";
 import { huRoutePhrase } from "@/lib/seo/hu-place-forms";
 import type { Place } from "@/lib/seo/places";
 import type { Network } from "@/lib/engine/types";
@@ -41,10 +42,12 @@ export const routeNetwork = (): Network => (feed ??= loadNetwork());
 const HOME: Record<SeoLang, { name: string; path: string }> = {
   hu: { name: "Sepsi Menetrend", path: "/" },
   ro: { name: "Sepsi Menetrend", path: "/ro/" },
+  en: { name: "Sepsi Menetrend", path: "/en/" },
 };
 
 const huPath = (slug: string) => `/utvonal/${slug}/`;
 const roPath = (slug: string) => `/ro/trasee/${slug}/`;
+const enPath = (slug: string) => `/en/routes/${slug}/`;
 
 /** Minutes since midnight -> "6:05", non-padded hour - the same formatter as
  *  `BoardTable`, wrapped so a post-midnight departure stays on the clock. */
@@ -55,10 +58,10 @@ const hm = (m: number) =>
  *  URL-encoded - `decodeTrip` (`lib/share.ts`) splits on comma and keeps the
  *  rest as the name. A name with spaces is fine inside an href value. */
 const enc = (p: Place, lang: SeoLang) =>
-  `${p.at[0].toFixed(6)},${p.at[1].toFixed(6)},${p.name[lang]}`;
+  `${p.at[0].toFixed(6)},${p.at[1].toFixed(6)},${pickName(p.name, lang)}`;
 
 const ctaHref = (from: Place, to: Place, lang: SeoLang) =>
-  `/?from=${enc(from, lang)}&to=${enc(to, lang)}${lang === "ro" ? "&lang=ro" : ""}`;
+  `/?from=${enc(from, lang)}&to=${enc(to, lang)}${lang === "hu" ? "" : `&lang=${lang}`}`;
 
 const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 
@@ -79,6 +82,14 @@ const T = {
       + "linii, schimbări și durată.",
     dir: (from: string, to: string) => `${from} → ${to}`,
   },
+  en: {
+    cta: "Open in the planner",
+    faqTitle: "Frequently asked questions",
+    intro: (a: string, b: string) =>
+      `Between ${a} and ${b} in Sfântu Gheorghe, by Multi-Trans city bus — `
+      + "services, transfers and travel time.",
+    dir: (from: string, to: string) => `${from} → ${to}`,
+  },
 } as const;
 
 /** The page's A→B heading. HU uses the tabulated ablative/terminative forms
@@ -87,17 +98,27 @@ const T = {
 const routeTitle = (a: Place, b: Place, lang: SeoLang): string =>
   lang === "hu"
     ? `${huRoutePhrase(a, b)} busszal`
-    : `De la ${a.name.ro} la ${b.name.ro} cu autobuzul`;
+    : lang === "ro"
+    ? `De la ${a.name.ro} la ${b.name.ro} cu autobuzul`
+    : `Getting from ${pickName(a.name, "en")} to ${pickName(b.name, "en")} by bus`;
 
 /** The trailing breadcrumb label: same grammar as the heading on the HU side,
- *  the arrow form on the RO side. */
+ *  the arrow form on the RO/EN sides. */
 const routeCrumb = (a: Place, b: Place, lang: SeoLang): string =>
-  lang === "hu" ? huRoutePhrase(a, b) : `${a.name.ro} → ${b.name.ro}`;
+  lang === "hu"
+    ? huRoutePhrase(a, b)
+    : lang === "ro"
+    ? `${a.name.ro} → ${b.name.ro}`
+    : `${pickName(a.name, "en")} → ${pickName(b.name, "en")}`;
 
 /** One ride leg as a sentence. Templated, so the grammar is only approximate
  *  (Hungarian vowel harmony on the case endings is not resolved) - a later
  *  pass can refine the wording. */
 function legProse(leg: RouteLeg, lang: SeoLang): string {
+  if (lang === "en") {
+    return `Board ${leg.lineLabel} at ${leg.fromName} and ride ${leg.stops} stops `
+      + `(${leg.rideMin} min) to ${leg.toName}.`;
+  }
   return lang === "hu"
     ? `Szállj fel a(z) ${leg.lineLabel} járatra a(z) ${leg.fromName} megállónál, `
       + `és menj ${leg.stops} megállót (${leg.rideMin} perc) a(z) ${leg.toName} megállóig.`
@@ -106,7 +127,9 @@ function legProse(leg: RouteLeg, lang: SeoLang): string {
 }
 
 const joinProse = (legs: RouteLeg[], lang: SeoLang): string =>
-  legs.map((l) => legProse(l, lang)).join(lang === "hu" ? " Ezután " : " Apoi ");
+  legs.map((l) => legProse(l, lang)).join(
+    lang === "hu" ? " Ezután " : lang === "ro" ? " Apoi " : " Then ",
+  );
 
 /** Total time, transfer count, walking minutes and - when the board has a
  *  column at the boarding stop - the first/last useful departure. */
@@ -116,6 +139,16 @@ function summaryLine(s: RouteSummary, lang: SeoLang): string {
     let out = `Az út kb. ${s.totalMin} perc, ${tr}, ${s.walkMin} perc gyaloglással.`;
     if (s.firstDep !== null && s.lastDep !== null) {
       out += ` Első hasznos indulás ${hm(s.firstDep)}, utolsó ${hm(s.lastDep)}.`;
+    }
+    return out;
+  }
+  if (lang === "en") {
+    const tr = s.transfers === 0
+      ? "no transfers"
+      : `${s.transfers} transfer${s.transfers === 1 ? "" : "s"}`;
+    let out = `The trip takes about ${s.totalMin} minutes, ${tr}, ${s.walkMin} minutes of walking.`;
+    if (s.firstDep !== null && s.lastDep !== null) {
+      out += ` First useful departure ${hm(s.firstDep)}, last ${hm(s.lastDep)}.`;
     }
     return out;
   }
@@ -148,6 +181,23 @@ function faqFor(
       {
         q: "Mennyibe kerül a jegy?",
         a: "2,5 lej / 50 perc a 24pay alkalmazásban (a multitrans.ro szerint).",
+      },
+    ];
+  }
+  if (lang === "en") {
+    const which = lines.length === 1
+      ? `${cap(lines[0])} runs on this route.`
+      : `${cap(lines[0])}, ${lines.slice(1).join(", ")} (with ${primary.transfers} `
+        + `transfer${primary.transfers === 1 ? "" : "s"}).`;
+    return [
+      {
+        q: `Which bus goes from ${pickName(A.name, "en")} to ${pickName(B.name, "en")}?`,
+        a: which,
+      },
+      { q: "How long does the trip take?", a: `About ${primary.totalMin} minutes.` },
+      {
+        q: "How much is the ticket?",
+        a: "2.5 lei / 50 min via the 24pay app (per multitrans.ro).",
       },
     ];
   }
@@ -187,6 +237,13 @@ export function routeMetadata(pairSlug: string, lang: SeoLang): Metadata {
           `Hogyan juss el ${huRoutePhrase(A, B)} Multi-Trans busszal `
           + "Sepsiszentgyörgyön: járatok, átszállások, menetidő és az első/utolsó indulás.",
       }
+    : lang === "en"
+    ? {
+        title: `Getting from ${pickName(A.name, "en")} to ${pickName(B.name, "en")} by bus – Sfântu Gheorghe`,
+        description:
+          `How to get from ${pickName(A.name, "en")} to ${pickName(B.name, "en")} by Multi-Trans bus in `
+          + "Sfântu Gheorghe: services, transfers, travel time and the first/last departure.",
+      }
     : {
         title: `De la ${A.name.ro} la ${B.name.ro} cu autobuzul – Sfântu Gheorghe`,
         description:
@@ -197,6 +254,7 @@ export function routeMetadata(pairSlug: string, lang: SeoLang): Metadata {
   return pageMetadata({
     huPath: huPath(pair.slug),
     roPath: roPath(pair.slugRo),
+    enPath: enPath(pair.slug),
     lang,
     title,
     description,
@@ -224,22 +282,26 @@ export default async function RoutePage(
   const qa = faqFor(A, B, primary, lang);
   const t = T[lang];
 
-  const selfPath = lang === "hu" ? huPath(pair.slug) : roPath(pair.slugRo);
+  const selfPath =
+    lang === "hu" ? huPath(pair.slug) : lang === "ro" ? roPath(pair.slugRo) : enPath(pair.slug);
+  // `PageFrame` is still a two-way (hu/ro) switch this phase; Task C12 swaps it
+  // to the full triple. Until then English's nearest twin link is the Hungarian
+  // page, and `PageFrame` renders with Hungarian chrome for `en`.
   const twinPath = lang === "hu" ? roPath(pair.slugRo) : huPath(pair.slug);
 
   return (
     <PageFrame
-      lang={lang}
+      lang={lang === "en" ? "hu" : lang}
       kind="route"
       twinPath={twinPath}
       crumbs={[HOME[lang], { name: routeCrumb(A, B, lang), path: selfPath }]}
     >
       <h1 className={styles.h1}>{routeTitle(A, B, lang)}</h1>
-      <p className={styles.intro}>{t.intro(A.name[lang], B.name[lang])}</p>
+      <p className={styles.intro}>{t.intro(pickName(A.name, lang), pickName(B.name, lang))}</p>
 
       {dirs.map(({ from, to, summary }) => (
         <section key={`${from.slug}->${to.slug}`} className={styles.direction}>
-          <h2 className={styles.headsign}>{t.dir(from.name[lang], to.name[lang])}</h2>
+          <h2 className={styles.headsign}>{t.dir(pickName(from.name, lang), pickName(to.name, lang))}</h2>
           <p className={styles.prose}>{joinProse(summary.legs, lang)}</p>
           <p className={styles.meta}>{summaryLine(summary, lang)}</p>
           <p className={styles.cta}>

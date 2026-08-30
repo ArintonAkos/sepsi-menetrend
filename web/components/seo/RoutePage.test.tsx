@@ -1,6 +1,9 @@
+import type React from "react";
 import { describe, it, expect } from "vitest";
 import { render, screen } from "@testing-library/react";
-import RoutePage from "./RoutePage";
+import RoutePage, { routeMetadata } from "./RoutePage";
+import { loadNetwork } from "@/lib/seo/network";
+import { notablePairs } from "@/lib/seo/routes";
 
 /** `RoutePage` is an async server component - render its resolved tree the way
  *  the other SEO page tests do. The slugs below are real canonical pair slugs
@@ -49,5 +52,24 @@ describe("RoutePage", () => {
     const ctas = screen.getAllByRole("link", { name: /planificator|deschide/i });
     expect(ctas.length).toBeGreaterThan(0);
     expect(ctas.some((a) => (a.getAttribute("href") ?? "").includes("&lang=ro"))).toBe(true);
+  });
+
+  it("renders an English route page with 'from A to B' phrasing and an /en/ CTA", async () => {
+    const net = loadNetwork();
+    const pair = notablePairs(net)[0];
+    const el = await RoutePage({ lang: "en", pair: pair.slug });
+    render(el as React.ReactElement);
+    const h1 = screen.getByRole("heading", { level: 1 }).textContent!;
+    expect(h1.toLowerCase()).toContain("from");
+    expect(h1.toLowerCase()).toContain("to");
+    const hrefs = screen.getAllByRole("link").map((a) => a.getAttribute("href"));
+    expect(hrefs.some((h) => h?.includes("&lang=en"))).toBe(true);
+  });
+
+  it("canonicalises the English route page to /en/routes/{huSlug}/", () => {
+    const net = loadNetwork();
+    const pair = notablePairs(net)[0];
+    const m = routeMetadata(pair.slug, "en");
+    expect(m.alternates?.canonical).toBe(`https://sepsimenetrend.ro/en/routes/${pair.slug}/`);
   });
 });
