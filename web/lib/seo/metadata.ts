@@ -21,8 +21,14 @@ export function pageMetadata(input: {
   title: string;
   description: string;
   ogPath?: string;
+  /** The page carries its own `opengraph-image` route file. Set this so we do
+   *  NOT also emit `openGraph.images` / `twitter.images` - Next only injects the
+   *  file-convention `<meta og:image>` when the metadata object leaves images
+   *  unset, and an explicit default here would otherwise win and orphan the
+   *  generated card. */
+  ownOgImage?: boolean;
 }): Metadata {
-  const { huPath, roPath, lang, title, description, ogPath } = input;
+  const { huPath, roPath, lang, title, description, ogPath, ownOgImage } = input;
   const huUrl = abs(huPath);
   const roUrl = abs(roPath);
   const selfUrl = lang === "hu" ? huUrl : roUrl;
@@ -54,13 +60,13 @@ export function pageMetadata(input: {
       url: selfUrl,
       title,
       description,
-      images: [ogImage],
+      ...(ownOgImage ? {} : { images: [ogImage] }),
     },
     twitter: {
       card: "summary_large_image",
       title,
       description,
-      images: [ogImage],
+      ...(ownOgImage ? {} : { images: [ogImage] }),
     },
   };
 }

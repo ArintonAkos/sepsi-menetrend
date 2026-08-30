@@ -54,6 +54,8 @@ export function guideMetadata(key: GuideKey, lang: Lang): Metadata {
     lang,
     title: g.title[lang],
     description: g.description[lang],
+    // Every guide page ships its own `opengraph-image` card.
+    ownOgImage: true,
   });
 }
 

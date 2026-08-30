@@ -64,6 +64,18 @@ describe("pageMetadata", () => {
     expect(rec(custom.twitter).images).toEqual(["https://sepsimenetrend.ro/og/line-1.png"]);
   });
 
+  it("omits openGraph/twitter images when the page owns its OG card", () => {
+    // R17: with an `opengraph-image` route file present, Next only injects the
+    // file-convention `<meta og:image>` if the metadata object leaves images
+    // unset - so `ownOgImage` must strip them, and nothing falls back to /og.png.
+    const m = pageMetadata({
+      huPath: "/dijszabas/", roPath: "/ro/tarife/", lang: "hu",
+      title: "t", description: "d", ownOgImage: true,
+    });
+    expect(rec(m.openGraph).images).toBeUndefined();
+    expect(rec(m.twitter).images).toBeUndefined();
+  });
+
   it("leaves an already-absolute ogPath untouched", () => {
     const m = pageMetadata({
       huPath: "/vonalak/1/", roPath: "/ro/linii/1/", lang: "ro",

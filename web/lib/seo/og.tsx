@@ -13,6 +13,7 @@
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 import { ImageResponse } from "next/og";
+import { GUIDES } from "./content";
 
 export const OG_SIZE = { width: 1200, height: 630 };
 export const OG_CONTENT_TYPE = "image/png";
@@ -178,5 +179,17 @@ export async function renderOg(props: OgProps): Promise<ImageResponse> {
   return new ImageResponse(tree, {
     ...OG_SIZE,
     fonts: [{ name: "og", data, style: "normal", weight: 400 }],
+  });
+}
+
+/** The share card for a guide page. Heading is the guide's own SEO title; the
+ *  sub is just the city name in the page's language - a guide has no single
+ *  line/stop to name, and the title already carries the topic. */
+export function guideOg(key: keyof typeof GUIDES, lang: "hu" | "ro"): Promise<ImageResponse> {
+  return renderOg({
+    kind: "guide",
+    lang,
+    heading: GUIDES[key].title[lang],
+    sub: lang === "hu" ? "Sepsiszentgyörgy" : "Sfântu Gheorghe",
   });
 }
