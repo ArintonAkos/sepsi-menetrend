@@ -14,6 +14,8 @@ import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 import { ImageResponse } from "next/og";
 import { GUIDES } from "./content";
+import { pickName } from "./lang";
+import type { SeoLang } from "./lang";
 import { loadNetwork } from "./network";
 import { enrichLine, lineDirections, sentenceCase } from "./lines";
 import { huRoutePhrase } from "./hu-place-forms";
@@ -38,7 +40,7 @@ export function ogFont(): Promise<ArrayBuffer> {
 
 export type OgProps = {
   kind: "line" | "place" | "route" | "guide";
-  lang: "hu" | "ro";
+  lang: SeoLang;
   heading: string;
   sub?: string;
   badge?: { text: string; bg: string; fg: string };
@@ -47,7 +49,11 @@ export type OgProps = {
 
 /** The disclaimer tag - said on the page too: a sharer must not be able to
  *  pass the card off as the operator's own. */
-const TAG: Record<OgProps["lang"], string> = { hu: "nem hivatalos", ro: "neoficial" };
+const TAG: Record<SeoLang, string> = {
+  hu: "nem hivatalos",
+  ro: "neoficial",
+  en: "unofficial",
+};
 
 /** Fit a raw coordinate list into a `w`x`h` box, uniformly scaled and centred.
  *  Y is flipped because route points are geographic (north up) and SVG is
@@ -193,7 +199,7 @@ export async function renderOg(props: OgProps): Promise<ImageResponse> {
  *  (`light`/`lightText` - the on-screen pair, already contrast-checked); the
  *  faint trace behind it is the primary direction's shape, so lines read apart
  *  at a glance in a feed. Heading is the spoken label, sub is the two termini. */
-export function lineOg(id: string, lang: "hu" | "ro"): Promise<ImageResponse> {
+export function lineOg(id: string, lang: SeoLang): Promise<ImageResponse> {
   const net = loadNetwork();
   const line = enrichLine(net, id, lang);
   const raw = net.lines.find((l) => l.id === id)!;
@@ -213,7 +219,7 @@ export function lineOg(id: string, lang: "hu" | "ro"): Promise<ImageResponse> {
  *  language; sub is the ids of the lines that actually leave this kerb, from the
  *  operator's boards (deduped, feed order) - the same authority the page prose
  *  uses. A place with no board here falls back to a plain "bus stop" label. */
-export function placeOg(slug: string, lang: "hu" | "ro"): Promise<ImageResponse> {
+export function placeOg(slug: string, lang: SeoLang): Promise<ImageResponse> {
   const net = loadNetwork();
   const place = buildPlaces(net).find((p) => (lang === "ro" ? p.slugRo : p.slug) === slug);
   if (!place) throw new Error(`placeOg: no place for ${slug}`);
@@ -227,16 +233,19 @@ export function placeOg(slug: string, lang: "hu" | "ro"): Promise<ImageResponse>
   return renderOg({
     kind: "place",
     lang,
-    heading: place.name[lang],
-    sub: lineIds.join(" · ") || (lang === "hu" ? "buszmegálló" : "stație de autobuz"),
+    heading: pickName(place.name, lang),
+    sub:
+      lineIds.join(" · ") ||
+      (lang === "hu" ? "buszmegálló" : lang === "ro" ? "stație de autobuz" : "bus stop"),
   });
 }
 
 /** The share card for a route page. Heading is the "A → B" direction in the
  *  page's language - the same arrow the page's crumb and headings use; the sub
- *  is just the city name. `pairSlug` is the HU slug on the HU card, `slugRo` on
- *  the RO card (Ruling R15), so match on whichever the language carries. */
-export function routeOg(pairSlug: string, lang: "hu" | "ro"): Promise<ImageResponse> {
+ *  is just the city name. `pairSlug` is the HU slug on the HU and EN cards,
+ *  `slugRo` on the RO card (Ruling R15), so match on whichever the language
+ *  carries. */
+export function routeOg(pairSlug: string, lang: SeoLang): Promise<ImageResponse> {
   const net = loadNetwork();
   const pair = notablePairs(net).find((p) => (lang === "ro" ? p.slugRo : p.slug) === pairSlug);
   if (!pair) throw new Error(`routeOg: no pair for ${pairSlug} (${lang})`);
@@ -244,10 +253,11 @@ export function routeOg(pairSlug: string, lang: "hu" | "ro"): Promise<ImageRespo
     kind: "route",
     lang,
     // HU gets the grammatical ablative/terminative phrase, the same one the
-    // page's <h1> uses; RO's "A → B" arrow form is already fine.
+    // page's <h1> uses; RO and EN both use a plain "A → B" arrow form (English
+    // needs no grammatical case forms, so no huRoutePhrase equivalent).
     heading: lang === "hu"
       ? `${huRoutePhrase(pair.a, pair.b)} busszal`
-      : `${pair.a.name[lang]} → ${pair.b.name[lang]}`,
+      : `${pickName(pair.a.name, lang)} → ${pickName(pair.b.name, lang)}`,
     sub: lang === "hu" ? "Sepsiszentgyörgy" : "Sfântu Gheorghe",
   });
 }
@@ -255,7 +265,7 @@ export function routeOg(pairSlug: string, lang: "hu" | "ro"): Promise<ImageRespo
 /** The share card for a guide page. Heading is the guide's own SEO title; the
  *  sub is just the city name in the page's language - a guide has no single
  *  line/stop to name, and the title already carries the topic. */
-export function guideOg(key: keyof typeof GUIDES, lang: "hu" | "ro"): Promise<ImageResponse> {
+export function guideOg(key: keyof typeof GUIDES, lang: SeoLang): Promise<ImageResponse> {
   return renderOg({
     kind: "guide",
     lang,

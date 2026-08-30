@@ -5,6 +5,9 @@ import huImage, {
 import roImage, {
   generateStaticParams as roParams,
 } from "@/app/ro/trasee/[pair]/opengraph-image";
+import { routeOg } from "./og";
+import { loadNetwork } from "./network";
+import { notablePairs } from "./routes";
 
 /** Invoke a route's default `Image({ params })` and read the bytes back. */
 async function card(
@@ -59,5 +62,14 @@ describe("route OG card - Romanian route", () => {
     expect(type).toBe("image/png");
     expect(isPng(buf)).toBe(true);
     expect(buf.length).toBeGreaterThan(2000);
+  });
+});
+
+describe("route OG card - English", () => {
+  it("renders an English route card with a plain arrow heading", async () => {
+    const net = loadNetwork();
+    const pair = notablePairs(net)[0];
+    const img = await routeOg(pair.slug, "en");
+    expect(img.status).toBe(200);
   });
 });

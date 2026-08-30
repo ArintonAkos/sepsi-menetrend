@@ -5,6 +5,7 @@ import huImage, {
 import roImage, {
   generateStaticParams as roParams,
 } from "@/app/ro/linii/[id]/opengraph-image";
+import { lineOg } from "./og";
 
 /** Invoke a route's default `Image({ params })` and read the bytes back. */
 async function card(
@@ -60,5 +61,12 @@ describe("line OG card - Romanian route", () => {
     const { type, buf } = await card(roImage, "1");
     expect(type).toBe("image/png");
     expect(isPng(buf)).toBe(true);
+  });
+});
+
+describe("line OG card - English", () => {
+  it("renders an English line card", async () => {
+    const img = await lineOg("1", "en");
+    expect(img.status).toBe(200);
   });
 });

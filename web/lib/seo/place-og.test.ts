@@ -5,6 +5,9 @@ import huImage, {
 import roImage, {
   generateStaticParams as roParams,
 } from "@/app/ro/statii/[slug]/opengraph-image";
+import { placeOg } from "./og";
+import { loadNetwork } from "./network";
+import { buildPlaces } from "./places";
 
 /** Invoke a route's default `Image({ params })` and read the bytes back. */
 async function card(
@@ -63,5 +66,14 @@ describe("place OG card - Romanian route", () => {
     expect(type).toBe("image/png");
     expect(isPng(buf)).toBe(true);
     expect(buf.length).toBeGreaterThan(2000);
+  });
+});
+
+describe("place OG card - English", () => {
+  it("renders an English place card keyed on the Hungarian slug", async () => {
+    const net = loadNetwork();
+    const p = buildPlaces(net)[0];
+    const img = await placeOg(p.slug, "en");
+    expect(img.status).toBe(200);
   });
 });
