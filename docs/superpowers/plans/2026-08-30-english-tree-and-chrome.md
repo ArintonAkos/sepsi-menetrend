@@ -336,23 +336,25 @@ export default function PageFrame({ lang, kind, crumbs, twinPath, children }: Pa
         <main className={styles.card}>
           <div className={styles.badge}>{sub.toUpperCase()}</div>
           {children}
-
-          <nav className={styles.footerNav}>
-            <p className={styles.disclaimer}>{t.disclaimer}</p>
-            <div className={styles.footerLinks}>
-              <a href={t.planner.href}>{t.planner.label}</a>
-              <a href={t.pillar.href}>{t.pillar.label}</a>
-              <a
-                className={styles.operator}
-                href="https://multitrans.ro/index.html"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                {t.operator}
-              </a>
-            </div>
-          </nav>
         </main>
+
+        {/* A real <footer> element, sibling of <main> (NOT nested in it) — a
+            <footer> inside <main> gets no `contentinfo` landmark. */}
+        <footer className={styles.footerNav}>
+          <p className={styles.disclaimer}>{t.disclaimer}</p>
+          <div className={styles.footerLinks}>
+            <a href={t.planner.href}>{t.planner.label}</a>
+            <a href={t.pillar.href}>{t.pillar.label}</a>
+            <a
+              className={styles.operator}
+              href="https://multitrans.ro/index.html"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {t.operator}
+            </a>
+          </div>
+        </footer>
 
         <script
           type="application/ld+json"
@@ -612,18 +614,28 @@ git mv app/terms app/felhasznalasi-feltetelek
 git mv app/privacy app/adatvedelem
 ```
 
-In `app/felhasznalasi-feltetelek/page.tsx`, set:
+In `app/felhasznalasi-feltetelek/page.tsx`, set (the `en` key points at the page Task C16 creates — a string is fine now, the file exists by branch end):
 ```ts
   alternates: {
     canonical: "/felhasznalasi-feltetelek/",
-    languages: { hu: "/felhasznalasi-feltetelek/", ro: "/ro/termeni/", "x-default": "/felhasznalasi-feltetelek/" },
+    languages: {
+      hu: "/felhasznalasi-feltetelek/",
+      ro: "/ro/termeni/",
+      en: "/en/terms/",
+      "x-default": "/felhasznalasi-feltetelek/",
+    },
   },
 ```
 In `app/adatvedelem/page.tsx`, set:
 ```ts
   alternates: {
     canonical: "/adatvedelem/",
-    languages: { hu: "/adatvedelem/", ro: "/ro/confidentialitate/", "x-default": "/adatvedelem/" },
+    languages: {
+      hu: "/adatvedelem/",
+      ro: "/ro/confidentialitate/",
+      en: "/en/privacy/",
+      "x-default": "/adatvedelem/",
+    },
   },
 ```
 
@@ -2411,6 +2423,7 @@ git commit -m "Add the English homepage, footer and hreflang"
 **Files:**
 - Modify: `components/legal/LegalPage.tsx`
 - Create: `app/en/terms/page.tsx`, `app/en/privacy/page.tsx`
+- Modify: `app/ro/termeni/page.tsx`, `app/ro/confidentialitate/page.tsx` (add `enPath` to the `pageMetadata` call — Ruling P1: the legal cluster must carry a consistent four-key hreflang)
 - Modify: `components/legal/LegalPage.test.tsx`
 
 **Interfaces:**
@@ -2484,6 +2497,10 @@ export default function Page() {
 }
 ```
 `app/en/privacy/page.tsx` — same shape: `type="privacy"`, `huPath: "/adatvedelem/"`, `roPath: "/ro/confidentialitate/"`, `enPath: "/en/privacy/"`, title `"Privacy & Cookie Notice · Sepsi Menetrend"`, description about local-only storage + Google Analytics on consent.
+
+Also add `enPath` to the existing RO twins so the whole legal cluster reciprocates (Ruling P1):
+- `app/ro/termeni/page.tsx`: `pageMetadata({ huPath: "/felhasznalasi-feltetelek/", roPath: "/ro/termeni/", enPath: "/en/terms/", lang: "ro", … })`
+- `app/ro/confidentialitate/page.tsx`: `pageMetadata({ huPath: "/adatvedelem/", roPath: "/ro/confidentialitate/", enPath: "/en/privacy/", lang: "ro", … })`
 
 - [ ] **Step 5: Run tests + build**
 
