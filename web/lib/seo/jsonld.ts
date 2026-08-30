@@ -4,6 +4,7 @@
  *  WebSite. Deliberately no `Organization` (we do not represent the operator)
  *  and no transit/GTFS schema (Google ignores it and it would imply we do). */
 import { SITE } from "./metadata";
+import type { SeoLang } from "./lang";
 
 /** schema.org BreadcrumbList - positions count from 1, each `item` absolute. */
 export function breadcrumbLd(items: { name: string; path: string }[]): object {
@@ -34,12 +35,13 @@ export function faqLd(qa: { q: string; a: string }[]): object {
 
 /** schema.org WebSite - one node per language, rooted at that language's home.
  *  No `SearchAction`: the planner has no plain `?q=` deep link to point at. */
-export function websiteLd(lang: "hu" | "ro"): object {
+export function websiteLd(lang: SeoLang): object {
+  const home = lang === "hu" ? `${SITE}/` : lang === "ro" ? `${SITE}/ro/` : `${SITE}/en/`;
   return {
     "@context": "https://schema.org",
     "@type": "WebSite",
     name: "Sepsi Menetrend",
-    url: lang === "hu" ? `${SITE}/` : `${SITE}/ro/`,
+    url: home,
     inLanguage: lang,
   };
 }

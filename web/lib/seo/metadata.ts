@@ -5,6 +5,7 @@
  *  own `canonical` is itself, so a crawler never folds the pair into one result
  *  yet still knows they are translations of each other. */
 import type { Metadata } from "next";
+import type { SeoLang } from "./lang";
 
 /** Where the site is served from - the same default and env var as
  *  `app/layout.tsx`, so a relative path and this absolute one land on one
@@ -14,10 +15,17 @@ export const SITE = process.env.NEXT_PUBLIC_SITE_URL ?? "https://sepsimenetrend.
 /** Site-absolute URL for a root-relative path (every SEO path starts with `/`). */
 const abs = (path: string): string => `${SITE}${path}`;
 
+/** The OpenGraph locale tag per language. */
+const LOCALE: Record<SeoLang, string> = { hu: "hu_HU", ro: "ro_RO", en: "en_US" };
+
 export function pageMetadata(input: {
   huPath: string;
   roPath: string;
-  lang: "hu" | "ro";
+  /** The English twin's path. Omit and the `languages` map stays three-key
+   *  (`hu` / `ro` / `x-default`) exactly as before; pass it and `en` joins the
+   *  map. Callers under `/en/` set this and pass `lang: "en"`. */
+  enPath?: string;
+  lang: SeoLang;
   title: string;
   description: string;
   ogPath?: string;
@@ -28,10 +36,17 @@ export function pageMetadata(input: {
    *  generated card. */
   ownOgImage?: boolean;
 }): Metadata {
-  const { huPath, roPath, lang, title, description, ogPath, ownOgImage } = input;
+  const { huPath, roPath, enPath, lang, title, description, ogPath, ownOgImage } = input;
   const huUrl = abs(huPath);
   const roUrl = abs(roPath);
-  const selfUrl = lang === "hu" ? huUrl : roUrl;
+  const enUrl = enPath ? abs(enPath) : undefined;
+  const selfUrl = lang === "hu" ? huUrl : lang === "ro" ? roUrl : (enUrl ?? huUrl);
+
+  // Hungarian is canonical and the hreflang `x-default`. `en` is added only
+  // when this page has an English twin, so pre-English callers keep their
+  // three-key map untouched.
+  const languages: Record<string, string> = { hu: huUrl, ro: roUrl, "x-default": huUrl };
+  if (enUrl) languages.en = enUrl;
 
   // An `ogPath` that is already absolute is passed through; a root-relative one
   // is resolved against SITE (OG crawlers reject relative image URLs). Default
@@ -51,12 +66,12 @@ export function pageMetadata(input: {
     publisher: "Sepsi Menetrend",
     alternates: {
       canonical: selfUrl,
-      languages: { hu: huUrl, ro: roUrl, "x-default": huUrl },
+      languages,
     },
     openGraph: {
       type: "website",
       siteName: "Sepsi Menetrend",
-      locale: lang === "hu" ? "hu_HU" : "ro_RO",
+      locale: LOCALE[lang],
       url: selfUrl,
       title,
       description,

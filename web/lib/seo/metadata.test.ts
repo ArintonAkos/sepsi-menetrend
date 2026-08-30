@@ -83,6 +83,28 @@ describe("pageMetadata", () => {
     });
     expect(rec(m.openGraph).images).toEqual(["https://cdn.example/og/line-1.png"]);
   });
+
+  it("emits a four-key hreflang map when enPath is given, x-default → Hungarian", () => {
+    const m = pageMetadata({
+      huPath: "/vonalak/1/", roPath: "/ro/linii/1/", enPath: "/en/lines/1/",
+      lang: "en", title: "Line 1 – bus schedule Sfântu Gheorghe", description: "…",
+    });
+    expect(m.alternates?.canonical).toBe("https://sepsimenetrend.ro/en/lines/1/");
+    expect(m.alternates?.languages?.hu).toBe("https://sepsimenetrend.ro/vonalak/1/");
+    expect(m.alternates?.languages?.ro).toBe("https://sepsimenetrend.ro/ro/linii/1/");
+    expect(m.alternates?.languages?.en).toBe("https://sepsimenetrend.ro/en/lines/1/");
+    expect(m.alternates?.languages?.["x-default"]).toBe("https://sepsimenetrend.ro/vonalak/1/");
+    expect(rec(m.openGraph).locale).toBe("en_US");
+    expect(rec(m.openGraph).url).toBe("https://sepsimenetrend.ro/en/lines/1/");
+  });
+
+  it("keeps the three-key map when enPath is omitted", () => {
+    const m = pageMetadata({
+      huPath: "/vonalak/1/", roPath: "/ro/linii/1/", lang: "hu", title: "x", description: "…",
+    });
+    expect(m.alternates?.languages && Object.keys(m.alternates.languages).sort())
+      .toEqual(["hu", "ro", "x-default"]);
+  });
 });
 
 describe("breadcrumbLd", () => {
@@ -145,6 +167,12 @@ describe("websiteLd", () => {
       url: "https://sepsimenetrend.ro/ro/",
       inLanguage: "ro",
     });
+  });
+
+  it("roots the English WebSite node at /en/", () => {
+    const w = websiteLd("en") as Record<string, unknown>;
+    expect(w.url).toBe("https://sepsimenetrend.ro/en/");
+    expect(w.inLanguage).toBe("en");
   });
 });
 
