@@ -140,6 +140,7 @@ export default function GuidePageShell({ guideKey, lang }: { guideKey: GuideKey;
   return (
     <PageFrame
       lang={lang}
+      kind="guide"
       twinPath={twinPath}
       crumbs={[HOME[lang], { name: CRUMB[guideKey][lang], path: selfPath }]}
     >

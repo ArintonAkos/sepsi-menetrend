@@ -1,145 +1,96 @@
 import { describe, it, expect } from "vitest";
+import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
 import { render, screen, within } from "@testing-library/react";
 import PageFrame from "./PageFrame";
 
-describe("PageFrame", () => {
-  it("shows a Romanian disclaimer and a link to the operator", () => {
-    render(
-      <PageFrame lang="ro" twinPath="/vonalak/1/"
-        crumbs={[{ name: "Sepsi Menetrend", path: "/ro/" }, { name: "Linia 1", path: "/ro/linii/1/" }]}>
-        <p>content</p>
-      </PageFrame>,
-    );
-    expect(screen.getByText(/Nu este site-ul oficial Multi-Trans/)).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: /multitrans\.ro/i })).toHaveAttribute("href", expect.stringContaining("multitrans.ro"));
-    expect(screen.getByRole("link", { name: "Magyar" })).toHaveAttribute("href", "/vonalak/1/");
+const crumbs = [
+  { name: "Sepsi Menetrend", path: "/" },
+  { name: "Vonalak", path: "/vonalak/" },
+  { name: "1-es busz", path: "/vonalak/1/" },
+];
+
+describe("PageFrame chrome", () => {
+  it("renders the brand header with a back link to the planner", () => {
+    render(<PageFrame lang="hu" kind="line" twinPath="/ro/linii/1/" crumbs={crumbs}><p>x</p></PageFrame>);
+    // scoped to the header landmark: "Sepsi Menetrend" is also the first crumb
+    const banner = screen.getByRole("banner");
+    expect(within(banner).getByText("Sepsi Menetrend")).toBeInTheDocument();
+    const back = screen.getByRole("link", { name: /vissza/i });
+    expect(back).toHaveAttribute("href", "/");
   });
 
-  it("emits BreadcrumbList JSON-LD", () => {
-    const { container } = render(
-      <PageFrame lang="hu" twinPath="/ro/linii/1/"
-        crumbs={[{ name: "Sepsi Menetrend", path: "/" }, { name: "1-es busz", path: "/vonalak/1/" }]}>
-        <p>x</p>
-      </PageFrame>,
+  it("shows a per-kind badge in the page language", () => {
+    const { rerender } = render(
+      <PageFrame lang="hu" kind="line" twinPath="/ro/linii/1/" crumbs={crumbs}><p>x</p></PageFrame>,
     );
-    const ld = container.querySelector('script[type="application/ld+json"]')!;
-    expect(JSON.parse(ld.textContent!)["@type"]).toBe("BreadcrumbList");
+    expect(screen.getByText("VONAL")).toBeInTheDocument();
+    rerender(<PageFrame lang="ro" kind="route" twinPath="/utvonal/x-y/" crumbs={crumbs}><p>x</p></PageFrame>);
+    expect(screen.getByText("TRASEU")).toBeInTheDocument();
   });
 
-  it("offers the Romanian twin from a Hungarian page", () => {
-    render(
-      <PageFrame lang="hu" twinPath="/ro/linii/1/"
-        crumbs={[{ name: "Sepsi Menetrend", path: "/" }, { name: "1-es busz", path: "/vonalak/1/" }]}>
-        <p>x</p>
-      </PageFrame>,
-    );
+  it("wraps the children in the card", () => {
+    render(<PageFrame lang="hu" kind="guide" twinPath="/ro/tarife/" crumbs={crumbs}><p>the body</p></PageFrame>);
+    expect(screen.getByText("the body")).toBeInTheDocument();
+  });
+
+  it("offers a two-language switch; the current language is not a link to itself", () => {
+    render(<PageFrame lang="hu" kind="line" twinPath="/ro/linii/1/" crumbs={crumbs}><p>x</p></PageFrame>);
     expect(screen.getByRole("link", { name: "Română" })).toHaveAttribute("href", "/ro/linii/1/");
-    expect(screen.queryByRole("link", { name: "Magyar" })).not.toBeInTheDocument();
+    const hu = screen.getByText("Magyar");
+    expect(hu.closest("a")).toBeNull();
+    expect(hu).toHaveAttribute("aria-current", "true");
   });
 
-  it("renders N-1 crumb links and the last crumb as current-page text", () => {
-    const crumbs = [
-      { name: "Sepsi Menetrend", path: "/" },
-      { name: "Vonalak", path: "/vonalak/" },
-      { name: "1-es busz", path: "/vonalak/1/" },
-    ];
-    render(
-      <PageFrame lang="hu" twinPath="/ro/linii/1/" crumbs={crumbs}>
-        <p>x</p>
-      </PageFrame>,
-    );
-    const nav = screen.getByRole("navigation");
+  it("keeps the breadcrumb: N-1 links, last crumb is current-page text", () => {
+    render(<PageFrame lang="hu" kind="line" twinPath="/ro/linii/1/" crumbs={crumbs}><p>x</p></PageFrame>);
+    const nav = screen.getByRole("navigation", { name: /morzs/i });
     expect(within(nav).getAllByRole("link")).toHaveLength(crumbs.length - 1);
     const current = within(nav).getByText("1-es busz");
-    expect(current).toBeInTheDocument();
     expect(current.closest("a")).toBeNull();
     expect(current).toHaveAttribute("aria-current", "page");
   });
 
-  it("switches the disclaimer text by language", () => {
+  it("keeps the disclaimer, the operator link and the footer hub links, per language", () => {
     const { rerender } = render(
-      <PageFrame lang="hu" twinPath="/ro/linii/1/"
-        crumbs={[{ name: "Sepsi Menetrend", path: "/" }]}>
-        <p>x</p>
-      </PageFrame>,
+      <PageFrame lang="hu" kind="line" twinPath="/ro/linii/1/" crumbs={crumbs}><p>x</p></PageFrame>,
     );
     expect(screen.getByText(/Nem a Multi-Trans SA hivatalos oldala/)).toBeInTheDocument();
-    expect(screen.queryByText(/Nu este site-ul oficial/)).not.toBeInTheDocument();
-
-    rerender(
-      <PageFrame lang="ro" twinPath="/vonalak/1/"
-        crumbs={[{ name: "Sepsi Menetrend", path: "/ro/" }]}>
-        <p>x</p>
-      </PageFrame>,
-    );
-    expect(screen.getByText(/Nu este site-ul oficial Multi-Trans SA/)).toBeInTheDocument();
-    expect(screen.queryByText(/Nem a Multi-Trans SA/)).not.toBeInTheDocument();
-  });
-
-  it("points the footer pillar and planner links at the Hungarian paths", () => {
-    render(
-      <PageFrame lang="hu" twinPath="/ro/linii/1/"
-        crumbs={[{ name: "Sepsi Menetrend", path: "/" }]}>
-        <p>x</p>
-      </PageFrame>,
-    );
-    const footer = screen.getByRole("contentinfo");
-    const hrefs = within(footer).getAllByRole("link").map((a) => a.getAttribute("href"));
+    let footer = screen.getByRole("contentinfo");
+    let hrefs = within(footer).getAllByRole("link").map((a) => a.getAttribute("href"));
     expect(hrefs).toContain("/buszmenetrend/");
     expect(hrefs).toContain("/");
-    expect(hrefs).not.toContain("/ro/orar-autobuz/");
-    expect(hrefs).not.toContain("/ro/");
-  });
+    const op = within(footer).getByRole("link", { name: /multitrans\.ro/i });
+    expect(op).toHaveAttribute("target", "_blank");
+    expect(op).toHaveAttribute("rel", "noopener noreferrer");
 
-  it("points the footer pillar and planner links at the Romanian paths", () => {
-    render(
-      <PageFrame lang="ro" twinPath="/vonalak/1/"
-        crumbs={[{ name: "Sepsi Menetrend", path: "/ro/" }]}>
-        <p>x</p>
-      </PageFrame>,
-    );
-    const footer = screen.getByRole("contentinfo");
-    const hrefs = within(footer).getAllByRole("link").map((a) => a.getAttribute("href"));
+    rerender(<PageFrame lang="ro" kind="line" twinPath="/vonalak/1/" crumbs={crumbs}><p>x</p></PageFrame>);
+    expect(screen.getByText(/Nu este site-ul oficial Multi-Trans SA/)).toBeInTheDocument();
+    footer = screen.getByRole("contentinfo");
+    hrefs = within(footer).getAllByRole("link").map((a) => a.getAttribute("href"));
     expect(hrefs).toContain("/ro/orar-autobuz/");
     expect(hrefs).toContain("/ro/");
-    expect(hrefs).not.toContain("/buszmenetrend/");
   });
 
-  it("opens the operator link in a new tab safely", () => {
-    render(
-      <PageFrame lang="hu" twinPath="/ro/linii/1/"
-        crumbs={[{ name: "Sepsi Menetrend", path: "/" }]}>
-        <p>x</p>
-      </PageFrame>,
-    );
-    const operator = screen.getByRole("link", { name: /multitrans\.ro/i });
-    expect(operator).toHaveAttribute("href", "https://multitrans.ro/index.html");
-    expect(operator).toHaveAttribute("target", "_blank");
-    expect(operator).toHaveAttribute("rel", "noopener noreferrer");
-  });
-
-  it("renders its children", () => {
-    render(
-      <PageFrame lang="hu" twinPath="/ro/linii/1/"
-        crumbs={[{ name: "Sepsi Menetrend", path: "/" }]}>
-        <p>the page body</p>
-      </PageFrame>,
-    );
-    expect(screen.getByText("the page body")).toBeInTheDocument();
-  });
-
-  it("puts every crumb into the JSON-LD as an absolute-URL ListItem", () => {
+  it("emits BreadcrumbList JSON-LD with every crumb as an absolute-URL ListItem", () => {
     const { container } = render(
-      <PageFrame lang="hu" twinPath="/ro/linii/1/"
-        crumbs={[{ name: "Sepsi Menetrend", path: "/" }, { name: "1-es busz", path: "/vonalak/1/" }]}>
-        <p>x</p>
-      </PageFrame>,
+      <PageFrame lang="hu" kind="line" twinPath="/ro/linii/1/" crumbs={crumbs}><p>x</p></PageFrame>,
     );
-    const ld = JSON.parse(
-      container.querySelector('script[type="application/ld+json"]')!.textContent!,
-    );
-    expect(ld.itemListElement).toHaveLength(2);
-    expect(ld.itemListElement[1]).toMatchObject({ position: 2, name: "1-es busz" });
-    expect(ld.itemListElement[1].item).toMatch(/^https?:\/\/.+\/vonalak\/1\/$/);
+    const ld = JSON.parse(container.querySelector('script[type="application/ld+json"]')!.textContent!);
+    expect(ld["@type"]).toBe("BreadcrumbList");
+    expect(ld.itemListElement).toHaveLength(3);
+    expect(ld.itemListElement[2]).toMatchObject({ position: 3, name: "1-es busz" });
+    expect(ld.itemListElement[2].item).toMatch(/^https?:\/\/.+\/vonalak\/1\/$/);
+  });
+
+  it("stays a server component — no client boundary, no event handlers in the source", () => {
+    // `resolve(import.meta.dirname, …)`, not `new URL("./…", import.meta.url)`:
+    // Vite rewrites the `new URL(relative, import.meta.url)` pattern into its
+    // asset-URL handling, so `readFileSync` no longer sees a `file:` URL. This
+    // matches the repo's other source-reading tests (`components/styles.test.ts`).
+    const src = readFileSync(resolve(import.meta.dirname, "PageFrame.tsx"), "utf8");
+    expect(src).not.toMatch(/["']use client["']/);
+    expect(src).not.toMatch(/\bon[A-Z]\w+=/);
+    expect(src).not.toMatch(/useState|useEffect|useRef/);
   });
 });

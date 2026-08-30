@@ -230,6 +230,7 @@ export default async function RoutePage(
   return (
     <PageFrame
       lang={lang}
+      kind="route"
       twinPath={twinPath}
       crumbs={[HOME[lang], { name: routeCrumb(A, B, lang), path: selfPath }]}
     >

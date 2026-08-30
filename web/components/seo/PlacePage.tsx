@@ -277,6 +277,7 @@ export default async function PlacePage({ lang, slug }: { lang: SeoLang; slug: s
   return (
     <PageFrame
       lang={lang}
+      kind="place"
       twinPath={twinPath}
       crumbs={[HOME[lang], INDEX[lang], { name, path: selfPath }]}
     >

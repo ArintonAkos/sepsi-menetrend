@@ -1,21 +1,86 @@
-/* The SEO pages wear the app's own chrome tokens (app/globals.css) so a
-   visitor arriving from search lands on the same warm paper and olive ink as
-   the planner. Nothing here has a fixed height or loads an image, and the
-   frame is a plain block flow - the body streams in below the breadcrumb
-   without moving it, so there is nothing to shift (near-zero CLS). */
+/* The SEO pages wear the same chrome as the legal pages (LegalPage.module.css),
+   built from app/globals.css tokens so a visitor from search lands on the same
+   warm paper and olive ink as the planner. Server-rendered: nothing here loads
+   an image or needs client JS. */
 
-.frame {
-  max-width: 780px;
-  margin: 0 auto;
-  padding: 16px 16px 48px;
+.page {
+  min-height: 100dvh;
+  background: var(--paper);
   color: var(--ink);
+  padding: 24px 16px 64px;
+  display: flex;
+  justify-content: center;
 }
 
-.crumbs {
+.container {
+  width: 100%;
+  max-width: 780px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 6px 4px 4px;
+}
+
+.headerLeft { display: flex; align-items: center; gap: 12px; }
+
+.backButton {
+  width: 38px;
+  height: 38px;
+  border-radius: 999px;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ink);
+  flex-shrink: 0;
+  text-decoration: none;
+  transition: transform var(--tap) var(--ease), background var(--tap) var(--ease);
+}
+.backButton:active { transform: scale(0.94); }
+
+.brand { display: flex; flex-direction: column; }
+.brandName {
+  font-family: ui-rounded, "SF Pro Rounded", "Varela Round", system-ui, sans-serif;
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--ink);
+  line-height: 1.15;
+}
+.brandSub { font-size: 12px; font-weight: 600; color: var(--muted); }
+
+.seg {
+  display: flex;
+  background: var(--sunk);
+  border-radius: 11px;
+  padding: 3px;
+  gap: 2px;
+}
+.seg a,
+.seg span {
   font-size: 13px;
+  font-weight: 600;
+  padding: 6px 12px;
+  border-radius: 9px;
   color: var(--muted);
+  text-decoration: none;
+  transition: background var(--tap) var(--ease), color var(--tap) var(--ease);
+}
+.seg span[aria-current="true"] {
+  background: var(--paper);
+  color: var(--ink);
+  box-shadow: var(--shadow);
 }
 
+.crumbs { font-size: 13px; color: var(--muted); padding: 0 4px; }
 .crumbList {
   margin: 0;
   padding: 0;
@@ -25,93 +90,55 @@
   align-items: center;
   gap: 4px 6px;
 }
+.crumb { display: inline-flex; align-items: center; gap: 6px; min-width: 0; }
+.crumb + .crumb::before { content: "\203A"; color: var(--hair); }
+.crumbList a { color: var(--ink-2); text-decoration: none; }
+.crumbList a:hover { text-decoration: underline; }
+.crumbList [aria-current="page"] { color: var(--muted); }
 
-.crumb {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  min-width: 0;
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 32px 28px;
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
-/* Styled separator - decorative, kept out of the accessible tree and never
-   drawn before the first crumb. */
-.crumb + .crumb::before {
-  content: "\203A"; /* › */
-  color: var(--hair);
+.badge {
+  font-family: ui-rounded, "SF Pro Rounded", "Varela Round", system-ui, sans-serif;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--signal-ink);
+  background: var(--signal);
+  border-radius: 6px;
+  padding: 3px 8px;
+  width: fit-content;
+  margin-bottom: -4px;
 }
 
-.crumbList a {
-  color: var(--ink-2);
-  text-decoration: none;
-}
-
-.crumbList a:hover {
-  text-decoration: underline;
-}
-
-.crumbList [aria-current="page"] {
-  color: var(--muted);
-}
-
-/* The olive pill, same background/text pairing as LegalPage's back-to-planner
-   button, so the one accent colour stays consistent across the site. */
-.langSwitch {
-  align-self: flex-start;
-  display: inline-flex;
-  align-items: center;
-  margin: 12px 0 4px;
-  padding: 5px 14px;
-  border-radius: 999px;
-  background: var(--panel);
-  color: #FBFAF7;
-  font-size: 13px;
-  font-weight: 700;
-  text-decoration: none;
-  transition: opacity var(--tap) var(--ease);
-}
-
-.langSwitch:active {
-  opacity: 0.9;
-}
-
-.body {
-  margin-top: 16px;
-}
-
-.footer {
-  margin-top: 40px;
-  padding-top: 20px;
-  border-top: 1px solid var(--border);
+.footerNav {
   display: flex;
   flex-direction: column;
   gap: 10px;
+  margin-top: 16px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
   font-size: 13px;
   line-height: 1.5;
   color: var(--muted);
 }
+.disclaimer { margin: 0; font-weight: 700; color: var(--ink-2); }
+.footerLinks { display: flex; flex-wrap: wrap; gap: 6px 16px; }
+.footerLinks a { color: var(--ink-2); text-decoration: none; font-weight: 600; }
+.footerLinks a:hover { text-decoration: underline; }
+.operator { color: var(--muted); }
 
-.disclaimer {
-  margin: 0;
-  font-weight: 700;
-  color: var(--ink-2);
-}
-
-.footerLinks {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px 16px;
-}
-
-.footerLinks a {
-  color: var(--ink-2);
-  text-decoration: none;
-  font-weight: 600;
-}
-
-.footerLinks a:hover {
-  text-decoration: underline;
-}
-
-.operator {
-  color: var(--muted);
+@media (max-width: 600px) {
+  .header { flex-wrap: wrap; }
+  .card { padding: 22px 18px; border-radius: 16px; }
 }

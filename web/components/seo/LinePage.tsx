@@ -187,6 +187,7 @@ export default async function LinePage({ lang, id }: { lang: SeoLang; id: string
   return (
     <PageFrame
       lang={lang}
+      kind="line"
       twinPath={twinPath}
       crumbs={[HOME[lang], INDEX[lang], { name: label, path: selfPath }]}
     >

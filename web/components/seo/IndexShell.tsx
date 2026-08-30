@@ -163,6 +163,7 @@ function Shell({ kind, lang, children }: { kind: Kind; lang: Lang; children: Rea
   return (
     <PageFrame
       lang={lang}
+      kind="index"
       twinPath={twinPath}
       crumbs={[HOME[lang], { name: c.crumb, path: selfPath }]}
     >
