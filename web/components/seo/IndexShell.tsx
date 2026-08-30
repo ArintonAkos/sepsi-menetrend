@@ -199,16 +199,12 @@ export function indexMetadata(kind: Kind, lang: Lang): Metadata {
 function Shell({ kind, lang, children }: { kind: Kind; lang: Lang; children: ReactNode }) {
   const c = COPY[kind][lang];
   const selfPath = PATHS[kind][lang];
-  // `PageFrame` is a two-way (hu/ro) switch this phase; Task C12 gives it the
-  // full triple. Until then English's nearest twin is the Hungarian page and
-  // `PageFrame` renders Hungarian chrome for `en`.
-  const twinPath = lang === "hu" ? PATHS[kind].ro : PATHS[kind].hu;
 
   return (
     <PageFrame
-      lang={lang === "en" ? "hu" : lang}
+      lang={lang}
       kind="index"
-      twinPath={twinPath}
+      paths={{ hu: PATHS[kind].hu, ro: PATHS[kind].ro, en: PATHS[kind].en }}
       crumbs={[HOME[lang], { name: c.crumb, path: selfPath }]}
     >
       <h1 className={styles.h1}>{c.h1}</h1>

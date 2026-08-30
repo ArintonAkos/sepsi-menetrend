@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import { breadcrumbLd, jsonLdScript } from "@/lib/seo/jsonld";
 import { Back } from "@/components/common/icons";
+import type { SeoLang } from "@/lib/seo/lang";
 import styles from "./PageFrame.module.css";
 
 /** The shared chrome around every generated SEO page: the app header (brand
@@ -9,27 +10,28 @@ import styles from "./PageFrame.module.css";
  *
  *  A server component on purpose — these pages are crawl targets and the first
  *  thing a search visitor sees, so the frame ships as static HTML with no
- *  client JS. The language switch is plain `<a>`, never a toggle. The `/ro/`
- *  twin is built as Hungarian and language-stamped afterwards
- *  (`lib/seo/localize.ts`), so `lang` is passed in explicitly. */
+ *  client JS. The language switch is plain `<a>`, never a toggle. Each caller
+ *  passes `paths` — this page's root-relative URL in every language — so the
+ *  switch links straight at the real twin, and `lang` is passed in explicitly
+ *  (the `/ro/` twin is built as Hungarian and language-stamped afterwards,
+ *  `lib/seo/localize.ts`). */
 
-type Lang = "hu" | "ro";
 type Kind = "line" | "place" | "route" | "guide" | "index";
 
 interface PageFrameProps {
-  lang: Lang;
+  lang: SeoLang;
   kind: Kind;
   crumbs: { name: string; path: string }[];
-  twinPath: string;
+  paths: { hu: string; ro: string; en: string };
   children: ReactNode;
 }
 
-const KIND_LABEL: Record<Kind, Record<Lang, string>> = {
-  line: { hu: "Vonal", ro: "Linie" },
-  place: { hu: "Megálló", ro: "Stație" },
-  route: { hu: "Útvonal", ro: "Traseu" },
-  guide: { hu: "Útmutató", ro: "Ghid" },
-  index: { hu: "Jegyzék", ro: "Listă" },
+const KIND_LABEL: Record<Kind, Record<SeoLang, string>> = {
+  line: { hu: "Vonal", ro: "Linie", en: "Line" },
+  place: { hu: "Megálló", ro: "Stație", en: "Stop" },
+  route: { hu: "Útvonal", ro: "Traseu", en: "Route" },
+  guide: { hu: "Útmutató", ro: "Ghid", en: "Guide" },
+  index: { hu: "Jegyzék", ro: "Listă", en: "Index" },
 };
 
 const T = {
@@ -51,22 +53,33 @@ const T = {
     pillar: { href: "/ro/orar-autobuz/", label: "Orar autobuz complet" },
     planner: { href: "/ro/", label: "Planificator de rute" },
   },
+  en: {
+    crumbLabel: "Breadcrumb",
+    back: "Back to the planner",
+    switcherLabel: "Language",
+    disclaimer: "Not the official Multi-Trans SA website",
+    operator: "The official Multi-Trans site: multitrans.ro",
+    pillar: { href: "/en/bus-schedule/", label: "Full bus schedule" },
+    planner: { href: "/en/", label: "Route planner" },
+  },
 } as const;
 
-/** Two-language switch this phase; Task C12 adds the English segment. */
-const SWITCH: Record<Lang, string> = { hu: "Magyar", ro: "Română" };
+/** Three-language switch; the current language is text, the other two are links. */
+const SWITCH: Record<SeoLang, string> = { hu: "Magyar", ro: "Română", en: "English" };
 
-export default function PageFrame({ lang, kind, crumbs, twinPath, children }: PageFrameProps) {
+export default function PageFrame({ lang, kind, crumbs, paths, children }: PageFrameProps) {
   const t = T[lang];
-  const home = crumbs[0]?.path ?? (lang === "hu" ? "/" : "/ro/");
+  const home = crumbs[0]?.path ?? (lang === "hu" ? "/" : lang === "ro" ? "/ro/" : "/en/");
   const lastIndex = crumbs.length - 1;
   const sub = KIND_LABEL[kind][lang];
 
-  // segment order is fixed hu, ro; the current language is text, the other a link
-  const segments: { code: Lang; label: string; href: string | null }[] = [
-    { code: "hu", label: SWITCH.hu, href: lang === "hu" ? null : twinPath },
-    { code: "ro", label: SWITCH.ro, href: lang === "ro" ? null : twinPath },
-  ];
+  // segment order is fixed hu, ro, en; the current language is text, each other
+  // one is a link to this same page's twin in that language
+  const segments = (["hu", "ro", "en"] as const).map((code) => ({
+    code,
+    label: SWITCH[code],
+    href: code === lang ? null : paths[code],
+  }));
 
   return (
     <div className={styles.page}>

@@ -124,7 +124,7 @@ function PillarLines({ lang }: { lang: Lang }) {
   return (
     <nav
       className={styles.lines}
-      aria-label={lang === "hu" ? "Vonalak" : lang === "ro" ? "Linii" : "Routes"}
+      aria-label={lang === "hu" ? "Vonalak" : lang === "ro" ? "Linii" : "Lines"}
     >
       <ul>
         {lines.map((l) => (
@@ -152,17 +152,13 @@ export default function GuidePageShell({ guideKey, lang }: { guideKey: GuideKey;
   const g = GUIDES[guideKey];
   const paths = PATHS[guideKey];
   const selfPath = paths[lang];
-  // `PageFrame` is still a two-way (hu/ro) switch this phase; Task C12 swaps it
-  // to the full triple. Until then, English's nearest twin link is the
-  // Hungarian page, and `PageFrame` renders with Hungarian chrome for `en`.
-  const twinPath = lang === "hu" ? paths.ro : paths.hu;
   const faq = g.faq?.[lang];
 
   return (
     <PageFrame
-      lang={lang === "en" ? "hu" : lang}
+      lang={lang}
       kind="guide"
-      twinPath={twinPath}
+      paths={{ hu: PATHS[guideKey].hu, ro: PATHS[guideKey].ro, en: PATHS[guideKey].en }}
       crumbs={[HOME[lang], { name: CRUMB[guideKey][lang], path: selfPath }]}
     >
       <h1 className={styles.h1}>{g.title[lang]}</h1>

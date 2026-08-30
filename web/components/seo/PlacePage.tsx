@@ -300,17 +300,13 @@ export default async function PlacePage({ lang, slug }: { lang: SeoLang; slug: s
 
   const selfPath =
     lang === "hu" ? huPath(place.slug) : lang === "ro" ? roPath(place.slugRo) : enPath(place.slug);
-  // `PageFrame` is still a two-way (hu/ro) switch this phase; Task C12 swaps it
-  // to the full triple. Until then English's nearest twin link is the Hungarian
-  // page, and `PageFrame` renders with Hungarian chrome for `en`.
-  const twinPath = lang === "hu" ? roPath(place.slugRo) : huPath(place.slug);
   const t = T[lang];
 
   return (
     <PageFrame
-      lang={lang === "en" ? "hu" : lang}
+      lang={lang}
       kind="place"
-      twinPath={twinPath}
+      paths={{ hu: huPath(place.slug), ro: roPath(place.slugRo), en: enPath(place.slug) }}
       crumbs={[HOME[lang], INDEX[lang], { name, path: selfPath }]}
     >
       <h1 className={styles.h1}>{t.h1(name)}</h1>

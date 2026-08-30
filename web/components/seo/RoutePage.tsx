@@ -284,16 +284,12 @@ export default async function RoutePage(
 
   const selfPath =
     lang === "hu" ? huPath(pair.slug) : lang === "ro" ? roPath(pair.slugRo) : enPath(pair.slug);
-  // `PageFrame` is still a two-way (hu/ro) switch this phase; Task C12 swaps it
-  // to the full triple. Until then English's nearest twin link is the Hungarian
-  // page, and `PageFrame` renders with Hungarian chrome for `en`.
-  const twinPath = lang === "hu" ? roPath(pair.slugRo) : huPath(pair.slug);
 
   return (
     <PageFrame
-      lang={lang === "en" ? "hu" : lang}
+      lang={lang}
       kind="route"
-      twinPath={twinPath}
+      paths={{ hu: huPath(pair.slug), ro: roPath(pair.slugRo), en: enPath(pair.slug) }}
       crumbs={[HOME[lang], { name: routeCrumb(A, B, lang), path: selfPath }]}
     >
       <h1 className={styles.h1}>{routeTitle(A, B, lang)}</h1>

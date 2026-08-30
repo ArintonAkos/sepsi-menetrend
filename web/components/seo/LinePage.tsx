@@ -216,16 +216,12 @@ export default async function LinePage({ lang, id }: { lang: SeoLang; id: string
 
   const selfPath =
     lang === "hu" ? huPath(id) : lang === "ro" ? roPath(id) : enPathFn(id);
-  // `PageFrame` is still a two-way (hu/ro) switch this phase; Task C12 swaps it
-  // to the full triple. Until then English's nearest twin link is the Hungarian
-  // page, and `PageFrame` renders with Hungarian chrome for `en`.
-  const twinPath = lang === "hu" ? roPath(id) : huPath(id);
 
   return (
     <PageFrame
-      lang={lang === "en" ? "hu" : lang}
+      lang={lang}
       kind="line"
-      twinPath={twinPath}
+      paths={{ hu: huPath(id), ro: roPath(id), en: enPathFn(id) }}
       crumbs={[HOME[lang], INDEX[lang], { name: label, path: selfPath }]}
     >
       <h1 className={styles.h1}>{title}</h1>
