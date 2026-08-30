@@ -1,6 +1,7 @@
+import type React from "react";
 import { describe, it, expect } from "vitest";
 import { render, screen } from "@testing-library/react";
-import PlacePage from "./PlacePage";
+import PlacePage, { placeMetadata } from "./PlacePage";
 import { loadNetwork } from "@/lib/seo/network";
 import { buildPlaces } from "@/lib/seo/places";
 
@@ -71,5 +72,21 @@ describe("PlacePage", () => {
 
   it("calls notFound() for an unknown slug", async () => {
     await expect(renderPlace({ lang: "hu", slug: "nincs-ilyen-megallo" })).rejects.toThrow();
+  });
+
+  it("renders an English place page keyed on the Hungarian slug", async () => {
+    const net = loadNetwork();
+    const p = buildPlaces(net).find((x) => x.slug === "vasutallomas")!;
+    const el = await PlacePage({ lang: "en", slug: p.slug });
+    render(el as React.ReactElement);
+    expect(screen.getByRole("heading", { level: 1 }).textContent).toMatch(/stop$/i);
+    const hrefs = screen.getAllByRole("link").map((a) => a.getAttribute("href"));
+    expect(hrefs.some((h) => h?.startsWith("/en/lines/"))).toBe(true);
+    expect(hrefs.some((h) => h === `/?stop=${p.stopIds[0]}&lang=en`)).toBe(true);
+  });
+
+  it("canonicalises the English place page to /en/stops/{huSlug}/", () => {
+    const m = placeMetadata("vasutallomas", "en");
+    expect(m.alternates?.canonical).toBe("https://sepsimenetrend.ro/en/stops/vasutallomas/");
   });
 });

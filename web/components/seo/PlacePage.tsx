@@ -5,6 +5,7 @@ import BoardTable from "@/components/seo/BoardTable";
 import { pageMetadata } from "@/lib/seo/metadata";
 import { loadNetwork } from "@/lib/seo/network";
 import { enrichLine, type Board, type SeoLang } from "@/lib/seo/lines";
+import { pickName } from "@/lib/seo/lang";
 import { buildPlaces, placeOf, type Place } from "@/lib/seo/places";
 import type { LngLat, Network } from "@/lib/engine/types";
 import styles from "./PlacePage.module.css";
@@ -24,20 +25,23 @@ import styles from "./PlacePage.module.css";
 const HOME: Record<SeoLang, { name: string; path: string }> = {
   hu: { name: "Sepsi Menetrend", path: "/" },
   ro: { name: "Sepsi Menetrend", path: "/ro/" },
+  en: { name: "Sepsi Menetrend", path: "/en/" },
 };
 
 /** The stop-index crumb - label and path must match `IndexShell`/`urls.ts`. */
 const INDEX: Record<SeoLang, { name: string; path: string }> = {
   hu: { name: "Megállók", path: "/megallok/" },
   ro: { name: "Stații", path: "/ro/statii/" },
+  en: { name: "Stops", path: "/en/stops/" },
 };
 
 const huPath = (slug: string) => `/megallok/${slug}/`;
 const roPath = (slug: string) => `/ro/statii/${slug}/`;
+const enPath = (slug: string) => `/en/stops/${slug}/`;
 const lineHref = (lang: SeoLang, id: string) =>
-  lang === "hu" ? `/vonalak/${id}/` : `/ro/linii/${id}/`;
+  lang === "hu" ? `/vonalak/${id}/` : lang === "ro" ? `/ro/linii/${id}/` : `/en/lines/${id}/`;
 const placeHref = (lang: SeoLang, p: Place) =>
-  lang === "hu" ? huPath(p.slug) : roPath(p.slugRo);
+  lang === "hu" ? huPath(p.slug) : lang === "ro" ? roPath(p.slugRo) : enPath(p.slug);
 
 const T = {
   hu: {
@@ -66,6 +70,19 @@ const T = {
       + " Orele de plecare de mai sus provin de pe afișele oficiale Multi-Trans"
       + " (multitrans.ro); pentru date live folosește planificatorul.",
   },
+  en: {
+    h1: (name: string) => `${name} stop`,
+    lines: "Routes",
+    nearby: "Nearby stops",
+    minutes: "min",
+    approx: "approx.",
+    cta: "Open the stop in the planner",
+    intro: (name: string, labels: string) =>
+      `${name} is one of the Multi-Trans bus stops in Sfântu Gheorghe.`
+      + (labels ? ` The following routes call here: ${labels}.` : "")
+      + " The departure times above are from the official Multi-Trans stop signs"
+      + " (multitrans.ro); for live data use the route planner.",
+  },
 } as const;
 
 /** A comma list of line labels, collapsed to a count past `max` so a hub stop's
@@ -76,14 +93,17 @@ function lineSummary(labels: string[], lang: SeoLang, max: number): string {
   const head = labels.slice(0, max).join(", ");
   return lang === "hu"
     ? `${head} és további ${extra} vonal`
-    : `${head} și alte ${extra} linii`;
+    : lang === "ro"
+    ? `${head} și alte ${extra} linii`
+    : `${head} and ${extra} more routes`;
 }
 
 /** A board's `destination` is one "RO / HU" string in the feed - split it. */
 function headsign(destination: string, lang: SeoLang): string {
   const at = destination.indexOf(" / ");
   if (at === -1) return destination;
-  return lang === "hu" ? destination.slice(at + 3) : destination.slice(0, at);
+  // hu and en take the part after " / "; only ro takes the leading half.
+  return lang === "ro" ? destination.slice(0, at) : destination.slice(at + 3);
 }
 
 /** Great-circle metres - a local copy for the same reason `places.ts` keeps
@@ -240,16 +260,24 @@ export function placeMetadata(slug: string, lang: SeoLang): Metadata {
             `${place.name.hu} buszmegálló Sepsiszentgyörgyön: az itt közlekedő `
             + `Multi-Trans vonalak (${list}) hivatalos indulási idői hétköznap és hétvégén.`,
         }
-      : {
+      : lang === "ro"
+      ? {
           title: `Stația ${place.name.ro} – plecări autobuz`,
           description:
             `Stația ${place.name.ro} din Sfântu Gheorghe: orele oficiale de plecare `
             + `ale liniilor Multi-Trans (${list}) care opresc aici, zi lucrătoare și weekend.`,
+        }
+      : {
+          title: `${place.name.hu} stop – bus departures`,
+          description:
+            `${place.name.hu} bus stop in Sfântu Gheorghe: official departure times of the `
+            + `Multi-Trans routes (${list}) that call here, weekday and weekend.`,
         };
 
   return pageMetadata({
     huPath: huPath(place.slug),
     roPath: roPath(place.slugRo),
+    enPath: enPath(place.slug),
     lang,
     title,
     description,
@@ -267,16 +295,20 @@ export default async function PlacePage({ lang, slug }: { lang: SeoLang; slug: s
   const lineIds = servingLineIds(net, place);
   const nearby = nearbyPlaces(net, places, place);
   const labels = lineIds.map((id) => enrichLine(net, id, lang).label);
-  const name = place.name[lang];
+  const name = pickName(place.name, lang);
   const introLines = lineSummary(labels, lang, 4);
 
-  const selfPath = lang === "hu" ? huPath(place.slug) : roPath(place.slugRo);
+  const selfPath =
+    lang === "hu" ? huPath(place.slug) : lang === "ro" ? roPath(place.slugRo) : enPath(place.slug);
+  // `PageFrame` is still a two-way (hu/ro) switch this phase; Task C12 swaps it
+  // to the full triple. Until then English's nearest twin link is the Hungarian
+  // page, and `PageFrame` renders with Hungarian chrome for `en`.
   const twinPath = lang === "hu" ? roPath(place.slugRo) : huPath(place.slug);
   const t = T[lang];
 
   return (
     <PageFrame
-      lang={lang}
+      lang={lang === "en" ? "hu" : lang}
       kind="place"
       twinPath={twinPath}
       crumbs={[HOME[lang], INDEX[lang], { name, path: selfPath }]}
@@ -320,7 +352,7 @@ export default async function PlacePage({ lang, slug }: { lang: SeoLang; slug: s
           <ul className={styles.nearby}>
             {nearby.map((n) => (
               <li key={n.place.slug}>
-                <a href={placeHref(lang, n.place)}>{n.place.name[lang]}</a>{" "}
+                <a href={placeHref(lang, n.place)}>{pickName(n.place.name, lang)}</a>{" "}
                 <span className={styles.dist}>
                   {n.estimated ? `${t.approx} ` : ""}{n.metres} m · {n.minutes} {t.minutes}
                 </span>
@@ -331,7 +363,7 @@ export default async function PlacePage({ lang, slug }: { lang: SeoLang; slug: s
       ) : null}
 
       <p className={styles.cta}>
-        <a href={`/?stop=${place.stopIds[0]}${lang === "ro" ? "&lang=ro" : ""}`}>{t.cta}</a>
+        <a href={`/?stop=${place.stopIds[0]}${lang === "hu" ? "" : `&lang=${lang}`}`}>{t.cta}</a>
       </p>
 
       <hr className={styles.divider} />
