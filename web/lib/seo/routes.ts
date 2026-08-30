@@ -14,7 +14,8 @@ import {
   type PlanContext,
 } from "@/lib/engine/plan";
 import { buildPlaces, NOTABLE_PLACE_SLUGS, type Place } from "./places";
-import { enrichLine, boardFor, type SeoLang } from "./lines";
+import { enrichLine, boardFor } from "./lines";
+import { pickName, type SeoLang } from "./lang";
 import { slugify, disambiguate } from "./slug";
 
 export interface RoutePair {
@@ -110,7 +111,8 @@ export function journeyBetween(
 
   const patternStopId = (patternId: string, i: number) =>
     net.patterns.find((p) => p.id === patternId)!.stopIds[i];
-  const stopName = (id: string) => net.stops.find((s) => s.id === id)!.name[lang];
+  const stopName = (id: string) =>
+    pickName(net.stops.find((s) => s.id === id)!.name, lang);
 
   const rides = journey.legs.filter((l): l is RideLeg => l.kind === "ride");
   const legs: RouteLeg[] = rides.map((leg) => ({

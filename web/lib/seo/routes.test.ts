@@ -65,6 +65,16 @@ describe("journeyBetween", () => {
     expect(withBus[0]!.totalMin).toBeGreaterThan(0);
   });
 
+  it("renders an English route journey with English line labels and Hungarian place names", () => {
+    const pair = notablePairs(net)[0];
+    const s = journeyBetween(net, pair.a, pair.b, "en") ?? journeyBetween(net, pair.b, pair.a, "en");
+    expect(s).toBeTruthy();
+    for (const leg of s!.legs) {
+      expect(leg.lineLabel).toMatch(/^line /);
+      expect(leg.fromName.length).toBeGreaterThan(0);
+    }
+  });
+
   it("pins the representative journey for Árkos központ → Autoliv end to end", () => {
     // Exact feed-derived values, like lines.test.ts - locks the walking-context
     // build, the ride-leg mapping and the boardFor wiring in one shot. `pair.a`
