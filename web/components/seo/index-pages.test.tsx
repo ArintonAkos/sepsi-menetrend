@@ -7,6 +7,7 @@ import Lines, { generateMetadata as linesMeta } from "@/app/vonalak/page";
 import LinesRo, { generateMetadata as linesRoMeta } from "@/app/ro/linii/page";
 import Stops, { generateMetadata as stopsMeta } from "@/app/megallok/page";
 import StopsRo, { generateMetadata as stopsRoMeta } from "@/app/ro/statii/page";
+import { LineIndex, StopIndex, indexMetadata } from "@/components/seo/IndexShell";
 
 /** The page default exports are server components with no props - render them
  *  the way the brief's test does (`render(await Page())`) rather than as JSX. */
@@ -91,6 +92,28 @@ describe("stop index", () => {
     // "centru-comercial" in Romanian - the RO href must carry the RO slug.
     expect(stopHrefs).toContain("/ro/statii/centru-comercial/");
     expect(stopHrefs).not.toContain("/ro/statii/bevasarlokozpont/");
+  });
+});
+
+describe("English index pages", () => {
+  it("links every line under /en/lines/ with an English h1", () => {
+    const { container } = render(<LineIndex lang="en" />);
+    expect(childLinks(container, "/en/lines/")).toHaveLength(12);
+    expect(container.querySelector("h1")?.textContent).toMatch(/bus routes/i);
+  });
+
+  it("links every place under /en/stops/ by its HU slug with an English h1", () => {
+    const { container } = render(<StopIndex lang="en" />);
+    const stopHrefs = childLinks(container, "/en/stops/");
+    expect(stopHrefs).toHaveLength(65);
+    expect(stopHrefs).toContain("/en/stops/arkos-kozpont/");
+    expect(container.querySelector("h1")?.textContent).toMatch(/bus stops/i);
+  });
+
+  it("canonicalises the English line index to /en/lines/", () => {
+    const m = indexMetadata("lines", "en");
+    expect(m.alternates?.canonical).toBe("https://sepsimenetrend.ro/en/lines/");
+    expect(m.alternates?.languages?.en).toBe("https://sepsimenetrend.ro/en/lines/");
   });
 });
 

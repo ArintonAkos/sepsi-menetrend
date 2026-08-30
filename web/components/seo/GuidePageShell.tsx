@@ -7,6 +7,7 @@ import { faqLd, jsonLdScript } from "@/lib/seo/jsonld";
 import { pageMetadata } from "@/lib/seo/metadata";
 import { loadNetwork } from "@/lib/seo/network";
 import { enrichLine } from "@/lib/seo/lines";
+import type { SeoLang } from "@/lib/seo/lang";
 import styles from "./GuidePageShell.module.css";
 
 /** The shared body of every guide page (HU + RO). Each `page.tsx` is then a
@@ -17,31 +18,32 @@ import styles from "./GuidePageShell.module.css";
  *  built as Hungarian and language-stamped afterwards (`lib/seo/localize.ts`),
  *  so `lang` is passed in explicitly. */
 
-type Lang = "hu" | "ro";
+type Lang = SeoLang;
 
-/** HU/RO path pair per guide. Must match the inventory in `lib/seo/urls.ts`
+/** HU/RO/EN path triple per guide. Must match the inventory in `lib/seo/urls.ts`
  *  exactly, or a guide loses its canonical URL / language twin. */
-const PATHS: Record<GuideKey, { hu: string; ro: string }> = {
-  fares: { hu: "/dijszabas/", ro: "/ro/tarife/" },
-  multiTrans: { hu: "/multi-trans/", ro: "/ro/multi-trans/" },
-  bike: { hu: "/sepsibike/", ro: "/ro/sepsibike/" },
-  pillar: { hu: "/buszmenetrend/", ro: "/ro/orar-autobuz/" },
-  faq: { hu: "/gyik/", ro: "/ro/intrebari-frecvente/" },
+const PATHS: Record<GuideKey, { hu: string; ro: string; en: string }> = {
+  fares: { hu: "/dijszabas/", ro: "/ro/tarife/", en: "/en/fares/" },
+  multiTrans: { hu: "/multi-trans/", ro: "/ro/multi-trans/", en: "/en/multi-trans/" },
+  bike: { hu: "/sepsibike/", ro: "/ro/sepsibike/", en: "/en/sepsibike/" },
+  pillar: { hu: "/buszmenetrend/", ro: "/ro/orar-autobuz/", en: "/en/bus-schedule/" },
+  faq: { hu: "/gyik/", ro: "/ro/intrebari-frecvente/", en: "/en/faq/" },
 };
 
 /** The site-root crumb, per language. */
 const HOME: Record<Lang, { name: string; path: string }> = {
   hu: { name: "Sepsi Menetrend", path: "/" },
   ro: { name: "Sepsi Menetrend", path: "/ro/" },
+  en: { name: "Sepsi Menetrend", path: "/en/" },
 };
 
 /** The trailing (current-page) crumb label, per guide, per language. */
-const CRUMB: Record<GuideKey, { hu: string; ro: string }> = {
-  fares: { hu: "Díjszabás", ro: "Tarife" },
-  multiTrans: { hu: "Multi-Trans", ro: "Multi-Trans" },
-  bike: { hu: "SepsiBike", ro: "SepsiBike" },
-  pillar: { hu: "Buszmenetrend", ro: "Orar autobuz" },
-  faq: { hu: "GYIK", ro: "Întrebări frecvente" },
+const CRUMB: Record<GuideKey, { hu: string; ro: string; en: string }> = {
+  fares: { hu: "Díjszabás", ro: "Tarife", en: "Fares" },
+  multiTrans: { hu: "Multi-Trans", ro: "Multi-Trans", en: "Multi-Trans" },
+  bike: { hu: "SepsiBike", ro: "SepsiBike", en: "SepsiBike" },
+  pillar: { hu: "Buszmenetrend", ro: "Orar autobuz", en: "Bus schedule" },
+  faq: { hu: "GYIK", ro: "Întrebări frecvente", en: "FAQ" },
 };
 
 /** `<head>` for a guide page. The HU/RO path pair is the same one the page
@@ -51,6 +53,7 @@ export function guideMetadata(key: GuideKey, lang: Lang): Metadata {
   return pageMetadata({
     huPath: PATHS[key].hu,
     roPath: PATHS[key].ro,
+    enPath: PATHS[key].en,
     lang,
     title: g.title[lang],
     description: g.description[lang],
@@ -80,7 +83,11 @@ function FaqSection({ items }: { items: { q: string; a: string }[] }) {
  *  bike, FAQ, Multi-Trans"), so every guide and index hangs off it or it is
  *  stranded - the route index in particular is what keeps the ~91 route pages
  *  in reach. Paths differ per language and must match `lib/seo/urls.ts`. */
-const LINE_BASE: Record<Lang, string> = { hu: "/vonalak/", ro: "/ro/linii/" };
+const LINE_BASE: Record<Lang, string> = {
+  hu: "/vonalak/",
+  ro: "/ro/linii/",
+  en: "/en/lines/",
+};
 const INDEX_LINKS: Record<Lang, { href: string; label: string }[]> = {
   hu: [
     { href: "/megallok/", label: "Megállók" },
@@ -98,6 +105,14 @@ const INDEX_LINKS: Record<Lang, { href: string; label: string }[]> = {
     { href: "/ro/sepsibike/", label: "SepsiBike" },
     { href: "/ro/intrebari-frecvente/", label: "Întrebări frecvente" },
   ],
+  en: [
+    { href: "/en/stops/", label: "Stops" },
+    { href: "/en/routes/", label: "Routes" },
+    { href: "/en/fares/", label: "Fares" },
+    { href: "/en/multi-trans/", label: "Multi-Trans" },
+    { href: "/en/sepsibike/", label: "SepsiBike" },
+    { href: "/en/faq/", label: "FAQ" },
+  ],
 };
 
 /** The pillar page's full line list, read straight off the built feed. */
@@ -107,7 +122,10 @@ function PillarLines({ lang }: { lang: Lang }) {
   const base = LINE_BASE[lang];
 
   return (
-    <nav className={styles.lines} aria-label={lang === "hu" ? "Vonalak" : "Linii"}>
+    <nav
+      className={styles.lines}
+      aria-label={lang === "hu" ? "Vonalak" : lang === "ro" ? "Linii" : "Routes"}
+    >
       <ul>
         {lines.map((l) => (
           <li key={l.id}>
@@ -133,13 +151,16 @@ function PillarLines({ lang }: { lang: Lang }) {
 export default function GuidePageShell({ guideKey, lang }: { guideKey: GuideKey; lang: Lang }) {
   const g = GUIDES[guideKey];
   const paths = PATHS[guideKey];
-  const selfPath = lang === "hu" ? paths.hu : paths.ro;
+  const selfPath = paths[lang];
+  // `PageFrame` is still a two-way (hu/ro) switch this phase; Task C12 swaps it
+  // to the full triple. Until then, English's nearest twin link is the
+  // Hungarian page, and `PageFrame` renders with Hungarian chrome for `en`.
   const twinPath = lang === "hu" ? paths.ro : paths.hu;
   const faq = g.faq?.[lang];
 
   return (
     <PageFrame
-      lang={lang}
+      lang={lang === "en" ? "hu" : lang}
       kind="guide"
       twinPath={twinPath}
       crumbs={[HOME[lang], { name: CRUMB[guideKey][lang], path: selfPath }]}

@@ -4,6 +4,7 @@ import PageFrame from "@/components/seo/PageFrame";
 import { pageMetadata } from "@/lib/seo/metadata";
 import { loadNetwork } from "@/lib/seo/network";
 import { enrichLine, sentenceCase } from "@/lib/seo/lines";
+import { pickName, type SeoLang } from "@/lib/seo/lang";
 import { buildPlaces, type Place } from "@/lib/seo/places";
 import { notablePairs } from "@/lib/seo/routes";
 import { slugify } from "@/lib/seo/slug";
@@ -19,21 +20,23 @@ import styles from "./IndexShell.module.css";
  *  twin is built as Hungarian and language-stamped afterwards
  *  (`lib/seo/localize.ts`), so `lang` is passed in explicitly. */
 
-type Lang = "hu" | "ro";
+type Lang = SeoLang;
 type Kind = "lines" | "stops" | "routes";
 
-/** HU/RO path pair per index. Must match the inventory in `lib/seo/urls.ts`
- *  exactly, or an index loses its canonical URL / language twin. */
-const PATHS: Record<Kind, { hu: string; ro: string }> = {
-  lines: { hu: "/vonalak/", ro: "/ro/linii/" },
-  stops: { hu: "/megallok/", ro: "/ro/statii/" },
-  routes: { hu: "/utvonal/", ro: "/ro/trasee/" },
+/** HU/RO/EN path triple per index. Must match the inventory in `lib/seo/urls.ts`
+ *  exactly, or an index loses its canonical URL / language twin. The `/en/`
+ *  category segments are English; line and place slugs stay Hungarian. */
+const PATHS: Record<Kind, { hu: string; ro: string; en: string }> = {
+  lines: { hu: "/vonalak/", ro: "/ro/linii/", en: "/en/lines/" },
+  stops: { hu: "/megallok/", ro: "/ro/statii/", en: "/en/stops/" },
+  routes: { hu: "/utvonal/", ro: "/ro/trasee/", en: "/en/routes/" },
 };
 
 /** The site-root crumb, per language. */
 const HOME: Record<Lang, { name: string; path: string }> = {
   hu: { name: "Sepsi Menetrend", path: "/" },
   ro: { name: "Sepsi Menetrend", path: "/ro/" },
+  en: { name: "Sepsi Menetrend", path: "/en/" },
 };
 
 /** Per-index, per-language chrome. `metaTitle` / `metaDescription` feed
@@ -72,6 +75,18 @@ const COPY: Record<Kind, Record<Lang, {
         + "Alege o linie pentru capetele de linie, ordinea stațiilor și orele "
         + "oficiale de plecare.",
     },
+    en: {
+      crumb: "Lines",
+      metaTitle: "Sfântu Gheorghe bus routes · Multi-Trans",
+      metaDescription:
+        "All 12 Multi-Trans bus routes in Sfântu Gheorghe in one list: "
+        + "every route with its termini and its own timetable page for the "
+        + "city bus network.",
+      h1: "Bus routes in Sfântu Gheorghe",
+      intro:
+        "The 12 Multi-Trans city bus routes in Sfântu Gheorghe. Pick a route "
+        + "for its termini, the order of stops and the official departure times.",
+    },
   },
   stops: {
     hu: {
@@ -99,6 +114,18 @@ const COPY: Record<Kind, Record<Lang, {
         "Toate stațiile de autobuz din Sfântu Gheorghe, în ordine alfabetică. "
         + "Pe pagina fiecărei stații vezi liniile care opresc acolo și "
         + "următoarele plecări.",
+    },
+    en: {
+      crumb: "Stops",
+      metaTitle: "Bus stops in Sfântu Gheorghe",
+      metaDescription:
+        "All 65 bus stops in Sfântu Gheorghe in alphabetical order: each stop "
+        + "has its own page with the Multi-Trans routes that call there and "
+        + "their departure times.",
+      h1: "Bus stops in Sfântu Gheorghe",
+      intro:
+        "All bus stops in Sfântu Gheorghe in alphabetical order. Each stop's "
+        + "page shows the routes that call there and the next departures.",
     },
   },
   routes: {
@@ -128,6 +155,19 @@ const COPY: Record<Kind, Record<Lang, {
         + "Gheorghe. Alege punctul de plecare, apoi destinația: fiecare traseu "
         + "are pagina lui, cu linia, schimbările și durata.",
     },
+    en: {
+      crumb: "Routes",
+      metaTitle: "Bus journeys between places in Sfântu Gheorghe · Multi-Trans",
+      metaDescription:
+        "Bus journeys between the main destinations in Sfântu Gheorghe — "
+        + "railway station, county hospital, Sepsi Arena, Autoliv, Arcuș — "
+        + "grouped by origin, each with its own page.",
+      h1: "Bus journeys in Sfântu Gheorghe",
+      intro:
+        "By Multi-Trans city bus between the well-known points of Sfântu "
+        + "Gheorghe. Pick an origin, then a destination: each journey has its "
+        + "own page with the service, the transfers and the travel time.",
+    },
   },
 };
 
@@ -148,6 +188,7 @@ export function indexMetadata(kind: Kind, lang: Lang): Metadata {
   return pageMetadata({
     huPath: PATHS[kind].hu,
     roPath: PATHS[kind].ro,
+    enPath: PATHS[kind].en,
     lang,
     title: c.metaTitle,
     description: c.metaDescription,
@@ -157,12 +198,15 @@ export function indexMetadata(kind: Kind, lang: Lang): Metadata {
 /** Shared frame: breadcrumb + twin link (via `PageFrame`), then h1 and intro. */
 function Shell({ kind, lang, children }: { kind: Kind; lang: Lang; children: ReactNode }) {
   const c = COPY[kind][lang];
-  const selfPath = lang === "hu" ? PATHS[kind].hu : PATHS[kind].ro;
+  const selfPath = PATHS[kind][lang];
+  // `PageFrame` is a two-way (hu/ro) switch this phase; Task C12 gives it the
+  // full triple. Until then English's nearest twin is the Hungarian page and
+  // `PageFrame` renders Hungarian chrome for `en`.
   const twinPath = lang === "hu" ? PATHS[kind].ro : PATHS[kind].hu;
 
   return (
     <PageFrame
-      lang={lang}
+      lang={lang === "en" ? "hu" : lang}
       kind="index"
       twinPath={twinPath}
       crumbs={[HOME[lang], { name: c.crumb, path: selfPath }]}
@@ -178,7 +222,7 @@ function Shell({ kind, lang, children }: { kind: Kind; lang: Lang; children: Rea
  *  page with a colour swatch, the spoken label and the two termini. */
 export function LineIndex({ lang }: { lang: Lang }) {
   const net = loadNetwork();
-  const base = lang === "hu" ? PATHS.lines.hu : PATHS.lines.ro;
+  const base = PATHS.lines[lang];
   const lines = net.lines.map((l) => enrichLine(net, l.id, lang));
 
   return (
@@ -210,7 +254,7 @@ export function LineIndex({ lang }: { lang: Lang }) {
  *  list of links. The RO path carries the place's own RO slug, never the HU one. */
 export function StopIndex({ lang }: { lang: Lang }) {
   const net = loadNetwork();
-  const base = lang === "hu" ? PATHS.stops.hu : PATHS.stops.ro;
+  const base = PATHS.stops[lang];
 
   // buildPlaces is sorted by HU slug; regroup on the localized display name.
   // Bucket by the ASCII-folded first letter so "Árkos központ" files under "A"
@@ -220,9 +264,10 @@ export function StopIndex({ lang }: { lang: Lang }) {
   // the accented display name. `|| "#"` guards a name that folds to empty.
   const groups = new Map<string, { name: string; href: string }[]>();
   for (const p of buildPlaces(net)) {
-    const name = p.name[lang];
+    const name = pickName(p.name, lang);
     const letter = slugify(name).charAt(0).toUpperCase() || "#";
-    const slug = lang === "hu" ? p.slug : p.slugRo;
+    // English keeps the Hungarian slug (a place name is a proper noun).
+    const slug = lang === "ro" ? p.slugRo : p.slug;
     const bucket = groups.get(letter);
     const entry = { name, href: `${base}${slug}/` };
     if (bucket) bucket.push(entry);
@@ -260,7 +305,7 @@ export function StopIndex({ lang }: { lang: Lang }) {
  *  orphans - nothing else links to them. */
 export function RouteIndex({ lang }: { lang: Lang }) {
   const net = loadNetwork();
-  const base = lang === "hu" ? PATHS.routes.hu : PATHS.routes.ro;
+  const base = PATHS.routes[lang];
 
   // Keyed by origin `slug` (stable identity); the display name and links carry
   // the localized text. `notablePairs` is sorted by slug, so insertion order -
@@ -272,13 +317,14 @@ export function RouteIndex({ lang }: { lang: Lang }) {
   const link = (origin: Place, dest: Place, slug: string) => {
     let group = groups.get(origin.slug);
     if (!group) {
-      group = { key: origin.slug, name: origin.name[lang], links: [] };
+      group = { key: origin.slug, name: pickName(origin.name, lang), links: [] };
       groups.set(origin.slug, group);
     }
-    group.links.push({ name: dest.name[lang], href: `${base}${slug}/` });
+    group.links.push({ name: pickName(dest.name, lang), href: `${base}${slug}/` });
   };
   for (const pair of notablePairs(net)) {
-    const slug = lang === "hu" ? pair.slug : pair.slugRo;
+    // English keeps the Hungarian pair slug (proper nouns don't translate).
+    const slug = lang === "ro" ? pair.slugRo : pair.slug;
     link(pair.a, pair.b, slug);
     link(pair.b, pair.a, slug);
   }

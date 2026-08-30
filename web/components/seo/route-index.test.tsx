@@ -4,6 +4,7 @@ import type { ReactElement } from "react";
 
 import Routes, { generateMetadata as routesMeta } from "@/app/utvonal/page";
 import RoutesRo, { generateMetadata as routesRoMeta } from "@/app/ro/trasee/page";
+import { RouteIndex, indexMetadata } from "@/components/seo/IndexShell";
 import { loadNetwork } from "@/lib/seo/network";
 import { notablePairs } from "@/lib/seo/routes";
 
@@ -59,5 +60,21 @@ describe("route index", () => {
     expect((await routesRoMeta()).alternates?.canonical).toBe(
       "https://sepsimenetrend.ro/ro/trasee/",
     );
+  });
+
+  it("the English twin links every route under /en/routes/ by its HU slug", () => {
+    const { container } = render(<RouteIndex lang="en" />);
+    const routeLinks = hrefs(container).filter((h) => /^\/en\/routes\/[^/]+\/$/.test(h));
+    expect(routeLinks.length).toBe(pairs.length * 2);
+    const linked = new Set(routeLinks);
+    for (const p of pairs) {
+      expect(linked.has(`/en/routes/${p.slug}/`)).toBe(true);
+    }
+    expect(container.querySelector("h1")?.textContent).toMatch(/bus journeys/i);
+  });
+
+  it("canonicalises the English route index to /en/routes/", () => {
+    const m = indexMetadata("routes", "en");
+    expect(m.alternates?.canonical).toBe("https://sepsimenetrend.ro/en/routes/");
   });
 });

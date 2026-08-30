@@ -50,4 +50,18 @@ describe("GuidePageShell", () => {
       "https://sepsimenetrend.ro/ro/intrebari-frecvente/",
     );
   });
+
+  it("renders the English pillar page with the /en/ twin and English index links", () => {
+    render(<GuidePageShell guideKey="pillar" lang="en" />);
+    expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent(/bus schedule/i);
+    const links = screen.getAllByRole("link").map((a) => a.getAttribute("href"));
+    expect(links).toContain("/en/lines/1/");
+    expect(links).toContain("/en/stops/");
+  });
+
+  it("canonicalises the English fares guide to /en/fares/", () => {
+    const m = guideMetadata("fares", "en");
+    expect(m.alternates?.canonical).toBe("https://sepsimenetrend.ro/en/fares/");
+    expect(m.alternates?.languages?.en).toBe("https://sepsimenetrend.ro/en/fares/");
+  });
 });
