@@ -95,4 +95,31 @@ describe("allPages", () => {
       pages.some((p) => /manifest|robots|sitemap|opengraph/.test(p.path)),
     ).toBe(false);
   });
+
+  it("gives every page a non-empty English URL under /en/", () => {
+    for (const e of allPages()) {
+      expect(e.en.startsWith("/en/") || e.en === "/en/").toBe(true);
+    }
+  });
+
+  it("uses the Hungarian slug for English place and route URLs", () => {
+    const pages = allPages();
+    const aPlace = pages.find((e) => e.hu.startsWith("/megallok/"))!;
+    expect(aPlace.en).toBe(`/en/stops/${aPlace.hu.slice("/megallok/".length)}`);
+    const aRoute = pages.find((e) => e.hu.startsWith("/utvonal/"))!;
+    expect(aRoute.en).toBe(`/en/routes/${aRoute.hu.slice("/utvonal/".length)}`);
+  });
+
+  it("maps the static pages to their English category slugs", () => {
+    const by = (hu: string) => allPages().find((e) => e.hu === hu)!;
+    expect(by("/").en).toBe("/en/");
+    expect(by("/buszmenetrend/").en).toBe("/en/bus-schedule/");
+    expect(by("/vonalak/").en).toBe("/en/lines/");
+    expect(by("/megallok/").en).toBe("/en/stops/");
+    expect(by("/utvonal/").en).toBe("/en/routes/");
+    expect(by("/dijszabas/").en).toBe("/en/fares/");
+    expect(by("/gyik/").en).toBe("/en/faq/");
+    expect(by("/felhasznalasi-feltetelek/").en).toBe("/en/terms/");
+    expect(by("/adatvedelem/").en).toBe("/en/privacy/");
+  });
 });
