@@ -16,5 +16,5 @@ export const metadata: Metadata = {
 };
 
 export default function TermsPage() {
-  return <LegalPage type="terms" />;
+  return <LegalPage type="terms" lang="hu" />;
 }

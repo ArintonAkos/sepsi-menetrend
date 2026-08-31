@@ -16,5 +16,5 @@ export const metadata: Metadata = {
 };
 
 export default function PrivacyPage() {
-  return <LegalPage type="privacy" />;
+  return <LegalPage type="privacy" lang="hu" />;
 }

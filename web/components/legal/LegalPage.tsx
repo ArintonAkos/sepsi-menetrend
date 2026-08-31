@@ -1,72 +1,43 @@
-"use client";
-
-import { useEffect, useState, useSyncExternalStore } from "react";
-import Link from "next/link";
-import { readLang, writeLang, LANG_CHANGE_EVENT } from "@/lib/lang";
-import type { Lang } from "@/lib/i18n";
 import { Back } from "../common/icons";
 import styles from "./LegalPage.module.css";
 
-function subscribeLang(onChange: () => void) {
-  window.addEventListener("storage", onChange);
-  window.addEventListener(LANG_CHANGE_EVENT, onChange);
-  return () => {
-    window.removeEventListener("storage", onChange);
-    window.removeEventListener(LANG_CHANGE_EVENT, onChange);
-  };
-}
+const TWIN: Record<"terms" | "privacy", Record<"hu" | "ro" | "en", string>> = {
+  terms:   { hu: "/felhasznalasi-feltetelek/", ro: "/ro/termeni/",          en: "/en/terms/" },
+  privacy: { hu: "/adatvedelem/",              ro: "/ro/confidentialitate/", en: "/en/privacy/" },
+};
 
-function getLangSnapshot(): Lang {
-  return readLang(globalThis.localStorage ?? null);
-}
-
-function getLangServerSnapshot(): Lang {
-  return "hu";
-}
+/** The Magyar/Română/English switch: the current language is plain text, the
+ *  other two link straight at this page's twin URL in that language. Mirrors
+ *  the switch in `components/seo/PageFrame.tsx`. */
+const SWITCH: Record<"hu" | "ro" | "en", string> = { hu: "Magyar", ro: "Română", en: "English" };
 
 interface LegalPageProps {
   type: "terms" | "privacy";
-  /** Fixes the language of the `/ro/` and `/en/` route twins: the server render
-   *  and the first client render must be that language so a crawler and the
-   *  initial paint agree. Once the visitor uses the in-page switch, their stored
-   *  preference takes over. Omitted on `/felhasznalasi-feltetelek/` and
-   *  `/adatvedelem/`, which stay store-driven. */
-  lang?: "hu" | "ro" | "en";
+  /** The language this page renders in. `/felhasznalasi-feltetelek/` and
+   *  `/adatvedelem/` pass `"hu"`; the `/ro/` and `/en/` route twins pass their
+   *  own. There is no in-page toggle — the language switch is a real `<a>` that
+   *  navigates to the twin URL, exactly like every other page's switch. */
+  lang: "hu" | "ro" | "en";
 }
 
-export default function LegalPage({ type, lang: forcedLang }: LegalPageProps) {
-  const storedLang = useSyncExternalStore(subscribeLang, getLangSnapshot, getLangServerSnapshot);
-  const [switched, setSwitched] = useState(false);
-  const lang = forcedLang && !switched ? forcedLang : storedLang;
-
-  useEffect(() => {
-    try {
-      const storedTheme = window.localStorage.getItem("sepsi.theme");
-      if (storedTheme === "dark" || storedTheme === "light") {
-        document.documentElement.dataset.theme = storedTheme;
-      }
-    } catch {
-      /* ignore */
-    }
-  }, []);
-
-  const changeLang = (newLang: Lang) => {
-    if (forcedLang) setSwitched(true); // let the visitor leave the forced language
-    writeLang(globalThis.localStorage ?? null, newLang);
-  };
+export default function LegalPage({ type, lang }: LegalPageProps) {
+  const segLabel =
+    lang === "ro" ? "Selector de limbă" : lang === "en" ? "Language" : "Nyelvválasztó";
+  // back to the planner in this page's own language
+  const planner = lang === "ro" ? "/ro/" : lang === "en" ? "/en/" : "/";
 
   return (
     <div className={styles.page}>
       <div className={styles.container}>
         <header className={styles.header}>
           <div className={styles.headerLeft}>
-            <Link
-              href="/"
+            <a
+              href={planner}
               className={styles.backButton}
               aria-label={lang === "ro" ? "Înapoi" : lang === "en" ? "Back" : "Vissza"}
             >
               <Back />
-            </Link>
+            </a>
             <div className={styles.brand}>
               <span className={styles.brandName}>Sepsi Menetrend</span>
               <span className={styles.brandSub}>
@@ -77,25 +48,18 @@ export default function LegalPage({ type, lang: forcedLang }: LegalPageProps) {
             </div>
           </div>
 
-          <div className={styles.seg} role="group" aria-label="Nyelvválasztó">
-            <button
-              aria-pressed={lang === "hu"}
-              onClick={() => changeLang("hu")}
-            >
-              Magyar
-            </button>
-            <button
-              aria-pressed={lang === "ro"}
-              onClick={() => changeLang("ro")}
-            >
-              Română
-            </button>
-            <button
-              aria-pressed={lang === "en"}
-              onClick={() => changeLang("en")}
-            >
-              English
-            </button>
+          <div className={styles.seg} role="group" aria-label={segLabel}>
+            {(["hu", "ro", "en"] as const).map((code) =>
+              code === lang ? (
+                <span key={code} aria-current="true">
+                  {SWITCH[code]}
+                </span>
+              ) : (
+                <a key={code} href={TWIN[type][code]} hrefLang={code}>
+                  {SWITCH[code]}
+                </a>
+              ),
+            )}
           </div>
         </header>
 
@@ -115,21 +79,21 @@ export default function LegalPage({ type, lang: forcedLang }: LegalPageProps) {
           <nav className={styles.footerNav}>
             <div className={styles.footerLinks}>
               {type === "terms" ? (
-                <Link href="/adatvedelem/" className={styles.otherPageLink}>
+                <a href={TWIN.privacy[lang]} className={styles.otherPageLink}>
                   {lang === "ro"
                     ? "→ Politica de confidențialitate și cookie-uri"
                     : lang === "en"
                       ? "→ Privacy & cookie policy"
                       : "→ Adatkezelési és süti tájékoztató"}
-                </Link>
+                </a>
               ) : (
-                <Link href="/felhasznalasi-feltetelek/" className={styles.otherPageLink}>
+                <a href={TWIN.terms[lang]} className={styles.otherPageLink}>
                   {lang === "ro"
                     ? "→ Termeni și condiții de utilizare"
                     : lang === "en"
                       ? "→ Terms of use"
                       : "→ Felhasználási feltételek"}
-                </Link>
+                </a>
               )}
               <a
                 href="https://multitrans.ro/index.html"
@@ -140,9 +104,9 @@ export default function LegalPage({ type, lang: forcedLang }: LegalPageProps) {
                 Multi-Trans S.A. (multitrans.ro) ↗
               </a>
             </div>
-            <Link href="/" className={styles.homeButton}>
+            <a href={planner} className={styles.homeButton}>
               {lang === "ro" ? "Înapoi la căutare" : lang === "en" ? "Back to search" : "Vissza a tervezőhöz"}
-            </Link>
+            </a>
           </nav>
         </main>
       </div>

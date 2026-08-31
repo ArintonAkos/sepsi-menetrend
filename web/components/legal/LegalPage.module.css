@@ -75,19 +75,18 @@
   gap: 2px;
 }
 
-.seg button {
+.seg a,
+.seg span {
   font-size: 13px;
   font-weight: 600;
   padding: 6px 12px;
   border-radius: 9px;
   color: var(--muted);
-  border: 0;
-  background: none;
-  cursor: pointer;
+  text-decoration: none;
   transition: background var(--tap) var(--ease), color var(--tap) var(--ease);
 }
 
-.seg button[aria-pressed="true"] {
+.seg span[aria-current="true"] {
   background: var(--paper);
   color: var(--ink);
   box-shadow: var(--shadow);

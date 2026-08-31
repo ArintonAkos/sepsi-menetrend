@@ -1,42 +1,51 @@
 import { describe, expect, it } from "vitest";
+import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
 import { render, screen } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
 import LegalPage from "./LegalPage";
 
 describe("LegalPage", () => {
-  it("renders Hungarian by default when no lang prop is given", () => {
-    render(<LegalPage type="terms" />);
+  it("server-renders the language it is given", () => {
+    const { rerender } = render(<LegalPage type="terms" lang="hu" />);
     expect(
       screen.getByRole("heading", { name: /Felhasználási Feltételek és Jogi Nyilatkozat/ }),
     ).toBeInTheDocument();
-  });
-
-  it("server-renders the Romanian text when lang=\"ro\" is forced", () => {
-    render(<LegalPage type="terms" lang="ro" />);
+    rerender(<LegalPage type="terms" lang="ro" />);
     expect(
       screen.getByRole("heading", { name: /Termeni și Condiții de Utilizare/ }),
     ).toBeInTheDocument();
+    rerender(<LegalPage type="privacy" lang="en" />);
+    expect(
+      screen.getByRole("heading", { name: /Privacy and Cookie Notice/i }),
+    ).toBeInTheDocument();
   });
 
-  it("keeps the forced Romanian text even when the stored preference is Hungarian", () => {
-    localStorage.setItem("sepsi.lang", "hu");
+  it("the language switch links to the twin URLs; the current language is not a link", () => {
+    render(<LegalPage type="terms" lang="hu" />);
+    expect(screen.getByRole("link", { name: "Română" })).toHaveAttribute("href", "/ro/termeni/");
+    expect(screen.getByRole("link", { name: "English" })).toHaveAttribute("href", "/en/terms/");
+    const hu = screen.getByText("Magyar");
+    expect(hu.closest("a")).toBeNull();
+    expect(hu).toHaveAttribute("aria-current", "true");
+  });
+
+  it("switches the twin targets for the privacy page", () => {
     render(<LegalPage type="privacy" lang="ro" />);
-    expect(
-      screen.getByRole("heading", { name: /Politică de Confidențialitate/ }),
-    ).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Magyar" })).toHaveAttribute("href", "/adatvedelem/");
+    expect(screen.getByRole("link", { name: "English" })).toHaveAttribute("href", "/en/privacy/");
   });
 
-  it("lets the visitor leave the forced language with the in-page switch", async () => {
+  it("the terms<->privacy cross-link stays in the current language", () => {
     render(<LegalPage type="terms" lang="ro" />);
-    await userEvent.click(screen.getByRole("button", { name: "Magyar" }));
-    expect(
-      screen.getByRole("heading", { name: /Felhasználási Feltételek és Jogi Nyilatkozat/ }),
-    ).toBeInTheDocument();
+    const cross = screen.getByRole("link", { name: /Politica de confidențialitate/i });
+    expect(cross).toHaveAttribute("href", "/ro/confidentialitate/");
+    render(<LegalPage type="privacy" lang="en" />);
+    expect(screen.getByRole("link", { name: /Terms of use/i })).toHaveAttribute("href", "/en/terms/");
   });
 
-  it("offers an English toggle and renders English terms text", () => {
-    render(<LegalPage type="terms" lang="en" />);
-    expect(screen.getByRole("button", { name: "English" })).toBeInTheDocument();
-    expect(screen.getByRole("heading", { level: 1 }).textContent).toMatch(/terms/i);
+  it("is a server component — no client boundary in the source", () => {
+    const src = readFileSync(resolve(import.meta.dirname, "LegalPage.tsx"), "utf8");
+    expect(src).not.toMatch(/["']use client["']/);
+    expect(src).not.toMatch(/useState|useEffect|useSyncExternalStore/);
   });
 });
