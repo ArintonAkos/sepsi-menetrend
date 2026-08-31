@@ -304,3 +304,7 @@ it("falls back to the inline route SVG when there is no baked map", async () => 
 ## Execution Handoff
 
 Subagent-Driven — fresh subagent per task, review between each. 4 tasks.
+
+## Maintenance
+
+- `npm run build` now regenerates stale maps and can leave `public/maps/*.png` + `.line-maps-manifest.json` modified in the working tree after a feed change — run `npm run maps` deliberately with the feed update and commit the result; don't `git checkout` them.

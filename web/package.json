@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build && node scripts/localize-html.mjs && node scripts/og-ext.mjs && node scripts/verify-seo.mjs && node scripts/stamp-sw.mjs",
+    "maps": "node --env-file-if-exists=.env.local scripts/gen-maps.mjs",
+    "build": "node --env-file-if-exists=.env.local scripts/gen-maps.mjs && next build && node scripts/localize-html.mjs && node scripts/og-ext.mjs && node scripts/verify-seo.mjs && node scripts/stamp-sw.mjs",
     "preview": "npm run build && serve out -l 3000",
     "preview:netlify": "npm run build && netlify dev -c \"serve out -l 3000\" --target-port 3000 --skip-gitignore",
     "start": "next start",
