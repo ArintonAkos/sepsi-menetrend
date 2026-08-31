@@ -9,6 +9,10 @@
   color: var(--muted);
   text-align: center;
 }
+.intro {
+  max-width: 640px;
+  margin: 0 auto 14px;
+}
 .links {
   display: flex;
   flex-wrap: wrap;

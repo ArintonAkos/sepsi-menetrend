@@ -8,11 +8,18 @@ const builtEn = new URL("../../out/en/index.html", import.meta.url);
 
 describe("homepage head", () => {
   it.skipIf(!existsSync(built))(
-    "keeps the homepage canonical, title and lang unchanged",
+    "gives the HU homepage a descriptive title + off-screen h1, keeps canonical/lang/og/hreflang",
     () => {
       const html = readFileSync(built, "utf8");
       expect(html).toContain('<link rel="canonical" href="https://sepsimenetrend.ro/"/>');
-      expect(html).toContain("<title>Sepsi Menetrend</title>");
+      expect(html).toContain(
+        "<title>Sepsiszentgyörgyi buszmenetrend és járattervező</title>",
+      );
+      // off-screen <h1> from app/page.tsx - a real title in the outline for
+      // crawlers that don't run the planner's client JS
+      expect(html).toMatch(
+        /<h1 class="srOnly">Sepsiszentgyörgyi buszmenetrend és járattervező<\/h1>/,
+      );
       expect(html).toMatch(/<html lang="hu"/);
       // the planner is not `ownOgImage`, so `/` still points at the shared card
       expect(html).toContain(
@@ -43,6 +50,9 @@ describe("homepage head", () => {
       expect(html).toMatch(/<html lang="en"/);
       expect(html).toContain(
         "<title>Sfântu Gheorghe bus planner · Multi-Trans schedule</title>",
+      );
+      expect(html).toMatch(
+        /<h1 class="srOnly">Sfântu Gheorghe bus schedule and route planner<\/h1>/,
       );
       expect(html).toContain(
         '<link rel="canonical" href="https://sepsimenetrend.ro/en/"/>',

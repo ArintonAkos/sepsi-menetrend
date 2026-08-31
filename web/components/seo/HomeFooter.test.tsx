@@ -14,6 +14,7 @@ describe("HomeFooter", () => {
     expect(hrefs).toContain("/ro/");                 // language switch
     expect(hrefs.some((h) => h?.startsWith("/ro/orar"))).toBe(false);
     expect(screen.getByText(/Nem a Multi-Trans SA hivatalos/)).toBeInTheDocument();
+    expect(screen.getByText(/Sepsiszentgyörgy városi buszmenetrendje/)).toBeInTheDocument();
   });
 
   it("links the Romanian content pages on the /ro/ homepage", () => {
@@ -26,6 +27,7 @@ describe("HomeFooter", () => {
     expect(hrefs).toContain("/");                    // language switch back to HU
     expect(hrefs).not.toContain("/vonalak/");
     expect(screen.getByText(/Nu este site-ul oficial Multi-Trans/)).toBeInTheDocument();
+    expect(screen.getByText(/Orarul autobuzelor urbane din Sfântu Gheorghe/)).toBeInTheDocument();
   });
 
   it("renders the English footer: /en/ links, English disclaimer, three-way language line", () => {
@@ -35,6 +37,7 @@ describe("HomeFooter", () => {
     expect(hrefs).toContain("/en/lines/");
     expect(hrefs).not.toContain("/vonalak/");
     expect(screen.getByText(/Not the official Multi-Trans SA website/)).toBeInTheDocument();
+    expect(screen.getByText(/The city bus timetable and route planner for Sfântu Gheorghe/)).toBeInTheDocument();
     expect(hrefs).toContain("/");     // -> Hungarian
     expect(hrefs).toContain("/ro/");  // -> Romanian
   });

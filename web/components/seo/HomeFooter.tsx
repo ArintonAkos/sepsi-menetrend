@@ -45,6 +45,17 @@ export default function HomeFooter({ lang }: { lang: SeoLang }) {
             ["/adatvedelem/", "Adatkezelési tájékoztató"],
           ];
 
+  // One plain sentence of what the site is - the static homepage is otherwise
+  // almost all planner UI, so this is the only crawlable prose on `/`. Sits
+  // below the viewport-tall planner, in the footer, so nothing above the fold
+  // moves.
+  const intro =
+    lang === "ro"
+      ? "Orarul autobuzelor urbane din Sfântu Gheorghe și un planificator de rute, pe baza datelor publicate de Multi-Trans."
+      : lang === "en"
+        ? "The city bus timetable and route planner for Sfântu Gheorghe, built from the schedule data Multi-Trans publishes."
+        : "Sepsiszentgyörgy városi buszmenetrendje és járattervezője a Multi-Trans által közzétett menetrendi adatok alapján.";
+
   const disclaimer =
     lang === "ro"
       ? "Nu este site-ul oficial Multi-Trans SA."
@@ -64,6 +75,7 @@ export default function HomeFooter({ lang }: { lang: SeoLang }) {
 
   return (
     <footer className={styles.footer}>
+      <p className={styles.intro}>{intro}</p>
       <nav className={styles.links} aria-label={lang === "ro" ? "Pagini" : lang === "en" ? "Pages" : "Oldalak"}>
         {links.map(([href, label]) => (
           <a key={href} href={href}>{label}</a>

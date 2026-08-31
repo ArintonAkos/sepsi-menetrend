@@ -104,11 +104,6 @@ function anchorPaths(html) {
 
 // --- exemptions ----------------------------------------------------------
 
-/** The planner app renders its `<h1>` after hydration - the static export has
- *  none, and `app/page.tsx` is frozen. `/en/` shares the same `HomePage`
- *  component as `/` and `/ro/`. */
-const NO_STATIC_H1 = new Set(["/", "/ro/", "/en/"]);
-
 /** Pages the generic hreflang and orphan rules skip:
  *   - `/` + `/ro/` + `/en/`   the planner. All three now emit a reciprocal
  *     four-key hreflang set (hu, ro, en, x-default -> HU) - locked by
@@ -165,9 +160,10 @@ for (const p of pages) {
   const desc = metaContent(html, "name", "description")?.trim();
   if (!desc) fail(`${p.path}: empty or missing <meta name="description">`);
 
-  // 2c. exactly one <h1
+  // 2c. exactly one <h1 - the homepages carry an off-screen one from
+  //     `app/page.tsx` (`.srOnly`), so this holds for every page now.
   const h1s = (html.match(/<h1[\s/>]/gi) ?? []).length;
-  if (h1s !== 1 && !NO_STATIC_H1.has(p.path)) {
+  if (h1s !== 1) {
     fail(`${p.path}: expected exactly one <h1>, found ${h1s}`);
   }
 
