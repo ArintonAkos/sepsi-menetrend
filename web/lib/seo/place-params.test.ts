@@ -1,6 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { generateStaticParams as huParams } from "@/app/megallok/[slug]/page";
 import { generateStaticParams as roParams } from "@/app/ro/statii/[slug]/page";
+import { generateStaticParams as enParams } from "@/app/en/stops/[slug]/page";
 import { loadNetwork } from "./network";
 import { buildPlaces } from "./places";
 
@@ -41,5 +42,22 @@ describe("place page static params", () => {
     expect(hu.has("arena-sepsi")).toBe(false);
     expect(ro.has("arena-sepsi")).toBe(true);
     expect(ro.has("sepsi-arena")).toBe(false);
+  });
+
+  it("keys the EN route on the HU `slug`, never `slugRo`", async () => {
+    const places = buildPlaces(loadNetwork());
+    const en = new Set((await enParams()).map((p) => p.slug));
+    const hu = new Set((await huParams()).map((p) => p.slug));
+    const ro = new Set((await roParams()).map((p) => p.slug));
+
+    // the EN route enumerates exactly the HU slug set (English category path,
+    // Hungarian proper-noun slug), never the RO-derived slug set
+    expect(en).toEqual(hu);
+    expect(en).not.toEqual(ro);
+    for (const p of places) expect(en.has(p.slug)).toBe(true);
+
+    // the Sepsi Aréna anchor: EN carries the Hungarian slug, not the Romanian
+    expect(en.has("sepsi-arena")).toBe(true);
+    expect(en.has("arena-sepsi")).toBe(false);
   });
 });

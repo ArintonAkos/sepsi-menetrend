@@ -1,6 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { generateStaticParams as huParams } from "@/app/utvonal/[pair]/page";
 import { generateStaticParams as roParams } from "@/app/ro/trasee/[pair]/page";
+import { generateStaticParams as enParams } from "@/app/en/routes/[pair]/page";
 import { loadNetwork } from "@/lib/seo/network";
 import { notablePairs, pairSlug } from "@/lib/seo/routes";
 
@@ -31,6 +32,18 @@ describe("route page static params", () => {
     }
     for (const { pair } of await roParams()) {
       expect(pairs.find((p) => p.slugRo === pair)).toBeTruthy();
+    }
+  });
+
+  it("emits the HU pair slugs on the EN route, resolved by p.slug", async () => {
+    const pairs = notablePairs(loadNetwork());
+    const hu = (await huParams()).map((p) => p.pair);
+    const en = (await enParams()).map((p) => p.pair);
+
+    // English category path, Hungarian pair slug (R15) - identical to the HU set
+    expect(en).toEqual(hu);
+    for (const { pair } of await enParams()) {
+      expect(pairs.find((p) => p.slug === pair)).toBeTruthy();
     }
   });
 
