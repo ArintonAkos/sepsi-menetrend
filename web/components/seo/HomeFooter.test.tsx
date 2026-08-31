@@ -27,4 +27,15 @@ describe("HomeFooter", () => {
     expect(hrefs).not.toContain("/vonalak/");
     expect(screen.getByText(/Nu este site-ul oficial Multi-Trans/)).toBeInTheDocument();
   });
+
+  it("renders the English footer: /en/ links, English disclaimer, three-way language line", () => {
+    render(<HomeFooter lang="en" />);
+    const hrefs = screen.getAllByRole("link").map((a) => a.getAttribute("href"));
+    expect(hrefs).toContain("/en/bus-schedule/");
+    expect(hrefs).toContain("/en/lines/");
+    expect(hrefs).not.toContain("/vonalak/");
+    expect(screen.getByText(/Not the official Multi-Trans SA website/)).toBeInTheDocument();
+    expect(hrefs).toContain("/");     // -> Hungarian
+    expect(hrefs).toContain("/ro/");  // -> Romanian
+  });
 });

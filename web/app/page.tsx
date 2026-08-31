@@ -5,16 +5,17 @@ import HomeFooter from "@/components/seo/HomeFooter";
 import type { FareTable } from "@/lib/engine/fares";
 import type { Place } from "@/lib/engine/search";
 import type { Network } from "@/lib/engine/types";
+import type { SeoLang } from "@/lib/seo/lang";
 import type { BikeSnapshot } from "@/lib/sepsibike";
 
-/** `/`'s hreflang. `app/ro/page.tsx` already emits the reciprocal triple via
- *  `pageMetadata`; without this the HU side answered with a bare canonical and
- *  Google ignored the one-way pairing. Paths are relative to `metadataBase`
- *  (`app/layout.tsx`). This only touches the `<head>` of `/`. */
+/** `/`'s hreflang. `app/ro/page.tsx` and `app/en/page.tsx` emit the reciprocal
+ *  set via `pageMetadata`; without this the HU side answered with a bare
+ *  canonical and Google ignored the one-way pairing. Paths are relative to
+ *  `metadataBase` (`app/layout.tsx`). This only touches the `<head>` of `/`. */
 export const metadata: import("next").Metadata = {
   alternates: {
     canonical: "/",
-    languages: { hu: "/", ro: "/ro/", "x-default": "/" },
+    languages: { hu: "/", ro: "/ro/", en: "/en/", "x-default": "/" },
   },
 };
 
@@ -26,9 +27,11 @@ async function load<T>(name: string): Promise<T> {
   return JSON.parse(raw) as T;
 }
 
-/** Shared by `/` and `/ro/` - same planner and build-time data, only the
- *  homepage footer's language differs (the `<head>` is set per route). */
-export async function HomePage({ lang }: { lang: "hu" | "ro" }) {
+/** Shared by `/`, `/ro/` and `/en/` - same planner and build-time data, only
+ *  the homepage footer's language differs (the `<head>` is set per route).
+ *  `lang` is forwarded to `<HomeFooter>` only; the `<Planner>` reads its own
+ *  language from client state. */
+export async function HomePage({ lang }: { lang: SeoLang }) {
   const [network, places, fares, bikeSnapshot] = await Promise.all([
     load<Network>("network.json"),
     load<{ places: Place[]; reach: number;

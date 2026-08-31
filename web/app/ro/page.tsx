@@ -14,6 +14,7 @@ export async function generateMetadata(): Promise<Metadata> {
   return pageMetadata({
     huPath: "/",
     roPath: "/ro/",
+    enPath: "/en/",
     lang: "ro",
     title: "Planificator autobuz Sfântu Gheorghe · orar Multi-Trans",
     description:
