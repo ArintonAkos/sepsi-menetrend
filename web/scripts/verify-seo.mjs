@@ -4,7 +4,8 @@
  *  dozen `page.tsx` files. A stray path typo, a half-wired hreflang set, a
  *  stranded page or a share card that 404s would all ship silently. This walks
  *  the finished `out/` and fails the build (exit 1, one line per problem) on any
- *  of them; on success it prints a single green line and exits 0.
+ *  of them - including a baked line-map `<img src="/maps/…png">` whose PNG never
+ *  made it into `out/`; on success it prints a single green line and exits 0.
  *
  *  Runs after `og-ext.mjs` (so the `opengraph-image` -> `.png` retarget is done)
  *  and before `stamp-sw.mjs` (so a failed build never earns a fingerprint).
@@ -144,7 +145,8 @@ for (const p of pages) {
   if (!existsSync(p.file)) fail(`missing page: ${p.path} -> ${p.file}`);
 }
 
-// 2. Per-page head checks + 3. hreflang integrity + 6. OG image resolves.
+// 2. Per-page head checks + 3. hreflang integrity + 6. OG image resolves
+//    + 7. every baked line-map <img> resolves.
 
 /** The `{ hu, ro, en, "x-default" }` path set as one stable string, for an
  *  order-independent deep-equal between a page and its alternates. */
@@ -185,6 +187,16 @@ for (const p of pages) {
     const imgPath = toPath(ogImage);
     if (!existsSync(assetFile(imgPath))) {
       fail(`${p.path}: og:image ${imgPath} has no file in out/`);
+    }
+  }
+
+  // 7. Every baked route-map <img src="/maps/…png"> resolves to a file in
+  //    out/. A line page with no such <img> - the RouteShape SVG fallback,
+  //    e.g. a token-less build - is fine and asserts nothing.
+  for (const m of html.matchAll(/<img\b[^>]*\bsrc="(\/maps\/[^"]+\.png)"/gi)) {
+    const src = m[1];
+    if (!existsSync(assetFile(toPath(src)))) {
+      fail(`${p.path}: map image ${src} has no file in out/`);
     }
   }
 

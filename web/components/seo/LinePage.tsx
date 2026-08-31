@@ -16,6 +16,7 @@ import {
   type SeoLang,
 } from "@/lib/seo/lines";
 import { buildPlaces, placeOf, type Place } from "@/lib/seo/places";
+import { mapImage } from "@/lib/seo/line-maps";
 import { formatHHMM } from "@/lib/engine/time";
 import styles from "./LinePage.module.css";
 
@@ -231,10 +232,20 @@ export default async function LinePage({ lang, id }: { lang: SeoLang; id: string
         const board = boardFor(net, id, dir.stopIds[0]);
         const pattern = net.patterns.find((p) => p.id === dir.patternId);
         const stops = stopEntries(places, dir.stopIds, lang);
+        const headsign = pickName(dir.headsign, lang);
+        const mapSrc = mapImage(id, i);
+        // Both directions carry a map; the headsign in the alt is what lets a
+        // screen reader or a crawler tell the two apart.
+        const mapAlt =
+          lang === "hu"
+            ? `${huArticle(id, true)} ${label} útvonala a térképen: ${headsign}`
+            : lang === "ro"
+            ? `Traseul liniei ${id} pe hartă: ${headsign}`
+            : `Route of line ${id} on the map: ${headsign}`;
 
         return (
           <section key={dir.patternId} className={styles.direction}>
-            <h2 className={styles.headsign}>{pickName(dir.headsign, lang)}</h2>
+            <h2 className={styles.headsign}>{headsign}</h2>
 
             {board ? (
               <BoardTable lang={lang} weekday={board.weekday} weekend={board.weekend} />
@@ -250,7 +261,22 @@ export default async function LinePage({ lang, id }: { lang: SeoLang; id: string
 
             <StopList lang={lang} stops={stops} />
 
-            {pattern ? (
+            {mapSrc ? (
+              // These pages ship zero client JS; next/image would pull its
+              // runtime in (and with `images: { unoptimized: true }` there is
+              // no optimiser to gain). A plain static asset from `public/maps/`
+              // — same call repo precedent makes in HouseAd / InstallApp.
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={mapSrc}
+                alt={mapAlt}
+                width={640}
+                height={360}
+                loading="lazy"
+                decoding="async"
+                className={styles.routeMap}
+              />
+            ) : pattern ? (
               <RouteShape shape={pattern.shape} colour={line?.light ?? "#555"} />
             ) : null}
           </section>

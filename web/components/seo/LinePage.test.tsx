@@ -1,4 +1,6 @@
 import { describe, it, expect } from "vitest";
+import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
 import { render, screen } from "@testing-library/react";
 import LinePage, { lineMetadata } from "./LinePage";
 import type { SeoLang } from "@/lib/seo/lang";
@@ -78,5 +80,53 @@ describe("LinePage", () => {
   it("canonicalises the English line page to /en/lines/1/", () => {
     const m = lineMetadata("1", "en");
     expect(m.alternates?.canonical).toBe("https://sepsimenetrend.ro/en/lines/1/");
+  });
+
+  it("shows the baked route map image for a line that has one", async () => {
+    await renderLine({ lang: "hu", id: "1" });
+    const img = screen
+      .queryAllByRole("img")
+      .find((n) => n.getAttribute("src")?.startsWith("/maps/line-1-"));
+    expect(img).toBeTruthy();
+    expect(img).toHaveAttribute("loading", "lazy");
+    const alt = img?.getAttribute("alt") ?? "";
+    expect(alt.length).toBeGreaterThan(0);
+    // the direction's headsign rides in the alt, so a screen reader can tell
+    // the two per-page maps apart
+    const headings = screen
+      .getAllByRole("heading", { level: 2 })
+      .map((h) => h.textContent ?? "");
+    expect(headings.some((h) => h.length > 0 && alt.includes(h))).toBe(true);
+  });
+
+  it("gives the two per-page route maps distinct alt text", async () => {
+    await renderLine({ lang: "hu", id: "1" });
+    const alts = screen
+      .queryAllByRole("img")
+      .filter((n) => n.getAttribute("src")?.startsWith("/maps/line-1-"))
+      .map((n) => n.getAttribute("alt") ?? "");
+    expect(alts.length).toBeGreaterThan(1);
+    expect(new Set(alts).size).toBe(alts.length);
+  });
+
+  it("keeps the EN baked route map too, with a non-empty English alt", async () => {
+    await renderLine({ lang: "en", id: "1" });
+    const img = screen
+      .queryAllByRole("img")
+      .find((n) => n.getAttribute("src")?.startsWith("/maps/line-1-"));
+    expect(img).toBeTruthy();
+    const alt = img?.getAttribute("alt") ?? "";
+    expect(alt.length).toBeGreaterThan(0);
+    expect(alt).toMatch(/Route of line 1 on the map:/);
+  });
+
+  it("falls back to the inline route SVG when there is no baked map", () => {
+    // No feed line id is guaranteed to lack a baked PNG (all 24 exist), so the
+    // fallback branch is pinned at source level: `mapImage` decides, and
+    // `RouteShape` is still imported and rendered for the null case.
+    const src = readFileSync(resolve(import.meta.dirname, "LinePage.tsx"), "utf8");
+    expect(src).toMatch(/mapImage\(/);
+    expect(src).toMatch(/import RouteShape from/);
+    expect(src).toMatch(/<RouteShape\b/);
   });
 });

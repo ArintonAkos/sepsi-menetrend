@@ -1,6 +1,7 @@
-/* Same chrome tokens as the other SEO pages (app/globals.css). Plain block flow,
-   no fixed heights, no images - the board and stop list stream in without
-   shifting the prose below them. */
+/* Same chrome tokens as the other SEO pages (app/globals.css). Plain block flow:
+   the board and stop list stream in without shifting the prose below them. The
+   one image per direction - the baked route map - reserves its box via an
+   aspect-ratio, so it does not shift anything either. */
 
 .h1 {
   margin: 0 0 4px;
@@ -39,6 +40,20 @@
 .cta a {
   font-weight: 700;
   color: var(--ink-2);
+}
+
+.routeMap {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 640 / 360;
+  /* The baked PNG is already 640x360, so this is a no-op today - but `contain`
+     means a future render-constant change shows as letterboxing rather than
+     silently cropping the route out of frame. */
+  object-fit: contain;
+  margin-top: 12px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
 }
 
 .divider {
