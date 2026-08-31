@@ -145,7 +145,11 @@ for (const p of pages) {
 }
 
 // 2. Per-page head checks + 3. hreflang integrity + 6. OG image resolves.
-const altSets = new Map(); // "huPath|roPath|enPath" -> first set seen, for reciprocity
+
+/** The `{ hu, ro, en, "x-default" }` path set as one stable string, for an
+ *  order-independent deep-equal between a page and its alternates. */
+const altKey = (a) =>
+  ["hu", "ro", "en", "x-default"].map((k) => `${k}=${a[k]}`).join(" ");
 
 for (const p of pages) {
   if (!existsSync(p.file)) continue;
@@ -205,14 +209,20 @@ for (const p of pages) {
   if (p.path !== alt.hu && p.path !== alt.ro && p.path !== alt.en) {
     fail(`${p.path}: hreflang names ${alt.hu} / ${alt.ro} / ${alt.en}, none is this page`);
   }
-  // reciprocity: every sibling must carry the identical set
-  const key = `${alt.hu}|${alt.ro}|${alt.en}`;
-  const triple = `hu=${alt.hu} ro=${alt.ro} en=${alt.en} x-default=${alt["x-default"]}`;
-  const seen = altSets.get(key);
-  if (seen && seen.triple !== triple) {
-    fail(`${p.path}: hreflang ${triple} disagrees with ${seen.path} (${seen.triple})`);
-  } else if (!seen) {
-    altSets.set(key, { path: p.path, triple });
+  // reciprocity: each alternate target must carry the identical four-key set.
+  // Open its file and read its own `alternates` back - a page whose twins point
+  // at a different trio (or a different x-default) is a one-way pairing Google
+  // ignores. `alternatesOf` already normalises href -> path, so this compares
+  // paths to paths, never absolute URLs.
+  const mine = altKey(alt);
+  for (const target of [alt.hu, alt.ro, alt.en]) {
+    if (target === p.path) continue; // this page itself
+    const file = pageFile(target);
+    if (!existsSync(file)) continue; // already reported by the per-alternate check above
+    const theirs = altKey(alternatesOf(read(file)));
+    if (theirs !== mine) {
+      fail(`${p.path}: hreflang set [${mine}] not reciprocated by ${target} [${theirs}]`);
+    }
   }
 }
 

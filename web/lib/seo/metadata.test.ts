@@ -10,7 +10,7 @@ const rec = (o: unknown): Record<string, unknown> => o as Record<string, unknown
 describe("pageMetadata", () => {
   it("emits reciprocal hreflang with x-default pointing at Hungarian", () => {
     const m = pageMetadata({
-      huPath: "/vonalak/1/", roPath: "/ro/linii/1/", lang: "ro",
+      huPath: "/vonalak/1/", roPath: "/ro/linii/1/", enPath: "/en/lines/1/", lang: "ro",
       title: "Linia 1 – orar autobuz Sfântu Gheorghe", description: "…",
     });
     expect(m.alternates?.canonical).toBe("https://sepsimenetrend.ro/ro/linii/1/");
@@ -30,7 +30,7 @@ describe("pageMetadata", () => {
 
   it("makes the Hungarian page its own canonical and keeps hu_HU locale", () => {
     const m = pageMetadata({
-      huPath: "/vonalak/1/", roPath: "/ro/linii/1/", lang: "hu",
+      huPath: "/vonalak/1/", roPath: "/ro/linii/1/", enPath: "/en/lines/1/", lang: "hu",
       title: "1-es busz menetrendje – Sepsiszentgyörgy", description: "…",
     });
     expect(m.alternates?.canonical).toBe("https://sepsimenetrend.ro/vonalak/1/");
@@ -41,7 +41,7 @@ describe("pageMetadata", () => {
 
   it("sets an absolute title that bypasses the layout template", () => {
     const m = pageMetadata({
-      huPath: "/gyik/", roPath: "/ro/intrebari-frecvente/", lang: "hu",
+      huPath: "/gyik/", roPath: "/ro/intrebari-frecvente/", enPath: "/en/faq/", lang: "hu",
       title: "Gyakori kérdések", description: "…",
     });
     expect(rec(m.title).absolute).toBe("Gyakori kérdések");
@@ -51,13 +51,13 @@ describe("pageMetadata", () => {
 
   it("defaults the OG image to /og.png and lets ogPath override it", () => {
     const base = pageMetadata({
-      huPath: "/vonalak/1/", roPath: "/ro/linii/1/", lang: "ro",
+      huPath: "/vonalak/1/", roPath: "/ro/linii/1/", enPath: "/en/lines/1/", lang: "ro",
       title: "t", description: "d",
     });
     expect(rec(base.openGraph).images).toEqual(["https://sepsimenetrend.ro/og.png"]);
 
     const custom = pageMetadata({
-      huPath: "/vonalak/1/", roPath: "/ro/linii/1/", lang: "ro",
+      huPath: "/vonalak/1/", roPath: "/ro/linii/1/", enPath: "/en/lines/1/", lang: "ro",
       title: "t", description: "d", ogPath: "/og/line-1.png",
     });
     expect(rec(custom.openGraph).images).toEqual(["https://sepsimenetrend.ro/og/line-1.png"]);
@@ -69,7 +69,7 @@ describe("pageMetadata", () => {
     // file-convention `<meta og:image>` if the metadata object leaves images
     // unset - so `ownOgImage` must strip them, and nothing falls back to /og.png.
     const m = pageMetadata({
-      huPath: "/dijszabas/", roPath: "/ro/tarife/", lang: "hu",
+      huPath: "/dijszabas/", roPath: "/ro/tarife/", enPath: "/en/fares/", lang: "hu",
       title: "t", description: "d", ownOgImage: true,
     });
     expect(rec(m.openGraph).images).toBeUndefined();
@@ -78,7 +78,7 @@ describe("pageMetadata", () => {
 
   it("leaves an already-absolute ogPath untouched", () => {
     const m = pageMetadata({
-      huPath: "/vonalak/1/", roPath: "/ro/linii/1/", lang: "ro",
+      huPath: "/vonalak/1/", roPath: "/ro/linii/1/", enPath: "/en/lines/1/", lang: "ro",
       title: "t", description: "d", ogPath: "https://cdn.example/og/line-1.png",
     });
     expect(rec(m.openGraph).images).toEqual(["https://cdn.example/og/line-1.png"]);
@@ -96,14 +96,6 @@ describe("pageMetadata", () => {
     expect(m.alternates?.languages?.["x-default"]).toBe("https://sepsimenetrend.ro/vonalak/1/");
     expect(rec(m.openGraph).locale).toBe("en_US");
     expect(rec(m.openGraph).url).toBe("https://sepsimenetrend.ro/en/lines/1/");
-  });
-
-  it("keeps the three-key map when enPath is omitted", () => {
-    const m = pageMetadata({
-      huPath: "/vonalak/1/", roPath: "/ro/linii/1/", lang: "hu", title: "x", description: "…",
-    });
-    expect(m.alternates?.languages && Object.keys(m.alternates.languages).sort())
-      .toEqual(["hu", "ro", "x-default"]);
   });
 });
 

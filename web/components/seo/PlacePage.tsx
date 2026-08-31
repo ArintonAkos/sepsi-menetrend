@@ -72,14 +72,14 @@ const T = {
   },
   en: {
     h1: (name: string) => `${name} stop`,
-    lines: "Routes",
+    lines: "Lines",
     nearby: "Nearby stops",
     minutes: "min",
     approx: "approx.",
     cta: "Open the stop in the planner",
     intro: (name: string, labels: string) =>
       `${name} is one of the Multi-Trans bus stops in Sfântu Gheorghe.`
-      + (labels ? ` The following routes call here: ${labels}.` : "")
+      + (labels ? ` The following lines call here: ${labels}.` : "")
       + " The departure times above are from the official Multi-Trans stop signs"
       + " (multitrans.ro); for live data use the route planner.",
   },
@@ -95,7 +95,7 @@ function lineSummary(labels: string[], lang: SeoLang, max: number): string {
     ? `${head} és további ${extra} vonal`
     : lang === "ro"
     ? `${head} și alte ${extra} linii`
-    : `${head} and ${extra} more routes`;
+    : `${head} and ${extra} more lines`;
 }
 
 /** A board's `destination` is one "RO / HU" string in the feed - split it. */
@@ -271,7 +271,7 @@ export function placeMetadata(slug: string, lang: SeoLang): Metadata {
           title: `${place.name.hu} stop – bus departures`,
           description:
             `${place.name.hu} bus stop in Sfântu Gheorghe: official departure times of the `
-            + `Multi-Trans routes (${list}) that call here, weekday and weekend.`,
+            + `Multi-Trans lines (${list}) that call here, weekday and weekend.`,
         };
 
   return pageMetadata({

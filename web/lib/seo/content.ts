@@ -1,9 +1,10 @@
 /** Hand-authored prose for the five guide pages.
  *
  *  These pages are the primary organic-search targets, so the copy is written
- *  per language, not machine-translated. The prose lives in `content.hu.ts` and
- *  `content.ro.ts`; this module holds the shared types and zips the two halves
- *  into one bilingual `GUIDES` object the page components render.
+ *  per language, not machine-translated. The prose lives in `content.hu.ts`,
+ *  `content.ro.ts` and `content.en.ts`; this module holds the shared types and
+ *  zips the three language halves into one trilingual `GUIDES` object the page
+ *  components render.
  *
  *  Slugs are shared with the page inventory (`urls.ts`) and the sitemap - they
  *  must match that table exactly or a guide loses its URL / language twin. */

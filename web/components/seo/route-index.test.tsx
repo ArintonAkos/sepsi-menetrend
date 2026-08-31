@@ -70,7 +70,7 @@ describe("route index", () => {
     for (const p of pairs) {
       expect(linked.has(`/en/routes/${p.slug}/`)).toBe(true);
     }
-    expect(container.querySelector("h1")?.textContent).toMatch(/bus journeys/i);
+    expect(container.querySelector("h1")?.textContent).toMatch(/bus routes/i);
   });
 
   it("canonicalises the English route index to /en/routes/", () => {

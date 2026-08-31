@@ -201,7 +201,7 @@ function intro(lang: SeoLang, id: string, label: string, termini: [string, strin
     );
   }
   return (
-    `Line ${id} is one of Multi-Trans's city bus routes in Sfântu Gheorghe, `
+    `Line ${id} is one of Multi-Trans's city bus lines in Sfântu Gheorghe, `
     + `running between ${a} and ${b}. It runs more often on weekdays and less at weekends. `
     + `The departure times above are from the official Multi-Trans stop signs; the route planner does the live calculation.`
   );

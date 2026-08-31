@@ -99,7 +99,7 @@ describe("English index pages", () => {
   it("links every line under /en/lines/ with an English h1", () => {
     const { container } = render(<LineIndex lang="en" />);
     expect(childLinks(container, "/en/lines/")).toHaveLength(12);
-    expect(container.querySelector("h1")?.textContent).toMatch(/bus routes/i);
+    expect(container.querySelector("h1")?.textContent).toMatch(/bus lines/i);
   });
 
   it("links every place under /en/stops/ by its HU slug with an English h1", () => {

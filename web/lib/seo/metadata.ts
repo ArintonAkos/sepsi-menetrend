@@ -21,10 +21,10 @@ const LOCALE: Record<SeoLang, string> = { hu: "hu_HU", ro: "ro_RO", en: "en_US" 
 export function pageMetadata(input: {
   huPath: string;
   roPath: string;
-  /** The English twin's path. Omit and the `languages` map stays three-key
-   *  (`hu` / `ro` / `x-default`) exactly as before; pass it and `en` joins the
-   *  map. Callers under `/en/` set this and pass `lang: "en"`. */
-  enPath?: string;
+  /** The English twin's path. Every generated page has an English twin, so the
+   *  `languages` map is always the four keys `hu` / `ro` / `en` / `x-default`.
+   *  Callers under `/en/` also pass `lang: "en"`. */
+  enPath: string;
   lang: SeoLang;
   title: string;
   description: string;
@@ -39,14 +39,12 @@ export function pageMetadata(input: {
   const { huPath, roPath, enPath, lang, title, description, ogPath, ownOgImage } = input;
   const huUrl = abs(huPath);
   const roUrl = abs(roPath);
-  const enUrl = enPath ? abs(enPath) : undefined;
-  const selfUrl = lang === "hu" ? huUrl : lang === "ro" ? roUrl : (enUrl ?? huUrl);
+  const enUrl = abs(enPath);
+  const selfUrl = lang === "hu" ? huUrl : lang === "ro" ? roUrl : enUrl;
 
-  // Hungarian is canonical and the hreflang `x-default`. `en` is added only
-  // when this page has an English twin, so pre-English callers keep their
-  // three-key map untouched.
-  const languages: Record<string, string> = { hu: huUrl, ro: roUrl, "x-default": huUrl };
-  if (enUrl) languages.en = enUrl;
+  // Hungarian is canonical and the hreflang `x-default`; every generated page
+  // has hu/ro/en twins, so the languages map always carries all four keys.
+  const languages: Record<string, string> = { hu: huUrl, ro: roUrl, en: enUrl, "x-default": huUrl };
 
   // An `ogPath` that is already absolute is passed through; a root-relative one
   // is resolved against SITE (OG crawlers reject relative image URLs). Default

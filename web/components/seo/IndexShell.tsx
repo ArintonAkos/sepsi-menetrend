@@ -77,14 +77,14 @@ const COPY: Record<Kind, Record<Lang, {
     },
     en: {
       crumb: "Lines",
-      metaTitle: "Sfântu Gheorghe bus routes · Multi-Trans",
+      metaTitle: "Sfântu Gheorghe bus lines · Multi-Trans",
       metaDescription:
-        "All 12 Multi-Trans bus routes in Sfântu Gheorghe in one list: "
-        + "every route with its termini and its own timetable page for the "
+        "All 12 Multi-Trans bus lines in Sfântu Gheorghe in one list: "
+        + "every line with its termini and its own timetable page for the "
         + "city bus network.",
-      h1: "Bus routes in Sfântu Gheorghe",
+      h1: "Bus lines in Sfântu Gheorghe",
       intro:
-        "The 12 Multi-Trans city bus routes in Sfântu Gheorghe. Pick a route "
+        "The 12 Multi-Trans city bus lines in Sfântu Gheorghe. Pick a line "
         + "for its termini, the order of stops and the official departure times.",
     },
   },
@@ -120,12 +120,12 @@ const COPY: Record<Kind, Record<Lang, {
       metaTitle: "Bus stops in Sfântu Gheorghe",
       metaDescription:
         "All 65 bus stops in Sfântu Gheorghe in alphabetical order: each stop "
-        + "has its own page with the Multi-Trans routes that call there and "
+        + "has its own page with the Multi-Trans lines that call there and "
         + "their departure times.",
       h1: "Bus stops in Sfântu Gheorghe",
       intro:
         "All bus stops in Sfântu Gheorghe in alphabetical order. Each stop's "
-        + "page shows the routes that call there and the next departures.",
+        + "page shows the lines that call there and the next departures.",
     },
   },
   routes: {
@@ -157,12 +157,12 @@ const COPY: Record<Kind, Record<Lang, {
     },
     en: {
       crumb: "Routes",
-      metaTitle: "Bus journeys between places in Sfântu Gheorghe · Multi-Trans",
+      metaTitle: "Bus routes between places in Sfântu Gheorghe · Multi-Trans",
       metaDescription:
-        "Bus journeys between the main destinations in Sfântu Gheorghe — "
+        "Bus routes between the main destinations in Sfântu Gheorghe — "
         + "railway station, county hospital, Sepsi Arena, Autoliv, Arcuș — "
         + "grouped by origin, each with its own page.",
-      h1: "Bus journeys in Sfântu Gheorghe",
+      h1: "Bus routes in Sfântu Gheorghe",
       intro:
         "By Multi-Trans city bus between the well-known points of Sfântu "
         + "Gheorghe. Pick an origin, then a destination: each journey has its "

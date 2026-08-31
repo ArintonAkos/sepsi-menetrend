@@ -347,7 +347,7 @@ function TermsContentEn() {
       <section className={styles.section}>
         <h2 className={styles.sectionTitle}>3. Full limitation and exclusion of liability</h2>
         <p className={styles.paragraph}>
-          The developers provide the service <em>&ldquo;as is&rdquo; (&ldquo;AS IS&rdquo;)</em> and
+          The developers provide the service <em>&ldquo;as is&rdquo; (&ldquo;AS IS&rdquo;)</em> and{" "}
           <em>&ldquo;as available&rdquo; (&ldquo;AS AVAILABLE&rdquo;)</em>. Neither the creators nor the
           contributors give any warranty or guarantee, whether express or implied, as to:
         </p>

@@ -24,7 +24,7 @@ export default function HomeFooter({ lang }: { lang: SeoLang }) {
       : lang === "en"
         ? [
             ["/en/bus-schedule/", "Sfântu Gheorghe bus schedule"],
-            ["/en/lines/", "Bus routes"],
+            ["/en/lines/", "Bus lines"],
             ["/en/stops/", "Bus stops"],
             ["/en/routes/", "Routes"],
             ["/en/fares/", "Ticket prices"],
