@@ -120,7 +120,8 @@ export default function Planner({ network, places, reach, box, fares, bikeStatio
   /* Content-page links in the settings panel follow the chosen UI language:
      a reader on Romanian gets the /ro/ pages, not the Hungarian ones. English
      has no dedicated pages, so it falls back to the Hungarian paths. */
-  const contentHref = (hu: string, ro: string) => (lang === "ro" ? ro : hu);
+  const contentHref = (hu: string, ro: string, en: string) =>
+    lang === "ro" ? ro : lang === "en" ? en : hu;
 
   const [from, setFrom] = useState<Chosen | null>(null);
   const [to, setTo] = useState<Chosen | null>(null);
@@ -1165,16 +1166,16 @@ export default function Planner({ network, places, reach, box, fares, bikeStatio
                   <span>{t.source}</span>
                   <p className={styles.setNote}>{t.disclaimer}</p>
                   <div className={styles.legalLinks}>
-                    <a href={contentHref("/felhasznalasi-feltetelek/", "/ro/termeni/")} target="_blank" rel="noopener noreferrer">{t.terms}</a>
+                    <a href={contentHref("/felhasznalasi-feltetelek/", "/ro/termeni/", "/en/terms/")} target="_blank" rel="noopener noreferrer">{t.terms}</a>
                     <span>·</span>
-                    <a href={contentHref("/adatvedelem/", "/ro/confidentialitate/")} target="_blank" rel="noopener noreferrer">{t.privacy}</a>
+                    <a href={contentHref("/adatvedelem/", "/ro/confidentialitate/", "/en/privacy/")} target="_blank" rel="noopener noreferrer">{t.privacy}</a>
                   </div>
                   <div className={styles.legalLinks}>
-                    <a href={contentHref("/buszmenetrend/", "/ro/orar-autobuz/")} target="_blank" rel="noopener noreferrer">{t.timetablesLink}</a>
+                    <a href={contentHref("/buszmenetrend/", "/ro/orar-autobuz/", "/en/bus-schedule/")} target="_blank" rel="noopener noreferrer">{t.timetablesLink}</a>
                     <span>·</span>
-                    <a href={contentHref("/vonalak/", "/ro/linii/")} target="_blank" rel="noopener noreferrer">{t.linesLink}</a>
+                    <a href={contentHref("/vonalak/", "/ro/linii/", "/en/lines/")} target="_blank" rel="noopener noreferrer">{t.linesLink}</a>
                     <span>·</span>
-                    <a href={contentHref("/dijszabas/", "/ro/tarife/")} target="_blank" rel="noopener noreferrer">{t.faresLink}</a>
+                    <a href={contentHref("/dijszabas/", "/ro/tarife/", "/en/fares/")} target="_blank" rel="noopener noreferrer">{t.faresLink}</a>
                   </div>
                   <button className={styles.cookieReset} onClick={() => {
                     try { localStorage.removeItem("sepsi.consent"); } catch {}

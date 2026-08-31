@@ -120,6 +120,8 @@ export default function Analytics({ gaId }: { gaId?: string }) {
   if (!gaId || consent !== "unset") return null;
 
   const t = TEXT[lang];
+  const legalHref = (hu: string, ro: string, en: string) =>
+    lang === "ro" ? ro : lang === "en" ? en : hu;
 
   const choose = (value: Consent) => {
     write(globalThis.localStorage ?? null, value);
@@ -133,8 +135,8 @@ export default function Analytics({ gaId }: { gaId?: string }) {
         <p className={styles.message}>
           {t.message}{" "}
           <span className={styles.legalLinks}>
-            {t.more} <a href="/adatvedelem/" target="_blank" rel="noopener noreferrer">{t.privacyLink}</a> {t.and}{" "}
-            <a href="/felhasznalasi-feltetelek/" target="_blank" rel="noopener noreferrer">{t.termsLink}</a>.
+            {t.more} <a href={legalHref("/adatvedelem/", "/ro/confidentialitate/", "/en/privacy/")} target="_blank" rel="noopener noreferrer">{t.privacyLink}</a> {t.and}{" "}
+            <a href={legalHref("/felhasznalasi-feltetelek/", "/ro/termeni/", "/en/terms/")} target="_blank" rel="noopener noreferrer">{t.termsLink}</a>.
           </span>
         </p>
         <div className={styles.actions}>
