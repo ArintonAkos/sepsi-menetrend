@@ -33,4 +33,10 @@ describe("LegalPage", () => {
       screen.getByRole("heading", { name: /Felhasználási Feltételek és Jogi Nyilatkozat/ }),
     ).toBeInTheDocument();
   });
+
+  it("offers an English toggle and renders English terms text", () => {
+    render(<LegalPage type="terms" lang="en" />);
+    expect(screen.getByRole("button", { name: "English" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { level: 1 }).textContent).toMatch(/terms/i);
+  });
 });

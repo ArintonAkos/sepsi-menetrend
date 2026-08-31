@@ -9,6 +9,7 @@ export async function generateMetadata(): Promise<Metadata> {
   return pageMetadata({
     huPath: "/felhasznalasi-feltetelek/",
     roPath: "/ro/termeni/",
+    enPath: "/en/terms/",
     lang: "ro",
     title: "Termeni și condiții de utilizare · Sepsi Menetrend",
     description:

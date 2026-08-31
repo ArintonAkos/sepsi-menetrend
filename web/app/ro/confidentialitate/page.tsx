@@ -9,6 +9,7 @@ export async function generateMetadata(): Promise<Metadata> {
   return pageMetadata({
     huPath: "/adatvedelem/",
     roPath: "/ro/confidentialitate/",
+    enPath: "/en/privacy/",
     lang: "ro",
     title: "Politică de confidențialitate și cookie-uri · Sepsi Menetrend",
     description:
