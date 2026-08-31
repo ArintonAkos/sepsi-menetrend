@@ -1,7 +1,7 @@
 /** Post-build structural gate for the generated SEO surface.
  *
- *  ~356 crawlable URLs (both languages) are produced from `network.json` by a
- *  dozen `page.tsx` files. A stray path typo, a half-wired hreflang pair, a
+ *  ~537 crawlable URLs (three languages) are produced from `network.json` by a
+ *  dozen `page.tsx` files. A stray path typo, a half-wired hreflang set, a
  *  stranded page or a share card that 404s would all ship silently. This walks
  *  the finished `out/` and fails the build (exit 1, one line per problem) on any
  *  of them; on success it prints a single green line and exits 0.
@@ -78,7 +78,7 @@ function linkTags(html, rel) {
 
 const canonicalOf = (html) => linkTags(html, "canonical")[0]?.href;
 
-/** The page's hreflang set as `{ hu, ro, "x-default" }` of paths. */
+/** The page's hreflang set as `{ hu, ro, en, "x-default" }` of paths. */
 function alternatesOf(html) {
   const out = {};
   for (const { hreflang, href } of linkTags(html, "alternate")) {
@@ -104,26 +104,32 @@ function anchorPaths(html) {
 // --- exemptions ----------------------------------------------------------
 
 /** The planner app renders its `<h1>` after hydration - the static export has
- *  none, and `app/page.tsx` is frozen. */
-const NO_STATIC_H1 = new Set(["/", "/ro/"]);
+ *  none, and `app/page.tsx` is frozen. `/en/` shares the same `HomePage`
+ *  component as `/` and `/ro/`. */
+const NO_STATIC_H1 = new Set(["/", "/ro/", "/en/"]);
 
 /** Pages the generic hreflang and orphan rules skip:
- *   - `/` + `/ro/`   the planner. `/` now emits a reciprocal hreflang triple
- *     (its `/ro/` twin always did) - locked by lib/seo/homepage-head.test.ts.
- *     Their homepage->pillar link is asserted directly in step 5b below.
+ *   - `/` + `/ro/` + `/en/`   the planner. All three now emit a reciprocal
+ *     four-key hreflang set (hu, ro, en, x-default -> HU) - locked by
+ *     lib/seo/homepage-head.test.ts. Their homepage->pillar link is asserted
+ *     directly in step 5b below.
  *   - `/felhasznalasi-feltetelek/` + `/adatvedelem/`   canonical HU, with
- *     Romanian twins as pages (`/ro/termeni/`, `/ro/confidentialitate/`); all
- *     four now carry the reciprocal `alternates`, still left off the generic
- *     sitemap walk.
- *   - `/ro/termeni/` + `/ro/confidentialitate/`   those twins.
+ *     Romanian twins (`/ro/termeni/`, `/ro/confidentialitate/`) and English
+ *     twins (`/en/terms/`, `/en/privacy/`) as pages; all six now carry the
+ *     reciprocal `alternates`, still left off the generic sitemap walk.
+ *   - `/ro/termeni/` + `/ro/confidentialitate/` + `/en/terms/` + `/en/privacy/`
+ *     those twins.
  *  This is the brief's own orphan-check exclusion list. */
 const EXEMPT = new Set([
   "/",
   "/ro/",
+  "/en/",
   "/felhasznalasi-feltetelek/",
   "/adatvedelem/",
   "/ro/termeni/",
   "/ro/confidentialitate/",
+  "/en/terms/",
+  "/en/privacy/",
 ]);
 
 // --- the page list ------------------------------------------------------
@@ -139,7 +145,7 @@ for (const p of pages) {
 }
 
 // 2. Per-page head checks + 3. hreflang integrity + 6. OG image resolves.
-const altSets = new Map(); // "huPath|roPath" -> first triple seen, for reciprocity
+const altSets = new Map(); // "huPath|roPath|enPath" -> first set seen, for reciprocity
 
 for (const p of pages) {
   if (!existsSync(p.file)) continue;
@@ -182,8 +188,8 @@ for (const p of pages) {
   if (EXEMPT.has(p.path)) continue;
 
   const alt = alternatesOf(html);
-  if (!alt.hu || !alt.ro || !alt["x-default"]) {
-    fail(`${p.path}: incomplete hreflang set (need hu, ro, x-default)`);
+  if (!alt.hu || !alt.ro || !alt.en || !alt["x-default"]) {
+    fail(`${p.path}: incomplete hreflang set (need hu, ro, en, x-default)`);
     continue;
   }
   // every alternate target must exist
@@ -192,16 +198,16 @@ for (const p of pages) {
       fail(`${p.path}: hreflang ${lang} -> ${target} has no file`);
     }
   }
-  // x-default is the Hungarian URL; one of the pair is this page itself
+  // x-default is the Hungarian URL; one of the trio is this page itself
   if (alt["x-default"] !== alt.hu) {
     fail(`${p.path}: x-default ${alt["x-default"]} != hu alternate ${alt.hu}`);
   }
-  if (p.path !== alt.hu && p.path !== alt.ro) {
-    fail(`${p.path}: hreflang names ${alt.hu} / ${alt.ro}, neither is this page`);
+  if (p.path !== alt.hu && p.path !== alt.ro && p.path !== alt.en) {
+    fail(`${p.path}: hreflang names ${alt.hu} / ${alt.ro} / ${alt.en}, none is this page`);
   }
-  // reciprocity: the partner must carry the identical triple
-  const key = `${alt.hu}|${alt.ro}`;
-  const triple = `hu=${alt.hu} ro=${alt.ro} x-default=${alt["x-default"]}`;
+  // reciprocity: every sibling must carry the identical set
+  const key = `${alt.hu}|${alt.ro}|${alt.en}`;
+  const triple = `hu=${alt.hu} ro=${alt.ro} en=${alt.en} x-default=${alt["x-default"]}`;
   const seen = altSets.get(key);
   if (seen && seen.triple !== triple) {
     fail(`${p.path}: hreflang ${triple} disagrees with ${seen.path} (${seen.triple})`);
@@ -220,14 +226,15 @@ function* htmlFiles(dir) {
 }
 for (const file of htmlFiles(OUT)) {
   const underRo = file === join(OUT, "ro") || file.startsWith(join(OUT, "ro") + "/");
-  const want = underRo ? "ro" : "hu";
+  const underEn = file === join(OUT, "en") || file.startsWith(join(OUT, "en") + "/");
+  const want = underRo ? "ro" : underEn ? "en" : "hu";
   if (!new RegExp(`<html lang="${want}"`).test(read(file))) {
     fail(`${file}: missing <html lang="${want}"> (post-build localise step)`);
   }
 }
 
 // 5. Orphan check: every content page reachable within 2 hops of the hubs.
-const HUB_PATHS = ["/", "/buszmenetrend/", "/ro/", "/ro/orar-autobuz/"];
+const HUB_PATHS = ["/", "/buszmenetrend/", "/ro/", "/ro/orar-autobuz/", "/en/", "/en/bus-schedule/"];
 const reachable = new Set(HUB_PATHS);
 const hop1 = new Set();
 for (const hub of HUB_PATHS) {
@@ -244,13 +251,15 @@ const orphans = pages
   .filter((path) => !EXEMPT.has(path) && !reachable.has(path));
 for (const path of orphans) fail(`orphan: ${path} is not reachable within 2 hops of the hubs`);
 
-// 5b. The orphan check pre-seeds every HUB_PATH (including `/` and `/ro/`) as
-// reachable, so it can never notice a homepage that links nothing. Assert the
-// crawlable HTML of each planner homepage really carries an `<a href>` to its
-// pillar guide - the anchor the whole content-page graph hangs off.
+// 5b. The orphan check pre-seeds every HUB_PATH (including `/`, `/ro/` and
+// `/en/`) as reachable, so it can never notice a homepage that links nothing.
+// Assert the crawlable HTML of each planner homepage really carries an
+// `<a href>` to its pillar guide - the anchor the whole content-page graph
+// hangs off.
 for (const [home, pillar] of [
   ["/", "/buszmenetrend/"],
   ["/ro/", "/ro/orar-autobuz/"],
+  ["/en/", "/en/bus-schedule/"],
 ]) {
   const file = pageFile(home);
   if (!existsSync(file)) {
