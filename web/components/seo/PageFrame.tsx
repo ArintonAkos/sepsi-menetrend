@@ -37,7 +37,7 @@ const KIND_LABEL: Record<Kind, Record<SeoLang, string>> = {
 const T = {
   hu: {
     crumbLabel: "Morzsamenü",
-    back: "Vissza a tervezőhöz",
+    back: "Vissza",
     switcherLabel: "Nyelvválasztó",
     disclaimer: "Nem a Multi-Trans SA hivatalos oldala",
     operator: "A Multi-Trans hivatalos oldala: multitrans.ro",
@@ -46,7 +46,7 @@ const T = {
   },
   ro: {
     crumbLabel: "Firimituri",
-    back: "Înapoi la planificator",
+    back: "Înapoi",
     switcherLabel: "Selector de limbă",
     disclaimer: "Nu este site-ul oficial Multi-Trans SA",
     operator: "Site-ul oficial Multi-Trans: multitrans.ro",
@@ -55,7 +55,7 @@ const T = {
   },
   en: {
     crumbLabel: "Breadcrumb",
-    back: "Back to the planner",
+    back: "Back",
     switcherLabel: "Language",
     disclaimer: "Not the official Multi-Trans SA website",
     operator: "The official Multi-Trans site: multitrans.ro",
@@ -69,7 +69,12 @@ const SWITCH: Record<SeoLang, string> = { hu: "Magyar", ro: "Română", en: "Eng
 
 export default function PageFrame({ lang, kind, crumbs, paths, children }: PageFrameProps) {
   const t = T[lang];
-  const home = crumbs[0]?.path ?? (lang === "hu" ? "/" : lang === "ro" ? "/ro/" : "/en/");
+  // the back arrow goes up one level: the crumb directly above this page (its
+  // index / section), falling back to the site root when there is no parent.
+  const up =
+    crumbs[crumbs.length - 2]?.path
+    ?? crumbs[0]?.path
+    ?? (lang === "hu" ? "/" : lang === "ro" ? "/ro/" : "/en/");
   const lastIndex = crumbs.length - 1;
   const sub = KIND_LABEL[kind][lang];
 
@@ -86,7 +91,7 @@ export default function PageFrame({ lang, kind, crumbs, paths, children }: PageF
       <div className={styles.container}>
         <header className={styles.header}>
           <div className={styles.headerLeft}>
-            <a href={home} className={styles.backButton} aria-label={t.back}>
+            <a href={up} className={styles.backButton} aria-label={t.back}>
               <Back />
             </a>
             <div className={styles.brand}>

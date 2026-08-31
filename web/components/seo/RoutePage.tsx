@@ -45,6 +45,13 @@ const HOME: Record<SeoLang, { name: string; path: string }> = {
   en: { name: "Sepsi Menetrend", path: "/en/" },
 };
 
+/** The route-index crumb - label and path must match `IndexShell`/`urls.ts`. */
+const INDEX: Record<SeoLang, { name: string; path: string }> = {
+  hu: { name: "Útvonalak", path: "/utvonal/" },
+  ro: { name: "Trasee", path: "/ro/trasee/" },
+  en: { name: "Routes", path: "/en/routes/" },
+};
+
 const huPath = (slug: string) => `/utvonal/${slug}/`;
 const roPath = (slug: string) => `/ro/trasee/${slug}/`;
 const enPath = (slug: string) => `/en/routes/${slug}/`;
@@ -290,7 +297,7 @@ export default async function RoutePage(
       lang={lang}
       kind="route"
       paths={{ hu: huPath(pair.slug), ro: roPath(pair.slugRo), en: enPath(pair.slug) }}
-      crumbs={[HOME[lang], { name: routeCrumb(A, B, lang), path: selfPath }]}
+      crumbs={[HOME[lang], INDEX[lang], { name: routeCrumb(A, B, lang), path: selfPath }]}
     >
       <h1 className={styles.h1}>{routeTitle(A, B, lang)}</h1>
       <p className={styles.intro}>{t.intro(pickName(A.name, lang), pickName(B.name, lang))}</p>

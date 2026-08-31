@@ -13,13 +13,28 @@ const crumbs = [
 const paths = { hu: "/vonalak/1/", ro: "/ro/linii/1/", en: "/en/lines/1/" };
 
 describe("PageFrame chrome", () => {
-  it("renders the brand header with a back link to the planner", () => {
+  it("renders the brand header with a back link up one level (to the parent crumb)", () => {
     render(<PageFrame lang="hu" kind="line" paths={paths} crumbs={crumbs}><p>x</p></PageFrame>);
     // scoped to the header landmark: "Sepsi Menetrend" is also the first crumb
     const banner = screen.getByRole("banner");
     expect(within(banner).getByText("Sepsi Menetrend")).toBeInTheDocument();
     const back = screen.getByRole("link", { name: /vissza/i });
-    expect(back).toHaveAttribute("href", "/");
+    // three crumbs: [Sepsi Menetrend, Vonalak, 1-es busz] → back goes to Vonalak
+    expect(back).toHaveAttribute("href", "/vonalak/");
+  });
+
+  it("the back link falls back to the site root when the page has no parent crumb", () => {
+    render(
+      <PageFrame
+        lang="hu"
+        kind="guide"
+        paths={{ hu: "/dijszabas/", ro: "/ro/tarife/", en: "/en/fares/" }}
+        crumbs={[{ name: "Sepsi Menetrend", path: "/" }, { name: "Díjszabás", path: "/dijszabas/" }]}
+      >
+        <p>x</p>
+      </PageFrame>,
+    );
+    expect(screen.getByRole("link", { name: /vissza/i })).toHaveAttribute("href", "/");
   });
 
   it("shows a per-kind badge in the page language", () => {
