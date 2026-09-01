@@ -7,6 +7,7 @@ import type { Place } from "@/lib/engine/search";
 import type { Network } from "@/lib/engine/types";
 import type { SeoLang } from "@/lib/seo/lang";
 import type { BikeSnapshot } from "@/lib/sepsibike";
+import type { RoHolidaysFile, TicketPointsFile } from "@/lib/ticket-points";
 
 /** `/`'s `<head>`. The hreflang is reciprocal - `app/ro/page.tsx` and
  *  `app/en/page.tsx` emit the matching set via `pageMetadata`; without this the
@@ -49,19 +50,22 @@ async function load<T>(name: string): Promise<T> {
  *  the footer differ. The `<Planner>` reads its own language from client
  *  state; `lang` here only drives the server-rendered `<h1>` and `<HomeFooter>`. */
 export async function HomePage({ lang }: { lang: SeoLang }) {
-  const [network, places, fares, bikeSnapshot] = await Promise.all([
+  const [network, places, fares, bikeSnapshot, ticketPoints, holidays] = await Promise.all([
     load<Network>("network.json"),
     load<{ places: Place[]; reach: number;
             bbox: [number, number, number, number] }>("places.json"),
     load<FareTable>("fares.json"),
     load<BikeSnapshot>("sepsibike.json"),
+    load<TicketPointsFile>("ticket-points.json"),
+    load<RoHolidaysFile>("ro-holidays.json"),
   ]);
   return (
     <>
       <h1 className="srOnly">{HOME_H1[lang]}</h1>
       <Planner network={network} places={places.places}
                reach={places.reach} box={places.bbox} fares={fares}
-               bikeStations={bikeSnapshot.stations} bikeSnapshotAt={bikeSnapshot.snapshotAt} />
+               bikeStations={bikeSnapshot.stations} bikeSnapshotAt={bikeSnapshot.snapshotAt}
+               ticketPoints={ticketPoints.points} holidays={holidays.dates} />
       <HomeFooter lang={lang} />
     </>
   );

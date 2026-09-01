@@ -10,6 +10,7 @@ import { shadeOf } from "@/lib/engine/types";
 import type { Journey, Line, LngLat, Network, Pattern, RideLeg, WalkLeg } from "@/lib/engine/types";
 import type { Lang } from "@/lib/i18n";
 import type { BikeStation } from "@/lib/sepsibike";
+import { openStateAt, type TicketPoint } from "@/lib/ticket-points";
 import { stopAt } from "../stops/stopLookup";
 import styles from "./TransitMap.module.css";
 
@@ -46,6 +47,14 @@ export interface TransitMapProps {
   /** The bike equivalent of a stop board: a map anchor on a wide screen and a
    *  sheet on a phone, both rendered by React rather than an HTML string. */
   onBikeStationPick?: (stationId: string, anchor: HTMLElement | null, dismiss: () => void) => void;
+  /** Ticket sales points to draw. Empty (the default) when the Settings toggle
+   *  is off - the layer is data-driven, not filtered. */
+  ticketPoints?: TicketPoint[];
+  /** Romanian public holidays (`YYYY-MM-DD`), for the open / closed pin colour. */
+  holidays?: string[];
+  /** The stop/bike equivalent for a ticket point: an anchor on a wide screen,
+   *  a sheet on a phone, both drawn by `TicketPointBoard`. */
+  onTicketPointPick?: (id: string, anchor: HTMLElement | null, dismiss: () => void) => void;
   patterns: Map<string, Pattern>;
   lines: Map<string, Line>;
   journey: Journey | null;
@@ -79,6 +88,7 @@ function hasWebGL(): boolean {
 export default function TransitMap({
   network, patterns, lines, journey, routeLoading = false, visibleLines, dark, picking, lang, area, covered,
   resizeKey, onCentreChange, onStopPick, bikeStations = [], onBikeStationPick,
+  ticketPoints = [], holidays = [], onTicketPointPick,
 }: TransitMapProps) {
   const host = useRef<HTMLDivElement>(null);
   const map = useRef<MapboxMap | null>(null);
@@ -93,6 +103,10 @@ export default function TransitMap({
   useEffect(() => { stopPick.current = onStopPick; }, [onStopPick]);
   const bikePick = useRef(onBikeStationPick);
   useEffect(() => { bikePick.current = onBikeStationPick; }, [onBikeStationPick]);
+  const ticketData = useRef({ points: ticketPoints, holidays });
+  useEffect(() => { ticketData.current = { points: ticketPoints, holidays }; }, [ticketPoints, holidays]);
+  const ticketPick = useRef(onTicketPointPick);
+  useEffect(() => { ticketPick.current = onTicketPointPick; }, [onTicketPointPick]);
   const onMove = useRef(onCentreChange);
   // keeping the callback in a ref means the map is built once, not on every
   // parent render - but the assignment belongs in an effect, not in render
@@ -131,6 +145,7 @@ export default function TransitMap({
       applyNetFilter(m, Boolean(journey || routeLoading), visibleLines);
       paint(m, journey, patterns, lines, dark);
       paintBikes(m, bikeStations);
+      paintTicketPoints(m, ticketData.current.points, ticketData.current.holidays);
       if (journey) fit(m, journey, patterns, picking, covered);
     });
     m.on("move", () => onMove.current?.(m.getCenter().toArray() as LngLat));
@@ -138,6 +153,7 @@ export default function TransitMap({
                      () => window.innerWidth > 860);
     attachBikeStations(m, () => bikePick.current,
                        () => window.innerWidth > 860);
+    attachTicketPoints(m, () => ticketPick.current, () => window.innerWidth > 860);
     map.current = m;
     return () => { m.remove(); map.current = null; ready.current = false; };
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -154,6 +170,7 @@ export default function TransitMap({
       applyNetFilter(m, Boolean(journey || routeLoading), visibleLines);
       paint(m, journey, patterns, lines, dark);
       paintBikes(m, bikeStations);
+      paintTicketPoints(m, ticketData.current.points, ticketData.current.holidays);
       if (journey) fit(m, journey, patterns, picking, covered);
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -174,6 +191,12 @@ export default function TransitMap({
     if (!m || !ready.current) return;
     paintBikes(m, bikeStations);
   }, [bikeStations]);
+
+  useEffect(() => {
+    const m = map.current;
+    if (!m || !ready.current) return;
+    paintTicketPoints(m, ticketPoints, holidays);
+  }, [ticketPoints, holidays]);
 
   useEffect(() => {
     const m = map.current;
@@ -267,7 +290,7 @@ function addLayers(m: MapboxMap, dark: boolean, network: Network,
       },
     });
   }
-  for (const id of ["trip", "nodes", "ends", "door", "bike-stations"]) {
+  for (const id of ["trip", "nodes", "ends", "door", "bike-stations", "ticket-points"]) {
     // the default tolerance (0.375) straightens curves the source data has
     if (!m.getSource(id)) m.addSource(id, { type: "geojson", tolerance: 0.05, data: empty });
   }
@@ -325,6 +348,20 @@ function addLayers(m: MapboxMap, dark: boolean, network: Network,
     layout: { "icon-image": "bike-station",
               "icon-size": ["interpolate", ["linear"], ["zoom"], 12.2, 0.2, 16, 0.36],
               "icon-allow-overlap": true, "icon-ignore-placement": true } });
+  /* Ticket sales points: an opt-in layer (empty source when the toggle is off).
+     Same neighbourhood-level threshold as the stops and docks; the pin colour
+     is the open / closed state baked in at paint time. */
+  add({ id: "ticket-point-hit", type: "circle", source: "ticket-points",
+    minzoom: 12.2,
+    paint: { "circle-radius": ["interpolate", ["linear"], ["zoom"], 12.2, 12, 16, 20],
+             "circle-opacity": 0, "circle-stroke-opacity": 0 } });
+  add({ id: "ticket-point-icon", type: "symbol", source: "ticket-points",
+    minzoom: 12.2,
+    layout: {
+      "icon-image": ["case", ["get", "open"], "ticket-open", "ticket-closed"],
+      "icon-size": ["interpolate", ["linear"], ["zoom"], 12.2, 0.2, 16, 0.36],
+      "icon-allow-overlap": true, "icon-ignore-placement": true,
+    } });
   add({ id: "trip-nodes", type: "circle", source: "nodes",
     paint: { "circle-radius": 4.6, "circle-color": dark ? "#0D1108" : "#FFFFFF",
              "circle-stroke-color": ["get", "colour"], "circle-stroke-width": 2.6 } });
@@ -375,7 +412,20 @@ function sprites(dark: boolean) {
       + `<path d="M11.5 23.5l5.1-9h4.4l4.3 9m-10.2 0h10.2M18.2 14.5l-2.3-3.8m5.5 3.8h3.4"
                fill="none" stroke="#FFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>`
       + `<circle cx="14.9" cy="9.1" r="1.8" fill="#FFF"/>`),
+    "ticket-open": ticket("#2F9E44"),
+    "ticket-closed": ticket("#8A8A80"),
   };
+}
+
+/** A ticket badge: a coloured disc with a perforated stub. Green means open
+ *  now, grey closed - the disambiguation the user actually needs at a glance. */
+function ticket(fill: string) {
+  return "data:image/svg+xml;charset=utf-8," + encodeURIComponent(
+    `<svg xmlns="http://www.w3.org/2000/svg" width="72" height="72" viewBox="0 0 36 36">`
+    + `<circle cx="18" cy="18" r="15" fill="${fill}" stroke="#FBFAF7" stroke-width="2.4"/>`
+    + `<rect x="9" y="12.5" width="18" height="11" rx="2" fill="none" stroke="#FFF" stroke-width="2"/>`
+    + `<path d="M15 12.5v11" stroke="#FFF" stroke-width="2" stroke-dasharray="1.6 2"/>`
+    + `</svg>`);
 }
 
 function addSprites(m: MapboxMap, dark: boolean) {
@@ -460,6 +510,58 @@ function paintBikes(m: MapboxMap, stations: BikeStation[]) {
     features: stations.map((station) => point([station.lng, station.lat], {
       id: station.id, bikes: station.availableBikes, docks: station.freeDocks, status: station.status,
     })),
+  });
+}
+
+/** The `open` flag is fixed at paint time - a map left open for hours can show
+ *  a pin whose state has since flipped. The popup recomputes against the real
+ *  clock when it is tapped, which is the moment that has to be right. */
+function paintTicketPoints(m: MapboxMap, points: TicketPoint[], holidays: string[]) {
+  const src = m.getSource("ticket-points") as mapboxgl.GeoJSONSource | undefined;
+  if (!src) return;
+  const now = new Date();
+  src.setData({
+    type: "FeatureCollection",
+    features: points.map((p) => point([p.lng, p.lat], {
+      id: p.id, open: openStateAt(p, now, holidays).open,
+    })),
+  });
+}
+
+/** Report a tapped ticket point upwards, the same way a stop or a dock does:
+ *  the map anchors an empty container on a wide screen, and `TicketPointBoard`
+ *  draws into it; a phone gets a bottom sheet instead. A near-verbatim mirror
+ *  of `attachBikeStations`. */
+function attachTicketPoints(
+  m: MapboxMap,
+  onPick: () => ((id: string, anchor: HTMLElement | null, dismiss: () => void) => void) | undefined,
+  wide: () => boolean,
+) {
+  let popup: mapboxgl.Popup | null = null;
+  for (const layer of ["ticket-point-hit", "ticket-point-icon"]) {
+    m.on("mouseenter", layer, () => { m.getCanvas().style.cursor = "pointer"; });
+    m.on("mouseleave", layer, () => { m.getCanvas().style.cursor = ""; });
+  }
+  m.on("click", "ticket-point-hit", (event) => {
+    const id = event.features?.[0]?.properties?.id;
+    const feature = event.features?.[0];
+    if (!id || !feature || feature.geometry.type !== "Point") return;
+    popup?.remove();
+    popup = null;
+    if (!wide()) { onPick()?.(String(id), null, () => {}); return; }
+    const host = document.createElement("div");
+    const at = feature.geometry.coordinates as LngLat;
+    const balloon = new mapboxgl.Popup({
+      offset: 14, closeButton: false, maxWidth: "300px", className: "stopPopup",
+    }).setLngLat(at).setDOMContent(host).addTo(m);
+    popup = balloon;
+    if (typeof ResizeObserver !== "undefined") {
+      const watch = new ResizeObserver(() => balloon.setLngLat(at));
+      watch.observe(host);
+      balloon.on("close", () => watch.disconnect());
+    }
+    balloon.on("close", () => onPick()?.("", null, () => {}));
+    onPick()?.(String(id), host, () => balloon.remove());
   });
 }
 
@@ -555,10 +657,12 @@ function attachStopPopups(m: MapboxMap,
        one; a finger covers about forty. Query a box around the press and take
        the nearest, which is what every map app does and what makes the dots
        usable on a phone at all. */
-    /* A dock can sit beside a bus stop. In that overlap its own marker owns
-       the press rather than opening both cards at once. */
-    if (m.getLayer("bike-station-hit")
-        && m.queryRenderedFeatures(event.point, { layers: ["bike-station-hit"] }).length) return;
+    /* A dock or a ticket point can sit beside a bus stop. In that overlap its
+       own marker owns the press rather than opening both cards at once. */
+    for (const own of ["bike-station-hit", "ticket-point-hit"]) {
+      if (m.getLayer(own)
+          && m.queryRenderedFeatures(event.point, { layers: [own] }).length) return;
+    }
     const reach = 14;
     const { x, y } = event.point;
     const layers = ["all-stops", "trip-nodes", "trip-ends"].filter((l) => m.getLayer(l));

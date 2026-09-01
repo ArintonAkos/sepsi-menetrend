@@ -22,6 +22,7 @@ import { PlannerWorkerClient, plannerWorkerSupported } from "@/lib/planner-worke
 import { buildIndex } from "@/lib/engine/search";
 import { bikeStationsToPlaces, type BikeAvailability,
          type BikeStation } from "@/lib/sepsibike";
+import type { TicketPoint } from "@/lib/ticket-points";
 import { mergePlannerOptions } from "@/lib/planner-options";
 import { formatHHMM, minutesOfDay, serviceForDate } from "@/lib/engine/time";
 import { formatCoordinates, insideArea, reverse } from "@/lib/geocode";
@@ -29,6 +30,7 @@ import { isStraightLine, resetWalkingRouter, routeOnFoot, routesFrom, walkingCon
 import { routeByBike, routesByBikeFrom } from "@/lib/bicycle";
 import StopBoard from "../stops/StopBoard";
 import BikeStationBoard from "../bike/BikeStationBoard";
+import TicketPointBoard from "../ticket/TicketPointBoard";
 import Timetable from "../timetable/Timetable";
 import { Back, ShareIcon } from "../common/icons";
 import InstallApp from "../common/InstallApp";
@@ -66,10 +68,14 @@ const subscribeToWidth = (notify: () => void) => {
 };
 const isNarrow = () => widthQuery()?.matches ?? false;
 
-export default function Planner({ network, places, reach, box, fares, bikeStations = [], bikeSnapshotAt = "" }: {
+export default function Planner({
+  network, places, reach, box, fares, bikeStations = [], bikeSnapshotAt = "",
+  ticketPoints = [], holidays = [],
+}: {
   network: Network; places: Place[]; reach: number;
   box: [number, number, number, number]; fares: FareTable; bikeStations?: BikeStation[];
   bikeSnapshotAt?: string;
+  ticketPoints?: TicketPoint[]; holidays?: string[];
 }) {
   const ctx = useMemo(() => { primeStops(network); return prepare(network); }, [network]);
   const plannerWorker = useRef<PlannerWorkerClient | null>(null);
@@ -147,9 +153,13 @@ export default function Planner({ network, places, reach, box, fares, bikeStatio
     stations: bikeStations, source: "snapshot", fetchedAt: bikeSnapshotAt, stale: true,
   }));
   const [showBikeOptions, setShowBikeOptions] = useState(false);
+  const [showTicketPoints, setShowTicketPoints] = useState(false);
   const [bikeBoard, setBikeBoard] = useState<
     { stationId: string; anchor: HTMLElement | null; dismiss: () => void } | null>(null);
   const [closingBikeBoard, setClosingBikeBoard] = useState(false);
+  const [ticketBoard, setTicketBoard] = useState<
+    { pointId: string; anchor: HTMLElement | null; dismiss: () => void } | null>(null);
+  const [closingTicketBoard, setClosingTicketBoard] = useState(false);
 
   /* On a phone the panels are sheets pinned to the bottom of the screen, and a
      sheet cannot be a child of the panel it belongs to: any ancestor with a
@@ -189,6 +199,15 @@ export default function Planner({ network, places, reach, box, fares, bikeStatio
       setClosingBikeBoard(false);
     }, 220);
   }, [bikeBoard, closingBikeBoard]);
+  const closeTicketBoard = useCallback(() => {
+    if (!ticketBoard || closingTicketBoard) return;
+    setClosingTicketBoard(true);
+    setTimeout(() => {
+      ticketBoard.dismiss?.();
+      setTicketBoard(null);
+      setClosingTicketBoard(false);
+    }, 220);
+  }, [ticketBoard, closingTicketBoard]);
   const [timetableState, setTimetableState] = useState<{
     open: boolean;
     lineId: string | null;
@@ -374,6 +393,7 @@ export default function Planner({ network, places, reach, box, fares, bikeStatio
         setThemeState(savedTheme);
       }
       setShowBikeOptions(localStorage.getItem("sepsibike-options") === "on");
+      setShowTicketPoints(localStorage.getItem("ticket-points") === "on");
       setRecent(read(localStorage));
     } catch {}
     setPreferencesReady(true);
@@ -659,6 +679,10 @@ export default function Planner({ network, places, reach, box, fares, bikeStatio
     if (!preferencesReady) return;
     globalThis.localStorage?.setItem("sepsibike-options", showBikeOptions ? "on" : "off");
   }, [preferencesReady, showBikeOptions]);
+  useEffect(() => {
+    if (!preferencesReady) return;
+    globalThis.localStorage?.setItem("ticket-points", showTicketPoints ? "on" : "off");
+  }, [preferencesReady, showTicketPoints]);
 
   const planKey = [from?.name, to?.name, time, date.toDateString(), mode,
                    settledAversion, [...visibleLines].sort().join(","),
@@ -770,6 +794,8 @@ export default function Planner({ network, places, reach, box, fares, bikeStatio
   const shown = useRoutedWalks(picked?.journey ?? null);
   const bikeBoardStation = bikeBoard
     ? bikeAvailability.stations.find((station) => station.id === bikeBoard.stationId) ?? null : null;
+  const ticketBoardPoint = ticketBoard
+    ? ticketPoints.find((p) => p.id === ticketBoard.pointId) ?? null : null;
 
   /* What comes after the bus you are being shown. At a change this is the
      difference between "you have four minutes" and "you have four minutes or
@@ -808,6 +834,10 @@ export default function Planner({ network, places, reach, box, fares, bikeStatio
   const bikeSheet = bikeBoardStation ? (
     <BikeStationBoard station={bikeBoardStation} stale={bikeAvailability.stale}
                       fetchedAt={bikeAvailability.fetchedAt} t={t} onClose={closeBikeBoard} />
+  ) : null;
+  const ticketSheet = ticketBoardPoint ? (
+    <TicketPointBoard point={ticketBoardPoint} holidays={holidays} lang={lang} t={t}
+                      onClose={closeTicketBoard} />
   ) : null;
 
   return (
@@ -1009,6 +1039,18 @@ export default function Planner({ network, places, reach, box, fares, bikeStatio
             </>,
           ))}
 
+      {ticketSheet && (ticketBoard!.anchor
+        ? createPortal(ticketSheet, ticketBoard!.anchor)
+        : asSheet(
+            <>
+              <div className={`${styles.scrim} ${closingTicketBoard ? styles.closingScrim : ""}`}
+                   onClick={closeTicketBoard} aria-hidden />
+              <div className={`${styles.boardHolder} ${closingTicketBoard ? styles.closingBoard : ""}`}>
+                {ticketSheet}
+              </div>
+            </>,
+          ))}
+
       <main className={styles.map}>
         {/* The lazy map chunk can be ready before the first client render even
             though it was absent from the static HTML.  Keep the same loading
@@ -1021,6 +1063,10 @@ export default function Planner({ network, places, reach, box, fares, bikeStatio
                                bikeStations={bikeAvailability.stations}
                                onBikeStationPick={(stationId, anchor, dismiss) =>
                                  setBikeBoard(stationId ? { stationId, anchor, dismiss } : null)}
+                               ticketPoints={showTicketPoints ? ticketPoints : []}
+                               holidays={holidays}
+                               onTicketPointPick={(pointId, anchor, dismiss) =>
+                                 setTicketBoard(pointId ? { pointId, anchor, dismiss } : null)}
                                journey={shown} visibleLines={visibleLines} dark={dark}
                                routeLoading={routeLoading}
                                picking={picking !== null} onCentreChange={onCentreChange} />
@@ -1129,6 +1175,17 @@ export default function Planner({ network, places, reach, box, fares, bikeStatio
                             onClick={() => setShowBikeOptions(true)}>{t.bikeOptionsOn}</button>
                   </div>
                 </div>
+                {ticketPoints.length > 0 && (
+                  <div className={styles.setRow}>
+                    <span id="ticket-points-label">{t.ticketPointsLayer}</span>
+                    <div className={styles.seg} role="group" aria-labelledby="ticket-points-label">
+                      <button aria-pressed={!showTicketPoints}
+                              onClick={() => setShowTicketPoints(false)}>{t.ticketPointsOff}</button>
+                      <button aria-pressed={showTicketPoints}
+                              onClick={() => setShowTicketPoints(true)}>{t.ticketPointsOn}</button>
+                    </div>
+                  </div>
+                )}
                 {recent.length > 0 && (
                   <div className={styles.setRow}>
                     <span>{t.recent}</span>
