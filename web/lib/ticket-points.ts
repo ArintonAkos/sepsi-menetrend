@@ -137,6 +137,15 @@ export interface RankedTicketPoint {
   state: OpenState;
 }
 
+/** The nearest ticket point to a boarding stop, with a real walked distance -
+ *  shown on the journey card. */
+export interface TicketHint {
+  point: TicketPoint;
+  metres: number;
+  minutes: number;
+  open: boolean;
+}
+
 /** Every point, open ones first, then by straight-line distance. The finder
  *  takes `[0]`; the caller still routes a real walk to whatever it picks. */
 export function rankTicketPoints(

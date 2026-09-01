@@ -4,7 +4,7 @@ import { useCallback, useEffect, useMemo, useRef, useState,
          useSyncExternalStore } from "react";
 import { createPortal } from "react-dom";
 import dynamic from "next/dynamic";
-import { primeStops } from "../stops/stopLookup";
+import { primeStops, stopAt } from "../stops/stopLookup";
 
 /* Mapbox GL is by far the heaviest thing here and the panel does not need it.
    Loading it after hydration lets the planner answer before the map arrives -
@@ -22,7 +22,8 @@ import { PlannerWorkerClient, plannerWorkerSupported } from "@/lib/planner-worke
 import { buildIndex } from "@/lib/engine/search";
 import { bikeStationsToPlaces, type BikeAvailability,
          type BikeStation } from "@/lib/sepsibike";
-import type { TicketPoint } from "@/lib/ticket-points";
+import { rankTicketPoints, ticketPointsToPlaces,
+         type TicketHint, type TicketPoint } from "@/lib/ticket-points";
 import { mergePlannerOptions } from "@/lib/planner-options";
 import { formatHHMM, minutesOfDay, serviceForDate } from "@/lib/engine/time";
 import { formatCoordinates, insideArea, reverse } from "@/lib/geocode";
@@ -80,7 +81,10 @@ export default function Planner({
   const ctx = useMemo(() => { primeStops(network); return prepare(network); }, [network]);
   const plannerWorker = useRef<PlannerWorkerClient | null>(null);
   useEffect(() => () => plannerWorker.current?.dispose(), []);
-  const allPlaces = useMemo(() => [...places, ...bikeStationsToPlaces(bikeStations)], [places, bikeStations]);
+  const allPlaces = useMemo(
+    () => [...places, ...bikeStationsToPlaces(bikeStations), ...ticketPointsToPlaces(ticketPoints)],
+    [places, bikeStations, ticketPoints],
+  );
   const index = useMemo(() => buildIndex(allPlaces), [allPlaces]);
   /* Villages are indexed by Mapbox under their Romanian names only, so the
      search needs to know that Szotyor is Coșeni before it asks. */
@@ -792,6 +796,19 @@ export default function Planner({
 
   const picked = options[detail ?? chosen] ?? options[0] ?? null;
   const shown = useRoutedWalks(picked?.journey ?? null);
+
+  /* The first bus you board, and the clock reading at that moment - the point
+     from which "where do I still need a ticket?" is answered. */
+  const firstBoarding = useMemo(() => {
+    const ride = picked?.journey.legs.find((l): l is RideLeg => l.kind === "ride");
+    if (!ride) return null;
+    const at = stopAt(patterns.get(ride.patternId)?.stopIds[ride.fromIndex] ?? "");
+    if (!at) return null;
+    const moment = new Date(date);
+    moment.setHours(0, ride.board, 0, 0);
+    return { at, moment };
+  }, [picked, patterns, date]);
+  const ticketHint = useTicketHint(picked?.journey ?? null, firstBoarding, ticketPoints, holidays);
   const bikeBoardStation = bikeBoard
     ? bikeAvailability.stations.find((station) => station.id === bikeBoard.stationId) ?? null : null;
   const ticketBoardPoint = ticketBoard
@@ -1008,7 +1025,7 @@ export default function Planner({
                              stops={stops} fares={fares} date={date} lang={lang} t={t} dark={dark}
                              from={from?.name ?? ""} to={to?.name ?? ""}
                              laterBuses={laterBuses} bikeStations={bikeAvailability.stations}
-                             onBack={backFromDetail} />
+                             ticketHint={ticketHint} onBack={backFromDetail} />
             ) : null
           )}
         </div>}
@@ -1262,6 +1279,59 @@ export default function Planner({
 /** Replace the planner's straight-line access and egress walks with routed
  *  ones, for the journey currently on screen. Only that journey, and only the
  *  legs that still hold a two-point line. */
+/** The nearest ticket point to where you board the first bus, walked for real.
+ *  Null on a fare-free Friday, when nothing is within a short walk, or before
+ *  the walk has resolved. Shown on the journey card next to the fare.
+ *
+ *  Mirrors `useRoutedWalks`: a keyed result, a debounce so sweeping the result
+ *  list costs nothing, an `AbortController` per run. */
+function useTicketHint(
+  journey: Journey | null,
+  boarding: { at: LngLat; moment: Date } | null,
+  ticketPoints: TicketPoint[],
+  holidays: string[],
+): TicketHint | null {
+  const [hint, setHint] = useState<{ key: string; value: TicketHint | null } | null>(null);
+
+  const key = journey && boarding && ticketPoints.length
+    ? `${boarding.at.join()}@${boarding.moment.getTime()}`
+    : "";
+
+  useEffect(() => {
+    if (!key || !boarding) return;
+    // Friday travel is free network-wide, so no ticket to buy.
+    if (boarding.moment.getDay() === 5) { setHint({ key, value: null }); return; }
+
+    const near = rankTicketPoints(ticketPoints, boarding.at, boarding.moment, holidays).slice(0, 3);
+    if (!near.length) { setHint({ key, value: null }); return; }
+
+    const stop = new AbortController();
+    const timer = setTimeout(async () => {
+      const walks = await Promise.all(
+        near.map((r) => routeOnFoot(boarding.at, [r.point.lng, r.point.lat], stop.signal)),
+      );
+      if (stop.signal.aborted) return;
+      const best = near
+        .map((r, i) => ({ r, walk: walks[i] }))
+        .filter((c) => c.walk && c.walk.metres <= 650)
+        .sort((a, b) =>
+          (a.r.state.open === b.r.state.open ? 0 : a.r.state.open ? -1 : 1)
+          || a.walk!.minutes - b.walk!.minutes)[0];
+      setHint({
+        key,
+        value: best
+          ? { point: best.r.point, metres: best.walk!.metres, minutes: best.walk!.minutes,
+              open: best.r.state.open }
+          : null,
+      });
+    }, 550);
+    return () => { clearTimeout(timer); stop.abort(); };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [key]);
+
+  return hint?.key === key ? hint.value : null;
+}
+
 function useRoutedWalks(journey: Journey | null): Journey | null {
   const [routed, setRouted] = useState<{ key: string; journey: Journey } | null>(null);
 

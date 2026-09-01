@@ -7,8 +7,9 @@ import { shadeOf } from "@/lib/engine/types";
 import type { BikeLeg, Journey, Line, Pattern, RideLeg, Stop, WalkLeg } from "@/lib/engine/types";
 import type { Lang, Strings } from "@/lib/i18n";
 import type { BikeStation } from "@/lib/sepsibike";
+import type { TicketHint } from "@/lib/ticket-points";
 import HouseAd from "../common/HouseAd";
-import { Back, BikeIcon, Chevron, WalkIcon } from "../common/icons";
+import { Back, BikeIcon, Chevron, TicketIcon, WalkIcon } from "../common/icons";
 import styles from "./JourneyDetail.module.css";
 
 /** A stop time the operator never published, worked out by interpolation.
@@ -16,7 +17,8 @@ import styles from "./JourneyDetail.module.css";
 const ESTIMATE = "*";
 
 export default function JourneyDetail({
-  journey, lines, patterns, stops, fares, date, lang, t, from, to, dark, laterBuses, onBack, bikeStations = [],
+  journey, lines, patterns, stops, fares, date, lang, t, from, to, dark, laterBuses, onBack,
+  bikeStations = [], ticketHint = null,
 }: {
   journey: Journey; lines: Map<string, Line>; patterns: Map<string, Pattern>;
   stops: Map<string, Stop>; fares: FareTable; date: Date; lang: Lang; t: Strings;
@@ -25,6 +27,9 @@ export default function JourneyDetail({
   laterBuses: (leg: RideLeg) => string[];
   onBack: () => void;
   bikeStations?: BikeStation[];
+  /** Nearest ticket point to the first boarding stop, or null when travel is
+   *  free, nothing is close, or the walk is still resolving. */
+  ticketHint?: TicketHint | null;
 }) {
   const name = (stopId: string) => {
     const s = stops.get(stopId);
@@ -238,6 +243,18 @@ export default function JourneyDetail({
           </div>
           {!fare.free &&
             <small>{lang === "hu" ? fare.ticket.name.hu : fare.ticket.name.ro}</small>}
+          {!fare.free && ticketHint && (
+            <small className={styles.ticketHint}>
+              <TicketIcon />
+              <span>
+                {t.ticketNearby}: {ticketHint.point.name[lang]} · {ticketHint.metres} m
+                {" "}({ticketHint.minutes} {t.minutes}) ·{" "}
+                <b className={ticketHint.open ? styles.ticketOpen : styles.ticketShut}>
+                  {(ticketHint.open ? t.ticketOpen : t.ticketClosed).toLocaleLowerCase(lang)}
+                </b>
+              </span>
+            </small>
+          )}
         </div>
       )}
 

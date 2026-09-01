@@ -76,6 +76,11 @@
   font-family: ui-rounded, "SF Pro Rounded", "Varela Round", system-ui, sans-serif; }
 .fare small { color: var(--muted); font-size: 12px; line-height: 1.45; }
 
+.ticketHint { display: flex; align-items: flex-start; gap: 6px; }
+.ticketHint svg { flex: 0 0 auto; margin-top: 1px; color: var(--ink-2); }
+.ticketOpen { color: #2F9E44; font-weight: 600; }
+.ticketShut { color: var(--muted); font-weight: 600; }
+
 .estimated { margin: 0 18px 12px; font-size: 12px; line-height: 1.5; color: var(--muted); }
 
 /* the detail slides in from the side it came from, so the back button reads as
