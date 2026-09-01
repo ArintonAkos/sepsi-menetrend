@@ -1,0 +1,36 @@
+/* Full screen, same entrance as the Timetable - a list to read, not a control
+   to work beside the map. */
+.screen { position: fixed; inset: 0; z-index: 80; background: var(--paper);
+  display: grid; grid-template-rows: auto minmax(0, 1fr);
+  animation: arrive var(--move) var(--ease-out); }
+.screen.closing { animation: leave var(--move) var(--ease-out) forwards; }
+@keyframes arrive { from { opacity: 0; transform: translateY(100%); } to { opacity: 1; transform: none; } }
+@keyframes leave { from { opacity: 1; transform: none; } to { opacity: 0; transform: translateY(100%); } }
+@media (min-width: 861px) {
+  @keyframes arrive { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: none; } }
+  @keyframes leave { from { opacity: 1; transform: none; } to { opacity: 0; transform: translateY(20px); } }
+}
+
+.head { display: flex; align-items: center; gap: 10px;
+  padding: max(12px, env(safe-area-inset-top)) 16px 12px;
+  border-bottom: 1px solid var(--border); }
+.head button { width: 30px; height: 30px; display: grid; place-items: center;
+  margin-left: -4px; color: var(--ink); }
+.head h2 { margin: 0; font-size: 17px;
+  font-family: ui-rounded, "SF Pro Rounded", "Varela Round", system-ui, sans-serif; }
+
+.list { margin: 0; padding: 0; list-style: none; overflow: auto; overscroll-behavior: contain; }
+.list li + li { border-top: 1px solid var(--hair); }
+
+.row { width: 100%; text-align: left; display: grid; gap: 3px;
+  padding: 13px 16px; color: var(--ink-2); }
+.row:hover { background: var(--surface); }
+.name { font-weight: 700; font-size: 15px; color: var(--ink);
+  font-family: ui-rounded, "SF Pro Rounded", "Varela Round", system-ui, sans-serif; }
+.meta { font-size: 12.5px; color: var(--ink-2); }
+.hours { font-size: 12px; color: var(--muted); }
+.foot { display: flex; flex-wrap: wrap; gap: 4px 10px; align-items: baseline; margin-top: 2px; }
+.foot b { font-size: 12.5px; }
+.open { color: #2F9E44; }
+.shut { color: var(--muted); }
+.walk { font-size: 12px; color: var(--ink-2); }

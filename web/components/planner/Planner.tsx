@@ -31,6 +31,7 @@ import { routeByBike, routesByBikeFrom } from "@/lib/bicycle";
 import StopBoard from "../stops/StopBoard";
 import BikeStationBoard from "../bike/BikeStationBoard";
 import TicketPointBoard from "../ticket/TicketPointBoard";
+import TicketList from "../ticket/TicketList";
 import Timetable from "../timetable/Timetable";
 import { Back, ShareIcon } from "../common/icons";
 import InstallApp from "../common/InstallApp";
@@ -208,6 +209,7 @@ export default function Planner({
       setClosingTicketBoard(false);
     }, 220);
   }, [ticketBoard, closingTicketBoard]);
+  const [ticketListOpen, setTicketListOpen] = useState(false);
   const [timetableState, setTimetableState] = useState<{
     open: boolean;
     lineId: string | null;
@@ -470,9 +472,9 @@ export default function Planner({
     );
   }, [area, places, lang, t, chooseFrom]);
 
-  /* "Where do I buy a ticket?" - route to the nearest open sales point from
-     where the journey starts. With no start point yet, fall back to locating
-     the user (they tap again once it lands); the panel note says so. */
+  /* "Nearest ticket seller" - route to the nearest open sales point from where
+     the journey starts. With no start point yet, fall back to locating the
+     user (they pick the row again once it lands). */
   const findTicket = useCallback(() => {
     if (!from) { locate(); return; }
     const best = rankTicketPoints(ticketPoints, from.at, new Date(), holidays)[0];
@@ -482,8 +484,13 @@ export default function Planner({
       setShareNote(t.ticketFinderNoneOpen);
       setTimeout(() => setShareNote(null), 2600);
     }
-    closePanel();
-  }, [from, ticketPoints, holidays, lang, t, locate, chooseTo, closePanel]);
+  }, [from, ticketPoints, holidays, lang, t, locate, chooseTo]);
+
+  /* Every sales point, one screen, tapped to route there. */
+  const routeToTicket = useCallback((point: TicketPoint) => {
+    chooseTo({ name: point.name[lang], at: [point.lng, point.lat] });
+    setTicketListOpen(false);
+  }, [chooseTo, lang]);
 
   /* A journey starts where you are far more often than not, so the first field
      fills itself on arrival. Quietly: a refusal should leave an empty box to
@@ -853,6 +860,14 @@ export default function Planner({
     );
   }
 
+  if (ticketListOpen && ticketPoints.length > 0) {
+    return (
+      <TicketList points={ticketPoints} holidays={holidays} origin={from?.at ?? null}
+                  lang={lang} t={t} onRouteTo={routeToTicket}
+                  onClose={() => setTicketListOpen(false)} />
+    );
+  }
+
   const stopSheet = boardStop && stops.get(boardStop) ? (
     <StopBoard stop={stops.get(boardStop)!} ctx={ctx} lines={lineMap}
                service={serviceForDate(date)} now={minutesOfDay(new Date())}
@@ -1148,6 +1163,16 @@ export default function Planner({
               <path d="M3.5 9.5h17M8 3v3M16 3v3M8 13h3M8 17h3M14 13h2M14 17h2" />
             </svg>
           </button>
+          {ticketPoints.length > 0 && (
+            <button className={styles.round} aria-label={t.ticketList}
+                    onClick={() => setTicketListOpen(true)}>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}
+                   strokeLinecap="round" strokeLinejoin="round">
+                <path d="M4 8.5A1.5 1.5 0 0 1 5.5 7h13A1.5 1.5 0 0 1 20 8.5v1a2 2 0 0 0 0 5v1A1.5 1.5 0 0 1 18.5 17h-13A1.5 1.5 0 0 1 4 15.5v-1a2 2 0 0 0 0-5z" />
+                <path d="M13 7v10" strokeDasharray="1.5 2.5" />
+              </svg>
+            </button>
+          )}
           <InstallApp t={t} />
           {planning && (
             <button className={styles.round} aria-label={t.share} onClick={share}>

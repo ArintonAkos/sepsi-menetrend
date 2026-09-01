@@ -3,6 +3,7 @@
 import type { Lang, Strings } from "@/lib/i18n";
 import { openStateAt, type TicketPoint } from "@/lib/ticket-points";
 import { usePullToDismiss } from "../hooks/usePullToDismiss";
+import { ticketKindLine, ticketStatusText } from "./status";
 import styles from "./TicketPointBoard.module.css";
 
 /** One ticket sales point, anchored to its map marker (wide) or a bottom sheet
@@ -18,30 +19,8 @@ export default function TicketPointBoard({
   onClose: () => void;
 }) {
   const pullDismiss = usePullToDismiss(onClose);
-
-  const kind = point.kind === "kiosk" ? t.ticketKindKiosk
-    : point.kind === "machine" ? t.ticketKindMachine
-      : t.ticketKindShop;
-  const sells = point.sells
-    .map((s) => (s === "pass" ? t.ticketSellsPass : t.ticketSellsSingle))
-    .join(", ");
-
   const state = openStateAt(point, new Date(), holidays);
-  let status: string;
-  if (state.open) {
-    status = state.until
-      ? lang === "hu" ? `${t.ticketOpen} ${state.until}-ig`
-        : lang === "ro" ? `${t.ticketOpen} până la ${state.until}`
-          : `${t.ticketOpen} until ${state.until}`
-      : t.ticketOpen;
-  } else if (state.opensAt) {
-    const d = state.opensAt;
-    const hh = `${String(d.getHours()).padStart(2, "0")}:${String(d.getMinutes()).padStart(2, "0")}`;
-    const sameDay = d.toDateString() === new Date().toDateString();
-    status = `${t.ticketClosed} · ${t.ticketOpensAt} ${sameDay ? hh : `${t.days[d.getDay()]} ${hh}`}`;
-  } else {
-    status = t.ticketClosed;
-  }
+  const status = ticketStatusText(state, lang, t);
 
   return (
     <section className={styles.sheet} aria-label={point.name[lang]}
@@ -54,7 +33,7 @@ export default function TicketPointBoard({
         <button className={styles.close} onClick={onClose} aria-label={t.close}>×</button>
       </div>
       <div className={styles.body}>
-        <small>{kind} · {sells} · {t.ticketCash}</small>
+        <small>{ticketKindLine(point.kind, point.sells, t)}</small>
         <b className={state.open ? styles.open : styles.shut}>{status}</b>
       </div>
     </section>
