@@ -239,7 +239,9 @@ export default function JourneyDetail({
           <div className={styles.fareRow}>
             <span>{t.ticket}</span>
             <b>{fare.free ? t.freeFriday
-              : `${fare.count} × ${String(fare.ticket.price).replace(".", ",")} lej`}</b>
+              : `${fare.count} × ${lang === "ro"
+                ? String(fare.ticket.price).replace(".", ",")
+                : String(fare.ticket.price)} lej`}</b>
           </div>
           {!fare.free &&
             <small>{lang === "hu" ? fare.ticket.name.hu : fare.ticket.name.ro}</small>}

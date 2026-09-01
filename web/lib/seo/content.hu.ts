@@ -1,7 +1,7 @@
 /** Hungarian prose for the guide pages. Canonical language of the site.
  *
  *  Facts here are pinned by `web/public/data/fares.json` and the Multi-Trans
- *  fare card dated 2026-02-01: city ticket 2,5 lej / 50 perc, Árkos (10-es)
+ *  fare card dated 2026-02-01: city ticket 2.5 lej / 50 perc, Árkos (10-es)
  *  4 lej / 60 perc, a sofőrnél 5 lej, pénteken ingyenes. Buying methods and
  *  the sales-point list come from multitrans.ro/puncte_de_vanzare_a_biletelor.
  *  Prices are quoted "a multitrans.ro szerint" because the card may still drift. */
@@ -46,7 +46,7 @@ export const HU: Record<GuideKey, GuideCopy> = {
       { ul: LINES_HU },
       { h2: "Jegyek és az árkosi zóna" },
       {
-        p: "A városi jegy a multitrans.ro szerint 2,5 lej, és felszállástól számítva 50 percig érvényes. Jegyet a 24pay mobilalkalmazásban, jegyautomatából, a Multi-Trans jegypénztáraiban és több boltban lehet venni; a sofőrnél is, de drágábban (5 lej). A 10-es vonal átmegy Árkosra, amely külön község és külön díjzóna: oda a jegy 4 lej, és 60 percig érvényes. Városi jeggyel nem lehet felszállni az árkosi buszra; árkosi jeggyel viszont át lehet szállni a városi buszokra.",
+        p: "A városi jegy a multitrans.ro szerint 2.5 lej, és felszállástól számítva 50 percig érvényes. Jegyet a 24pay mobilalkalmazásban, jegyautomatából, a Multi-Trans jegypénztáraiban és több boltban lehet venni; a sofőrnél is, de drágábban (5 lej). A 10-es vonal átmegy Árkosra, amely külön község és külön díjzóna: oda a jegy 4 lej, és 60 percig érvényes. Városi jeggyel nem lehet felszállni az árkosi buszra; árkosi jeggyel viszont át lehet szállni a városi buszokra.",
       },
       { h2: "Ingyenes péntek" },
       {
@@ -67,7 +67,7 @@ export const HU: Record<GuideKey, GuideCopy> = {
     body: [
       { h2: "A városi jegy" },
       {
-        p: "A városi buszjegy a multitrans.ro szerint 2,5 lej. Felszállástól számítva 50 percig érvényes, ezen belül átszállással is lehet utazni. A jegy a városban, valamint Szotyorban, Kilyénben és Szépmezőn érvényes; Árkosra külön jegy kell.",
+        p: "A városi buszjegy a multitrans.ro szerint 2.5 lej. Felszállástól számítva 50 percig érvényes, ezen belül átszállással is lehet utazni. A jegy a városban, valamint Szotyorban, Kilyénben és Szépmezőn érvényes; Árkosra külön jegy kell.",
       },
       { h2: "Hogyan veszek jegyet?" },
       {
@@ -75,10 +75,10 @@ export const HU: Record<GuideKey, GuideCopy> = {
       },
       {
         ul: [
-          "Jegyautomatából – 2,5 lej. Az egyik automata a Stadion utcában, a sportcsarnoknál éjjel-nappal működik.",
+          "Jegyautomatából – 2.5 lej. Az egyik automata a Stadion utcában, a sportcsarnoknál éjjel-nappal működik.",
           "A Multi-Trans jegypénztáraiban – bódé a Szemerja végállomásnál, a vasútállomásnál és a Lábasháznál –, valamint több hírlapárusnál és boltban. A teljes lista a multitrans.ro-n van.",
-          "A sofőrnél, de csak egy útra és drágábban: a multitrans.ro szerint 5 lej a 2,5 helyett.",
-          "A 24pay mobilalkalmazásban, bankkártyával – 2,5 lej.",
+          "A sofőrnél, de csak egy útra és drágábban: a multitrans.ro szerint 5 lej a 2.5 helyett.",
+          "A 24pay mobilalkalmazásban, bankkártyával – 2.5 lej.",
         ],
       },
       {
@@ -86,7 +86,7 @@ export const HU: Record<GuideKey, GuideCopy> = {
       },
       { h2: "Az árkosi járat (10-es vonal)" },
       {
-        p: "Árkos külön község, ezért a 10-es vonal díjhatárt lép át. Az árkosi jegy a multitrans.ro szerint 4 lej, és 60 percig érvényes. A 2,5 lejes városi jeggyel nem lehet felszállni az árkosi buszra. Fordítva viszont igen: érvényes árkosi jeggyel át lehet szállni a városi buszokra új jegy vásárlása nélkül.",
+        p: "Árkos külön község, ezért a 10-es vonal díjhatárt lép át. Az árkosi jegy a multitrans.ro szerint 4 lej, és 60 percig érvényes. A 2.5 lejes városi jeggyel nem lehet felszállni az árkosi buszra. Fordítva viszont igen: érvényes árkosi jeggyel át lehet szállni a városi buszokra új jegy vásárlása nélkül.",
       },
       { h2: "Bérletek" },
       {
@@ -178,7 +178,7 @@ export const HU: Record<GuideKey, GuideCopy> = {
     faq: [
       {
         q: "Mennyibe kerül a buszjegy Sepsiszentgyörgyön?",
-        a: "A városi jegy a multitrans.ro szerint 2,5 lej (a sofőrnél 5 lej), és felszállástól számítva 50 percig érvényes. A 10-es vonalon Árkosig a jegy 4 lej, és 60 percig érvényes.",
+        a: "A városi jegy a multitrans.ro szerint 2.5 lej (a sofőrnél 5 lej), és felszállástól számítva 50 percig érvényes. A 10-es vonalon Árkosig a jegy 4 lej, és 60 percig érvényes.",
       },
       {
         q: "Hogyan veszek buszjegyet?",

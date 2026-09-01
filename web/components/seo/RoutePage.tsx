@@ -187,7 +187,7 @@ function faqFor(
       { q: "Mennyi ideig tart az út?", a: `Körülbelül ${primary.totalMin} perc.` },
       {
         q: "Mennyibe kerül a jegy?",
-        a: "2,5 lej / 50 perc a 24pay alkalmazásban (a multitrans.ro szerint).",
+        a: "2.5 lej / 50 perc a 24pay alkalmazásban (a multitrans.ro szerint).",
       },
     ];
   }

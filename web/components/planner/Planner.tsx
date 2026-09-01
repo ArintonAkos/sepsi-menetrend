@@ -153,7 +153,7 @@ export default function Planner({
     stations: bikeStations, source: "snapshot", fetchedAt: bikeSnapshotAt, stale: true,
   }));
   const [showBikeOptions, setShowBikeOptions] = useState(false);
-  const [showTicketPoints, setShowTicketPoints] = useState(false);
+  const [showTicketPoints, setShowTicketPoints] = useState(true);
   const [bikeBoard, setBikeBoard] = useState<
     { stationId: string; anchor: HTMLElement | null; dismiss: () => void } | null>(null);
   const [closingBikeBoard, setClosingBikeBoard] = useState(false);
@@ -393,7 +393,7 @@ export default function Planner({
         setThemeState(savedTheme);
       }
       setShowBikeOptions(localStorage.getItem("sepsibike-options") === "on");
-      setShowTicketPoints(localStorage.getItem("ticket-points") === "on");
+      setShowTicketPoints(localStorage.getItem("ticket-points") !== "off");
       setRecent(read(localStorage));
     } catch {}
     setPreferencesReady(true);
@@ -930,7 +930,8 @@ export default function Planner({
                         onActivate={(open) => setSearching(open ? "to" : null)}
                         onChoose={chooseTo} onForget={drop}
                         onPick={() => { setSearching(null); setPicking("to"); }}
-                        onLocate={() => locate()} />
+                        onLocate={() => locate()}
+                        onFindTicket={ticketPoints.length > 0 ? findTicket : undefined} />
             <button type="button" className={styles.swap} title={t.swap} aria-label={t.swap}
                     onClick={() => { const a = from; setFrom(to); setTo(a); }}>⇅</button>
           </form>
@@ -1212,13 +1213,6 @@ export default function Planner({
                       <button aria-pressed={showTicketPoints}
                               onClick={() => setShowTicketPoints(true)}>{t.ticketPointsOn}</button>
                     </div>
-                  </div>
-                )}
-                {ticketPoints.length > 0 && (
-                  <div className={styles.setRow}>
-                    <span>{t.ticketFinder}</span>
-                    <button className={styles.cookieReset} onClick={findTicket}>{t.ticketFinderGo}</button>
-                    <p className={styles.setNote}>{t.ticketFinderNote}</p>
                   </div>
                 )}
                 {recent.length > 0 && (

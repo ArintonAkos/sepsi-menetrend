@@ -18,7 +18,7 @@ const ICON: Record<string, string> = {
 
 export default function PlaceInput({
   label, value, index, pairs, area, lang, t, locating, active, keepOpen, recent,
-  into, onChoose, onPick, onLocate, onActivate, onForget,
+  into, onChoose, onPick, onLocate, onActivate, onForget, onFindTicket,
 }: {
   label: string;
   value: Chosen | null;
@@ -48,6 +48,8 @@ export default function PlaceInput({
   onChoose: (place: Chosen) => void;
   onPick: () => void;
   onLocate: () => void;
+  /** Only the destination field gets this: route to the nearest ticket seller. */
+  onFindTicket?: () => void;
 }) {
   const isHereName = (n: string) => n === "A helyzetem" || n === "Locația mea";
   const displayName = (n: string) => isHereName(n) ? t.hereName : n;
@@ -167,6 +169,25 @@ export default function PlaceInput({
               </span>
             </button>
           </li>
+          {onFindTicket && (
+            <li>
+              <button type="button" className={`${styles.rowBtn} ${styles.findTicket}`}
+                      onMouseDown={(e) => { e.preventDefault(); setOpen(false); onFindTicket(); }}
+                      onClick={() => { setOpen(false); onFindTicket(); }}>
+                <span className={styles.icon}>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}
+                       strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M4 8.5A1.5 1.5 0 0 1 5.5 7h13A1.5 1.5 0 0 1 20 8.5v1a2 2 0 0 0 0 5v1A1.5 1.5 0 0 1 18.5 17h-13A1.5 1.5 0 0 1 4 15.5v-1a2 2 0 0 0 0-5z" />
+                    <path d="M13 7v10" strokeDasharray="1.5 2.5" />
+                  </svg>
+                </span>
+                <span className={styles.text}>
+                  <span className={styles.name}>{t.ticketFinder}</span>
+                  <span className={styles.detail}>{t.ticketFinderNote}</span>
+                </span>
+              </button>
+            </li>
+          )}
           {untouched && recent.map((entry) => {
             const entryName = displayName(entry.name);
             return (

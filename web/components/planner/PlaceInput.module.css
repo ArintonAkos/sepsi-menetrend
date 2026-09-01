@@ -54,6 +54,10 @@
 .pickMap .icon { background: var(--signal); color: var(--signal-ink); }
 .pickMap svg { width: 16px; height: 16px; }
 
+.findTicket { color: var(--ink); }
+.findTicket .icon { background: var(--signal); color: var(--signal-ink); }
+.findTicket svg { width: 16px; height: 16px; }
+
 /* Rendered into the search screen's own section rather than hanging off the
    field, so it is the page, not a dropdown. */
 .inPage {

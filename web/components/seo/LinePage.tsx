@@ -157,7 +157,7 @@ function fareChip(lang: SeoLang, id: string, hedge: boolean): string {
   const arcus = id === "10";
   const amount =
     lang === "hu"
-      ? arcus ? "4 lej / 60 perc" : "2,5 lej / 50 perc"
+      ? arcus ? "4 lej / 60 perc" : "2.5 lej / 50 perc"
       : lang === "ro"
       ? arcus ? "4 lei / 60 min" : "2,5 lei / 50 min"
       : arcus ? "4 lei / 60 min" : "2.5 lei / 50 min";
