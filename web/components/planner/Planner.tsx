@@ -474,6 +474,21 @@ export default function Planner({
     );
   }, [area, places, lang, t, chooseFrom]);
 
+  /* "Where do I buy a ticket?" - route to the nearest open sales point from
+     where the journey starts. With no start point yet, fall back to locating
+     the user (they tap again once it lands); the panel note says so. */
+  const findTicket = useCallback(() => {
+    if (!from) { locate(); return; }
+    const best = rankTicketPoints(ticketPoints, from.at, new Date(), holidays)[0];
+    if (!best) return;
+    chooseTo({ name: best.point.name[lang], at: [best.point.lng, best.point.lat] });
+    if (!best.state.open) {
+      setShareNote(t.ticketFinderNoneOpen);
+      setTimeout(() => setShareNote(null), 2600);
+    }
+    closePanel();
+  }, [from, ticketPoints, holidays, lang, t, locate, chooseTo, closePanel]);
+
   /* A journey starts where you are far more often than not, so the first field
      fills itself on arrival. Quietly: a refusal should leave an empty box to
      type into, not an error nobody asked for. */
@@ -1201,6 +1216,13 @@ export default function Planner({
                       <button aria-pressed={showTicketPoints}
                               onClick={() => setShowTicketPoints(true)}>{t.ticketPointsOn}</button>
                     </div>
+                  </div>
+                )}
+                {ticketPoints.length > 0 && (
+                  <div className={styles.setRow}>
+                    <span>{t.ticketFinder}</span>
+                    <button className={styles.cookieReset} onClick={findTicket}>{t.ticketFinderGo}</button>
+                    <p className={styles.setNote}>{t.ticketFinderNote}</p>
                   </div>
                 )}
                 {recent.length > 0 && (
