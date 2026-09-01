@@ -22,8 +22,7 @@ import { PlannerWorkerClient, plannerWorkerSupported } from "@/lib/planner-worke
 import { buildIndex } from "@/lib/engine/search";
 import { bikeStationsToPlaces, type BikeAvailability,
          type BikeStation } from "@/lib/sepsibike";
-import { rankTicketPoints, ticketPointsToPlaces,
-         type TicketHint, type TicketPoint } from "@/lib/ticket-points";
+import { rankTicketPoints, type TicketHint, type TicketPoint } from "@/lib/ticket-points";
 import { mergePlannerOptions } from "@/lib/planner-options";
 import { formatHHMM, minutesOfDay, serviceForDate } from "@/lib/engine/time";
 import { formatCoordinates, insideArea, reverse } from "@/lib/geocode";
@@ -81,10 +80,7 @@ export default function Planner({
   const ctx = useMemo(() => { primeStops(network); return prepare(network); }, [network]);
   const plannerWorker = useRef<PlannerWorkerClient | null>(null);
   useEffect(() => () => plannerWorker.current?.dispose(), []);
-  const allPlaces = useMemo(
-    () => [...places, ...bikeStationsToPlaces(bikeStations), ...ticketPointsToPlaces(ticketPoints)],
-    [places, bikeStations, ticketPoints],
-  );
+  const allPlaces = useMemo(() => [...places, ...bikeStationsToPlaces(bikeStations)], [places, bikeStations]);
   const index = useMemo(() => buildIndex(allPlaces), [allPlaces]);
   /* Villages are indexed by Mapbox under their Romanian names only, so the
      search needs to know that Szotyor is Coșeni before it asks. */
