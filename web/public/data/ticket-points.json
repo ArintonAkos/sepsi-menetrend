@@ -1,0 +1,227 @@
+{
+  "generated": "2026-09-01",
+  "points": [
+    {
+      "id": "kiosk-simeria",
+      "kind": "kiosk",
+      "name": { "hu": "Szemerja végállomás", "ro": "Cap linie Simeria", "en": "Simeria terminus" },
+      "operator": "Multi-Trans",
+      "address": "str. Berzei",
+      "lat": 45.867935, "lng": 25.779293,
+      "sells": ["single", "pass"], "cash": true, "card": false,
+      "hours": { "mf": [["07:00", "12:00"], ["16:00", "21:00"]], "sat": [], "sun": [] }
+    },
+    {
+      "id": "kiosk-arcade",
+      "kind": "kiosk",
+      "name": { "hu": "Lábasház", "ro": "Casa cu Arcade", "en": "Casa cu Arcade" },
+      "operator": "Multi-Trans",
+      "address": "str. Kós Károly – str. Kriza János sarok",
+      "lat": 45.862637, "lng": 25.786516,
+      "sells": ["single", "pass"], "cash": true, "card": false,
+      "hours": { "mf": [["07:30", "15:30"]], "sat": [], "sun": [] },
+      "passHours": { "mf": [["08:00", "16:00"]], "sat": [], "sun": [] }
+    },
+    {
+      "id": "kiosk-gara",
+      "kind": "kiosk",
+      "name": { "hu": "Vasútállomás", "ro": "Gara CFR", "en": "Railway station" },
+      "operator": "Multi-Trans",
+      "address": "Gara CFR",
+      "lat": 45.863231643593814, "lng": 25.81018831606521,
+      "sells": ["single", "pass"], "cash": true, "card": false,
+      "hours": { "mf": [["05:30", "21:30"]], "sat": [], "sun": [] },
+      "passHours": { "mf": [["05:40", "21:40"]], "sat": [["05:40", "21:40"]], "sun": [["05:40", "21:40"]] }
+    },
+    {
+      "id": "machine-sala-sporturilor",
+      "kind": "machine",
+      "name": { "hu": "Sportcsarnok – jegyautomata", "ro": "Sala Sporturilor – automat", "en": "Sports hall – ticket machine" },
+      "operator": "Multi-Trans",
+      "address": "str. Stadionului (Sala Sporturilor „Szabó Katalin”)",
+      "lat": 45.86385770314989, "lng": 25.778017944508388,
+      "sells": ["single"], "cash": true, "card": false,
+      "hours": { "mf": [["00:00", "24:00"]], "sat": [["00:00", "24:00"]], "sun": [["00:00", "24:00"]] }
+    },
+    {
+      "id": "shop-jutti-dealului",
+      "kind": "shop",
+      "name": { "hu": "Domb utca (Jutti bolt)", "ro": "Str. Dealului (magazin Jutti)", "en": "Str. Dealului (Jutti shop)" },
+      "operator": "Jutti",
+      "address": "str. Vasile Goldiș",
+      "lat": 45.859109, "lng": 25.776788,
+      "sells": ["single"], "cash": true, "card": false,
+      "hours": { "mf": [["06:00", "22:00"]], "sat": [["07:00", "20:00"]], "sun": [["09:00", "21:00"]] }
+    },
+    {
+      "id": "shop-jutti-ciucului",
+      "kind": "shop",
+      "name": { "hu": "Csíki negyed (Jutti bolt)", "ro": "Cart. Ciucului (magazin Jutti)", "en": "Ciucului district (Jutti shop)" },
+      "operator": "Jutti",
+      "address": "str. Romulus Cioflec, bl. 20/A/1",
+      "lat": 45.87393342051116, "lng": 25.792012718709884,
+      "sells": ["single"], "cash": true, "card": false,
+      "hours": { "mf": [["07:00", "21:00"]], "sat": [["07:00", "20:00"]], "sun": [["08:00", "20:00"]] }
+    },
+    {
+      "id": "shop-smarald-sporturilor",
+      "kind": "shop",
+      "name": { "hu": "Sport utca (Smarald bolt)", "ro": "Str. Sporturilor (magazin Smarald)", "en": "Str. Sporturilor (Smarald shop)" },
+      "operator": "Smarald",
+      "address": "str. 1 Decembrie 1918, bl. 15",
+      "lat": 45.86405665378684, "lng": 25.798912777491715,
+      "sells": ["single"], "cash": true, "card": false,
+      "hours": { "mf": [["06:00", "21:00"]], "sat": [["08:00", "20:00"]], "sun": [["08:00", "20:00"]] }
+    },
+    {
+      "id": "shop-hajno-debren",
+      "kind": "shop",
+      "name": { "hu": "Debren (Hajno Market)", "ro": "Debren (Hajno Market)", "en": "Debren (Hajno Market)" },
+      "operator": "Hajno",
+      "address": "bd. Grigore Bălan nr. 35, bl. 52",
+      "lat": 45.86758448138123, "lng": 25.796214045979813,
+      "sells": ["single"], "cash": true, "card": false,
+      "hours": { "mf": [["06:00", "22:00"]], "sat": [["08:00", "17:00"]], "sun": [["08:00", "17:00"]] }
+    },
+    {
+      "id": "shop-hpress-stadionului",
+      "kind": "shop",
+      "name": { "hu": "Stadion utca – poliklinika (H-Press)", "ro": "Str. Stadionului – Policlinică (H-Press)", "en": "Str. Stadionului – polyclinic (H-Press)" },
+      "operator": "H-Press",
+      "address": "str. Stadionului (vis-a-vis de Policlinica Spitalului Județean Dr. Fogolyán Kristóf)",
+      "lat": 45.863500733813225, "lng": 25.778810953235922,
+      "sells": ["single"], "cash": true, "card": false,
+      "hours": { "mf": [["08:00", "12:00"]], "sat": [], "sun": [] }
+    },
+    {
+      "id": "shop-hpress-goldis",
+      "kind": "shop",
+      "name": { "hu": "Domb utca – buszmegálló (H-Press)", "ro": "Str. Vasile Goldiș – stație (H-Press)", "en": "Str. Vasile Goldiș – stop (H-Press)" },
+      "operator": "H-Press",
+      "address": "str. Vasile Goldiș (vis-a-vis de stația de autobuz)",
+      "lat": 45.859077719829095, "lng": 25.776881621179808,
+      "sells": ["single"], "cash": true, "card": false,
+      "hours": { "mf": [["06:00", "14:00"]], "sat": [], "sun": [] }
+    },
+    {
+      "id": "shop-hpress-balan-ajofm",
+      "kind": "shop",
+      "name": { "hu": "Grigore Bălan sugárút – AJOFM (H-Press)", "ro": "Bd. Grigore Bălan – AJOFM (H-Press)", "en": "Bd. Grigore Bălan – AJOFM (H-Press)" },
+      "operator": "H-Press",
+      "address": "str. General Grigore Bălan (vis-a-vis de AJOFM Covasna)",
+      "lat": 45.868647294641, "lng": 25.794102012434912,
+      "sells": ["single"], "cash": true, "card": false,
+      "hours": { "mf": [["06:00", "14:00"]], "sat": [], "sun": [] }
+    },
+    {
+      "id": "shop-hpress-institut",
+      "kind": "shop",
+      "name": { "hu": "Tervezőintézet (H-Press)", "ro": "Institutul de proiectare (H-Press)", "en": "Design institute (H-Press)" },
+      "operator": "H-Press",
+      "address": "vis-a-vis de Institutul de proiectare",
+      "lat": 45.862637288984885, "lng": 25.784336907345782,
+      "sells": ["single"], "cash": true, "card": false,
+      "hours": { "mf": [["06:00", "14:00"]], "sat": [], "sun": [] }
+    },
+    {
+      "id": "shop-hpress-miko-sugas",
+      "kind": "shop",
+      "name": { "hu": "Gróf Mikó Imre utca – Sugás Áruház (H-Press)", "ro": "Str. Gróf Mikó Imre – Magazinul Sugaș (H-Press)", "en": "Str. Gróf Mikó Imre – Sugaș store (H-Press)" },
+      "operator": "H-Press",
+      "address": "str. Gróf Mikó Imre (lângă Magazinul Universal Sugaș)",
+      "lat": 45.864373057730774, "lng": 25.79036276034965,
+      "sells": ["single"], "cash": true, "card": false,
+      "hours": { "mf": [["06:00", "14:00"]], "sat": [], "sun": [] }
+    },
+    {
+      "id": "shop-hpress-miko-salento",
+      "kind": "shop",
+      "name": { "hu": "Gróf Mikó Imre utca – Salento (H-Press)", "ro": "Str. Gróf Mikó Imre – Pizzeria Salento (H-Press)", "en": "Str. Gróf Mikó Imre – Salento pizzeria (H-Press)" },
+      "operator": "H-Press",
+      "address": "str. Gróf Mikó Imre (lângă Pizzeria Salento)",
+      "lat": 45.86437624766223, "lng": 25.789963791983887,
+      "sells": ["single"], "cash": true, "card": false,
+      "hours": { "mf": [["06:00", "20:00"]], "sat": [], "sun": [] }
+    },
+    {
+      "id": "shop-hpress-piata",
+      "kind": "shop",
+      "name": { "hu": "Központi piac (H-Press)", "ro": "Piața centrală (H-Press)", "en": "Central market (H-Press)" },
+      "operator": "H-Press",
+      "address": "Piața centrală",
+      "lat": 45.86047078155007, "lng": 25.788162279513678,
+      "sells": ["single"], "cash": true, "card": false,
+      "hours": { "mf": [["06:00", "14:00"]], "sat": [], "sun": [] }
+    },
+    {
+      "id": "shop-hpress-sporturilor",
+      "kind": "shop",
+      "name": { "hu": "Sport utca (H-Press)", "ro": "Str. Sporturilor (H-Press)", "en": "Str. Sporturilor (H-Press)" },
+      "operator": "H-Press",
+      "address": "str. Sporturilor",
+      "lat": 45.86219378162031, "lng": 25.799071791888355,
+      "sells": ["single"], "cash": true, "card": false,
+      "hours": { "mf": [["06:00", "14:00"]], "sat": [], "sun": [] }
+    },
+    {
+      "id": "shop-hpress-balan-daliei",
+      "kind": "shop",
+      "name": { "hu": "Grigore Bălan – Dália utca sarok (H-Press)", "ro": "Bd. Grigore Bălan colț cu str. Daliei (H-Press)", "en": "Bd. Grigore Bălan × str. Daliei (H-Press)" },
+      "operator": "H-Press",
+      "address": "str. General Grigore Bălan colț cu str. Daliei",
+      "lat": 45.859221050943624, "lng": 25.79676323637278,
+      "sells": ["single"], "cash": true, "card": false,
+      "hours": { "mf": [["06:00", "14:00"]], "sat": [], "sun": [] }
+    },
+    {
+      "id": "shop-hpress-gara-insula",
+      "kind": "shop",
+      "name": { "hu": "Vasútállomás – peron (H-Press)", "ro": "Gara CFR – pe insulă (H-Press)", "en": "Railway station – island (H-Press)" },
+      "operator": "H-Press",
+      "address": "Gara CFR, pe insulă",
+      "lat": 45.86364702440699, "lng": 25.810017957295553,
+      "sells": ["single"], "cash": true, "card": false,
+      "hours": { "mf": [["06:00", "12:00"]], "sat": [], "sun": [] }
+    },
+    {
+      "id": "shop-zoemia-chilieni",
+      "kind": "shop",
+      "name": { "hu": "Kilyén (Zoemia bolt)", "ro": "Chilieni (magazin Zoemia)", "en": "Chilieni (Zoemia shop)" },
+      "operator": "Zoemia",
+      "address": "Magazin mixt Zoemia",
+      "lat": 45.83738671200504, "lng": 25.80368978488134,
+      "sells": ["single"], "cash": true, "card": false,
+      "hours": { "mf": [["07:00", "20:00"]], "sat": [["07:00", "20:00"]], "sun": [["08:00", "19:00"]] }
+    },
+    {
+      "id": "shop-zoemia-coseni",
+      "kind": "shop",
+      "name": { "hu": "Szotyor (Zoemia bolt)", "ro": "Coșeni (magazin Zoemia)", "en": "Coșeni (Zoemia shop)" },
+      "operator": "Zoemia",
+      "address": "SC Prod Prest Com Zoemia SRL",
+      "lat": 45.81104454860678, "lng": 25.798519530627388,
+      "sells": ["single"], "cash": true, "card": false,
+      "hours": { "mf": [["07:00", "20:00"]], "sat": [["07:00", "20:00"]], "sun": [["08:00", "19:00"]] }
+    },
+    {
+      "id": "shop-norika-campu-frumos",
+      "kind": "shop",
+      "name": { "hu": "Szépmező (Norika-Dorika bolt)", "ro": "Câmpu Frumos (magazin Norika-Dorika)", "en": "Câmpu Frumos (Norika-Dorika shop)" },
+      "operator": "Norika-Dorika",
+      "address": "SC Norika-Dorika SRL",
+      "lat": 45.8614712630861, "lng": 25.84243026411532,
+      "sells": ["single"], "cash": true, "card": false,
+      "hours": { "mf": [["08:30", "13:00"], ["16:30", "21:00"]], "sat": [["10:00", "21:00"]], "sun": [] }
+    },
+    {
+      "id": "shop-eva-abc-kalvin",
+      "kind": "shop",
+      "name": { "hu": "Kálvin tér (EVA-ABC)", "ro": "Piața Kálvin (EVA-ABC)", "en": "Piața Kálvin (EVA-ABC)" },
+      "operator": "EVA-ABC",
+      "address": "Alimentație publică EVA-ABC SRL",
+      "lat": 45.87109443589344, "lng": 25.789029099685155,
+      "sells": ["single"], "cash": true, "card": false,
+      "hours": { "mf": [["06:15", "21:00"]], "sat": [["07:00", "15:00"]], "sun": [] }
+    }
+  ]
+}
