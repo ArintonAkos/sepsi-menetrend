@@ -565,14 +565,21 @@ export async function planMultimodal(
           const journey = removeNoProgressLoops(ctx, toJourney(end, start), request, walking);
           keep(journey);
         }
-        const nearbyStops = allStops;
-        const nearbyStopRoutes = await walksFrom(pointOf(station), nearbyStops.map((stop) => stop.at));
-        for (const [index, stop] of nearbyStops.entries()) {
-          const route = nearbyStopRoutes[index];
-          if (!route || route.minutes > MAX_ACCESS_MINUTES) continue;
-          enqueue({ at: stopNode(stop.id), minute: label.minute + route.minutes,
-            legs: [...label.legs, footLeg(null, stop.id, route)], walkMinutes: label.walkMinutes + route.minutes,
-            rides: label.rides, rentals: label.rentals });
+        /* Walk from this dock to a nearby stop - but only after actually riding
+           here. Without this guard a dock is a free pedestrian waypoint: the
+           search strings origin -> walk to dock -> walk to a far stop -> board,
+           reaching stops well outside the 15-minute access set on foot and then
+           offering a pointless three-minute bus ride the direct walk beats. */
+        if (label.legs.at(-1)?.kind === "bike") {
+          const nearbyStops = allStops;
+          const nearbyStopRoutes = await walksFrom(pointOf(station), nearbyStops.map((stop) => stop.at));
+          for (const [index, stop] of nearbyStops.entries()) {
+            const route = nearbyStopRoutes[index];
+            if (!route || route.minutes > MAX_ACCESS_MINUTES) continue;
+            enqueue({ at: stopNode(stop.id), minute: label.minute + route.minutes,
+              legs: [...label.legs, footLeg(null, stop.id, route)], walkMinutes: label.walkMinutes + route.minutes,
+              rides: label.rides, rentals: label.rentals });
+          }
         }
         /* Returning and immediately taking another bike at the same moment is
          * neither a transport-mode change nor a useful instruction. A second
