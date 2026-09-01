@@ -36,9 +36,9 @@
     {
       "id": "machine-sala-sporturilor",
       "kind": "machine",
-      "name": { "hu": "Sportcsarnok – jegyautomata", "ro": "Sala Sporturilor – automat", "en": "Sports hall – ticket machine" },
+      "name": { "hu": "Szabó Kati Sportcsarnok", "ro": "Sala Sporturilor Szabó Kati", "en": "Szabó Kati sports hall" },
       "operator": "Multi-Trans",
-      "address": "str. Stadionului (Sala Sporturilor „Szabó Katalin”)",
+      "address": "str. Stadionului (vis-a-vis de Spitalul Județean)",
       "lat": 45.86385770314989, "lng": 25.778017944508388,
       "sells": ["single"], "cash": true, "card": false,
       "hours": { "mf": [["00:00", "24:00"]], "sat": [["00:00", "24:00"]], "sun": [["00:00", "24:00"]] }
