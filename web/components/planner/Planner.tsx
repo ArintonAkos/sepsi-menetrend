@@ -860,13 +860,20 @@ export default function Planner({
     );
   }
 
-  if (ticketListOpen && ticketPoints.length > 0) {
-    return (
-      <TicketList points={ticketPoints} holidays={holidays} origin={from?.at ?? null}
-                  lang={lang} t={t} onRouteTo={routeToTicket}
-                  onClose={() => setTicketListOpen(false)} />
-    );
-  }
+  /* The list is a full-screen overlay, not an early return like the Timetable:
+     it exists to route somewhere, and unmounting the map underneath to show it
+     means the map remounts fresh the moment the list closes - it then misses
+     the journey the tap just produced, and the route only appears after some
+     other change nudges the paint effect. Kept mounted, portalled past `.app`
+     so `position: fixed` measures the viewport. */
+  const ticketListScreen = mounted && ticketListOpen && ticketPoints.length > 0
+    ? createPortal(
+        <TicketList points={ticketPoints} holidays={holidays} origin={from?.at ?? null}
+                    lang={lang} t={t} onRouteTo={routeToTicket}
+                    onClose={() => setTicketListOpen(false)} />,
+        document.body,
+      )
+    : null;
 
   const stopSheet = boardStop && stops.get(boardStop) ? (
     <StopBoard stop={stops.get(boardStop)!} ctx={ctx} lines={lineMap}
@@ -1309,6 +1316,7 @@ export default function Planner({
           </>)}
         </div>
       </main>
+      {ticketListScreen}
     </div>
   );
 }
