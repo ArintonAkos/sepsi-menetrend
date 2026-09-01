@@ -1,7 +1,9 @@
 /** English prose for the guide pages. Additive: Hungarian is the site's
- *  canonical language. Facts are pinned by the task brief and fares.json:
- *  city ticket 2.5 lei / 50 min via 24pay, Arcuș (line 10) 4 lei / 60 min,
- *  free on Fridays per Multi-Trans. Prices are quoted "per multitrans.ro". */
+ *  canonical language. Facts are pinned by fares.json and the Multi-Trans fare
+ *  card dated 2026-02-01: city ticket 2.5 lei / 50 min, Arcuș (line 10) 4 lei /
+ *  60 min, 5 lei from the driver, free on Fridays. Buying methods and the
+ *  sales-point list come from multitrans.ro/puncte_de_vanzare_a_biletelor.
+ *  Prices are quoted "per multitrans.ro". */
 import type { GuideCopy, GuideKey } from "./content";
 
 /** The twelve city lines with their end-to-end termini, primary direction.
@@ -38,7 +40,7 @@ export const EN: Record<GuideKey, GuideCopy> = {
       { p: "The twelve lines and the two end points of the main direction. The \"D\" services are supplementary departures the operator numbers separately." },
       { ul: LINES_EN },
       { h2: "Tickets and the Arcuș zone" },
-      { p: "The city ticket is 2.5 lei per multitrans.ro, valid for 50 minutes from boarding, transfers included. Buy it in the 24pay mobile app. Line 10 crosses into Arcuș, a separate commune and a separate fare zone: that ticket is 4 lei and valid for 60 minutes." },
+      { p: "The city ticket is 2.5 lei per multitrans.ro, valid for 50 minutes from boarding, transfers included. Buy it in the 24pay app, from a ticket machine, at a Multi-Trans kiosk or in one of several shops; also from the driver, but at 5 lei. Line 10 crosses into Arcuș, a separate commune and a separate fare zone: that ticket is 4 lei and valid for 60 minutes. A city ticket does not let you board the Arcuș bus; an Arcuș ticket does let you transfer onto the city buses." },
       { h2: "Free Fridays" },
       { p: "Per Multi-Trans, city bus travel is free on Fridays on every line, the Arcuș service included; the Sfântu Gheorghe municipality funds it. This is a recurring arrangement, not a permanent guarantee, so it is worth checking the Multi-Trans Facebook page from time to time." },
       { h2: "Timetable by line and by stop" },
@@ -50,23 +52,27 @@ export const EN: Record<GuideKey, GuideCopy> = {
     slug: "fares",
     title: "Ticket prices and how to pay on the Sfântu Gheorghe buses",
     description:
-      "How much a city bus ticket costs in Sfântu Gheorghe, how to buy one with the 24pay app, and when travel is free.",
+      "How much a city bus ticket costs in Sfântu Gheorghe, where to buy one (24pay, machine, kiosk, driver), and when travel is free.",
     body: [
       { h2: "The city ticket" },
-      { p: "The city bus ticket is 2.5 lei per multitrans.ro. It is valid for 50 minutes from boarding, and you can transfer within that time. The validity is stated by the operator; the price is taken from the multitrans.ro fares page." },
+      { p: "The city bus ticket is 2.5 lei per multitrans.ro. It is valid for 50 minutes from boarding, and you can transfer within that time. It is valid in the city and in Coșeni (Szotyor), Chilieni (Kilyén) and Câmpu Frumos (Szépmező); Arcuș needs a separate ticket." },
       { h2: "How do I buy a ticket?" },
-      { p: "Buy the city ticket in the 24pay mobile app." },
+      { p: "There are several ways, and most do not need a bank card:" },
       { ul: [
-        "Install the 24pay app and add a bank card.",
-        "Select Sfântu Gheorghe and the city bus ticket.",
-        "Activate the ticket as you board; its validity starts then.",
+        "From a ticket machine – 2.5 lei. One machine, on str. Stadionului by the sports hall, runs around the clock.",
+        "At a Multi-Trans kiosk – at the Simeria line terminus, the railway station and Casa cu Arcade – and at several newsagents and shops. The full list is on multitrans.ro.",
+        "From the driver, but for one trip only and dearer: 5 lei instead of 2.5, per multitrans.ro.",
+        "In the 24pay mobile app, with a bank card – 2.5 lei.",
       ] },
+      { p: "For 24pay: install the app, add a bank card, select Sfântu Gheorghe, and activate the ticket as you board — its validity starts then." },
       { h2: "The Arcuș line (line 10)" },
-      { p: "Arcuș is a separate commune, so line 10 crosses a fare boundary. The Arcuș ticket is 4 lei per multitrans.ro and valid for 60 minutes." },
+      { p: "Arcuș is a separate commune, so line 10 crosses a fare boundary. The Arcuș ticket is 4 lei per multitrans.ro and valid for 60 minutes. A 2.5 lei city ticket does not let you board the Arcuș bus. The other way round it does: with a valid Arcuș ticket you can transfer onto the city buses without buying a new ticket." },
+      { h2: "Passes" },
+      { p: "Per the Multi-Trans fare table of February 2026, a monthly pass for all lines is 84 lei. Pensioners get a free or reduced pass depending on their pension, and students at schools in Sfântu Gheorghe get one for free. Passes are issued at the Multi-Trans kiosks." },
       { h2: "Free Fridays" },
       { p: "Per Multi-Trans, travel is free on Fridays on every city line, the Arcuș service included. The municipality funds it. It is a recurring arrangement, not a permanent guarantee — worth checking the Multi-Trans Facebook page before you travel." },
       { h2: "How accurate are the prices?" },
-      { p: "Prices come from the multitrans.ro fares page and may be out of date. The validity windows (50 and 60 minutes) are the operator's. You see the exact current price in the 24pay app before you buy." },
+      { p: "Prices and sales points are taken from multitrans.ro and the Multi-Trans fare table of February 2026; they can change. You see the exact current price in the 24pay app or at a kiosk." },
     ],
   },
 
@@ -112,15 +118,16 @@ export const EN: Record<GuideKey, GuideCopy> = {
     slug: "faq",
     title: "Frequently asked questions about the Sfântu Gheorghe buses",
     description:
-      "Answers to the most common questions: ticket prices, free Fridays, buying a ticket in the 24pay app, night services and the main destinations.",
+      "Answers to the most common questions: ticket prices, free Fridays, where to buy a ticket, night services and the main destinations.",
     body: [
       { h2: "Frequently asked questions about the Sfântu Gheorghe buses" },
       { p: "The answers below cover ticket prices, free Friday travel, buying a ticket and the destinations people search for most." },
       { p: "The answers are based on the multitrans.ro timetable and Multi-Trans's public notices. For official, up-to-date information check multitrans.ro." },
     ],
     faq: [
-      { q: "How much is a bus ticket in Sfântu Gheorghe?", a: "The city ticket is 2.5 lei per multitrans.ro, valid for 50 minutes from boarding. On line 10 to Arcuș the ticket is 4 lei and valid for 60 minutes." },
-      { q: "How do I buy a bus ticket?", a: "Buy the ticket in the 24pay mobile app. Install the app, add a bank card, select Sfântu Gheorghe, and activate the ticket as you board." },
+      { q: "How much is a bus ticket in Sfântu Gheorghe?", a: "The city ticket is 2.5 lei per multitrans.ro (5 lei from the driver), valid for 50 minutes from boarding. On line 10 to Arcuș the ticket is 4 lei and valid for 60 minutes." },
+      { q: "How do I buy a bus ticket?", a: "Buy it in the 24pay app (with a bank card), from a ticket machine, at a Multi-Trans kiosk – at the Simeria terminus, the railway station and Casa cu Arcade – or in one of several shops, or from the driver, where it is dearer (5 lei). In 24pay you buy the ticket as you board." },
+      { q: "Do I need a bank card to buy a ticket?", a: "No. A bank card is only needed for the 24pay app. At the machine, the kiosks, the shops and the driver you can also pay cash." },
       { q: "Is the bus free on Fridays?", a: "Per Multi-Trans, travel is free on Fridays on every city line, the Arcuș service included. It is a recurring, municipality-funded arrangement, not a permanent guarantee." },
       { q: "Which bus goes to the railway station?", a: "The Railway Station (Vasútállomás) is a terminus of lines 1, 2, 7 and 9. The exact departure times are on each line's schedule page." },
       { q: "Which bus goes to the County Hospital?", a: "The County Hospital (Megyei Kórház) is a terminus of line 2. Departure times are on the line 2 page." },
