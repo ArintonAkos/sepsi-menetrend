@@ -348,18 +348,18 @@ function addLayers(m: MapboxMap, dark: boolean, network: Network,
     layout: { "icon-image": "bike-station",
               "icon-size": ["interpolate", ["linear"], ["zoom"], 12.2, 0.2, 16, 0.36],
               "icon-allow-overlap": true, "icon-ignore-placement": true } });
-  /* Ticket sales points: an opt-in layer (empty source when the toggle is off).
-     Same neighbourhood-level threshold as the stops and docks; the pin colour
-     is the open / closed state baked in at paint time. */
+  /* Ticket sales points: an opt-in layer (empty source when the toggle is off),
+     so when it is on the reader has asked to see it - a full pin, not the faint
+     dot a bus stop gets. Colour is the open / closed state, baked in at paint. */
   add({ id: "ticket-point-hit", type: "circle", source: "ticket-points",
     minzoom: 12.2,
-    paint: { "circle-radius": ["interpolate", ["linear"], ["zoom"], 12.2, 12, 16, 20],
+    paint: { "circle-radius": ["interpolate", ["linear"], ["zoom"], 12.2, 14, 16, 22],
              "circle-opacity": 0, "circle-stroke-opacity": 0 } });
   add({ id: "ticket-point-icon", type: "symbol", source: "ticket-points",
     minzoom: 12.2,
     layout: {
       "icon-image": ["case", ["get", "open"], "ticket-open", "ticket-closed"],
-      "icon-size": ["interpolate", ["linear"], ["zoom"], 12.2, 0.2, 16, 0.36],
+      "icon-size": ["interpolate", ["linear"], ["zoom"], 12.2, 0.42, 15.5, 0.66],
       "icon-allow-overlap": true, "icon-ignore-placement": true,
     } });
   add({ id: "trip-nodes", type: "circle", source: "nodes",
@@ -412,19 +412,22 @@ function sprites(dark: boolean) {
       + `<path d="M11.5 23.5l5.1-9h4.4l4.3 9m-10.2 0h10.2M18.2 14.5l-2.3-3.8m5.5 3.8h3.4"
                fill="none" stroke="#FFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>`
       + `<circle cx="14.9" cy="9.1" r="1.8" fill="#FFF"/>`),
-    "ticket-open": ticket("#2F9E44"),
-    "ticket-closed": ticket("#8A8A80"),
+    "ticket-open": ticketPin("#1E8E3E"),
+    "ticket-closed": ticketPin("#7A7A70"),
   };
 }
 
-/** A ticket badge: a coloured disc with a perforated stub. Green means open
- *  now, grey closed - the disambiguation the user actually needs at a glance. */
-function ticket(fill: string) {
+/** A ticket-point marker: a bold coloured disc with a white ticket, centred on
+ *  the point (so the hit circle lines up, as for a bus stop or a dock). Green
+ *  open, grey shut. Drawn heavier than a bus-stop dot - this layer only shows
+ *  when the reader has switched it on. */
+function ticketPin(fill: string) {
   return "data:image/svg+xml;charset=utf-8," + encodeURIComponent(
     `<svg xmlns="http://www.w3.org/2000/svg" width="72" height="72" viewBox="0 0 36 36">`
-    + `<circle cx="18" cy="18" r="15" fill="${fill}" stroke="#FBFAF7" stroke-width="2.4"/>`
-    + `<rect x="9" y="12.5" width="18" height="11" rx="2" fill="none" stroke="#FFF" stroke-width="2"/>`
-    + `<path d="M15 12.5v11" stroke="#FFF" stroke-width="2" stroke-dasharray="1.6 2"/>`
+    + `<circle cx="18" cy="18" r="14.5" fill="#FBFAF7"/>`
+    + `<circle cx="18" cy="18" r="12.5" fill="${fill}"/>`
+    + `<rect x="9.5" y="13" width="17" height="10" rx="2" fill="#FBFAF7"/>`
+    + `<path d="M15 13v10" stroke="${fill}" stroke-width="1.8" stroke-dasharray="1.4 1.8"/>`
     + `</svg>`);
 }
 
