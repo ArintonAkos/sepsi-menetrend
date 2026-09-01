@@ -2,6 +2,7 @@ import { Fragment } from "react";
 import type { Metadata } from "next";
 import PageFrame from "@/components/seo/PageFrame";
 import GuideBody from "@/components/seo/GuideBody";
+import TicketPoints from "@/components/seo/TicketPoints";
 import { GUIDES, type GuideKey } from "@/lib/seo/content";
 import { faqLd, jsonLdScript } from "@/lib/seo/jsonld";
 import { pageMetadata } from "@/lib/seo/metadata";
@@ -163,6 +164,8 @@ export default function GuidePageShell({ guideKey, lang }: { guideKey: GuideKey;
     >
       <h1 className={styles.h1}>{g.title[lang]}</h1>
       <GuideBody blocks={g.body[lang]} />
+
+      {guideKey === "fares" ? <TicketPoints lang={lang} /> : null}
 
       {faq ? <FaqSection items={faq} /> : null}
       {faq ? (

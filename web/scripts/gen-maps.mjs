@@ -1,4 +1,5 @@
-/** Bake the static route-map PNGs for the line pages.
+/** Bake the static map PNGs: one per line-direction for the line pages, plus
+ *  one ticket sales-point overview for the fares pages.
  *
  *  Runs as the first step of `npm run build` (and on its own via `npm run
  *  maps`), BEFORE `next build`. The pure bits it needs — the polyline encoder,
@@ -18,6 +19,7 @@
  *  back to the `RouteShape` SVG).
  */
 
+import { createHash } from "node:crypto";
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import {
@@ -25,6 +27,53 @@ import {
   lineMapHash,
   staticMapUrl,
 } from "../lib/seo/line-maps-core.mjs";
+
+/* ---- ticket sales-point overview map ----
+ *
+ *  One PNG for the fares pages: every ticket point as a small pin, Multi-Trans
+ *  kiosks + the machine in the panel olive, partner shops in muted grey. Same
+ *  `light-v11` basemap and the same manifest gate as the line maps. `.ts` has
+ *  no consumer that builds this URL, so it lives here with nothing to drift
+ *  against. */
+const TICKET_MAP = {
+  name: "ticket-points",
+  style: "mapbox/light-v11",
+  w: 640,
+  h: 460,
+  padding: 44,
+  // Multi-Trans's own points (kiosks + machine) stand out: a large pin in the
+  // signal yellow. Partner shops are small muted pins.
+  mtPin: "pin-l+efc913",
+  shopPin: "pin-s+7a7a68",
+};
+
+const round5 = (n) => Math.round(n * 1e5) / 1e5;
+
+function ticketMapPins(points) {
+  return points
+    .map((p) => {
+      const pin = p.kind === "shop" ? TICKET_MAP.shopPin : TICKET_MAP.mtPin;
+      return `${pin}(${round5(p.lng)},${round5(p.lat)})`;
+    })
+    .join(",");
+}
+
+function ticketMapHash(points) {
+  const stable = {
+    ...TICKET_MAP,
+    points: points
+      .map((p) => `${p.id}:${p.kind}:${round5(p.lng)},${round5(p.lat)}`)
+      .sort(),
+  };
+  return createHash("sha256").update(JSON.stringify(stable)).digest("hex");
+}
+
+function ticketMapUrl(points, token) {
+  return (
+    `https://api.mapbox.com/styles/v1/${TICKET_MAP.style}/static/${ticketMapPins(points)}` +
+    `/auto/${TICKET_MAP.w}x${TICKET_MAP.h}?access_token=${token}&padding=${TICKET_MAP.padding}`
+  );
+}
 
 /* ---- lineDirections (mirrors lib/seo/lines.ts, which is `.ts` and cannot be
  *  imported here) ----
@@ -140,6 +189,37 @@ try {
         failed += 1;
       }
     }
+  }
+
+  // The ticket sales-point overview, one image, same gate.
+  try {
+    const points = JSON.parse(
+      readFileSync(join(process.cwd(), "public", "data", "ticket-points.json"), "utf8"),
+    ).points;
+    const hash = ticketMapHash(points);
+    const png = join(MAPS_DIR, `${TICKET_MAP.name}.png`);
+    if (existsSync(png) && manifest[TICKET_MAP.name] === hash) {
+      cached += 1;
+    } else {
+      const res = await fetch(ticketMapUrl(points, token), {
+        signal: AbortSignal.timeout(20_000),
+      });
+      if (!res.ok) {
+        throw new Error(`${res.status} ${(await res.text()).slice(0, 200)}`);
+      }
+      const buf = Buffer.from(await res.arrayBuffer());
+      if (buf.length < 1024 || !buf.subarray(0, 8).equals(PNG_MAGIC)) {
+        throw new Error(
+          `not a PNG (${res.headers.get("content-type")}, ${buf.length} bytes)`,
+        );
+      }
+      writeFileSync(png, buf);
+      manifest[TICKET_MAP.name] = hash;
+      generated += 1;
+    }
+  } catch (e) {
+    console.warn(`gen-maps: ${TICKET_MAP.name} failed — ${e.message}; keeping fallback`);
+    failed += 1;
   }
 
   const sorted = {};
