@@ -1,6 +1,7 @@
 .screen { position: fixed; inset: 0; z-index: 80; background: var(--paper);
-  display: grid; grid-template-rows: auto auto minmax(0, 1fr);
+  display: grid; grid-template-rows: auto auto auto minmax(0, 1fr);
   animation: arrive var(--move) var(--ease-out); }
+.noticeSlot:not(:empty) { padding: 12px 16px 0; }
 .screen.closing {
   animation: leave var(--move) var(--ease-out) forwards;
 }

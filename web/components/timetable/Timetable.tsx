@@ -7,6 +7,7 @@ import { shadeOf } from "@/lib/engine/types";
 import type { Line, Network, ServiceId, Stop } from "@/lib/engine/types";
 import type { Lang, Strings } from "@/lib/i18n";
 import { Back } from "../common/icons";
+import ServiceNotice from "../common/ServiceNotice";
 import styles from "./Timetable.module.css";
 
 interface Direction {
@@ -118,6 +119,10 @@ export default function Timetable({
       <div className={styles.head}>
         <button onClick={handleClose} aria-label={t.back}><Back /></button>
         <h2>{t.timetables}</h2>
+      </div>
+
+      <div className={styles.noticeSlot}>
+        <ServiceNotice validFrom={network.validFrom} t={t} />
       </div>
 
       <div className={styles.picks}>

@@ -35,6 +35,7 @@ import TicketList from "../ticket/TicketList";
 import Timetable from "../timetable/Timetable";
 import { Back, ShareIcon } from "../common/icons";
 import InstallApp from "../common/InstallApp";
+import ServiceNotice from "../common/ServiceNotice";
 import { decodeTrip, encodeTrip, shareLink } from "@/lib/share";
 import { useDismiss } from "../hooks/useDismiss";
 import { useDrawer } from "../hooks/useDrawer";
@@ -913,6 +914,9 @@ export default function Planner({
                aria-label={t.journey}><i /></div>
         )}
         <div className={styles.panel}>
+          {!searching && detail === null && (
+            <ServiceNotice validFrom={network.validFrom} t={t} />
+          )}
           <div className={styles.searchHead}>
             <button onClick={closeSearching} aria-label={t.back}><Back /></button>
             <h2>{t.whereTo}</h2>

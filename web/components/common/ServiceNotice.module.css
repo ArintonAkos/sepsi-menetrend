@@ -1,0 +1,43 @@
+/* A temporary strip - reads on both the olive planner panel and the paper
+   Timetable header, so it carries its own surface. */
+.notice {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin: 0 0 10px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: var(--signal);
+  color: var(--signal-ink);
+  font-size: 12.5px;
+  line-height: 1.45;
+}
+
+.notice svg {
+  flex: 0 0 auto;
+  width: 17px;
+  height: 17px;
+  margin-top: 1px;
+}
+
+.notice p {
+  flex: 1;
+  margin: 0;
+}
+
+.notice button {
+  flex: 0 0 auto;
+  width: 22px;
+  height: 22px;
+  margin: -3px -3px 0 0;
+  display: grid;
+  place-items: center;
+  font-size: 17px;
+  line-height: 1;
+  color: var(--signal-ink);
+  opacity: 0.7;
+}
+
+.notice button:hover {
+  opacity: 1;
+}
