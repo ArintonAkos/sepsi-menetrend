@@ -17,3 +17,15 @@ Gemini_Generated_Image_*.jpeg
 
 # Local Netlify folder
 .netlify
+
+# Local Deno lockfile for the Netlify edge function - regenerated on `netlify dev`
+web/deno.lock
+
+# Local agent / analytics tooling and captures. These were committed by mistake
+# once (scrubbed 2026-09-06) and carry live credentials - never track them.
+.agents/
+/sepsi-menetrend-*.json
+/Trace-*.json.gz
+/Understand_web_and_or_app_traffic_overview.csv
+/facebook_post_bilingual.md
+/scripts/get_analytics.py
