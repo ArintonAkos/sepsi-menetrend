@@ -174,6 +174,16 @@ class BoardCoverageTests(unittest.TestCase):
                 route_stops |= {s["name"]["ro"] for s in _load(p)["stops"]}
         self.assertEqual(board_stops - route_stops, set())
 
+    @unittest.skipUnless(Path("timetable.json").exists(), "timetable.json not built yet")
+    def test_line6_covers_every_board_stop(self):
+        board_stops = board_line_stops("6")
+        route_stops = set()
+        for d in ("depart", "return"):
+            p = Path(f"line-6/{d}.json")
+            if p.exists():
+                route_stops |= {s["name"]["ro"] for s in _load(p)["stops"]}
+        self.assertEqual(board_stops - route_stops, set())
+
 
 if __name__ == "__main__":
     unittest.main()
