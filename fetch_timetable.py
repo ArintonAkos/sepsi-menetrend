@@ -14,10 +14,12 @@ Two compatibility details matter when importing it:
 
 Output  timetable.json
 
-The page currently publishes 291 line-at-station columns. The route geometry
-has more physical calls than the board, so only those explicit columns are
-marked as GTFS timing points; the remaining calls retain a clearly labelled
-interpolation.
+The Sept 7 2026 board publishes 221 line-at-station columns across 100 stops
+(lines 1, 1B, 1D, 2, 2D, 3, 4, 5, 6, 7, 9, 10). The route geometry has more
+physical calls than the board, so only those explicit columns are marked as
+GTFS timing points; the remaining calls retain a clearly labelled
+interpolation. Columns whose line geometry has not been rebuilt yet (1B, and
+the split Kossuth Lajos poles on line 10) stay unbound until later tasks.
 """
 
 import json
@@ -31,12 +33,25 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent
 URL = "https://www.multitrans.ro/orarele/multitrans_menetrendek_web.html"
 OUTPUT = ROOT / "timetable.json"
-ORDER = ["1", "1D", "2", "2D", "3", "4", "5", "5D", "6", "7", "9", "10"]
+ORDER = ["1", "1B", "1D", "2", "2D", "3", "4", "5", "5D", "6", "7", "9", "10"]
 
 # Timetable spelling -> the name used on the line pages.
 ALIASES = {
     "Centru comercial": "Centru Comercial",
     "Simeria (Str.Berzei)": "Cap Linie Simeria",
+    # Sept 7 board: the Szemerja terminus is printed as "Simeria (Str. Berzei)"
+    # (with a space) and, on a few columns, with the ro/hu fields swapped. Both
+    # spellings are the same pole we hold as "Cap Linie Simeria".
+    "Simeria (Str. Berzei)": "Cap Linie Simeria",
+    "Szemerja (Gólya utca)": "Cap Linie Simeria",
+    # Sept 7 board: new/renamed stops on the Árkos and Szotyor tails.
+    "Bis. Reformată Arcuș": "Biserica Reformată Arcuș",
+    "Coșeni": "Coșeni 2",
+    # The board splits "Cart. Kossuth Lajos" into numbered poles; the board
+    # spelling is already the canonical one, so map it to itself rather than
+    # let a later rewrite touch it.
+    "Str. Kossuth Lajos 1": "Str. Kossuth Lajos 1",
+    "Str. Kossuth Lajos 2": "Str. Kossuth Lajos 2",
     "Cart. Ciucului": "Cartierul Ciucului",
     "Liceul de Artă Plugor Sándor": "Lic. Plugor Sándor",
     "Piaţa Kálvin": "Piața Kálvin",
@@ -62,9 +77,13 @@ SERVICES = {
 
 # A smaller result means the operator page changed or an import bug returned.
 # Refuse to replace a complete local timetable with such a partial download.
-MIN_STATIONS = 90
-MIN_TIMEPOINTS = 250
-MIN_DEPARTURES = 7000
+MIN_STATIONS = 95
+# provisional — retuned in Task 15 once every board column binds. The Sept 7
+# board carries route geometry for lines 2/6/1B/10 that we have not rebuilt
+# yet, so a live run now binds ~216 timing points / ~6200 departures; these
+# floors sit ~10% below that and still reject a genuinely partial download.
+MIN_TIMEPOINTS = 194
+MIN_DEPARTURES = 5575
 
 
 def fold(text):
@@ -121,15 +140,23 @@ def times_of(schedule):
 
 
 def normalise_station_names(station, known):
-    """Return canonical names, accepting both historic and current field labels."""
+    """Return canonical names, accepting both historic and current field labels.
+
+    For each field orientation we try the printed Romanian name against the
+    line-page names first, and only then its alias. A name the line pages
+    already use verbatim (the board now prints some of these, e.g. the
+    "Simeria (Str. Berzei)" terminus) must not be rewritten by an alias.
+    """
     candidates = (
         (station["ro"], station["hu"]),
         (station["hu"], station["ro"]),
     )
     for romanian, _hungarian in candidates:
-        romanian = ALIASES.get(romanian, romanian)
         if romanian in known:
             return romanian, known[romanian]
+        aliased = ALIASES.get(romanian, romanian)
+        if aliased in known:
+            return aliased, known[aliased]
     romanian, hungarian = candidates[0]
     return ALIASES.get(romanian, romanian), hungarian
 

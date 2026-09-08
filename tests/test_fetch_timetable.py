@@ -1,6 +1,12 @@
 import unittest
 
-from fetch_timetable import events_of, normalise_station_names, times_of, validate_coverage
+from fetch_timetable import (
+    ALIASES,
+    events_of,
+    normalise_station_names,
+    times_of,
+    validate_coverage,
+)
 
 
 class CurrentOperatorTimetableTests(unittest.TestCase):
@@ -83,6 +89,30 @@ class CurrentOperatorTimetableTests(unittest.TestCase):
 
     def test_accepts_the_current_complete_operator_download(self):
         validate_coverage(station_count=100, timepoint_count=291, departure_count=8444)
+
+    def test_golya_utca_terminus_normalises_to_known_stop(self):
+        known = {"Simeria (Str. Berzei)": "Szemerja (Gólya utca)"}
+        station = {"id": 11, "ro": "Szemerja (Gólya utca)", "hu": "Simeria (Str. Berzei)"}
+        ro, hu = normalise_station_names(station, known)
+        self.assertEqual(ro, "Simeria (Str. Berzei)")
+
+    def test_new_arcus_stops_alias(self):
+        self.assertEqual(ALIASES.get("Bis. Reformată Arcuș"), "Biserica Reformată Arcuș")
+        self.assertEqual(ALIASES.get("Str. Kossuth Lajos 1"), "Str. Kossuth Lajos 1")
+
+    def test_marked_departures_are_kept_as_events(self):
+        # Characterisation test: the `marked` flag rides through on each event
+        # unchanged. Splitting the D-line extension into its own trips is the
+        # job of build_trips / timetable_overrides, not of events_of.
+        schedule = {"rows": [{"h": "05", "entries": [
+            {"m": "21", "marked": False}, {"m": "31", "marked": True}]}]}
+        events = events_of(schedule)
+        self.assertEqual(events, [{"time": "05:21", "marked": False},
+                                  {"time": "05:31", "marked": True}])
+
+    def test_coverage_floor_rejects_partial(self):
+        with self.assertRaisesRegex(ValueError, "incomplete timetable"):
+            validate_coverage(60, 80, 3000)
 
 
 if __name__ == "__main__":
