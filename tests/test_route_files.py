@@ -78,18 +78,49 @@ class Line5AnchorTests(unittest.TestCase):
                          (last["stop_lat"], last["stop_lon"]))
         self.assertIsNone(last["distance_to_next_m"])
 
+    # The 28 distinct stops of the pre-Sept-7 line-5 loop (old stops[:-1], i.e.
+    # everything bar the loop-closing "Str. József Attila 2" duplicate), as a
+    # sorted (name_ro, name_hu, lat, lon) multiset. Inlined so the test needs no
+    # external fixture. Rotation only re-orders the loop, so the rotated file
+    # must still carry exactly this multiset in its own stops[:-1].
+    OLD_LINE5_DISTINCT_STOPS = sorted([
+        ("Arena Sepsi", "Sepsi Aréna", 45.8822, 25.8071),
+        ("B-dul Grigore Bălan 1", "G. Bálán sugárút 1", 45.8622, 25.7962),
+        ("B-dul Grigore Bălan 2", "G. Bálán sugárút 2", 45.858, 25.7964),
+        ("B-dul Nicolae Iorga 1", "N. Iorga sugárút 1", 45.858, 25.7948),
+        ("B-dul Nicolae Iorga 2", "N. Iorga sugárút 2", 45.8591, 25.792),
+        ("Biserica Reformată", "Református Templom", 45.8643, 25.7919),
+        ("Casa cu Arcade", "Lábasház", 45.8636, 25.7866),
+        ("Centru Comercial", "Bevásárlóközpont", 45.8693, 25.801),
+        ("Centru Comercial", "Bevásárlóközpont", 45.8698, 25.8006),
+        ("Col. Mihai Viteazul", "Vitéz Mihály Líceum", 45.861, 25.7855),
+        ("Fabrica de Lapte", "Tejgyár", 45.8751, 25.8007),
+        ("Fabrica de Lapte", "Tejgyár", 45.8751, 25.8007),
+        ("Fabrica de Țigarete", "Cigarettagyár", 45.8584, 25.7822),
+        ("Gara CFR", "Vasútállomás", 45.8631, 25.8101),
+        ("Gara CFR", "Vasútállomás", 45.8631, 25.8101),
+        ("Institutul de Proiectări", "Tervező Intézet", 45.8617, 25.7819),
+        ("Izvorul Sulfuros", "Büdöskút", 45.8555, 25.7672),
+        ("Parcul Elisabeta", "Erzsébet Park", 45.8643, 25.7866),
+        ("Str. Dealului", "Domb utca", 45.8589, 25.7768),
+        ("Str. Dózsa György", "Dózsa György utca", 45.8568, 25.7733),
+        ("Str. József Attila 1", "József Attila u. 1", 45.8544, 25.7771),
+        ("Str. József Attila 2", "József Attila u. 2", 45.8541, 25.7722),
+        ("Str. Kós Károly", "Kós Károly utca", 45.8559, 25.779),
+        ("Str. Lăcrămioarei 1", "Gyöngyvirág utca 1", 45.8598, 25.7995),
+        ("Str. Lăcrămioarei 1", "Gyöngyvirág utca 1", 45.8605, 25.8001),
+        ("Str. Lăcrămioarei 2", "Gyöngyvirág utca 2", 45.858, 25.7981),
+        ("Str. Lăcrămioarei 2", "Gyöngyvirág utca 2", 45.858, 25.7981),
+        ("Tribunal", "Törvényszék", 45.8624, 25.7879),
+    ])
+
     def test_line5_keeps_the_same_stop_multiset_after_rotation(self):
         """Same physical loop, just rotated: the distinct stops (everything bar
         the loop-closing duplicate) are an exact permutation of the old file."""
         d = _load("line-5/depart.json")
-        cur = _load(".superpowers/sdd/2026-09-09-sept-7-timetable/task2-data/"
-                    "line-5-depart-CURRENT.json")
-
-        def bag(doc):
-            return sorted((s["name"]["ro"], s["stop_lat"], s["stop_lon"])
-                          for s in doc["stops"][:-1])
-
-        self.assertEqual(bag(d), bag(cur))
+        bag = sorted((s["name"]["ro"], s["name"]["hu"], s["stop_lat"], s["stop_lon"])
+                     for s in d["stops"][:-1])
+        self.assertEqual(bag, self.OLD_LINE5_DISTINCT_STOPS)
 
     def test_line5_headsign_names_dozsa_gyorgy(self):
         d = _load("line-5/depart.json")
