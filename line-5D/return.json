@@ -4,14 +4,14 @@
   "circular": false,
   "closes_loop_at_start": false,
   "headsign": {
-    "ro": "Câmpul Frumos → Str. József Attila 2",
-    "hu": "Szépmező → József Attila u. 2"
+    "ro": "Câmpul Frumos → Str. Dózsa György",
+    "hu": "Szépmező → Dózsa György utca"
   },
   "source": {
     "ro": "https://multitrans.ro/jarat-5d-retur.html",
     "hu": "https://multitrans.ro/jarat-5d-retur-hu.html"
   },
-  "stop_count": 14,
+  "stop_count": 12,
   "stops": [
     {
       "stop_sequence": 1,
@@ -131,26 +131,6 @@
       },
       "stop_lat": 45.8568,
       "stop_lon": 25.7733,
-      "distance_to_next_m": 579
-    },
-    {
-      "stop_sequence": 13,
-      "name": {
-        "ro": "Izvorul Sulfuros",
-        "hu": "Büdöskút"
-      },
-      "stop_lat": 45.8555,
-      "stop_lon": 25.7672,
-      "distance_to_next_m": 452
-    },
-    {
-      "stop_sequence": 14,
-      "name": {
-        "ro": "Str. József Attila 2",
-        "hu": "József Attila u. 2"
-      },
-      "stop_lat": 45.8541,
-      "stop_lon": 25.7722,
       "distance_to_next_m": null
     }
   ]
