@@ -88,7 +88,12 @@ class CurrentOperatorTimetableTests(unittest.TestCase):
             validate_coverage(station_count=66, timepoint_count=85, departure_count=2952)
 
     def test_accepts_the_current_complete_operator_download(self):
-        validate_coverage(station_count=100, timepoint_count=291, departure_count=8444)
+        # The Sept 7 2026 board bound live: 100 stations, 216 timing points,
+        # 6197 departures. This must clear the retuned floor (95 / 194 / 5575)
+        # — under the old floor (90 / 250 / 7000) the 216 timing points would
+        # trip "incomplete timetable" and fetch_timetable.py would refuse to
+        # write the new timetable.json.
+        validate_coverage(station_count=100, timepoint_count=216, departure_count=6197)
 
     def test_golya_utca_terminus_normalises_to_known_stop(self):
         known = {"Simeria (Str. Berzei)": "Szemerja (Gólya utca)"}
