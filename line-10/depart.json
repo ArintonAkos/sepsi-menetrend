@@ -21,7 +21,7 @@
       },
       "stop_lat": 45.8636,
       "stop_lon": 25.7866,
-      "distance_to_next_m": 648
+      "distance_to_next_m": 659
     },
     {
       "stop_sequence": 2,
@@ -31,7 +31,7 @@
       },
       "stop_lat": 45.8638,
       "stop_lon": 25.7931,
-      "distance_to_next_m": 585
+      "distance_to_next_m": 586
     },
     {
       "stop_sequence": 3,
@@ -41,7 +41,7 @@
       },
       "stop_lat": 45.8672,
       "stop_lon": 25.7961,
-      "distance_to_next_m": 383
+      "distance_to_next_m": 379
     },
     {
       "stop_sequence": 4,
@@ -51,7 +51,7 @@
       },
       "stop_lat": 45.8692,
       "stop_lon": 25.7932,
-      "distance_to_next_m": 367
+      "distance_to_next_m": 365
     },
     {
       "stop_sequence": 5,
@@ -61,7 +61,7 @@
       },
       "stop_lat": 45.872,
       "stop_lon": 25.7957,
-      "distance_to_next_m": 883
+      "distance_to_next_m": 870
     },
     {
       "stop_sequence": 6,
@@ -71,7 +71,7 @@
       },
       "stop_lat": 45.8789,
       "stop_lon": 25.7971,
-      "distance_to_next_m": 763
+      "distance_to_next_m": 572
     },
     {
       "stop_sequence": 7,
@@ -81,7 +81,7 @@
       },
       "stop_lat": 45.8835,
       "stop_lon": 25.8002,
-      "distance_to_next_m": 200
+      "distance_to_next_m": 170
     },
     {
       "stop_sequence": 8,
@@ -91,7 +91,7 @@
       },
       "stop_lat": 45.8848,
       "stop_lon": 25.7998,
-      "distance_to_next_m": 2301
+      "distance_to_next_m": 1825
     },
     {
       "stop_sequence": 9,
@@ -101,7 +101,7 @@
       },
       "stop_lat": 45.8977,
       "stop_lon": 25.7879,
-      "distance_to_next_m": 767
+      "distance_to_next_m": 762
     },
     {
       "stop_sequence": 10,
@@ -111,7 +111,7 @@
       },
       "stop_lat": 45.8997,
       "stop_lon": 25.7788,
-      "distance_to_next_m": 682
+      "distance_to_next_m": 546
     },
     {
       "stop_sequence": 11,
@@ -121,7 +121,7 @@
       },
       "stop_lat": 45.9009,
       "stop_lon": 25.7725,
-      "distance_to_next_m": 346
+      "distance_to_next_m": 330
     },
     {
       "stop_sequence": 12,

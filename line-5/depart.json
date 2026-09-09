@@ -21,7 +21,7 @@
       },
       "stop_lat": 45.8568,
       "stop_lon": 25.7733,
-      "distance_to_next_m": 579
+      "distance_to_next_m": 587
     },
     {
       "stop_sequence": 2,
@@ -31,7 +31,7 @@
       },
       "stop_lat": 45.8555,
       "stop_lon": 25.7672,
-      "distance_to_next_m": 452
+      "distance_to_next_m": 438
     },
     {
       "stop_sequence": 3,
@@ -41,7 +41,7 @@
       },
       "stop_lat": 45.8541,
       "stop_lon": 25.7722,
-      "distance_to_next_m": 399
+      "distance_to_next_m": 389
     },
     {
       "stop_sequence": 4,
@@ -51,7 +51,7 @@
       },
       "stop_lat": 45.8544,
       "stop_lon": 25.7771,
-      "distance_to_next_m": 274
+      "distance_to_next_m": 263
     },
     {
       "stop_sequence": 5,
@@ -61,7 +61,7 @@
       },
       "stop_lat": 45.8559,
       "stop_lon": 25.779,
-      "distance_to_next_m": 400
+      "distance_to_next_m": 393
     },
     {
       "stop_sequence": 6,
@@ -71,7 +71,7 @@
       },
       "stop_lat": 45.8584,
       "stop_lon": 25.7822,
-      "distance_to_next_m": 396
+      "distance_to_next_m": 384
     },
     {
       "stop_sequence": 7,
@@ -81,7 +81,7 @@
       },
       "stop_lat": 45.861,
       "stop_lon": 25.7855,
-      "distance_to_next_m": 295
+      "distance_to_next_m": 301
     },
     {
       "stop_sequence": 8,
@@ -91,7 +91,7 @@
       },
       "stop_lat": 45.8636,
       "stop_lon": 25.7866,
-      "distance_to_next_m": 79
+      "distance_to_next_m": 76
     },
     {
       "stop_sequence": 9,
@@ -101,7 +101,7 @@
       },
       "stop_lat": 45.8643,
       "stop_lon": 25.7866,
-      "distance_to_next_m": 470
+      "distance_to_next_m": 475
     },
     {
       "stop_sequence": 10,
@@ -111,7 +111,7 @@
       },
       "stop_lat": 45.8643,
       "stop_lon": 25.7919,
-      "distance_to_next_m": 550
+      "distance_to_next_m": 518
     },
     {
       "stop_sequence": 11,
@@ -121,7 +121,7 @@
       },
       "stop_lat": 45.8622,
       "stop_lon": 25.7962,
-      "distance_to_next_m": 469
+      "distance_to_next_m": 470
     },
     {
       "stop_sequence": 12,
@@ -131,7 +131,7 @@
       },
       "stop_lat": 45.858,
       "stop_lon": 25.7964,
-      "distance_to_next_m": 270
+      "distance_to_next_m": 236
     },
     {
       "stop_sequence": 13,
@@ -141,7 +141,7 @@
       },
       "stop_lat": 45.858,
       "stop_lon": 25.7981,
-      "distance_to_next_m": 240
+      "distance_to_next_m": 241
     },
     {
       "stop_sequence": 14,
@@ -151,7 +151,7 @@
       },
       "stop_lat": 45.8598,
       "stop_lon": 25.7995,
-      "distance_to_next_m": 1068
+      "distance_to_next_m": 1032
     },
     {
       "stop_sequence": 15,
@@ -161,7 +161,7 @@
       },
       "stop_lat": 45.8631,
       "stop_lon": 25.8101,
-      "distance_to_next_m": 1241
+      "distance_to_next_m": 1198
     },
     {
       "stop_sequence": 16,
@@ -171,7 +171,7 @@
       },
       "stop_lat": 45.8693,
       "stop_lon": 25.801,
-      "distance_to_next_m": 638
+      "distance_to_next_m": 649
     },
     {
       "stop_sequence": 17,
@@ -181,7 +181,7 @@
       },
       "stop_lat": 45.8751,
       "stop_lon": 25.8007,
-      "distance_to_next_m": 1128
+      "distance_to_next_m": 1098
     },
     {
       "stop_sequence": 18,
@@ -191,7 +191,7 @@
       },
       "stop_lat": 45.8822,
       "stop_lon": 25.8071,
-      "distance_to_next_m": 1170
+      "distance_to_next_m": 1139
     },
     {
       "stop_sequence": 19,
@@ -201,7 +201,7 @@
       },
       "stop_lat": 45.8751,
       "stop_lon": 25.8007,
-      "distance_to_next_m": 590
+      "distance_to_next_m": 588
     },
     {
       "stop_sequence": 20,
@@ -211,7 +211,7 @@
       },
       "stop_lat": 45.8698,
       "stop_lon": 25.8006,
-      "distance_to_next_m": 1640
+      "distance_to_next_m": 1570
     },
     {
       "stop_sequence": 21,
@@ -221,7 +221,7 @@
       },
       "stop_lat": 45.8631,
       "stop_lon": 25.8101,
-      "distance_to_next_m": 1378
+      "distance_to_next_m": 1337
     },
     {
       "stop_sequence": 22,
@@ -231,7 +231,7 @@
       },
       "stop_lat": 45.8605,
       "stop_lon": 25.8001,
-      "distance_to_next_m": 328
+      "distance_to_next_m": 330
     },
     {
       "stop_sequence": 23,
@@ -241,7 +241,7 @@
       },
       "stop_lat": 45.858,
       "stop_lon": 25.7981,
-      "distance_to_next_m": 327
+      "distance_to_next_m": 315
     },
     {
       "stop_sequence": 24,
@@ -251,7 +251,7 @@
       },
       "stop_lat": 45.858,
       "stop_lon": 25.7948,
-      "distance_to_next_m": 264
+      "distance_to_next_m": 250
     },
     {
       "stop_sequence": 25,
@@ -261,7 +261,7 @@
       },
       "stop_lat": 45.8591,
       "stop_lon": 25.792,
-      "distance_to_next_m": 693
+      "distance_to_next_m": 677
     },
     {
       "stop_sequence": 26,
@@ -271,7 +271,7 @@
       },
       "stop_lat": 45.8624,
       "stop_lon": 25.7879,
-      "distance_to_next_m": 747
+      "distance_to_next_m": 713
     },
     {
       "stop_sequence": 27,
@@ -281,7 +281,7 @@
       },
       "stop_lat": 45.8617,
       "stop_lon": 25.7819,
-      "distance_to_next_m": 566
+      "distance_to_next_m": 555
     },
     {
       "stop_sequence": 28,
@@ -291,7 +291,7 @@
       },
       "stop_lat": 45.8589,
       "stop_lon": 25.7768,
-      "distance_to_next_m": 820
+      "distance_to_next_m": 532
     },
     {
       "stop_sequence": 29,

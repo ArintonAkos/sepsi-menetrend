@@ -1,15 +1,11 @@
 {
-  "shape_id": "1D-return",
-  "line": "1D",
+  "shape_id": "1B-return",
+  "line": "1B",
   "direction": "return",
   "profile": "osrm/driving",
   "note": "running time only; contains no waiting or timetable information; OSRM free-flow",
-  "total_seconds": 919,
+  "total_seconds": 661,
   "legs": [
-    {
-      "seconds": 121,
-      "metres": 518
-    },
     {
       "seconds": 169,
       "metres": 2148
@@ -19,12 +15,8 @@
       "metres": 747
     },
     {
-      "seconds": 98,
-      "metres": 910
-    },
-    {
-      "seconds": 131,
-      "metres": 1353
+      "seconds": 94,
+      "metres": 914
     },
     {
       "seconds": 54,

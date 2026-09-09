@@ -22,7 +22,7 @@
       },
       "stop_lat": 45.8822,
       "stop_lon": 25.8071,
-      "distance_to_next_m": 1170
+      "distance_to_next_m": 1139
     },
     {
       "stop_sequence": 2,
@@ -32,7 +32,7 @@
       },
       "stop_lat": 45.8751,
       "stop_lon": 25.8007,
-      "distance_to_next_m": 590
+      "distance_to_next_m": 588
     },
     {
       "stop_sequence": 3,
@@ -42,7 +42,7 @@
       },
       "stop_lat": 45.8698,
       "stop_lon": 25.8006,
-      "distance_to_next_m": 1100
+      "distance_to_next_m": 869
     },
     {
       "stop_sequence": 4,
@@ -52,7 +52,7 @@
       },
       "stop_lat": 45.8641,
       "stop_lon": 25.7986,
-      "distance_to_next_m": 491
+      "distance_to_next_m": 482
     },
     {
       "stop_sequence": 5,
@@ -62,7 +62,7 @@
       },
       "stop_lat": 45.8671,
       "stop_lon": 25.7958,
-      "distance_to_next_m": 407
+      "distance_to_next_m": 394
     },
     {
       "stop_sequence": 6,
@@ -72,7 +72,7 @@
       },
       "stop_lat": 45.8693,
       "stop_lon": 25.7931,
-      "distance_to_next_m": 295
+      "distance_to_next_m": 280
     },
     {
       "stop_sequence": 7,
@@ -82,7 +82,7 @@
       },
       "stop_lat": 45.8714,
       "stop_lon": 25.7951,
-      "distance_to_next_m": 434
+      "distance_to_next_m": 417
     },
     {
       "stop_sequence": 8,
@@ -92,7 +92,7 @@
       },
       "stop_lat": 45.8739,
       "stop_lon": 25.7926,
-      "distance_to_next_m": 569
+      "distance_to_next_m": 525
     },
     {
       "stop_sequence": 9,
@@ -102,7 +102,7 @@
       },
       "stop_lat": 45.8709,
       "stop_lon": 25.7887,
-      "distance_to_next_m": 287
+      "distance_to_next_m": 284
     },
     {
       "stop_sequence": 10,
@@ -112,7 +112,7 @@
       },
       "stop_lat": 45.8689,
       "stop_lon": 25.7868,
-      "distance_to_next_m": 582
+      "distance_to_next_m": 574
     },
     {
       "stop_sequence": 11,
@@ -122,7 +122,7 @@
       },
       "stop_lat": 45.8648,
       "stop_lon": 25.7851,
-      "distance_to_next_m": 471
+      "distance_to_next_m": 456
     },
     {
       "stop_sequence": 12,
@@ -132,7 +132,7 @@
       },
       "stop_lat": 45.8617,
       "stop_lon": 25.7819,
-      "distance_to_next_m": 566
+      "distance_to_next_m": 555
     },
     {
       "stop_sequence": 13,
@@ -142,7 +142,7 @@
       },
       "stop_lat": 45.8589,
       "stop_lon": 25.7768,
-      "distance_to_next_m": 583
+      "distance_to_next_m": 574
     },
     {
       "stop_sequence": 14,
@@ -152,7 +152,7 @@
       },
       "stop_lat": 45.863,
       "stop_lon": 25.7778,
-      "distance_to_next_m": 630
+      "distance_to_next_m": 466
     },
     {
       "stop_sequence": 15,

@@ -1,0 +1,58 @@
+{
+  "shape_id": "2-return",
+  "line": "2",
+  "direction": "return",
+  "profile": "osrm/driving",
+  "note": "running time only; contains no waiting or timetable information; OSRM free-flow",
+  "total_seconds": 579,
+  "legs": [
+    {
+      "seconds": 94,
+      "metres": 914
+    },
+    {
+      "seconds": 49,
+      "metres": 492
+    },
+    {
+      "seconds": 39,
+      "metres": 379
+    },
+    {
+      "seconds": 33,
+      "metres": 365
+    },
+    {
+      "seconds": 33,
+      "metres": 337
+    },
+    {
+      "seconds": 58,
+      "metres": 535
+    },
+    {
+      "seconds": 25,
+      "metres": 275
+    },
+    {
+      "seconds": 60,
+      "metres": 574
+    },
+    {
+      "seconds": 42,
+      "metres": 456
+    },
+    {
+      "seconds": 57,
+      "metres": 636
+    },
+    {
+      "seconds": 46,
+      "metres": 493
+    },
+    {
+      "seconds": 44,
+      "metres": 466
+    }
+  ]
+}

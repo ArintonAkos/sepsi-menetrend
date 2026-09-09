@@ -2,52 +2,56 @@
   "shape_id": "10-return",
   "line": "10",
   "direction": "return",
-  "profile": "mapbox/driving",
-  "note": "running time only; contains no waiting or timetable information",
-  "total_seconds": 1092,
+  "profile": "osrm/driving",
+  "note": "running time only; contains no waiting or timetable information; OSRM free-flow",
+  "total_seconds": 742,
   "legs": [
     {
-      "seconds": 70,
-      "metres": 352
+      "seconds": 37,
+      "metres": 354
     },
     {
-      "seconds": 87,
-      "metres": 491
+      "seconds": 44,
+      "metres": 489
     },
     {
-      "seconds": 70,
-      "metres": 634
+      "seconds": 71,
+      "metres": 635
     },
     {
-      "seconds": 199,
-      "metres": 2037
+      "seconds": 192,
+      "metres": 1976
     },
     {
-      "seconds": 75,
-      "metres": 617
+      "seconds": 21,
+      "metres": 200
     },
     {
-      "seconds": 122,
-      "metres": 961
+      "seconds": 53,
+      "metres": 565
     },
     {
-      "seconds": 66,
+      "seconds": 89,
+      "metres": 960
+    },
+    {
+      "seconds": 25,
       "metres": 280
     },
     {
-      "seconds": 105,
-      "metres": 540
+      "seconds": 60,
+      "metres": 531
     },
     {
-      "seconds": 61,
+      "seconds": 25,
       "metres": 275
     },
     {
-      "seconds": 114,
-      "metres": 575
+      "seconds": 60,
+      "metres": 574
     },
     {
-      "seconds": 123,
+      "seconds": 63,
       "metres": 572
     }
   ]

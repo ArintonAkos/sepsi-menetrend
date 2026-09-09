@@ -1,0 +1,46 @@
+{
+  "shape_id": "1B-depart",
+  "line": "1B",
+  "direction": "depart",
+  "profile": "osrm/driving",
+  "note": "running time only; contains no waiting or timetable information; OSRM free-flow",
+  "total_seconds": 651,
+  "legs": [
+    {
+      "seconds": 41,
+      "metres": 435
+    },
+    {
+      "seconds": 66,
+      "metres": 671
+    },
+    {
+      "seconds": 51,
+      "metres": 564
+    },
+    {
+      "seconds": 65,
+      "metres": 581
+    },
+    {
+      "seconds": 64,
+      "metres": 659
+    },
+    {
+      "seconds": 40,
+      "metres": 420
+    },
+    {
+      "seconds": 97,
+      "metres": 933
+    },
+    {
+      "seconds": 68,
+      "metres": 725
+    },
+    {
+      "seconds": 160,
+      "metres": 2147
+    }
+  ]
+}
