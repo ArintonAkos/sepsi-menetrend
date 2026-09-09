@@ -107,6 +107,9 @@ export interface Network {
   version: string;
   generated: string;
   validFrom: string;
+  /** Routes rebuilt from the operator's stop boards, not their published
+   *  route maps - set until Multi-Trans publishes the Sept 7 maps. */
+  routesProvisional?: boolean;
   lines: Line[];
   stops: Stop[];
   stations: Station[];

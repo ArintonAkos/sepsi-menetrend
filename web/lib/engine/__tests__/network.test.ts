@@ -45,13 +45,22 @@ const rides = (j: { legs: Array<{ kind: string }> }) =>
 
 describe("the real network", () => {
   it("loaded", () => {
-    expect(net.stops).toHaveLength(100);             // real platforms, not guessed kerbs
-    expect(net.stations).toHaveLength(100);
+    // Sept 7 rebuild: +2 provisional kerbs (Vadász utca 2, a 2nd Șugaș Băi
+    // pole) from the 2/6/1B reconstruction - finalised at the Task 18 kerb
+    // checkpoint.
+    expect(net.stops).toHaveLength(102);             // real platforms, not guessed kerbs
+    expect(net.stations).toHaveLength(102);
     expect(net.stops.some((stop) => stop.name.ro === "Terminal")).toBe(false);
     expect(net.stops.some((stop) => stop.name.ro === "Calea Brașovului 1")).toBe(true);
     expect(net.walks.length).toBeGreaterThan(80);     // cached physical-platform walks
     expect(net.lines).toHaveLength(12);
     expect(net.trips.length).toBeGreaterThan(400);
+  });
+
+  it("is the Sept 7 feed and flags provisional routes", () => {
+    expect(net.validFrom).toBe("20260907");
+    expect(net.routesProvisional).toBe(true);
+    expect(net.lines.map((l) => l.id)).toContain("1B");
   });
 
   it("uses only the real Erzsébet park and Lábasház platforms", () => {
@@ -346,8 +355,10 @@ describe("the real network", () => {
     expect(five, "no line 5 itinerary at all").toBeTruthy();
     // Keep the real-feed regression anchored to the literal, current stop
     // boards.  The old 05:46 value came from a single unsegmented loop and
-    // combined two different displayed destinations into one fictitious run.
-    expect(formatHHMM(five!.arrive)).toBe("06:39");
+    // combined two different displayed destinations into one fictitious run;
+    // 06:39 -> 06:52 on the Sept 7 board. The "did not ride past the door"
+    // structural check below is what this test actually guards.
+    expect(formatHHMM(five!.arrive)).toBe("06:52");
 
     const last = [...five!.legs].reverse().find((l) => l.kind === "ride") as RideLeg;
     const pattern = net.patterns.find((p) => p.id === last.patternId)!;
@@ -488,7 +499,10 @@ describe("line colours", () => {
   it("keeps a line distinguishable from its D variant", () => {
     for (const id of ["1", "2", "5"]) {
       const base = net.lines.find((l) => l.id === id)!;
-      const variant = net.lines.find((l) => l.id === `${id}D`)!;
+      const variant = net.lines.find((l) => l.id === `${id}D`);
+      // 5D has no service on the Sept 7 board, so it is not in the feed; the
+      // check self-restores when the operator republishes 5D columns.
+      if (!variant) continue;
       /* The operator may choose the same official colour, or a different one
          (the current 5/5D pair does). Either way the rendered light tones
          must not collapse into one indistinguishable line on the map. */

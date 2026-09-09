@@ -748,6 +748,7 @@ def main():
         "version": feed.get("feed_version", "dev"),
         "generated": feed.get("feed_start_date", ""),
         "validFrom": feed.get("feed_start_date", ""),
+        "routesProvisional": True,   # reconstructed routes for lines 2/6/1B/10/1D/2D — cleared when Multi-Trans publishes the official maps
         "lines": lines, "stops": stops, "stations": station_list,
         "patterns": list(patterns.values()), "trips": trips, "walks": walks,
         "officialBoards": official_boards(timetable, board_bindings, strict=False,
