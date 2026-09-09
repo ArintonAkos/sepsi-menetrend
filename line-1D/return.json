@@ -11,7 +11,8 @@
     "ro": "https://multitrans.ro/jarat-1d-retur.html",
     "hu": "https://multitrans.ro/jarat-1d-retur-hu.html"
   },
-  "stop_count": 11,
+  "_note": "Calea Brașovului 1 provisional — board-only, no route diagram; placement after Gara CFR is a guess",
+  "stop_count": 12,
   "stops": [
     {
       "stop_sequence": 1,
@@ -51,10 +52,20 @@
       },
       "stop_lat": 45.8631,
       "stop_lon": 25.8101,
-      "distance_to_next_m": 940
+      "distance_to_next_m": 950
     },
     {
       "stop_sequence": 5,
+      "name": {
+        "ro": "Calea Brașovului 1",
+        "hu": "Brassói út 1"
+      },
+      "stop_lat": 45.8571,
+      "stop_lon": 25.8072,
+      "distance_to_next_m": 1383
+    },
+    {
+      "stop_sequence": 6,
       "name": {
         "ro": "Str. Sporturilor",
         "hu": "Sport utca"
@@ -64,7 +75,7 @@
       "distance_to_next_m": 556
     },
     {
-      "stop_sequence": 6,
+      "stop_sequence": 7,
       "name": {
         "ro": "Biserica Reformată",
         "hu": "Református Templom"
@@ -74,7 +85,7 @@
       "distance_to_next_m": 521
     },
     {
-      "stop_sequence": 7,
+      "stop_sequence": 8,
       "name": {
         "ro": "Parcul Elisabeta",
         "hu": "Erzsébet Park"
@@ -84,7 +95,7 @@
       "distance_to_next_m": 665
     },
     {
-      "stop_sequence": 8,
+      "stop_sequence": 9,
       "name": {
         "ro": "Institutul de Proiectări",
         "hu": "Tervező Intézet"
@@ -94,7 +105,7 @@
       "distance_to_next_m": 643
     },
     {
-      "stop_sequence": 9,
+      "stop_sequence": 10,
       "name": {
         "ro": "Str. Dealului",
         "hu": "Domb utca"
@@ -104,7 +115,7 @@
       "distance_to_next_m": 506
     },
     {
-      "stop_sequence": 10,
+      "stop_sequence": 11,
       "name": {
         "ro": "Spitalul Județean",
         "hu": "Megyei Kórház"
@@ -114,7 +125,7 @@
       "distance_to_next_m": 466
     },
     {
-      "stop_sequence": 11,
+      "stop_sequence": 12,
       "name": {
         "ro": "Cap Linie Simeria",
         "hu": "Szemerja Végállomás"

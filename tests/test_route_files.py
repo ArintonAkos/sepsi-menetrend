@@ -200,6 +200,12 @@ class BoardCoverageTests(unittest.TestCase):
             route_stops |= {s["name"]["ro"] for s in _load(f"line-10/{d}.json")["stops"]}
         self.assertEqual(board_stops - route_stops, set())
 
+    def test_line1d_2d_have_calea_brasovului(self):
+        for line in ("1D", "2D"):
+            names = {s["name"]["ro"] for d in ("depart", "return")
+                     for s in _load(f"line-{line}/{d}.json")["stops"]}
+            self.assertIn("Calea Brașovului 1", names)
+
 
 if __name__ == "__main__":
     unittest.main()
