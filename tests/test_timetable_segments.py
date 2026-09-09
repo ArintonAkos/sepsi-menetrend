@@ -14,16 +14,15 @@ class TimetableSegmentTests(unittest.TestCase):
         self.assertEqual(segments["4-depart"][0]["end"], 18)
         self.assertEqual(segments["4-depart"][1]["start"], 18)
 
-    def test_line_six_has_an_arena_pass_and_a_separate_bartok_return_pass(self):
+    def test_bidirectional_lines_two_and_six_have_no_loop_segments(self):
+        """Fázis 2 re-anchored lines 2 and 6 to separate depart/return files.
+        Each direction now carries one headsign, so there is no circuit to
+        split and no segment key may remain."""
         segments = json.loads((Path(__file__).resolve().parents[1] /
                                "timetable_segments.json").read_text(encoding="utf-8"))
 
-        self.assertEqual(segments["6-depart"], [
-            {"id": "to-arena", "start": 0, "end": 15,
-             "destination": "Arena Sepsi / Sepsi Aréna"},
-            {"id": "from-arena", "start": 15, "end": 32,
-             "destination": "Str. Bartók Béla / Bartók Béla utca"},
-        ])
+        self.assertNotIn("2-depart", segments)
+        self.assertNotIn("6-depart", segments)
 
     def test_circular_lines_are_split_where_the_official_headsign_changes(self):
         """A single drawn loop is not one timetable run once its displayed
@@ -31,18 +30,19 @@ class TimetableSegmentTests(unittest.TestCase):
         segments = json.loads((Path(__file__).resolve().parents[1] /
                                "timetable_segments.json").read_text(encoding="utf-8"))
 
-        self.assertEqual(segments["2-depart"], [
-            {"id": "to-gara", "start": 22, "end": 11,
-             "destination": "Gara / Vasútállomás"},
-            {"id": "from-gara", "start": 11, "end": 26,
-             "destination": "Str. Bartók Béla / Bartók Béla utca"},
-        ])
         self.assertEqual(segments["5-depart"], [
-            {"id": "to-arena", "start": 26, "end": 15,
+            {"id": "to-arena", "start": 0, "end": 17,
              "destination": "Arena Sepsi / Sepsi Aréna"},
-            {"id": "from-arena", "start": 15, "end": 28,
-             "destination": "Str. József Attila / József Attila utca"},
+            {"id": "from-arena", "start": 17, "end": 28,
+             "destination": "Str. Dózsa György / Dózsa György utca"},
         ])
+
+    def test_line5_segments_use_dozsa_gyorgy_anchor(self):
+        raw = json.load(open("timetable_segments.json"))
+        seg = {s["id"]: s for s in raw["5-depart"]}
+        d = json.load(open("line-5/depart.json"))
+        names = [s["name"]["ro"] for s in d["stops"]]
+        self.assertEqual(names[seg["to-arena"]["start"]], "Str. Dózsa György")
 
     def test_keeps_same_name_calls_on_their_destination_specific_passes(self):
         direction = {
