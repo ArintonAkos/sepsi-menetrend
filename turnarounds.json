@@ -8,5 +8,15 @@
       "minimum_dwell_minutes": 0,
       "evidence": "Multi-Trans stop board: 04:56 Coșeni arrival; 05:16 Gyár utca departure"
     }
+  ],
+  "5-depart": [
+    {
+      "index": 17,
+      "stop_ro": "Arena Sepsi",
+      "arrival_destination": "Arena Sepsi / Sepsi Aréna",
+      "departure_destination": "Str. Dózsa György / Dózsa György utca",
+      "minimum_dwell_minutes": 0,
+      "evidence": "Multi-Trans Sept 7 board: line 5 dest flips from 'Arena Sepsi (Dózsa Györgytől)' to 'Str. Dózsa György (Arena Sepsi felől)' at the Aréna"
+    }
   ]
 }

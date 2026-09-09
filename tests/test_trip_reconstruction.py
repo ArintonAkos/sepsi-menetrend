@@ -1,3 +1,4 @@
+import json
 import unittest
 
 from trip_reconstruction import (
@@ -71,6 +72,13 @@ class DirectionReconstructionTests(unittest.TestCase):
             "departure",
         )
         self.assertIsNone(turnaround_role(turns, "3-depart", 17, "Gara CFR"))
+
+    def test_line5_turnaround_at_arena(self):
+        raw = json.load(open("turnarounds.json"))
+        self.assertIn("5-depart", raw)
+        t = raw["5-depart"][0]
+        d = json.load(open("line-5/depart.json"))
+        self.assertEqual(d["stops"][t["index"]]["name"]["ro"], "Arena Sepsi")
 
     @staticmethod
     def board(line, stop, *events, direction="depart"):
