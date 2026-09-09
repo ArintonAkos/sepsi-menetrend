@@ -1,28 +1,28 @@
 {
   "calls": {
-    "6:depart-to-arena:8": {
+    "6:depart:11": {
       "id": "manual-6-to-arena-ciucului-2",
       "name": {"ro": "Str. Ciucului 2", "hu": "Csíki utca 2"},
       "point": [45.871850, 25.795500]
     },
-    "6:depart-from-arena:6": {
+    "6:return:6": {
       "id": "manual-6-from-arena-ciucului-2",
       "name": {"ro": "Str. Ciucului 2", "hu": "Csíki utca 2"},
       "point": [45.871250, 25.795250]
     },
-    "6:depart-to-arena:11": {
+    "6:depart:14": {
       "id": "osm-1561627779",
       "name": {"ro": "Str. Sporturilor", "hu": "Sport utca"},
       "point": [45.8639944, 25.7983349],
       "osm_id": 1561627779,
       "source": "osm"
     },
-    "6:depart-to-arena:13": {
+    "6:depart:16": {
       "id": "manual-6-to-arena-lapte",
       "name": {"ro": "Fabrica de Lapte", "hu": "Tejgyár"},
       "point": [45.875100, 25.800950]
     },
-    "6:depart-from-arena:1": {
+    "6:return:1": {
       "id": "manual-6-from-arena-lapte",
       "name": {"ro": "Fabrica de Lapte", "hu": "Tejgyár"},
       "point": [45.875100, 25.800450]
@@ -47,19 +47,19 @@
       "name": {"ro": "Str. Ciucului 2", "hu": "Csíki utca 2"},
       "point": [45.871400, 25.795100]
     },
-    "2D:return:9": {
+    "2D:return:10": {
       "id": "source-piatakalvin-45.870900-25.788500",
       "name": {"ro": "Piața Kálvin", "hu": "Kálvin tér"},
       "point": [45.870900, 25.788500]
     },
-    "2D:return:5": {
+    "2D:return:6": {
       "id": "osm-1706007749",
       "name": {"ro": "Debren", "hu": "Debren"},
       "point": [45.8670161, 25.7960357],
       "osm_id": 1706007749,
       "source": "osm"
     },
-    "6:depart-from-arena:4": {
+    "6:return:4": {
       "id": "osm-1706007749",
       "name": {"ro": "Debren", "hu": "Debren"},
       "point": [45.8670161, 25.7960357],

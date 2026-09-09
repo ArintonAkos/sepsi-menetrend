@@ -73,10 +73,27 @@ class PlatformResolutionTests(unittest.TestCase):
                          if stop["name"]["ro"] == name)
             return topology["call_platforms"][("6", direction_name, index)]
 
-        self.assertNotEqual(platform_for("depart-to-arena", "Fabrica de Lapte"),
-                            platform_for("depart-from-arena", "Fabrica de Lapte"))
-        self.assertNotEqual(platform_for("depart-to-arena", "Str. Sporturilor"),
-                            platform_for("depart-from-arena", "Str. Sporturilor"))
+        self.assertNotEqual(platform_for("depart", "Fabrica de Lapte"),
+                            platform_for("return", "Fabrica de Lapte"))
+        self.assertNotEqual(platform_for("depart", "Str. Sporturilor"),
+                            platform_for("return", "Str. Sporturilor"))
+
+    def test_line_six_keeps_its_two_manual_ciucului_two_kerbs_per_direction(self):
+        """`6:depart` and `6:return` call Str. Ciucului 2 from opposite kerbs;
+        the overrides pin each to its own manual node. Guards the re-keyed
+        `6:depart:11` / `6:return:6` after lines 2 & 6 became bidirectional."""
+        directions = load_directions()
+        topology = resolve_platforms(directions, load_osm_platforms(), load_overrides())
+
+        def platform_for(direction_name):
+            direction = next(item for item in directions
+                             if item["line"] == "6" and item["direction"] == direction_name)
+            index = next(index for index, stop in enumerate(direction["stops"])
+                         if stop["name"]["ro"] == "Str. Ciucului 2")
+            return topology["call_platforms"][("6", direction_name, index)]
+
+        self.assertEqual(platform_for("depart"), "manual-6-to-arena-ciucului-2")
+        self.assertEqual(platform_for("return"), "manual-6-from-arena-ciucului-2")
 
     def test_lines_five_and_six_share_the_two_milk_factory_kerbs(self):
         directions = load_directions()
@@ -180,8 +197,8 @@ class PlatformResolutionTests(unittest.TestCase):
 
         self.assertEqual(platform_for("2D", "depart"), "osm-1706007748")
         self.assertEqual(platform_for("2D", "return"), "osm-1706007749")
-        self.assertEqual(platform_for("6", "depart-to-arena"), "osm-1706007748")
-        self.assertEqual(platform_for("6", "depart-from-arena"), "osm-1706007749")
+        self.assertEqual(platform_for("6", "depart"), "osm-1706007748")
+        self.assertEqual(platform_for("6", "return"), "osm-1706007749")
 
 
 if __name__ == "__main__":
