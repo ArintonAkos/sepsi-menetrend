@@ -2,6 +2,7 @@ import csv
 import json
 import tempfile
 import unittest
+import zipfile
 from pathlib import Path
 
 import build_gtfs
@@ -107,6 +108,36 @@ class GtfsTopologyTests(unittest.TestCase):
             route_records = {row["record_id"] for row in csv.DictReader(handle)
                              if row["table_name"] == "routes"}
         self.assertNotIn("5D", route_records)
+
+    def test_school_service_mirrors_every_weekday_trip_with_dated_calendar(self):
+        """The school service is a weekday superset: build_gtfs emits a
+        service_id="school" copy of every weekday trip, and calendar_dates.txt
+        lists each teaching day as an exception_type=1 addition."""
+        self.build_in_temporary_directory()
+
+        with (build_gtfs.OUT / "trips.txt").open(encoding="utf-8", newline="") as handle:
+            services = [row["service_id"] for row in csv.DictReader(handle)]
+        self.assertEqual(services.count("school"), services.count("weekday"))
+        self.assertGreater(services.count("school"), 0)
+
+        with (build_gtfs.OUT / "calendar.txt").open(encoding="utf-8", newline="") as handle:
+            calendar = {row["service_id"]: row for row in csv.DictReader(handle)}
+        self.assertIn("school", calendar)
+        self.assertEqual(
+            {calendar["school"][day] for day in
+             ("monday", "tuesday", "wednesday", "thursday", "friday",
+              "saturday", "sunday")},
+            {"0"},
+        )
+
+        with (build_gtfs.OUT / "calendar_dates.txt").open(encoding="utf-8", newline="") as handle:
+            dates = list(csv.DictReader(handle))
+        self.assertGreater(len(dates), 150)
+        self.assertTrue(all(row["service_id"] == "school" for row in dates))
+        self.assertTrue(all(row["exception_type"] == "1" for row in dates))
+
+        with zipfile.ZipFile(build_gtfs.ARCHIVE) as archive:
+            self.assertIn("calendar_dates.txt", archive.namelist())
 
     def test_line_six_reaches_the_arena_outbound_and_returns_as_a_separate_pass(self):
         # Fázis 2 re-anchored line 6 to the Gólya utca terminus and split it into

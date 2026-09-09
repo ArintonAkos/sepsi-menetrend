@@ -43,6 +43,7 @@ from build_platforms import (  # noqa: E402
     load_osm_platforms, load_overrides, resolve_platforms, write_platforms,
 )
 from timetable_overrides import apply_timetable_overrides  # noqa: E402
+from school_calendar import school_days  # noqa: E402
 
 AGENCY = {
     "agency_id": "multitrans",
@@ -57,6 +58,11 @@ SERVICES = {
                     saturday=0, sunday=0),
     "weekend": dict(monday=0, tuesday=0, wednesday=0, thursday=0, friday=0,
                     saturday=1, sunday=1),
+    # A superset of "weekday" that runs only on teaching days. It has no regular
+    # weekday pattern in calendar.txt; every day it runs is an explicit
+    # exception_type=1 row in calendar_dates.txt (see school_calendar.py).
+    "school": dict(monday=0, tuesday=0, wednesday=0, thursday=0, friday=0,
+                   saturday=0, sunday=0),
 }
 
 FEED_START = "20260907"        # "2026. szeptember 7-től érvényes"
@@ -405,27 +411,34 @@ def main():
             continue
         for name in ("weekday", "weekend"):
             for n, trip in enumerate(trip_calls(record, name), 1):
-                trip_id = f"{key}-{name}-{n:03d}"
-                trip_rows.append({
-                    "route_id": d["line"], "service_id": name, "trip_id": trip_id,
-                    "trip_headsign": d["headsign"]["ro"],
-                    "direction_id": 0 if d["direction"] == "depart" else 1,
-                    "shape_id": key,
-                })
-                for i, stop in enumerate(d["stops"]):
-                    call = (d["line"], d["direction"], i)
-                    platform_id = topology["call_platforms"][call]
-                    when = gtfs_time(trip["calls"][i])
-                    time_rows.append({
-                        "trip_id": trip_id, "arrival_time": when,
-                        "departure_time": when,
-                        "stop_id": stop_id[platform_id],
-                        "stop_sequence": i + 1,
-                        # 1 if this exact call is on the official stop board;
-                        # 0 only if it was filled from its surrounding calls.
-                        "timepoint": 1 if trip["published"][i] else 0,
-                        "shape_dist_traveled": f"{stop_distance[key][i]:.1f}",
+                # "school" is a superset of "weekday": every teaching day it runs
+                # the whole weekday timetable (its dates live in
+                # calendar_dates.txt), so mirror each weekday trip under it. This
+                # matches the web bundle, where build_web_data does the same.
+                emitted = [(name, f"{key}-{name}-{n:03d}")]
+                if name == "weekday":
+                    emitted.append(("school", f"{key}-school-{n:03d}"))
+                for service_id, trip_id in emitted:
+                    trip_rows.append({
+                        "route_id": d["line"], "service_id": service_id, "trip_id": trip_id,
+                        "trip_headsign": d["headsign"]["ro"],
+                        "direction_id": 0 if d["direction"] == "depart" else 1,
+                        "shape_id": key,
                     })
+                    for i, stop in enumerate(d["stops"]):
+                        call = (d["line"], d["direction"], i)
+                        platform_id = topology["call_platforms"][call]
+                        when = gtfs_time(trip["calls"][i])
+                        time_rows.append({
+                            "trip_id": trip_id, "arrival_time": when,
+                            "departure_time": when,
+                            "stop_id": stop_id[platform_id],
+                            "stop_sequence": i + 1,
+                            # 1 if this exact call is on the official stop board;
+                            # 0 only if it was filled from its surrounding calls.
+                            "timepoint": 1 if trip["published"][i] else 0,
+                            "shape_dist_traveled": f"{stop_distance[key][i]:.1f}",
+                        })
 
     counts = {
         "agency.txt": write("agency.txt", list(AGENCY), [AGENCY]),
@@ -449,6 +462,12 @@ def main():
                                "start_date", "end_date"],
                               [dict(service_id=k, **v, start_date=FEED_START,
                                     end_date=FEED_END) for k, v in SERVICES.items()]),
+        # The "school" service runs on no fixed weekday; every teaching day it
+        # runs is listed here explicitly (exception_type 1 = "added").
+        "calendar_dates.txt": write("calendar_dates.txt",
+                                    ["service_id", "date", "exception_type"],
+                                    [{"service_id": "school", "date": d,
+                                      "exception_type": 1} for d in school_days()]),
         "shapes.txt": write("shapes.txt", ["shape_id", "shape_pt_lat", "shape_pt_lon",
                                            "shape_pt_sequence",
                                            "shape_dist_traveled"], shape_rows),

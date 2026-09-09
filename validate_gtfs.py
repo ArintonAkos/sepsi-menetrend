@@ -47,12 +47,17 @@ def main():
     trips = read("trips.txt")
     times = read("stop_times.txt")
     calendar = read("calendar.txt")
+    calendar_dates = read("calendar_dates.txt")
     shapes = read("shapes.txt")
     translations = read("translations.txt")
 
     stop_ids = {s["stop_id"] for s in stops}
     route_ids = {r["route_id"] for r in routes}
-    service_ids = {c["service_id"] for c in calendar}
+    # A service may be defined by a calendar.txt row, by calendar_dates.txt rows,
+    # or both. The "school" service runs only on the teaching days listed in
+    # calendar_dates.txt (exception_type 1), with an all-zero calendar.txt row.
+    service_ids = ({c["service_id"] for c in calendar}
+                   | {d["service_id"] for d in calendar_dates})
     trip_ids = {t["trip_id"] for t in trips}
     shape_ids = {s["shape_id"] for s in shapes}
     agency_ids = {a["agency_id"] for a in agency}
@@ -81,6 +86,13 @@ def main():
             problems.append(f"trips: {t['trip_id']} unknown service")
         if t.get("shape_id") and t["shape_id"] not in shape_ids:
             problems.append(f"trips: {t['trip_id']} unknown shape")
+
+    for d in calendar_dates:
+        if not (d["date"].isdigit() and len(d["date"]) == 8):
+            problems.append(f"calendar_dates: {d['service_id']} bad date {d['date']!r}")
+        if d["exception_type"] not in ("1", "2"):
+            problems.append(f"calendar_dates: {d['service_id']} bad exception_type "
+                            f"{d['exception_type']!r}")
 
     # every route needs service, every trip needs stops
     used_routes = {t["route_id"] for t in trips}
@@ -194,7 +206,8 @@ def main():
 
     print(f"{len(stops)} stops · {len(routes)} routes · {len(trips)} trips · "
           f"{len(times)} stop_times · {len(shapes)} shape points · "
-          f"{len(translations)} translations")
+          f"{len(translations)} translations · "
+          f"{len(calendar_dates)} calendar_dates")
     if attributes:
         prices = ", ".join(f"{f['fare_id']} {f['price']} {f['currency_type']}"
                            for f in attributes)

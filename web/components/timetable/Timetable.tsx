@@ -152,10 +152,11 @@ export default function Timetable({
         )}
 
         <div className={styles.seg}>
-          {(["weekday", "weekend"] as ServiceId[]).map((day) => (
+          {(["weekday", "weekend", "school"] as ServiceId[]).map((day) => (
             <button key={day} aria-pressed={service === day}
                     onClick={() => selectService(day)}>
-              {day === "weekday" ? t.weekdayShort : t.weekendShort}
+              {day === "weekday" ? t.weekdayShort
+                : day === "weekend" ? t.weekendShort : t.schoolDayShort}
             </button>
           ))}
         </div>

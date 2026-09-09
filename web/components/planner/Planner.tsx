@@ -94,6 +94,13 @@ export default function Planner({
   const patterns = useMemo(() => new Map(network.patterns.map((p) => [p.id, p])), [network]);
   const lineMap = useMemo(() => new Map(network.lines.map((l) => [l.id, l])), [network]);
   const stops = useMemo(() => new Map(network.stops.map((s) => [s.id, s])), [network]);
+  /* The baked school calendar. `serviceForDate(date, cal)` resolves a teaching
+     weekday to the "school" service; every weekday trip is folded into it in
+     `build_web_data.py`, so the RAPTOR filter needs no third branch. */
+  const cal = useMemo(() => ({
+    schoolTerms: network.schoolTerms ?? [],
+    schoolExceptions: network.schoolExceptions ?? [],
+  }), [network]);
   const area = useMemo(
     () => ({ box, reach, stops: network.stops.map((s) => s.at) }),
     [box, reach, network]);
@@ -248,7 +255,8 @@ export default function Planner({
     const ttLine = lineParam ?? (ttParam && ttParam !== "1" && ttParam !== "true" ? ttParam : null);
     const serviceParam = params.get("service");
     const ttService: ServiceId | null =
-      serviceParam === "weekend" ? "weekend" : serviceParam === "weekday" ? "weekday" : null;
+      serviceParam === "weekend" ? "weekend" : serviceParam === "weekday" ? "weekday"
+        : serviceParam === "school" ? "school" : null;
     const ttPattern = params.get("dir") ?? params.get("direction") ?? params.get("pattern");
 
     return {
@@ -599,7 +607,8 @@ export default function Planner({
     let what = t.title;
     if (timetableState.open) {
       const lineLabel = timetableState.lineId ? `${timetableState.lineId}-es vonal menetrendje` : t.timetables;
-      const dayLabel = timetableState.service === "weekend" ? t.weekendShort : t.weekdayShort;
+      const dayLabel = timetableState.service === "weekend" ? t.weekendShort
+        : timetableState.service === "school" ? t.schoolDayShort : t.weekdayShort;
       what = `${lineLabel} (${dayLabel}) · ${t.title}`;
     } else if (from && to) {
       what = `${from.name} → ${to.name}`;
@@ -659,7 +668,7 @@ export default function Planner({
     }
     let cancelled = false;
     const [hours, minutes] = time.split(":").map(Number);
-    const request = { from: from.at, to: to.at, time: hours * 60 + minutes, service: serviceForDate(date),
+    const request = { from: from.at, to: to.at, time: hours * 60 + minutes, service: serviceForDate(date, cal),
       mode, walkAversion: settledAversion, lines: visibleLines } as const;
     const controller = new AbortController();
     const result = plannerWorkerSupported()
@@ -686,7 +695,7 @@ export default function Planner({
         { message: error instanceof Error ? error.message : "unknown" });
     });
     return () => { cancelled = true; controller.abort(); };
-  }, [ctx, network, from, to, time, date, mode, settledAversion, visibleLines, walking, walkingKey,
+  }, [ctx, network, cal, from, to, time, date, mode, settledAversion, visibleLines, walking, walkingKey,
     multimodalKey, showBikeOptions, bikeAvailability]);
   /* A dedicated worker crosses a runtime boundary, so TypeScript's declared
      protocol is not enough by itself. Never let a malformed response make the
@@ -841,9 +850,9 @@ export default function Planner({
     const pattern = patterns.get(leg.patternId);
     if (!pattern) return [];
     return nextDepartures(ctx, pattern.stopIds[leg.fromIndex], leg.lineId,
-                          leg.board, serviceForDate(date), 3)
+                          leg.board, serviceForDate(date, cal), 3)
       .map(formatHHMM);
-  }, [ctx, patterns, date]);
+  }, [ctx, patterns, date, cal]);
   const iso = new Date(date.getTime() - date.getTimezoneOffset() * 60000).toISOString().slice(0, 10);
   const isToday = new Date().toDateString() === date.toDateString();
 
@@ -878,7 +887,7 @@ export default function Planner({
 
   const stopSheet = boardStop && stops.get(boardStop) ? (
     <StopBoard stop={stops.get(boardStop)!} ctx={ctx} lines={lineMap}
-               service={serviceForDate(date)} now={minutesOfDay(new Date())}
+               service={serviceForDate(date, cal)} now={minutesOfDay(new Date())}
                lang={lang} t={t}
                onClose={closeBoard} />
   ) : null;
@@ -1017,7 +1026,8 @@ export default function Planner({
                 }} />
               </label>
               <p className={styles.popNote}>
-                {serviceForDate(date) === "weekend" ? "hétvégi menetrend" : "munkanapi menetrend"}
+                {{ weekend: "hétvégi menetrend", school: "iskolanapi menetrend",
+                   weekday: "munkanapi menetrend" }[serviceForDate(date, cal)]}
               </p>
             </div>
           </>)}

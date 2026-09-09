@@ -16,7 +16,7 @@ import type { FareTable } from "@/lib/engine/fares";
 import type { BikeSnapshot, BikeStation } from "@/lib/sepsibike";
 
 const walkingMock = vi.hoisted(() => ({ pending: false, failuresLeft: 0, calls: 0 }));
-const planningMock = vi.hoisted(() => ({ calls: 0 }));
+const planningMock = vi.hoisted(() => ({ calls: 0, lastService: null as string | null }));
 const resetMock = vi.hoisted(() => vi.fn());
 const clearCachesMock = vi.hoisted(() => vi.fn().mockResolvedValue(undefined));
 
@@ -44,6 +44,7 @@ vi.mock("@/lib/engine/plan", async (importOriginal) => {
     ...actual,
     planWithWalking: (...args: Parameters<typeof actual.planWithWalking>) => {
       planningMock.calls += 1;
+      planningMock.lastService = args[1]?.service ?? null;
       return actual.planWithWalking(...args);
     },
   };
@@ -117,6 +118,7 @@ describe("Planner", () => {
     walkingMock.failuresLeft = 0;
     walkingMock.calls = 0;
     planningMock.calls = 0;
+    planningMock.lastService = null;
     resetMock.mockClear();
     clearCachesMock.mockClear();
     delete (globalThis as { gtag?: unknown }).gtag;
@@ -170,6 +172,40 @@ describe("Planner", () => {
     const durations = await screen.findAllByText("perc");
     expect(durations.length).toBeGreaterThan(0);
     expect(screen.queryByText(/Nincs járat/)).not.toBeInTheDocument();
+  });
+
+  it("asks for the school-day service on a teaching weekday", async () => {
+    /* The baked school calendar (network.json.schoolTerms) makes Wed 9 Sep 2026
+       a teaching day, so the plan request must carry service "school" - which
+       build_web_data folds every weekday trip into, so a journey is still found. */
+    vi.setSystemTime(new Date(2026, 8, 9, 8, 0, 0));
+    try {
+      const user = await setup();
+      await startPlanning(user);
+      await user.click(screen.getByRole("button", { name: /Indulás|Érkezés/ }));
+      fireEvent.change(screen.getByDisplayValue(/^\d{2}:\d{2}$/), { target: { value: "08:30" } });
+      await user.keyboard("{Escape}");
+      await waitFor(() => expect(planningMock.calls).toBeGreaterThan(0));
+      expect(planningMock.lastService).toBe("school");
+      expect(await screen.findByText("leghamarabb ér oda")).toBeInTheDocument();
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
+  it("falls back to the plain weekday service outside term", async () => {
+    vi.setSystemTime(new Date(2026, 7, 12, 8, 0, 0));   // Wed 12 Aug 2026, summer
+    try {
+      const user = await setup();
+      await startPlanning(user);
+      await user.click(screen.getByRole("button", { name: /Indulás|Érkezés/ }));
+      fireEvent.change(screen.getByDisplayValue(/^\d{2}:\d{2}$/), { target: { value: "08:30" } });
+      await user.keyboard("{Escape}");
+      await waitFor(() => expect(planningMock.calls).toBeGreaterThan(0));
+      expect(planningMock.lastService).toBe("weekday");
+    } finally {
+      vi.useRealTimers();
+    }
   });
 
   it("puts even the current default time in the reusable route link", async () => {
