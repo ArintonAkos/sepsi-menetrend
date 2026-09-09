@@ -67,8 +67,8 @@ describe("allPages", () => {
   });
 
   it("derives lastModified from net.generated (YYYYMMDD -> ISO)", () => {
-    expect(pages[0].lastModified).toBe("2026-08-07");
-    expect(pages.every((p) => p.lastModified === "2026-08-07")).toBe(true);
+    expect(pages[0].lastModified).toBe("2026-09-07");
+    expect(pages.every((p) => p.lastModified === "2026-09-07")).toBe(true);
   });
 
   it("orders static pages first, then lines, then places, then routes", () => {

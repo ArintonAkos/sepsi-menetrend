@@ -718,12 +718,14 @@ describe("the timetables", () => {
     const user = await setup();
     await user.click(screen.getByLabelText("Menetrendek"));
     await screen.findByRole("table");
-    const firstRow = () => within(screen.getByRole("table"))
-      .getAllByRole("rowheader")[0].textContent;
+    // line 1 and the re-anchored line 6 share the Szemerja terminus as their
+    // first stop, so compare the whole stop column, not just its head.
+    const stops = () => within(screen.getByRole("table"))
+      .getAllByRole("rowheader").map((r) => r.textContent).join("|");
 
-    const before = firstRow();
+    const before = stops();
     await user.click(screen.getByRole("button", { name: "6", pressed: false }));
-    expect(firstRow()).not.toBe(before);
+    expect(stops()).not.toBe(before);
 
     // a weekend with no service on this direction must say so, not show weekday times
     const weekday = screen.getByRole("button", { name: "Hétköznap" });
@@ -1131,7 +1133,8 @@ describe("what the itinerary tells you", () => {
     const first = (await screen.findAllByText("perc"))[0];
     await user.click(first.closest("button")!);
 
-    const label = await screen.findByText("Következő:");
+    // a journey with a change shows one per boarding; check the first
+    const label = (await screen.findAllByText("Következő:"))[0];
     const times = [...label.parentElement!.querySelectorAll("b")]
       .map((b) => b.textContent!);
     expect(times.length).toBeGreaterThan(0);

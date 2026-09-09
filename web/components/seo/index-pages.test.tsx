@@ -48,9 +48,9 @@ describe("line index", () => {
 });
 
 describe("stop index", () => {
-  it("links exactly the 65 places, each under an A-Z letter heading", async () => {
+  it("links exactly the 66 places, each under an A-Z letter heading", async () => {
     const { container } = render(await (Stops as PageComponent)());
-    expect(childLinks(container, "/megallok/")).toHaveLength(65);
+    expect(childLinks(container, "/megallok/")).toHaveLength(66);
     expect(container.querySelectorAll("h2").length).toBeGreaterThan(0);
   });
 
@@ -87,7 +87,7 @@ describe("stop index", () => {
   it("the RO twin links places by their own RO slug, not the HU one", async () => {
     const { container } = render(await (StopsRo as PageComponent)());
     const stopHrefs = childLinks(container, "/ro/statii/");
-    expect(stopHrefs).toHaveLength(65);
+    expect(stopHrefs).toHaveLength(66);
     // "Bevásárlóközpont" (HU slug "bevasarlokozpont") is "Centru Comercial" /
     // "centru-comercial" in Romanian - the RO href must carry the RO slug.
     expect(stopHrefs).toContain("/ro/statii/centru-comercial/");
@@ -105,7 +105,7 @@ describe("English index pages", () => {
   it("links every place under /en/stops/ by its HU slug with an English h1", () => {
     const { container } = render(<StopIndex lang="en" />);
     const stopHrefs = childLinks(container, "/en/stops/");
-    expect(stopHrefs).toHaveLength(65);
+    expect(stopHrefs).toHaveLength(66);
     expect(stopHrefs).toContain("/en/stops/arkos-kozpont/");
     expect(container.querySelector("h1")?.textContent).toMatch(/bus stops/i);
   });

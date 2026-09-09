@@ -9,7 +9,11 @@ describe("enrichLine", () => {
     expect(enrichLine(net, "1", "hu").label).toBe("1-es busz");
     expect(enrichLine(net, "1", "ro").label).toBe("linia 1");
     expect(enrichLine(net, "1D", "hu").label).toBe("1D-s busz");
-    expect(enrichLine(net, "5D", "hu").label).toBe("5D-s busz");
+    // 1B takes "-s" like the D lines ("egybé-s"); 5D has no Sept 7 service so
+    // it is not in the feed.
+    expect(enrichLine(net, "1B", "hu").label).toBe("1B-s busz");
+    expect(enrichLine(net, "1B", "ro").label).toBe("linia 1B");
+    expect(enrichLine(net, "1B", "en").label).toBe("line 1B");
   });
 
   it("labels a line in English as 'line {id}', id case kept", () => {
@@ -41,22 +45,24 @@ describe("enrichLine", () => {
 
 describe("lineDirections", () => {
   it("collapses patterns that share a stop sequence, longest first", () => {
-    // 1D runs P3, P4 (identical outbound sequence) and P5 (the return)
+    // On the Sept 7 feed 1D's return leg (Câmpul Frumos → Cap Linie Simeria)
+    // carries 12 stops - one more than the 11-stop outbound, since Task 7 added
+    // Calea Brașovului 1 after Gara CFR - so it sorts first.
     const dirs = lineDirections(net, "1D");
-    expect(dirs.map((d) => d.patternId)).toEqual(["P3", "P5"]);
+    expect(dirs.map((d) => d.patternId)).toEqual(["P12", "P6"]);
     expect(Object.keys(dirs[0])).toEqual(["patternId", "headsign", "stopIds"]);
     expect(dirs[0].headsign).toEqual({
-      hu: "Cap Linie Simeria → Câmpul Frumos",
-      ro: "Cap Linie Simeria → Câmpul Frumos",
+      hu: "Câmpul Frumos → Cap Linie Simeria",
+      ro: "Câmpul Frumos → Cap Linie Simeria",
     });
-    expect(dirs[0].stopIds.length).toBe(11);
+    expect(dirs[0].stopIds.length).toBe(12);
   });
 
   it("orders the distinct sequences by length, descending", () => {
     const dirs = lineDirections(net, "5");
     expect(dirs.length).toBe(2);
     expect(dirs[0].stopIds.length).toBe(18);
-    expect(dirs[1].stopIds.length).toBe(14);
+    expect(dirs[1].stopIds.length).toBe(12);
   });
 });
 
@@ -71,7 +77,7 @@ describe("boardFor", () => {
 
   it("folds the marked D-extension departures into the sorted list without duplicating", () => {
     const b = boardFor(net, "5", "P24")!;
-    expect(b.weekday).toContain(588); // a departure the operator marks as a D extension
+    expect(b.weekday).toContain(1371); // a departure the operator marks as a D extension
     expect(b.weekday).toEqual([...b.weekday].sort((a, z) => a - z));
     expect(new Set(b.weekday).size).toBe(b.weekday.length);
   });
@@ -85,8 +91,8 @@ describe("boardFor", () => {
 describe("firstLast", () => {
   it("reports the first and last departure per service", () => {
     const fl = firstLast(boardFor(net, "5", "P22")!);
-    expect(fl.weekday).toEqual({ first: 415, last: 1330 });
-    expect(fl.weekend).toEqual({ first: 400, last: 1300 });
+    expect(fl.weekday).toEqual({ first: 420, last: 1330 });
+    expect(fl.weekend).toEqual({ first: 480, last: 1200 });
   });
 
   it("returns null for a service with no departures", () => {

@@ -70,7 +70,8 @@ describe("a stop's board", () => {
                       onClose={() => {}} />);
 
     expect(screen.getAllByText("→ Str. Fabricii / Gyár utca").length).toBeGreaterThan(0);
-    expect(screen.getAllByText("04:34").length).toBeGreaterThan(0);
+    // line 4's first weekday departure from this kerb on the Sept 7 board
+    expect(screen.getAllByText("06:07").length).toBeGreaterThan(0);
     expect(screen.queryByText("→ Câmpul Frumos / Szépmező")).toBeNull();
     expect(screen.queryByText("05:19")).toBeNull();
   });
@@ -82,9 +83,12 @@ describe("a stop's board", () => {
                       service="weekday" now={8 * 60} lang="hu" t={STRINGS.hu}
                       onClose={() => {}} />);
 
-    // 2, 2D and 6 all genuinely call at this kerb toward the Bartók side.
-    expect(screen.getAllByText("→ Str. Bartók Béla / Bartók Béla utca")).toHaveLength(3);
-    expect(screen.queryByText("Câmpul Frumos → Str. Bartók Béla")).toBeNull();
+    // On the Sept 7 board lines 2 and 6 are bidirectional and this return kerb
+    // runs both toward the Simeria terminus; line 10 heads to Arcuș. All three
+    // are official columns - no inferred rows, no interpolated-time note.
+    expect(screen.getAllByText(
+      "→ Simeria (Str. Berzei) / Szemerja Végállomás (via Cart. Ciucului)")).toHaveLength(2);
+    expect(screen.getByText("→ Arcuș / Árkos")).toBeInTheDocument();
     expect(screen.queryByText(/csillaggal/i)).toBeNull();
   });
 
@@ -94,8 +98,10 @@ describe("a stop's board", () => {
     const first = render(<StopBoard stop={outbound} ctx={ctx} lines={lines}
                                     service="weekday" now={8 * 60} lang="hu" t={STRINGS.hu}
                                     onClose={() => {}} />);
-    expect(first.getByText("→ Gara / Vasútállomás")).toBeInTheDocument();
-    expect(first.getByText("→ Arena Sepsi / Sepsi Aréna")).toBeInTheDocument();
+    // Sept 7 board: lines 2 and 6 leave this outbound kerb toward Gara CFR and
+    // the Arena respectively (both via Cart. Ciucului); line 10 is not here.
+    expect(first.getByText("→ Gara CFR / Vasútállomás (via Cart. Ciucului)")).toBeInTheDocument();
+    expect(first.getByText("→ Arena Sepsi / Sepsi Aréna (via Cart. Ciucului)")).toBeInTheDocument();
     expect(first.queryByText("→ Arcuș / Árkos")).toBeNull();
     first.unmount();
 
@@ -104,11 +110,13 @@ describe("a stop's board", () => {
                       service="weekday" now={8 * 60} lang="hu" t={STRINGS.hu}
                       onClose={() => {}} />);
     expect(screen.getByText("→ Arcuș / Árkos")).toBeInTheDocument();
-    expect(screen.getAllByText("→ Str. Bartók Béla / Bartók Béla utca")).toHaveLength(3);
-    // The operator marks 04:50 as a 2D extension. It belongs in the explicit
-    // 2D column once, not both in the base 2 column and in 2D.
-    expect(screen.getAllByText("04:50")).toHaveLength(1);
-    expect(screen.queryByText("→ Gara / Vasútállomás")).toBeNull();
+    // the return kerb: lines 2 and 6 back toward the Simeria terminus
+    expect(screen.getAllByText(
+      "→ Simeria (Str. Berzei) / Szemerja Végállomás (via Cart. Ciucului)")).toHaveLength(2);
+    // a marked (2D-extension) departure the operator folds into line 2's column
+    // appears once, not duplicated
+    expect(screen.getAllByText("05:37")).toHaveLength(1);
+    expect(screen.queryByText("→ Gara CFR / Vasútállomás (via Cart. Ciucului)")).toBeNull();
   });
 
   it("gives a circular line one row per pass, not one merged column", () => {

@@ -27,8 +27,9 @@ const HU_STEM: Record<string, string> = {
 };
 
 function huLabel(id: string): string {
-  // "1D" is read "egydé-s" - the whole id keeps its case and takes "-s".
-  if (id.endsWith("D")) return `${id}-s busz`;
+  // "1D" is read "egydé-s", "1B" "egybé-s" - the whole id keeps its case and
+  // takes "-s".
+  if (id.endsWith("D") || id.endsWith("B")) return `${id}-s busz`;
   const stem = HU_STEM[id];
   if (stem) return `${stem} busz`;
   // A digit-only id a future feed adds that nobody tabulated: "-es" is the

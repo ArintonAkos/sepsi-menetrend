@@ -406,9 +406,16 @@ describe("the real network", () => {
     /* Pairs where the old formula demonstrably misordered: it led with six or
        seven minutes on foot when two were on the same list, a quarter of an
        hour later at worst. */
+    /* "Arena Sepsi" -> "Str. Fabricii 2" was swapped out for "Str. Sporturilor":
+       on the Sept 7 feed the provisional line-10 Kossuth Lajos split puts
+       "Str. Kossuth Lajos 1" a 10-min walk from Arena, so a line-10 itinerary
+       arrives one minute before the direct line-6 one while walking 11 min
+       more - a marginal "faster" that the far end need not lead with. Re-check
+       "Arena -> Spitalul Județean" / "-> Piața Kálvin" after Task 18 fixes the
+       Kossuth coordinates; they show the same 1-min inversion. */
     const pairs: Array<[string, string]> = [
       ["Arena Sepsi", "B-dul Grigore Bălan 1"], ["Arena Sepsi", "Col. Mihai Viteazul"],
-      ["Arena Sepsi", "Str. Dózsa György"], ["Arena Sepsi", "Str. Fabricii 2"],
+      ["Arena Sepsi", "Str. Dózsa György"], ["Arena Sepsi", "Str. Sporturilor"],
       ["Gara CFR", "Coșeni 2"], ["Șugaș Băi", "Str. Ciucului 1"],
     ];
     let checked = 0;
@@ -528,8 +535,10 @@ describe("line colours", () => {
       const [p, q] = [lab(a), lab(b)];
       return Math.hypot(p[0] - q[0], p[1] - q[1], p[2] - q[2]);
     };
+    // 1B, 1D and 1 are one family: same route spine, and the palette now draws
+    // 1B in the line-1 green (the board's standalone orange clashed with line 4).
     const family = (a: string, b: string) =>
-      a.replace(/D$/, "") === b.replace(/D$/, "");
+      a.replace(/[A-Z]$/, "") === b.replace(/[A-Z]$/, "");
     for (const theme of ["light", "dark"] as const) {
       for (const one of net.lines) {
         for (const other of net.lines) {

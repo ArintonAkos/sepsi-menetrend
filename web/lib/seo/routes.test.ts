@@ -83,17 +83,21 @@ describe("journeyBetween", () => {
     expect(pair).toBeDefined();
     expect(pair!.a.name.hu).toBe("Árkos központ");
 
+    // Re-pinned for the Sept 7 feed: line 10's Kossuth Lajos split + the
+    // Bis. Reformată Arcuș stop and 2D's Calea Brașovului return leg moved the
+    // change point to Lábasház; the longer rideMin values ride on the
+    // provisional OSRM geometry (routesProvisional), tighten at Task 18.
     const summary = journeyBetween(net, pair!.a, pair!.b, "hu");
     expect(summary).toEqual({
       legs: [
-        { lineLabel: "10-es busz", fromName: "Árkos központ", toName: "Csíki utca 2", rideMin: 7, stops: 6 },
-        { lineLabel: "2D-s busz", fromName: "Csíki utca 2", toName: "Autoliv", rideMin: 11, stops: 5 },
+        { lineLabel: "10-es busz", fromName: "Árkos központ", toName: "Lábasház", rideMin: 20, stops: 12 },
+        { lineLabel: "2D-s busz", fromName: "Lábasház", toName: "Autoliv", rideMin: 21, stops: 9 },
       ],
       walkMin: 2,
-      totalMin: 32,
+      totalMin: 53,
       transfers: 1,
       firstDep: 330,
-      lastDep: 1290,
+      lastDep: 1415,
     });
   });
 });

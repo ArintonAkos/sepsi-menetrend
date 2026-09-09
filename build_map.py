@@ -45,7 +45,7 @@ ORDER = ["1", "1B", "1D", "2", "2D", "3", "4", "5", "5D", "6", "7", "9", "10"]
 # Fallback only; the real values come from the operator's own timetable page
 # via fetch_timetable.py.
 COLORS = {
-    "1": "#136f29", "1B": "#e8a33d", "1D": "#136f29", "2": "#db4436",
+    "1": "#136f29", "1B": "#136f29", "1D": "#136f29", "2": "#db4436",
     "2D": "#db4436", "3": "#00b0f0", "4": "#f4b400", "5": "#7c3592",
     "5D": "#7c3592", "6": "#a9fe00", "7": "#ff3eff", "9": "#b27e62",
     "10": "#000000",
@@ -133,7 +133,16 @@ def palette():
     out = {}
     for line in ORDER:
         base = source.get(line, COLORS[line])
-        variant = line.endswith("D") and source.get(line) == source.get(line[:-1])
+        root = line[:-1] if len(line) > 1 and line[-1].isalpha() else None
+        # 1B is a line-1 branch (Autoliv via the line-1 route), but the
+        # operator's board colours it a standalone orange that sits too close
+        # to line 4's yellow on the map. Draw it in the line-1 green family,
+        # moved along that hue like the D variants - the feed keeps the board
+        # colour untouched, this is only the shade we draw with.
+        if line.endswith("B") and root in source:
+            base, variant = source[root], True
+        else:
+            variant = line.endswith("D") and source.get(line) == source.get(root)
         pale = shift(base, 0.60) if variant else base
         vivid = shift(base, None, lift=0.42, saturate=1.35) if variant else base
         light = pale if luminance(pale) < 0.72 else mix(pale, "#000000", 0.35)
