@@ -88,16 +88,22 @@ class GtfsTopologyTests(unittest.TestCase):
         self.assertNotIn("Terminal", names)
         self.assertIn("Calea Brașovului 1", names)
 
-    def test_line_six_has_an_arena_pass_and_a_separate_bartok_return_pass(self):
+    def test_line_six_reaches_the_arena_outbound_and_returns_as_a_separate_pass(self):
+        # Fázis 2 re-anchored line 6 to the Gólya utca terminus and split it into
+        # separate depart/return files, so it is no longer one circular with two
+        # headsign changes: the outbound pass ends at the Arena and the return
+        # pass is a distinct direction back to the terminus.
         directions = build_map.load_directions()
-        arena = next(direction for direction in directions
-                     if direction["line"] == "6" and direction["direction"] == "depart-to-arena")
-        bartok = next(direction for direction in directions
-                      if direction["line"] == "6" and direction["direction"] == "depart-from-arena")
+        depart = next(direction for direction in directions
+                      if direction["line"] == "6" and direction["direction"] == "depart")
+        ret = next(direction for direction in directions
+                   if direction["line"] == "6" and direction["direction"] == "return")
 
-        self.assertEqual(arena["headsign"]["ro"], "Arena Sepsi / Sepsi Aréna")
-        self.assertEqual(bartok["headsign"]["ro"], "Str. Bartók Béla / Bartók Béla utca")
-        self.assertNotIn("Parcul Elisabeta", [stop["name"]["ro"] for stop in arena["stops"]])
+        self.assertEqual(depart["stops"][-1]["name"]["ro"], "Arena Sepsi")
+        self.assertEqual(ret["stops"][0]["name"]["ro"], "Arena Sepsi")
+        self.assertEqual(ret["stops"][-1]["name"]["ro"], "Cap Linie Simeria")
+        self.assertNotIn("Parcul Elisabeta",
+                         [stop["name"]["ro"] for stop in depart["stops"]])
 
     def test_line_four_to_campul_frumos_stops_at_casa_not_elisabeta(self):
         directions = build_map.load_directions()

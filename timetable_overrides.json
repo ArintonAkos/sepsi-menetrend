@@ -1,24 +1,48 @@
 {
   "ignoreColumns": [
     {
-      "sourceStationIds": [46],
+      "sourceStationIds": [
+        46
+      ],
       "line": "3",
       "direction": "depart",
       "stop": "Fabrica de Țigarete",
       "destination": "Str. Fabricii / Gyár utca"
     },
     {
-      "sourceStationIds": [46],
+      "sourceStationIds": [
+        46
+      ],
       "line": "4",
       "direction": "depart",
       "stop": "Fabrica de Țigarete",
       "destination": "Str. Fabricii / Gyár utca"
     },
     {
-      "sourceStationIds": [99],
+      "sourceStationIds": [
+        99
+      ],
       "line": "5D",
       "direction": "depart",
       "stop": "Autoliv",
+      "destination": "Câmpul Frumos / Szépmező"
+    },
+    {
+      "sourceStationIds": [
+        39
+      ],
+      "line": "3",
+      "direction": "depart",
+      "stop": "Terminal",
+      "destination": "Coșeni / Szotyor"
+    },
+    {
+      "sourceStationIds": [
+        39
+      ],
+      "line": "4",
+      "direction": "depart",
+      "stop": "Terminal",
       "destination": "Câmpul Frumos / Szépmező"
     }
   ],
@@ -84,7 +108,9 @@
       "line": "3",
       "fromDirection": "depart",
       "fromDestination": "Coșeni / Szotyor",
-      "stops": ["Fabrica de Țigarete"],
+      "stops": [
+        "Fabrica de Țigarete"
+      ],
       "direction": "depart",
       "destination": "Str. Fabricii / Gyár utca"
     },
@@ -92,7 +118,9 @@
       "line": "4",
       "fromDirection": "depart",
       "fromDestination": "Câmpul Frumos / Szépmező",
-      "stops": ["Fabrica de Țigarete"],
+      "stops": [
+        "Fabrica de Țigarete"
+      ],
       "direction": "depart",
       "destination": "Str. Fabricii / Gyár utca"
     },
@@ -108,6 +136,294 @@
       ],
       "direction": "depart",
       "destination": "Str. Bartók Béla / Bartók Béla utca"
+    },
+    {
+      "line": "3",
+      "fromDirection": "depart",
+      "fromDestination": "Coșeni / Szotyor (Țigaretei 1 felől)",
+      "stops": [
+        "Str. Țigaretei 1",
+        "Str. Țigaretei 2",
+        "Str. Țigaretei 3",
+        "Comfort Residence",
+        "Str. Fabricii 1",
+        "Str. Fabricii 2",
+        "Col. Mihai Viteazul",
+        "Casa cu Arcade",
+        "Biserica Reformată",
+        "Str. Sporturilor",
+        "Gara CFR",
+        "Calea Brașovului 1",
+        "Calea Brașovului 2",
+        "Calea Brașovului 3",
+        "Chilieni",
+        "Motel Calypso",
+        "Coșeni 1",
+        "Coșeni 2"
+      ],
+      "direction": "depart",
+      "destination": "Coșeni / Szotyor"
+    },
+    {
+      "line": "3",
+      "fromDirection": "depart",
+      "fromDestination": "Str. Țigaretei 1 / Cigaretta utca 1",
+      "stops": [
+        "Coșeni 1",
+        "Coșeni 2",
+        "Motel Calypso",
+        "Chilieni",
+        "Calea Brașovului 3",
+        "Calea Brașovului 2",
+        "Calea Brașovului 1",
+        "Gara CFR",
+        "Str. Sporturilor",
+        "Biserica Reformată",
+        "Parcul Elisabeta",
+        "Col. Mihai Viteazul",
+        "Fabrica de Țigarete",
+        "Str. Țigaretei 1"
+      ],
+      "direction": "depart",
+      "destination": "Str. Fabricii / Gyár utca"
+    },
+    {
+      "line": "3",
+      "fromDirection": "depart",
+      "fromDestination": "Str. Țigaretei 1 / Cigaretta utca 1 (Coșeni felől)",
+      "stops": [
+        "Coșeni 1",
+        "Coșeni 2",
+        "Motel Calypso",
+        "Chilieni",
+        "Calea Brașovului 3",
+        "Calea Brașovului 2",
+        "Calea Brașovului 1",
+        "Gara CFR",
+        "Str. Sporturilor",
+        "Biserica Reformată",
+        "Parcul Elisabeta",
+        "Col. Mihai Viteazul",
+        "Fabrica de Țigarete",
+        "Str. Țigaretei 1"
+      ],
+      "direction": "depart",
+      "destination": "Str. Fabricii / Gyár utca"
+    },
+    {
+      "line": "4",
+      "fromDirection": "depart",
+      "fromDestination": "Câmpul Frumos / Szépmező (Țigaretei 1 felől)",
+      "stops": [
+        "Str. Țigaretei 1",
+        "Str. Țigaretei 2",
+        "Str. Țigaretei 3",
+        "Comfort Residence",
+        "Str. Fabricii 1",
+        "Str. Fabricii 2",
+        "Col. Mihai Viteazul",
+        "Casa cu Arcade",
+        "Biserica Reformată",
+        "Str. Sporturilor",
+        "Gara CFR",
+        "Calea Brașovului 1",
+        "Str. Constructorilor 1",
+        "Str. Constructorilor 2",
+        "Str. Constructorilor 3",
+        "Câmpul Frumos",
+        "Multi-Trans"
+      ],
+      "direction": "depart",
+      "destination": "Câmpul Frumos / Szépmező"
+    },
+    {
+      "line": "4",
+      "fromDirection": "depart",
+      "fromDestination": "Str. Țigaretei 1 / Cigaretta utca 1",
+      "stops": [
+        "Multi-Trans",
+        "Câmpul Frumos",
+        "Str. Constructorilor 3",
+        "Str. Constructorilor 2",
+        "Str. Constructorilor 1",
+        "Calea Brașovului 1",
+        "Gara CFR",
+        "Str. Sporturilor",
+        "Biserica Reformată",
+        "Parcul Elisabeta",
+        "Col. Mihai Viteazul",
+        "Fabrica de Țigarete",
+        "Str. Țigaretei 1"
+      ],
+      "direction": "depart",
+      "destination": "Str. Fabricii / Gyár utca"
+    },
+    {
+      "line": "4",
+      "fromDirection": "depart",
+      "fromDestination": "Str. Țigaretei 1 / Cigaretta utca 1 (Câmpul Frumos felől)",
+      "stops": [
+        "Multi-Trans",
+        "Câmpul Frumos",
+        "Str. Constructorilor 3",
+        "Str. Constructorilor 2",
+        "Str. Constructorilor 1",
+        "Calea Brașovului 1",
+        "Gara CFR",
+        "Str. Sporturilor",
+        "Biserica Reformată",
+        "Parcul Elisabeta",
+        "Col. Mihai Viteazul",
+        "Fabrica de Țigarete",
+        "Str. Țigaretei 1"
+      ],
+      "direction": "depart",
+      "destination": "Str. Fabricii / Gyár utca"
+    },
+    {
+      "line": "5",
+      "fromDirection": "depart",
+      "fromDestination": "Arena Sepsi / Sepsi Aréna (Dózsa Györgytől)",
+      "stops": [
+        "Str. Dózsa György",
+        "Izvorul Sulfuros",
+        "Str. József Attila 2",
+        "Str. József Attila 1",
+        "Str. Kós Károly",
+        "Fabrica de Țigarete",
+        "Col. Mihai Viteazul",
+        "Casa cu Arcade",
+        "Parcul Elisabeta",
+        "Biserica Reformată",
+        "B-dul Grigore Bălan 1",
+        "B-dul Grigore Bălan 2",
+        "Str. Lăcrămioarei 2",
+        "Str. Lăcrămioarei 1",
+        "Gara CFR",
+        "Centru Comercial",
+        "Fabrica de Lapte",
+        "Arena Sepsi"
+      ],
+      "direction": "depart",
+      "destination": "Arena Sepsi / Sepsi Aréna"
+    },
+    {
+      "line": "5",
+      "fromDirection": "depart",
+      "fromDestination": "Str. Dózsa György / Dózsa György utca (Arena Sepsi felől)",
+      "stops": [
+        "Arena Sepsi",
+        "Fabrica de Lapte",
+        "Centru Comercial",
+        "Gara CFR",
+        "Str. Lăcrămioarei 1",
+        "Str. Lăcrămioarei 2",
+        "B-dul Nicolae Iorga 1",
+        "B-dul Nicolae Iorga 2",
+        "Tribunal",
+        "Institutul de Proiectări",
+        "Str. Dealului",
+        "Str. Dózsa György"
+      ],
+      "direction": "depart",
+      "destination": "Str. Dózsa György / Dózsa György utca"
+    },
+    {
+      "line": "5",
+      "fromDirection": "depart",
+      "fromDestination": "Str. Dealului / Domb utca (Arena Sepsi felől)",
+      "stops": [
+        "Arena Sepsi",
+        "Fabrica de Lapte",
+        "Centru Comercial",
+        "Gara CFR",
+        "Str. Lăcrămioarei 1",
+        "Str. Lăcrămioarei 2",
+        "B-dul Nicolae Iorga 1",
+        "B-dul Nicolae Iorga 2",
+        "Tribunal",
+        "Institutul de Proiectări",
+        "Str. Dealului",
+        "Str. Dózsa György"
+      ],
+      "direction": "depart",
+      "destination": "Str. Dózsa György / Dózsa György utca"
+    },
+    {
+      "line": "5",
+      "fromDirection": "depart",
+      "fromDestination": "Arena Sepsi / Sepsi Aréna (Dózsa Györgytől)",
+      "sourceStationIds": [
+        3
+      ],
+      "stops": [
+        "Str. Dealului"
+      ],
+      "direction": "depart",
+      "destination": "Str. Dózsa György / Dózsa György utca"
+    },
+    {
+      "line": "7",
+      "fromDirection": "depart",
+      "fromDestination": "Gara CFR / Vasútállomás (indulás Simeria felé, via Str. Țigaretei)",
+      "stops": [
+        "Gara CFR",
+        "Str. Sporturilor",
+        "B-dul Grigore Bălan 1",
+        "B-dul Grigore Bălan 2",
+        "B-dul Nicolae Iorga 1",
+        "B-dul Nicolae Iorga 2",
+        "Tribunal",
+        "Col. Mihai Viteazul",
+        "Fabrica de Țigarete",
+        "Str. Dealului",
+        "Spitalul Județean",
+        "Cap Linie Simeria"
+      ],
+      "direction": "return",
+      "destination": "Simeria (Str. Berzei) / Szemerja Végállomás (via Str. Țigaretei)"
+    },
+    {
+      "line": "7",
+      "fromDirection": "depart",
+      "fromDestination": "Gara CFR / Vasútállomás (indulás Simeria felé)",
+      "stops": [
+        "Gara CFR",
+        "Str. Sporturilor",
+        "B-dul Grigore Bălan 1",
+        "B-dul Grigore Bălan 2",
+        "B-dul Nicolae Iorga 1",
+        "B-dul Nicolae Iorga 2",
+        "Tribunal",
+        "Col. Mihai Viteazul",
+        "Fabrica de Țigarete",
+        "Str. Dealului",
+        "Spitalul Județean",
+        "Cap Linie Simeria"
+      ],
+      "direction": "return",
+      "destination": "Simeria (Str. Berzei) / Szemerja Végállomás (via Str. Țigaretei)"
+    },
+    {
+      "line": "10",
+      "fromDirection": "return",
+      "fromDestination": "Arcuș / Árkos (Casa cu Arcade felől)",
+      "stops": [
+        "Casa cu Arcade",
+        "Biserica Reformată",
+        "Debren",
+        "Str. Ciucului 1",
+        "Str. Ciucului 2",
+        "Grădinărie",
+        "Str. Kossuth Lajos 1",
+        "Str. Kossuth Lajos 2",
+        "Castelul Szentkereszty",
+        "Primăria Arcuș",
+        "Biserica Reformată Arcuș",
+        "Centru Arcuș"
+      ],
+      "direction": "depart",
+      "destination": "Arcuș / Árkos"
     }
   ]
 }

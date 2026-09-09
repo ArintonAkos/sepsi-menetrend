@@ -22,7 +22,7 @@
     "9": "#b27e62",
     "10": "#000000"
   },
-  "timepoint_count": 216,
+  "timepoint_count": 221,
   "timepoints": [
     {
       "source_station_id": 6,
@@ -4730,6 +4730,42 @@
       }
     },
     {
+      "source_station_id": 51,
+      "line": "1B",
+      "direction": "return",
+      "stop_ro": "Câmpul Frumos",
+      "stop_hu": "Szépmező",
+      "destination": "Simeria (Str. Berzei) / Szemerja Végállomás (via Autoliv)",
+      "times": {
+        "weekday": [
+          "04:01",
+          "05:01",
+          "06:06",
+          "13:36"
+        ]
+      },
+      "events": {
+        "weekday": [
+          {
+            "time": "04:01",
+            "marked": false
+          },
+          {
+            "time": "05:01",
+            "marked": false
+          },
+          {
+            "time": "06:06",
+            "marked": false
+          },
+          {
+            "time": "13:36",
+            "marked": false
+          }
+        ]
+      }
+    },
+    {
       "source_station_id": 44,
       "line": "1D",
       "direction": "return",
@@ -5432,7 +5468,7 @@
     {
       "source_station_id": 24,
       "line": "2",
-      "direction": "depart",
+      "direction": "return",
       "stop_ro": "Cartierul Ciucului",
       "stop_hu": "Csíki negyed",
       "destination": "Simeria (Str. Berzei) / Szemerja Végállomás (via Cart. Ciucului)",
@@ -6192,7 +6228,7 @@
     {
       "source_station_id": 30,
       "line": "2",
-      "direction": "depart",
+      "direction": "return",
       "stop_ro": "Debren",
       "stop_hu": "Debren",
       "destination": "Simeria (Str. Berzei) / Szemerja Végállomás (via Cart. Ciucului)",
@@ -6937,7 +6973,7 @@
     {
       "source_station_id": 5,
       "line": "2",
-      "direction": "depart",
+      "direction": "return",
       "stop_ro": "Institutul de Proiectări",
       "stop_hu": "Tervező Intézet",
       "destination": "Simeria (Str. Berzei) / Szemerja Végállomás (via Cart. Ciucului)",
@@ -7417,7 +7453,7 @@
     {
       "source_station_id": 20,
       "line": "2",
-      "direction": "depart",
+      "direction": "return",
       "stop_ro": "Lic. Plugor Sándor",
       "stop_hu": "Plugor Sándor Líceum",
       "destination": "Simeria (Str. Berzei) / Szemerja Végállomás (via Cart. Ciucului)",
@@ -7932,7 +7968,7 @@
     {
       "source_station_id": 22,
       "line": "2",
-      "direction": "depart",
+      "direction": "return",
       "stop_ro": "Piața Kálvin",
       "stop_hu": "Kálvin tér",
       "destination": "Simeria (Str. Berzei) / Szemerja Végállomás (via Cart. Ciucului)",
@@ -8197,7 +8233,7 @@
     {
       "source_station_id": 1,
       "line": "2",
-      "direction": "depart",
+      "direction": "return",
       "stop_ro": "Spitalul Județean",
       "stop_hu": "Megyei Kórház",
       "destination": "Simeria (Str. Berzei) / Szemerja Végállomás (via Cart. Ciucului)",
@@ -8932,7 +8968,7 @@
     {
       "source_station_id": 28,
       "line": "2",
-      "direction": "depart",
+      "direction": "return",
       "stop_ro": "Str. Ciucului 1",
       "stop_hu": "Csíki utca 1",
       "destination": "Simeria (Str. Berzei) / Szemerja Végállomás (via Cart. Ciucului)",
@@ -9452,7 +9488,7 @@
     {
       "source_station_id": 26,
       "line": "2",
-      "direction": "depart",
+      "direction": "return",
       "stop_ro": "Str. Ciucului 2",
       "stop_hu": "Csíki utca 2",
       "destination": "Simeria (Str. Berzei) / Szemerja Végállomás (via Cart. Ciucului)",
@@ -9972,7 +10008,7 @@
     {
       "source_station_id": 3,
       "line": "2",
-      "direction": "depart",
+      "direction": "return",
       "stop_ro": "Str. Dealului",
       "stop_hu": "Domb utca",
       "destination": "Simeria (Str. Berzei) / Szemerja Végállomás (via Cart. Ciucului)",
@@ -10452,7 +10488,7 @@
     {
       "source_station_id": 18,
       "line": "2",
-      "direction": "depart",
+      "direction": "return",
       "stop_ro": "Str. Gábor Áron",
       "stop_hu": "Gábor Áron utca",
       "destination": "Simeria (Str. Berzei) / Szemerja Végállomás (via Cart. Ciucului)",
@@ -10972,7 +11008,7 @@
     {
       "source_station_id": 9,
       "line": "2",
-      "direction": "depart",
+      "direction": "return",
       "stop_ro": "Str. Sporturilor",
       "stop_hu": "Sport utca",
       "destination": "Simeria (Str. Berzei) / Szemerja Végállomás (via Cart. Ciucului)",
@@ -22967,7 +23003,7 @@
     {
       "source_station_id": 77,
       "line": "6",
-      "direction": "depart",
+      "direction": "return",
       "stop_ro": "Arena Sepsi",
       "stop_hu": "Sepsi Aréna",
       "destination": "Simeria (Str. Berzei) / Szemerja Végállomás (via Cart. Ciucului)",
@@ -23342,7 +23378,7 @@
     {
       "source_station_id": 24,
       "line": "6",
-      "direction": "depart",
+      "direction": "return",
       "stop_ro": "Cartierul Ciucului",
       "stop_hu": "Csíki negyed",
       "destination": "Simeria (Str. Berzei) / Szemerja Végállomás (via Cart. Ciucului)",
@@ -23717,7 +23753,7 @@
     {
       "source_station_id": 71,
       "line": "6",
-      "direction": "depart",
+      "direction": "return",
       "stop_ro": "Centru Comercial",
       "stop_hu": "Bevásárlóközpont",
       "destination": "Simeria (Str. Berzei) / Szemerja Végállomás (via Cart. Ciucului)",
@@ -23967,7 +24003,7 @@
     {
       "source_station_id": 30,
       "line": "6",
-      "direction": "depart",
+      "direction": "return",
       "stop_ro": "Debren",
       "stop_hu": "Debren",
       "destination": "Simeria (Str. Berzei) / Szemerja Végállomás (via Cart. Ciucului)",
@@ -24217,7 +24253,7 @@
     {
       "source_station_id": 70,
       "line": "6",
-      "direction": "depart",
+      "direction": "return",
       "stop_ro": "Fabrica de Lapte",
       "stop_hu": "Tejgyár",
       "destination": "Simeria (Str. Berzei) / Szemerja Végállomás (via Cart. Ciucului)",
@@ -24467,7 +24503,7 @@
     {
       "source_station_id": 5,
       "line": "6",
-      "direction": "depart",
+      "direction": "return",
       "stop_ro": "Institutul de Proiectări",
       "stop_hu": "Tervező Intézet",
       "destination": "Simeria (Str. Berzei) / Szemerja Végállomás (via Cart. Ciucului)",
@@ -24717,7 +24753,7 @@
     {
       "source_station_id": 20,
       "line": "6",
-      "direction": "depart",
+      "direction": "return",
       "stop_ro": "Lic. Plugor Sándor",
       "stop_hu": "Plugor Sándor Líceum",
       "destination": "Simeria (Str. Berzei) / Szemerja Végállomás (via Cart. Ciucului)",
@@ -24967,7 +25003,7 @@
     {
       "source_station_id": 22,
       "line": "6",
-      "direction": "depart",
+      "direction": "return",
       "stop_ro": "Piața Kálvin",
       "stop_hu": "Kálvin tér",
       "destination": "Simeria (Str. Berzei) / Szemerja Végállomás (via Cart. Ciucului)",
@@ -25092,7 +25128,7 @@
     {
       "source_station_id": 1,
       "line": "6",
-      "direction": "depart",
+      "direction": "return",
       "stop_ro": "Spitalul Județean",
       "stop_hu": "Megyei Kórház",
       "destination": "Simeria (Str. Berzei) / Szemerja Végállomás (via Cart. Ciucului)",
@@ -25467,7 +25503,7 @@
     {
       "source_station_id": 28,
       "line": "6",
-      "direction": "depart",
+      "direction": "return",
       "stop_ro": "Str. Ciucului 1",
       "stop_hu": "Csíki utca 1",
       "destination": "Simeria (Str. Berzei) / Szemerja Végállomás (via Cart. Ciucului)",
@@ -25717,7 +25753,7 @@
     {
       "source_station_id": 26,
       "line": "6",
-      "direction": "depart",
+      "direction": "return",
       "stop_ro": "Str. Ciucului 2",
       "stop_hu": "Csíki utca 2",
       "destination": "Simeria (Str. Berzei) / Szemerja Végállomás (via Cart. Ciucului)",
@@ -25967,7 +26003,7 @@
     {
       "source_station_id": 3,
       "line": "6",
-      "direction": "depart",
+      "direction": "return",
       "stop_ro": "Str. Dealului",
       "stop_hu": "Domb utca",
       "destination": "Simeria (Str. Berzei) / Szemerja Végállomás (via Cart. Ciucului)",
@@ -26217,7 +26253,7 @@
     {
       "source_station_id": 18,
       "line": "6",
-      "direction": "depart",
+      "direction": "return",
       "stop_ro": "Str. Gábor Áron",
       "stop_hu": "Gábor Áron utca",
       "destination": "Simeria (Str. Berzei) / Szemerja Végállomás (via Cart. Ciucului)",
@@ -26467,7 +26503,7 @@
     {
       "source_station_id": 9,
       "line": "6",
-      "direction": "depart",
+      "direction": "return",
       "stop_ro": "Str. Sporturilor",
       "stop_hu": "Sport utca",
       "destination": "Simeria (Str. Berzei) / Szemerja Végállomás (via Cart. Ciucului)",
@@ -35324,6 +35360,426 @@
           },
           {
             "time": "20:48",
+            "marked": false
+          }
+        ]
+      }
+    },
+    {
+      "source_station_id": 90,
+      "line": "10",
+      "direction": "depart",
+      "stop_ro": "Str. Kossuth Lajos 1",
+      "stop_hu": "Kossuth Lajos 1",
+      "destination": "Arcuș / Árkos",
+      "times": {
+        "weekday": [
+          "05:20",
+          "06:20",
+          "07:20",
+          "08:20",
+          "11:20",
+          "13:20",
+          "14:20",
+          "15:20",
+          "17:20",
+          "20:20",
+          "23:25"
+        ],
+        "weekend": [
+          "06:20",
+          "08:20",
+          "12:20",
+          "15:20",
+          "17:20",
+          "20:20"
+        ]
+      },
+      "events": {
+        "weekday": [
+          {
+            "time": "05:20",
+            "marked": false
+          },
+          {
+            "time": "06:20",
+            "marked": false
+          },
+          {
+            "time": "07:20",
+            "marked": false
+          },
+          {
+            "time": "08:20",
+            "marked": false
+          },
+          {
+            "time": "11:20",
+            "marked": false
+          },
+          {
+            "time": "13:20",
+            "marked": false
+          },
+          {
+            "time": "14:20",
+            "marked": false
+          },
+          {
+            "time": "15:20",
+            "marked": false
+          },
+          {
+            "time": "17:20",
+            "marked": false
+          },
+          {
+            "time": "20:20",
+            "marked": false
+          },
+          {
+            "time": "23:25",
+            "marked": false
+          }
+        ],
+        "weekend": [
+          {
+            "time": "06:20",
+            "marked": false
+          },
+          {
+            "time": "08:20",
+            "marked": false
+          },
+          {
+            "time": "12:20",
+            "marked": false
+          },
+          {
+            "time": "15:20",
+            "marked": false
+          },
+          {
+            "time": "17:20",
+            "marked": false
+          },
+          {
+            "time": "20:20",
+            "marked": false
+          }
+        ]
+      }
+    },
+    {
+      "source_station_id": 91,
+      "line": "10",
+      "direction": "return",
+      "stop_ro": "Str. Kossuth Lajos 1",
+      "stop_hu": "Kossuth Lajos 1",
+      "destination": "Casa cu Arcade / Lábasház",
+      "times": {
+        "weekday": [
+          "05:39",
+          "06:39",
+          "07:39",
+          "08:39",
+          "11:39",
+          "13:39",
+          "14:39",
+          "15:39",
+          "17:39",
+          "20:39",
+          "23:44"
+        ],
+        "weekend": [
+          "06:39",
+          "08:39",
+          "12:39",
+          "15:39",
+          "17:39",
+          "20:39"
+        ]
+      },
+      "events": {
+        "weekday": [
+          {
+            "time": "05:39",
+            "marked": false
+          },
+          {
+            "time": "06:39",
+            "marked": false
+          },
+          {
+            "time": "07:39",
+            "marked": false
+          },
+          {
+            "time": "08:39",
+            "marked": false
+          },
+          {
+            "time": "11:39",
+            "marked": false
+          },
+          {
+            "time": "13:39",
+            "marked": false
+          },
+          {
+            "time": "14:39",
+            "marked": false
+          },
+          {
+            "time": "15:39",
+            "marked": false
+          },
+          {
+            "time": "17:39",
+            "marked": false
+          },
+          {
+            "time": "20:39",
+            "marked": false
+          },
+          {
+            "time": "23:44",
+            "marked": false
+          }
+        ],
+        "weekend": [
+          {
+            "time": "06:39",
+            "marked": false
+          },
+          {
+            "time": "08:39",
+            "marked": false
+          },
+          {
+            "time": "12:39",
+            "marked": false
+          },
+          {
+            "time": "15:39",
+            "marked": false
+          },
+          {
+            "time": "17:39",
+            "marked": false
+          },
+          {
+            "time": "20:39",
+            "marked": false
+          }
+        ]
+      }
+    },
+    {
+      "source_station_id": 92,
+      "line": "10",
+      "direction": "depart",
+      "stop_ro": "Str. Kossuth Lajos 2",
+      "stop_hu": "Kossuth Lajos 2",
+      "destination": "Arcuș / Árkos",
+      "times": {
+        "weekday": [
+          "05:22",
+          "06:22",
+          "07:22",
+          "08:22",
+          "11:22",
+          "13:22",
+          "14:22",
+          "15:22",
+          "17:22",
+          "20:22",
+          "23:27"
+        ],
+        "weekend": [
+          "06:22",
+          "08:22",
+          "12:22",
+          "15:22",
+          "17:22",
+          "20:22"
+        ]
+      },
+      "events": {
+        "weekday": [
+          {
+            "time": "05:22",
+            "marked": false
+          },
+          {
+            "time": "06:22",
+            "marked": false
+          },
+          {
+            "time": "07:22",
+            "marked": false
+          },
+          {
+            "time": "08:22",
+            "marked": false
+          },
+          {
+            "time": "11:22",
+            "marked": false
+          },
+          {
+            "time": "13:22",
+            "marked": false
+          },
+          {
+            "time": "14:22",
+            "marked": false
+          },
+          {
+            "time": "15:22",
+            "marked": false
+          },
+          {
+            "time": "17:22",
+            "marked": false
+          },
+          {
+            "time": "20:22",
+            "marked": false
+          },
+          {
+            "time": "23:27",
+            "marked": false
+          }
+        ],
+        "weekend": [
+          {
+            "time": "06:22",
+            "marked": false
+          },
+          {
+            "time": "08:22",
+            "marked": false
+          },
+          {
+            "time": "12:22",
+            "marked": false
+          },
+          {
+            "time": "15:22",
+            "marked": false
+          },
+          {
+            "time": "17:22",
+            "marked": false
+          },
+          {
+            "time": "20:22",
+            "marked": false
+          }
+        ]
+      }
+    },
+    {
+      "source_station_id": 93,
+      "line": "10",
+      "direction": "return",
+      "stop_ro": "Str. Kossuth Lajos 2",
+      "stop_hu": "Kossuth Lajos 2",
+      "destination": "Casa cu Arcade / Lábasház",
+      "times": {
+        "weekday": [
+          "05:37",
+          "06:37",
+          "07:37",
+          "08:37",
+          "11:37",
+          "13:37",
+          "14:37",
+          "15:37",
+          "17:37",
+          "20:37",
+          "23:42"
+        ],
+        "weekend": [
+          "06:37",
+          "08:37",
+          "12:37",
+          "15:37",
+          "17:37",
+          "20:37"
+        ]
+      },
+      "events": {
+        "weekday": [
+          {
+            "time": "05:37",
+            "marked": false
+          },
+          {
+            "time": "06:37",
+            "marked": false
+          },
+          {
+            "time": "07:37",
+            "marked": false
+          },
+          {
+            "time": "08:37",
+            "marked": false
+          },
+          {
+            "time": "11:37",
+            "marked": false
+          },
+          {
+            "time": "13:37",
+            "marked": false
+          },
+          {
+            "time": "14:37",
+            "marked": false
+          },
+          {
+            "time": "15:37",
+            "marked": false
+          },
+          {
+            "time": "17:37",
+            "marked": false
+          },
+          {
+            "time": "20:37",
+            "marked": false
+          },
+          {
+            "time": "23:42",
+            "marked": false
+          }
+        ],
+        "weekend": [
+          {
+            "time": "06:37",
+            "marked": false
+          },
+          {
+            "time": "08:37",
+            "marked": false
+          },
+          {
+            "time": "12:37",
+            "marked": false
+          },
+          {
+            "time": "15:37",
+            "marked": false
+          },
+          {
+            "time": "17:37",
+            "marked": false
+          },
+          {
+            "time": "20:37",
             "marked": false
           }
         ]

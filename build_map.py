@@ -45,7 +45,7 @@ ORDER = ["1", "1B", "1D", "2", "2D", "3", "4", "5", "5D", "6", "7", "9", "10"]
 # Fallback only; the real values come from the operator's own timetable page
 # via fetch_timetable.py.
 COLORS = {
-    "1": "#136f29", "1B": "#136f29", "1D": "#136f29", "2": "#db4436",
+    "1": "#136f29", "1B": "#e8a33d", "1D": "#136f29", "2": "#db4436",
     "2D": "#db4436", "3": "#00b0f0", "4": "#f4b400", "5": "#7c3592",
     "5D": "#7c3592", "6": "#a9fe00", "7": "#ff3eff", "9": "#b27e62",
     "10": "#000000",

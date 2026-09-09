@@ -78,12 +78,11 @@ SERVICES = {
 # A smaller result means the operator page changed or an import bug returned.
 # Refuse to replace a complete local timetable with such a partial download.
 MIN_STATIONS = 95
-# provisional — retuned in Task 15 once every board column binds. The Sept 7
-# board carries route geometry for lines 2/6/1B/10 that we have not rebuilt
-# yet, so a live run now binds ~216 timing points / ~6200 departures; these
+# retuned 2026-09-09 to the Sept 7 board: a full live run binds 100 stations /
+# 221 timing points / 6269 departures with every board column placed. These
 # floors sit ~10% below that and still reject a genuinely partial download.
-MIN_TIMEPOINTS = 194
-MIN_DEPARTURES = 5575
+MIN_TIMEPOINTS = 198
+MIN_DEPARTURES = 5642
 
 
 def fold(text):

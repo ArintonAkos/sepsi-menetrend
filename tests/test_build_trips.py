@@ -16,8 +16,11 @@ class OrderTests(unittest.TestCase):
 
 class ReconstructionInputTests(unittest.TestCase):
     def test_has_exactly_one_time_offset_for_each_physical_call(self):
+        # Fázis 2 made line 2 bidirectional (separate depart/return files), so
+        # the old "depart-to-gara" circular slice is gone; the depart leg is the
+        # equivalent multi-call direction.
         direction = next(item for item in load_directions()
-                         if item["line"] == "2" and item["direction"] == "depart-to-gara")
+                         if item["line"] == "2" and item["direction"] == "depart")
 
         self.assertEqual(len(offsets_for(direction)), len(direction["stops"]))
 
