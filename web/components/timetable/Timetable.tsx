@@ -122,7 +122,7 @@ export default function Timetable({
       </div>
 
       <div className={styles.noticeSlot}>
-        <ServiceNotice validFrom={network.validFrom} t={t} />
+        <ServiceNotice routesProvisional={network.routesProvisional} t={t} />
       </div>
 
       <div className={styles.picks}>

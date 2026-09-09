@@ -915,7 +915,7 @@ export default function Planner({
         )}
         <div className={styles.panel}>
           {!searching && detail === null && (
-            <ServiceNotice validFrom={network.validFrom} t={t} />
+            <ServiceNotice routesProvisional={network.routesProvisional} t={t} />
           )}
           <div className={styles.searchHead}>
             <button onClick={closeSearching} aria-label={t.back}><Back /></button>
