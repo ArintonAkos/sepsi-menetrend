@@ -11,14 +11,14 @@ import type { GuideCopy, GuideKey } from "./content";
  *  Aceleași linii ca în varianta maghiară, cu denumirile românești ale stațiilor. */
 const LINES_RO: string[] = [
   "1 · Cap Linie Simeria – Gara CFR",
+  "1B · Cap Linie Simeria – Câmpul Frumos",
   "1D · Cap Linie Simeria – Multi-Trans",
-  "2 · Spitalul Județean – Gara CFR",
+  "2 · Cap Linie Simeria – Gara CFR",
   "2D · Multi-Trans – Str. Bartók Béla",
   "3 · Str. Țigaretei 1 – Coșeni 2",
   "4 · Str. Țigaretei 1 – Multi-Trans",
   "5 · Str. Dózsa György – Arena Sepsi",
-  "5D · Str. József Attila 2 – Multi-Trans",
-  "6 · Arena Sepsi – Str. Bartók Béla",
+  "6 · Cap Linie Simeria – Arena Sepsi",
   "7 · Cap Linie Simeria – Gara CFR",
   "9 · Șugaș Băi – Gara CFR",
   "10 · Centru Arcuș – Casa cu Arcade",
@@ -41,7 +41,7 @@ export const RO: Record<GuideKey, GuideCopy> = {
       },
       { h2: "Liniile și capetele de traseu" },
       {
-        p: "Cele douăsprezece linii și cele două capete ale direcției principale. Cursele marcate cu „D” sunt curse suplimentare, numerotate separat de operator.",
+        p: "Cele douăsprezece linii și cele două capete ale direcției principale. Cursele marcate cu „D” sunt curse suplimentare, numerotate separat de operator. Linia 1B, introdusă la 7 septembrie 2026, circulă pe traseul liniei 1 până la gară, apoi continuă spre Autoliv și Câmpul Frumos.",
       },
       { ul: LINES_RO },
       { h2: "Bilete și zona Arcuș" },
@@ -198,7 +198,7 @@ export const RO: Record<GuideKey, GuideCopy> = {
       },
       {
         q: "Ce autobuz merge la Spitalul Județean?",
-        a: "Spitalul Județean este unul dintre capetele liniei 2. Orele curselor se găsesc pe pagina liniei 2.",
+        a: "Stația Spitalul Județean este deservită de mai multe linii pe traseul dintre capătul de linie Simeria și centru, printre care liniile 1, 2, 6 și 7. Orele exacte sunt pe pagina liniei respective.",
       },
       {
         q: "Există curse de noapte?",

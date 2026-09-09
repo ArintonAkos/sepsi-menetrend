@@ -11,14 +11,14 @@ import type { GuideCopy, GuideKey } from "./content";
  *  Shared by the pillar and Multi-Trans pages so the list never drifts. */
 const LINES_HU: string[] = [
   "1 · Szemerja Végállomás – Vasútállomás",
+  "1B · Szemerja Végállomás – Szépmező",
   "1D · Szemerja Végállomás – Multi-Trans",
-  "2 · Megyei Kórház – Vasútállomás",
+  "2 · Szemerja Végállomás – Vasútállomás",
   "2D · Multi-Trans – Bartók Béla utca",
   "3 · Cigaretta utca 1 – Szotyor 2",
   "4 · Cigaretta utca 1 – Multi-Trans",
   "5 · Dózsa György utca – Sepsi Aréna",
-  "5D · József Attila utca 2 – Multi-Trans",
-  "6 · Sepsi Aréna – Bartók Béla utca",
+  "6 · Szemerja Végállomás – Sepsi Aréna",
   "7 · Szemerja Végállomás – Vasútállomás",
   "9 · Sugásfürdő – Vasútállomás",
   "10 · Árkos központ – Lábasház",
@@ -41,7 +41,7 @@ export const HU: Record<GuideKey, GuideCopy> = {
       },
       { h2: "Vonalak és végállomások" },
       {
-        p: "A tizenkét vonal és a fő irány két végállomása. A „D” jelzésű járatok kiegészítő indulások, amelyeket az üzemeltető külön számoz.",
+        p: "A tizenkét vonal és a fő irány két végállomása. A „D” jelzésű járatok kiegészítő indulások, amelyeket az üzemeltető külön számoz. A 2026. szeptember 7-én indult 1B-s busz az 1-es útvonalán közlekedik a vasútállomásig, majd Autoliv és Szépmező felé halad tovább.",
       },
       { ul: LINES_HU },
       { h2: "Jegyek és az árkosi zóna" },
@@ -198,7 +198,7 @@ export const HU: Record<GuideKey, GuideCopy> = {
       },
       {
         q: "Melyik busz megy a Megyei Kórházhoz?",
-        a: "A 2-es vonal egyik végállomása a Megyei Kórház. Az induló járatok időpontjai a 2-es vonal oldalán olvashatók.",
+        a: "A Megyei Kórház megállót a Szemerja és a belváros közötti szakaszon több vonal érinti, többek között az 1-es, a 2-es, a 6-os és a 7-es. A pontos időpontok az adott vonal oldalán olvashatók.",
       },
       {
         q: "Van-e éjszakai járat?",
