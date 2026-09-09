@@ -7,6 +7,8 @@
     "ro": "Str. Dózsa György → Câmpul Frumos",
     "hu": "Dózsa György utca → Szépmező"
   },
+  "destination": "Câmpul Frumos / Szépmező",
+  "_note": "destination gates board binding: a 5D-depart trip may only take a board column that names Câmpul Frumos as its destination (as the operator's own dedicated 5D columns did on the Aug board). The Sept 7 board publishes none, so 5D-depart binds nothing rather than seed phantom trips off line 5's segmented marked events.",
   "source": {
     "ro": "https://multitrans.ro/jarat-5d.html",
     "hu": "https://multitrans.ro/jarat-5d-hu.html"
