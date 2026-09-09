@@ -42,6 +42,11 @@ const INDEX: Record<SeoLang, { name: string; path: string }> = {
   en: { name: "Lines", path: "/en/lines/" },
 };
 
+/** Lines whose Sept 7 route shape was reconstructed from the board + the
+ *  operator's announcement rather than a published map. Flagged on the page
+ *  while `network.routesProvisional` is set. */
+const PROVISIONAL_LINES = new Set(["2", "6", "1B", "10"]);
+
 const huPath = (id: string) => `/vonalak/${id}/`;
 const roPath = (id: string) => `/ro/linii/${id}/`;
 const enPathFn = (id: string) => `/en/lines/${id}/`;
@@ -100,6 +105,7 @@ const T = {
   hu: {
     freeFriday: "Pénteken a városi járatok ingyenesek (a Multi-Trans közlése szerint).",
     cta: "Nyisd meg a menetrendben",
+    routeProvisional: "Ez az útvonal ideiglenes rekonstrukció, amíg a Multi-Trans közzé nem teszi a hivatalos térképet.",
     weekday: "hétköznap",
     weekend: "hétvégén",
     span: (svc: string, first: string, last: string) =>
@@ -112,6 +118,7 @@ const T = {
   ro: {
     freeFriday: "Vinerea, cursele urbane sunt gratuite (conform anunțurilor Multi-Trans).",
     cta: "Deschide în planificator",
+    routeProvisional: "Acest traseu este o reconstrucție provizorie, până când Multi-Trans publică harta oficială.",
     weekday: "în zilele lucrătoare",
     weekend: "în weekend",
     span: (svc: string, first: string, last: string) =>
@@ -124,6 +131,7 @@ const T = {
   en: {
     freeFriday: "City services are free on Fridays (per Multi-Trans announcements).",
     cta: "Open in the planner",
+    routeProvisional: "This route is a provisional reconstruction until Multi-Trans publishes the official map.",
     weekday: "on weekdays",
     weekend: "at weekends",
     span: (svc: string, first: string, last: string) =>
@@ -226,6 +234,10 @@ export default async function LinePage({ lang, id }: { lang: SeoLang; id: string
       crumbs={[HOME[lang], INDEX[lang], { name: label, path: selfPath }]}
     >
       <h1 className={styles.h1}>{title}</h1>
+
+      {net.routesProvisional && PROVISIONAL_LINES.has(id) ? (
+        <p className={styles.provisional}>{T[lang].routeProvisional}</p>
+      ) : null}
 
       {dirs.map((dir, i) => {
         // the direction's own terminus is where its printed board is columned

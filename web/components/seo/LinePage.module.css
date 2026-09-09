@@ -67,3 +67,13 @@
   line-height: 1.6;
   color: var(--ink-2);
 }
+
+.provisional {
+  margin: 8px 0 16px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  background: var(--signal);
+  color: var(--signal-ink);
+  font-size: 13px;
+  line-height: 1.5;
+}

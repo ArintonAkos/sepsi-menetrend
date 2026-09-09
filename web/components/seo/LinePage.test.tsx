@@ -120,6 +120,16 @@ describe("LinePage", () => {
     expect(alt).toMatch(/Route of line 1 on the map:/);
   });
 
+  it("flags a reconstructed line's route as provisional, but not a stable one", async () => {
+    // line 2 is one of the Sept 7 re-anchored lines; line 1 kept its shape
+    const two = await renderLine({ lang: "hu", id: "2" });
+    expect(two.container.textContent).toMatch(/ideiglenes rekonstrukció/);
+    two.unmount();
+
+    const one = await renderLine({ lang: "hu", id: "1" });
+    expect(one.container.textContent).not.toMatch(/ideiglenes rekonstrukció/);
+  });
+
   it("falls back to the inline route SVG when there is no baked map", () => {
     // No feed line id is guaranteed to lack a baked PNG (all 24 exist), so the
     // fallback branch is pinned at source level: `mapImage` decides, and
