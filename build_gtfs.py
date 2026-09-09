@@ -59,7 +59,7 @@ SERVICES = {
                     saturday=1, sunday=1),
 }
 
-FEED_START = "20260807"        # "2026. augusztus 7-től érvényes"
+FEED_START = "20260907"        # "2026. szeptember 7-től érvényes"
 FEED_END = "20271231"
 
 
@@ -336,8 +336,20 @@ def main():
     # expect the official colour, with their own contrast handling on top.
     # The adjustments live in the web bundle, next to the theme that needs them.
     official = official_colours()
+    # A line stays in ORDER for its geometry even after a board revision drops
+    # every one of its columns (5D on the Sept 7 board). Emitting a routes.txt
+    # row for a line with no trips fails validate_gtfs' "route with no service"
+    # check and leaves a translation pointing at a routes record that was never
+    # written, so skip both until the service returns.
+    served_lines = {
+        d["line"] for d in directions
+        if (record := trips_data.get(f"{d['line']}-{d['direction']}"))
+        and (trip_calls(record, "weekday") or trip_calls(record, "weekend"))
+    }
     route_rows = []
     for line in ORDER:
+        if line not in served_lines:
+            continue
         first = next(d for d in directions if d["line"] == line)
         colour = official[line]
         route_rows.append({

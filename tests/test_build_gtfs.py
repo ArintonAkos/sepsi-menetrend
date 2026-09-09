@@ -36,6 +36,12 @@ class GtfsCsvTests(unittest.TestCase):
         self.assertEqual(trip["published"], [True, True, False])
 
 
+class FeedWindowTests(unittest.TestCase):
+    def test_feed_starts_on_sept_7(self):
+        """The reworked network takes effect on 2026-09-07."""
+        self.assertEqual(build_gtfs.FEED_START, "20260907")
+
+
 class GtfsTopologyTests(unittest.TestCase):
     def test_wraparound_segment_keeps_the_tail_then_head_of_circular_shape(self):
         points = [[float(index), 0.0] for index in range(7)]
@@ -87,6 +93,20 @@ class GtfsTopologyTests(unittest.TestCase):
 
         self.assertNotIn("Terminal", names)
         self.assertIn("Calea Brașovului 1", names)
+
+    def test_real_feed_adds_1b_and_omits_serviceless_5d(self):
+        """1B joined ORDER with weekday trips; 5D keeps its geometry in ORDER
+        but the Sept 7 board dropped every 5D column, so it must not leave a
+        serviceless routes.txt row (nor a translation pointing at one)."""
+        self.build_in_temporary_directory()
+        with (build_gtfs.OUT / "routes.txt").open(encoding="utf-8", newline="") as handle:
+            route_ids = {row["route_id"] for row in csv.DictReader(handle)}
+        self.assertIn("1B", route_ids)
+        self.assertNotIn("5D", route_ids)
+        with (build_gtfs.OUT / "translations.txt").open(encoding="utf-8", newline="") as handle:
+            route_records = {row["record_id"] for row in csv.DictReader(handle)
+                             if row["table_name"] == "routes"}
+        self.assertNotIn("5D", route_records)
 
     def test_line_six_reaches_the_arena_outbound_and_returns_as_a_separate_pass(self):
         # Fázis 2 re-anchored line 6 to the Gólya utca terminus and split it into
