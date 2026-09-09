@@ -673,6 +673,14 @@ def main():
         trips.append({"patternId": pattern_id[key], "service": trip["service_id"],
                       "start": base // 60})
 
+    # "school" is a superset service: on a teaching weekday `serviceForDate`
+    # returns "school", so every weekday trip has to be reachable under that
+    # service too. Copy them across rather than teaching the RAPTOR filter a
+    # second service value. `school_only_trips` is Task 22's to fill.
+    school_only_trips = []
+    school_trips = [dict(t, service="school") for t in trips if t["service"] == "weekday"]
+    trips = trips + school_trips + school_only_trips
+
     # walks.json is keyed by coordinates; map them back onto stop ids
     def walk_key_coord(lat, lon):
         # Match the f"{value:.5f}" representation used by fetch_walks.key.

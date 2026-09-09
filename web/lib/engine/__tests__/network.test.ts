@@ -57,6 +57,16 @@ describe("the real network", () => {
     expect(net.trips.length).toBeGreaterThan(400);
   });
 
+  it("makes every weekday trip available on a school day too", () => {
+    // "school" is a superset service: build_web_data copies every weekday trip
+    // into it, so the RAPTOR filter (trip.service === service) still finds them
+    // on a teaching weekday without any engine change.
+    const weekday = net.trips.filter((t) => t.service === "weekday").length;
+    const school = net.trips.filter((t) => t.service === "school").length;
+    expect(weekday).toBeGreaterThan(0);
+    expect(school).toBeGreaterThanOrEqual(weekday);
+  });
+
   it("is the Sept 7 feed and flags provisional routes", () => {
     expect(net.validFrom).toBe("20260907");
     expect(net.routesProvisional).toBe(true);

@@ -1,6 +1,11 @@
+import json
 import unittest
+from pathlib import Path
 
 from build_web_data import official_board_bindings, official_boards, pattern_key, platform_side
+
+ROOT = Path(__file__).resolve().parent.parent
+NETWORK = ROOT / "web" / "public" / "data" / "network.json"
 
 
 class OfficialBoardTests(unittest.TestCase):
@@ -162,6 +167,19 @@ class OfficialBoardTests(unittest.TestCase):
         ]
 
         self.assertNotEqual(pattern_key(trip, normal), pattern_key(trip, published))
+
+
+class SchoolServiceTests(unittest.TestCase):
+    @unittest.skipUnless(NETWORK.exists(), "run build_web_data.py first")
+    def test_school_service_supersets_weekday(self):
+        """The generated bundle folds every weekday trip into the "school"
+        service, so a teaching weekday keeps the whole weekday timetable
+        while the RAPTOR filter stays `trip.service === service`."""
+        net = json.loads(NETWORK.read_text(encoding="utf-8"))
+        weekday = [t for t in net["trips"] if t["service"] == "weekday"]
+        school = [t for t in net["trips"] if t["service"] == "school"]
+        self.assertGreater(len(weekday), 0)
+        self.assertGreaterEqual(len(school), len(weekday))
 
 
 if __name__ == "__main__":
