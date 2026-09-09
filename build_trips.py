@@ -22,6 +22,7 @@ from timetable_overrides import (
 
 ROOT = Path(__file__).resolve().parent
 OUTPUT = ROOT / "trips.json"
+SCHOOL_ONLY = ROOT / "school_only_trips.json"
 DWELL_SECONDS = 25
 ORDER = ["1", "1B", "1D", "2", "2D", "3", "4", "5", "5D", "6", "7", "9", "10"]
 
@@ -49,6 +50,45 @@ def offsets_for(direction):
     for i, seconds in enumerate(legs[:-1]):
         out.append(out[-1] + seconds + (DWELL_SECONDS if i else 0))
     return out
+
+
+def append_school_only(trips):
+    """Add the hand-specified school-only runs the station board never prints.
+
+    A school-only trip (the áthúzott-6, for one) has no timetable column, so it
+    cannot go through `reconstruct_direction`. Each is a single trip whose calls
+    are the cumulative OSRM leg times of `line-<internalLine>/<direction>` plus
+    the standard inter-stop dwell - exactly what `offsets_for` computes -
+    anchored at the published start. `line` is the public line it is signed as
+    ("6"); `internalLine` ("6S") only names the geometry folder, so it stays out
+    of the public ORDER and the reconstruction loop.
+    """
+    if not SCHOOL_ONLY.exists():
+        return
+    for entry in json.loads(SCHOOL_ONLY.read_text(encoding="utf-8")):
+        internal, name = entry["internalLine"], entry["direction"]
+        stops = json.loads(
+            (ROOT / f"line-{internal}" / f"{name}.json").read_text(encoding="utf-8")
+        )["stops"]
+        offsets = offsets_for({"line": internal, "direction": name, "stops": stops})
+        start = minutes(entry["start"])
+        calls = [start + round(offset / 60) for offset in offsets]
+        trips[f"{internal}-{name}"] = {
+            "line": entry["line"],
+            "direction": name,
+            "internalLine": internal,
+            "source_direction": name,
+            "destination": None,
+            "service": entry["service"],
+            "headsign": entry["headsign"],
+            "offsets": offsets,
+            "start": start,
+            "calls": calls,
+            "published": [False] * len(calls),
+            "weekday": [],
+            "weekend": [],
+            "note": entry.get("note", ""),
+        }
 
 
 def reconstruction_inputs(timetable, directions, topology):
@@ -118,6 +158,8 @@ def main():
                   "unmatched": report}
         trips[key] = record
         reports.extend({"route": key, **item} for item in report)
+
+    append_school_only(trips)
 
     bundle = {
         "source": timetable["source"],

@@ -32,6 +32,7 @@ ROOT = Path(__file__).resolve().parent
 OUT = ROOT / "gtfs"
 ARCHIVE = ROOT / "multitrans-gtfs.zip"
 PLATFORMS = ROOT / "platforms.json"
+SCHOOL_ONLY = ROOT / "school_only_trips.json"
 
 sys.path.insert(0, str(ROOT))
 from build_map import (  # noqa: E402
@@ -279,6 +280,61 @@ def fare_tables(fares, platforms, stop_id):
     }, names
 
 
+def append_school_only(trips_data, topology, stop_id, shape_rows, trip_rows, time_rows):
+    """Emit the hand-specified school-only runs the operator's board never prints.
+
+    The áthúzott-6 is one: `internalLine` "6S" names only the geometry folder and
+    stays out of `ORDER`, so `load_directions()` and the main loop skip it. It is
+    a single trip signed as the public line ("6"), under `service_id="school"`,
+    on its own `line-6S/depart-shape.json` geometry. Its calls come straight from
+    the `trips.json` record `build_trips.append_school_only` wrote.
+    """
+    if not SCHOOL_ONLY.exists():
+        return
+    platforms = topology["platforms"]
+    for entry in json.loads(SCHOOL_ONLY.read_text(encoding="utf-8")):
+        internal, name = entry["internalLine"], entry["direction"]
+        key = f"{internal}-{name}"
+        record = trips_data.get(key)
+        if not record:
+            continue
+        folder = ROOT / f"line-{internal}"
+        route = json.loads((folder / f"{name}.json").read_text(encoding="utf-8"))
+        points = json.loads(
+            (folder / f"{name}-shape.json").read_text(encoding="utf-8"))["points"]
+        anchors = anchor_vertices(route["stops"], points)
+        along, running = [0.0], 0.0
+        for i in range(1, len(points)):
+            running += metres(points[i - 1], points[i])
+            along.append(running)
+        for i, point in enumerate(points):
+            shape_rows.append({
+                "shape_id": key, "shape_pt_lat": f"{point[0]:.6f}",
+                "shape_pt_lon": f"{point[1]:.6f}", "shape_pt_sequence": i,
+                "shape_dist_traveled": f"{along[i]:.1f}",
+            })
+        stop_dist = [along[v] for v in anchors]
+        trip_id = f"{key}-school-001"
+        trip_rows.append({
+            "route_id": record["line"], "service_id": record["service"],
+            "trip_id": trip_id, "trip_headsign": entry["headsign"]["ro"],
+            "direction_id": 0 if name == "depart" else 1, "shape_id": key,
+        })
+        for i, stop in enumerate(route["stops"]):
+            here = (stop["stop_lat"], stop["stop_lon"])
+            near = min(platforms, key=lambda p: metres(here, p["point"]))
+            if metres(here, near["point"]) > 30:
+                raise SystemExit(f"BLOCKED: {key} stop {stop['name']['ro']!r} "
+                                 "has no platform within 30 m")
+            when = gtfs_time(record["calls"][i])
+            time_rows.append({
+                "trip_id": trip_id, "arrival_time": when, "departure_time": when,
+                "stop_id": stop_id[near["id"]], "stop_sequence": i + 1,
+                "timepoint": 1 if record["published"][i] else 0,
+                "shape_dist_traveled": f"{stop_dist[i]:.1f}",
+            })
+
+
 def write(name, fields, rows):
     path = OUT / name
     with path.open("w", encoding="utf-8", newline="") as fh:
@@ -439,6 +495,8 @@ def main():
                             "timepoint": 1 if trip["published"][i] else 0,
                             "shape_dist_traveled": f"{stop_distance[key][i]:.1f}",
                         })
+
+    append_school_only(raw_trips_data, topology, stop_id, shape_rows, trip_rows, time_rows)
 
     counts = {
         "agency.txt": write("agency.txt", list(AGENCY), [AGENCY]),

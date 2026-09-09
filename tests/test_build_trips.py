@@ -2,7 +2,7 @@ import unittest
 from unittest.mock import patch
 
 from build_map import load_directions
-from build_trips import offsets_for, reconstruction_inputs
+from build_trips import append_school_only, offsets_for, reconstruction_inputs
 
 
 class OrderTests(unittest.TestCase):
@@ -49,6 +49,32 @@ class ReconstructionInputTests(unittest.TestCase):
         self.assertEqual(entries[0]["_platform"], "correct-kerb")
         self.assertEqual(resolved[0]["callPlatforms"], ["correct-kerb"])
         self.assertEqual(resolved[0]["call_platform_ids"], ["correct-kerb"])
+
+
+class SchoolOnlyTripTests(unittest.TestCase):
+    def test_append_school_only_builds_the_6s_run(self):
+        """The áthúzott-6 has no board column, so `append_school_only` builds it
+        from `school_only_trips.json` + the `line-6S/` geometry: one trip, signed
+        as line 6, six unpublished calls anchored at the 07:30 start."""
+        trips = {}
+        append_school_only(trips)
+
+        self.assertIn("6S-depart", trips)
+        record = trips["6S-depart"]
+        self.assertEqual(record["line"], "6")
+        self.assertEqual(record["service"], "school")
+        self.assertEqual(record["start"], 450)
+        self.assertEqual(len(record["calls"]), 6)
+        self.assertEqual(record["calls"][0], 450)
+        self.assertEqual(record["calls"], sorted(record["calls"]))
+        self.assertEqual(record["published"], [False] * 6)
+
+    def test_append_school_only_leaves_a_normal_dict_untouched(self):
+        trips = {"6-depart": {"line": "6", "weekday": [], "weekend": []}}
+        append_school_only(trips)
+
+        self.assertEqual(trips["6-depart"], {"line": "6", "weekday": [], "weekend": []})
+        self.assertIn("6S-depart", trips)
 
 
 if __name__ == "__main__":

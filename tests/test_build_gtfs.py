@@ -112,12 +112,18 @@ class GtfsTopologyTests(unittest.TestCase):
     def test_school_service_mirrors_every_weekday_trip_with_dated_calendar(self):
         """The school service is a weekday superset: build_gtfs emits a
         service_id="school" copy of every weekday trip, and calendar_dates.txt
-        lists each teaching day as an exception_type=1 addition."""
+        lists each teaching day as an exception_type=1 addition. On top of the
+        mirror it also emits the board-less school-only runs (the áthúzott-6,
+        Task 22), which have no weekday counterpart."""
         self.build_in_temporary_directory()
 
         with (build_gtfs.OUT / "trips.txt").open(encoding="utf-8", newline="") as handle:
-            services = [row["service_id"] for row in csv.DictReader(handle)]
-        self.assertEqual(services.count("school"), services.count("weekday"))
+            rows = list(csv.DictReader(handle))
+        services = [row["service_id"] for row in rows]
+        school_only = sum(1 for row in rows if row["trip_id"].startswith("6S-"))
+        self.assertEqual(school_only, 1)
+        self.assertEqual(services.count("school"),
+                         services.count("weekday") + school_only)
         self.assertGreater(services.count("school"), 0)
 
         with (build_gtfs.OUT / "calendar.txt").open(encoding="utf-8", newline="") as handle:

@@ -1,0 +1,14 @@
+[
+  {
+    "line": "6",
+    "internalLine": "6S",
+    "direction": "depart",
+    "service": "school",
+    "start": "07:30",
+    "headsign": {
+      "ro": "Cartierul Ciucului → Gară CFR (cursă școlară)",
+      "hu": "Csíki negyed → Vasútállomás (iskolajárat)"
+    },
+    "note": "áthúzott 6 iskolajárat - Multi-Trans FB 2026-09-07; no board column"
+  }
+]

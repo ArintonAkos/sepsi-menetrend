@@ -13140,3 +13140,9 @@ trip_id,arrival_time,departure_time,stop_id,stop_sequence,timepoint,shape_dist_t
 10-return-weekend-006,20:46:00,20:46:00,P61,11,1,6267.2
 10-return-weekend-006,20:48:00,20:48:00,P85,12,1,6841.9
 10-return-weekend-006,20:50:00,20:50:00,P14,13,0,7413.4
+6S-depart-school-001,07:30:00,07:30:00,P19,1,0,0.0
+6S-depart-school-001,07:33:00,07:33:00,P24,2,0,1656.0
+6S-depart-school-001,07:34:00,07:34:00,P25,3,0,2127.1
+6S-depart-school-001,07:35:00,07:35:00,P96,4,0,2362.8
+6S-depart-school-001,07:36:00,07:36:00,P95,5,0,2692.6
+6S-depart-school-001,07:38:00,07:38:00,P56,6,0,3634.8

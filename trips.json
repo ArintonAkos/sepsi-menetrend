@@ -21904,6 +21904,46 @@
         }
       ],
       "unmatched": []
+    },
+    "6S-depart": {
+      "line": "6",
+      "direction": "depart",
+      "internalLine": "6S",
+      "source_direction": "depart",
+      "destination": null,
+      "service": "school",
+      "headsign": {
+        "ro": "Cartierul Ciucului → Gară CFR (cursă școlară)",
+        "hu": "Csíki negyed → Vasútállomás (iskolajárat)"
+      },
+      "offsets": [
+        0,
+        162,
+        229,
+        286,
+        341,
+        476
+      ],
+      "start": 450,
+      "calls": [
+        450,
+        453,
+        454,
+        455,
+        456,
+        458
+      ],
+      "published": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "weekday": [],
+      "weekend": [],
+      "note": "áthúzott 6 iskolajárat - Multi-Trans FB 2026-09-07; no board column"
     }
   }
 }

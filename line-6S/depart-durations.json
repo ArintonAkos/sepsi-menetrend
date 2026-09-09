@@ -1,0 +1,30 @@
+{
+  "shape_id": "6S-depart",
+  "line": "6S",
+  "direction": "depart",
+  "profile": "osrm/driving",
+  "note": "running time only; contains no waiting or timetable information; OSRM free-flow",
+  "total_seconds": 376,
+  "legs": [
+    {
+      "seconds": 162,
+      "metres": 1655
+    },
+    {
+      "seconds": 42,
+      "metres": 470
+    },
+    {
+      "seconds": 32,
+      "metres": 236
+    },
+    {
+      "seconds": 30,
+      "metres": 330
+    },
+    {
+      "seconds": 110,
+      "metres": 943
+    }
+  ]
+}

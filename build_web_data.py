@@ -673,13 +673,14 @@ def main():
         trips.append({"patternId": pattern_id[key], "service": trip["service_id"],
                       "start": base // 60})
 
-    # "school" is a superset service: on a teaching weekday `serviceForDate`
+    # "school" is a weekday superset: on a teaching weekday `serviceForDate`
     # returns "school", so every weekday trip has to be reachable under that
-    # service too. Copy them across rather than teaching the RAPTOR filter a
-    # second service value. `school_only_trips` is Task 22's to fill.
-    school_only_trips = []
-    school_trips = [dict(t, service="school") for t in trips if t["service"] == "weekday"]
-    trips = trips + school_trips + school_only_trips
+    # service too. `build_gtfs` already emits a `service_id="school"` copy of
+    # every weekday trip into the feed (Task 23), plus the board-less
+    # school-only runs like the áthúzott-6 (Task 22), and the pattern loop above
+    # turns each of those into its own `service:"school"` trip. So the bundle
+    # already carries the whole school-day timetable - build_web_data must NOT
+    # mirror weekday->school a second time here.
 
     # walks.json is keyed by coordinates; map them back onto stop ids
     def walk_key_coord(lat, lon):

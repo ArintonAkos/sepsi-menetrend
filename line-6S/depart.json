@@ -1,0 +1,78 @@
+{
+  "line": "6S",
+  "direction": "depart",
+  "circular": false,
+  "closes_loop_at_start": false,
+  "headsign": {
+    "ro": "Cartierul Ciucului → Gară CFR (cursă școlară)",
+    "hu": "Csíki negyed → Vasútállomás (iskolajárat)"
+  },
+  "source": {
+    "ro": "",
+    "hu": "",
+    "_note": "áthúzott 6 iskolajárat, Multi-Trans FB 2026-09-07; nincs tábla-oszlop, a geometria OSRM-becslés a meglévő megállókoordinátákból"
+  },
+  "stop_count": 6,
+  "stops": [
+    {
+      "stop_sequence": 1,
+      "name": {
+        "ro": "Cartierul Ciucului",
+        "hu": "Csíki negyed"
+      },
+      "stop_lat": 45.873943,
+      "stop_lon": 25.792354,
+      "distance_to_next_m": 1655
+    },
+    {
+      "stop_sequence": 2,
+      "name": {
+        "ro": "B-dul Grigore Bălan 1",
+        "hu": "G. Bálán sugárút 1"
+      },
+      "stop_lat": 45.8622,
+      "stop_lon": 25.7962,
+      "distance_to_next_m": 470
+    },
+    {
+      "stop_sequence": 3,
+      "name": {
+        "ro": "B-dul Grigore Bălan 2",
+        "hu": "G. Bálán sugárút 2"
+      },
+      "stop_lat": 45.858,
+      "stop_lon": 25.7964,
+      "distance_to_next_m": 236
+    },
+    {
+      "stop_sequence": 4,
+      "name": {
+        "ro": "Str. Lăcrămioarei 2",
+        "hu": "Gyöngyvirág utca 2"
+      },
+      "stop_lat": 45.858,
+      "stop_lon": 25.7981,
+      "distance_to_next_m": 330
+    },
+    {
+      "stop_sequence": 5,
+      "name": {
+        "ro": "Str. Lăcrămioarei 1",
+        "hu": "Gyöngyvirág utca 1"
+      },
+      "stop_lat": 45.8605,
+      "stop_lon": 25.8001,
+      "distance_to_next_m": 943
+    },
+    {
+      "stop_sequence": 6,
+      "name": {
+        "ro": "Gara CFR",
+        "hu": "Vasútállomás"
+      },
+      "stop_lat": 45.8631,
+      "stop_lon": 25.8101,
+      "distance_to_next_m": null
+    }
+  ]
+}
