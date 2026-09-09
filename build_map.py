@@ -40,14 +40,15 @@ MAPBOX_TOKEN = load_mapbox_token()
 # you would walk between mid-journey.
 WALK_LIMIT_M = 220
 
-ORDER = ["1", "1D", "2", "2D", "3", "4", "5", "5D", "6", "7", "9", "10"]
+ORDER = ["1", "1B", "1D", "2", "2D", "3", "4", "5", "5D", "6", "7", "9", "10"]
 
 # Fallback only; the real values come from the operator's own timetable page
 # via fetch_timetable.py.
 COLORS = {
-    "1": "#136f29", "1D": "#136f29", "2": "#db4436", "2D": "#db4436",
-    "3": "#00b0f0", "4": "#f4b400", "5": "#7c3592", "5D": "#7c3592",
-    "6": "#a9fe00", "7": "#ff3eff", "9": "#b27e62", "10": "#000000",
+    "1": "#136f29", "1B": "#136f29", "1D": "#136f29", "2": "#db4436",
+    "2D": "#db4436", "3": "#00b0f0", "4": "#f4b400", "5": "#7c3592",
+    "5D": "#7c3592", "6": "#a9fe00", "7": "#ff3eff", "9": "#b27e62",
+    "10": "#000000",
 }
 
 
@@ -183,14 +184,15 @@ WALK_M_PER_MIN = 80         # 4.8 km/h
 # Line descriptions as the operator words them.
 DESCRIPTIONS = {
     "1": "Vasútállomás – Szemerja · Református Templomon át",
+    "1B": "Szemerja – Szépmező · Autoliv felé, az 1-es útvonalán",
     "1D": "Szemerja – Szépmező · Tervező Intézeten át",
-    "2": "Bartók Béla – Vasútállomás · Csíki negyeden át",
+    "2": "Szemerja – Vasútállomás · Csíki negyeden át",
     "2D": "Bartók Béla – Szépmező · Csíki negyeden át",
     "3": "Cigaretta utca – Szotyor · Központon át",
     "4": "Cigaretta utca – Szépmező · Központon át",
-    "5": "Sepsi Aréna – József Attila u.",
+    "5": "Dózsa György u. – Sepsi Aréna · körjárat",
     "5D": "József Attila u. 2 – Szépmező · G. Bálán sugárúton át",
-    "6": "Bartók Béla u. – Sepsi Aréna · Csíki negyeden át",
+    "6": "Szemerja – Sepsi Aréna · Csíki negyeden át",
     "7": "Szemerja Végállomás – Vasútállomás · Cigaretta utcán át",
     "9": "Vasútállomás – Sugásfürdő · Kálvin téren át",
     "10": "Lábasház – Árkos központ · Kossuth Lajos negyeden át",

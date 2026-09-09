@@ -5,6 +5,15 @@ from build_map import load_directions
 from build_trips import offsets_for, reconstruction_inputs
 
 
+class OrderTests(unittest.TestCase):
+    def test_order_includes_1b(self):
+        from build_map import ORDER as MAP_ORDER
+        from build_trips import ORDER as TRIP_ORDER
+
+        self.assertEqual(MAP_ORDER, TRIP_ORDER)
+        self.assertIn("1B", MAP_ORDER)
+
+
 class ReconstructionInputTests(unittest.TestCase):
     def test_has_exactly_one_time_offset_for_each_physical_call(self):
         direction = next(item for item in load_directions()

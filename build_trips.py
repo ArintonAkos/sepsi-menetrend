@@ -23,7 +23,7 @@ from timetable_overrides import (
 ROOT = Path(__file__).resolve().parent
 OUTPUT = ROOT / "trips.json"
 DWELL_SECONDS = 25
-ORDER = ["1", "1D", "2", "2D", "3", "4", "5", "5D", "6", "7", "9", "10"]
+ORDER = ["1", "1B", "1D", "2", "2D", "3", "4", "5", "5D", "6", "7", "9", "10"]
 
 
 def minutes(text):
