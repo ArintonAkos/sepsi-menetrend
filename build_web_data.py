@@ -43,6 +43,7 @@ from timetable_overrides import (  # noqa: E402
     apply_timetable_overrides, filter_opposite_platform_columns,
     merge_same_platform_columns,
 )
+from school_calendar import SCHOOL_EXCEPTIONS, SCHOOL_TERMS  # noqa: E402
 
 ROOT = Path(__file__).resolve().parent
 GTFS = ROOT / "gtfs"
@@ -749,6 +750,8 @@ def main():
         "generated": feed.get("feed_start_date", ""),
         "validFrom": feed.get("feed_start_date", ""),
         "routesProvisional": True,   # reconstructed routes for lines 2/6/1B/10/1D/2D — cleared when Multi-Trans publishes the official maps
+        "schoolTerms": [list(t) for t in SCHOOL_TERMS],
+        "schoolExceptions": SCHOOL_EXCEPTIONS,
         "lines": lines, "stops": stops, "stations": station_list,
         "patterns": list(patterns.values()), "trips": trips, "walks": walks,
         "officialBoards": official_boards(timetable, board_bindings, strict=False,
