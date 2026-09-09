@@ -47,15 +47,18 @@ export default function StopBoard({
      continues as 2D". The direct 2D column names the same departure more
      usefully, so avoid showing it twice. This is distinct from our own
      estimated-time notation, which is never mixed into an official board. */
+  // The published board has a weekday and a weekend column only; a school day
+  // reads the weekday one (the school service is a weekday superset).
+  const day: "weekday" | "weekend" = service === "weekend" ? "weekend" : "weekday";
   const officialRows = official.map((column) => {
-    const marked = new Set(service === "weekday"
+    const marked = new Set(day === "weekday"
       ? column.markedWeekday ?? [] : column.markedWeekend ?? []);
     const extension = new Set(official
       .filter((candidate) => candidate.lineId === `${column.lineId}D`)
-      .flatMap((candidate) => candidate[service]));
+      .flatMap((candidate) => candidate[day]));
     return {
       column,
-      times: column[service].filter((at) => !marked.has(at) || !extension.has(at)),
+      times: column[day].filter((at) => !marked.has(at) || !extension.has(at)),
     };
   }).filter((row) => row.times.length > 0);
   /* A physical pole's published columns are the whole public timetable for

@@ -13,10 +13,38 @@ export function formatHHMM(min: Minute): string {
   return `${String(Math.floor(m / 60)).padStart(2, "0")}:${String(m % 60).padStart(2, "0")}`;
 }
 
-/** Multi-Trans publishes two patterns: weekdays, and Saturday+Sunday together. */
-export function serviceForDate(date: Date): ServiceId {
-  const d = date.getDay();
-  return d === 0 || d === 6 ? "weekend" : "weekday";
+function ymd(d: Date): string {
+  return `${d.getFullYear()}${String(d.getMonth() + 1).padStart(2, "0")}${String(d.getDate()).padStart(2, "0")}`;
+}
+
+/** A teaching weekday: a Mon-Fri inside a term range and not an exception
+ *  (Oct 5, a statutory holiday). Terms and exceptions are baked into
+ *  network.json by `school_calendar.py`. */
+export function isSchoolDay(
+  date: Date, terms: [string, string][], exceptions: string[],
+): boolean {
+  const day = date.getDay();
+  if (day === 0 || day === 6) return false;
+  const s = ymd(date);
+  if (exceptions.includes(s)) return false;
+  return terms.some(([a, b]) => a <= s && s <= b);
+}
+
+/** Weekend -> "weekend"; a teaching weekday (when `cal` is supplied) ->
+ *  "school"; any other weekday -> "weekday". Called without `cal` it keeps the
+ *  original two-value behaviour, so SEO SSG (routes.ts) is unaffected.
+ *
+ *  Multi-Trans publishes two patterns: weekdays, and Saturday+Sunday together.
+ *  The school-day service is a superset the app layers on top - see
+ *  `build_web_data.py` / `build_gtfs.py`. */
+export function serviceForDate(
+  date: Date,
+  cal?: { schoolTerms: [string, string][]; schoolExceptions: string[] },
+): ServiceId {
+  const day = date.getDay();
+  if (day === 0 || day === 6) return "weekend";
+  if (cal && isSchoolDay(date, cal.schoolTerms, cal.schoolExceptions)) return "school";
+  return "weekday";
 }
 
 export function minutesOfDay(date: Date): Minute {

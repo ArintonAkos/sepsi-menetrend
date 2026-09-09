@@ -11,7 +11,7 @@ export type LngLat = [number, number];
 /** Minutes since midnight. Can exceed 1440 for trips running past 24:00. */
 export type Minute = number;
 
-export type ServiceId = "weekday" | "weekend";
+export type ServiceId = "weekday" | "weekend" | "school";
 
 export interface Line {
   id: string;              // "1", "1D", "10"
@@ -110,6 +110,11 @@ export interface Network {
   /** Routes rebuilt from the operator's stop boards, not their published
    *  route maps - set until Multi-Trans publishes the Sept 7 maps. */
   routesProvisional?: boolean;
+  /** The 2026-27 school year, baked from `school_calendar.py`. `serviceForDate`
+   *  resolves a teaching weekday to the "school" service; on any other day these
+   *  are unused. `[startYMD, endYMD]` term ranges and `YMD` holiday exceptions. */
+  schoolTerms?: [string, string][];
+  schoolExceptions?: string[];
   lines: Line[];
   stops: Stop[];
   stations: Station[];

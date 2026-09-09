@@ -4,8 +4,11 @@ import type { OfficialBoard, ServiceId } from "./engine/types";
 export function officialBoardAt(boards: readonly OfficialBoard[], stopId: string,
                                 stopRo: string, service: ServiceId,
                                 headsigns: ReadonlyMap<string, ReadonlySet<string>> = new Map()): OfficialBoard[] {
+  // The published board has a weekday and a weekend column only; a school day
+  // reads the weekday one (the school service is a weekday superset).
+  const day: "weekday" | "weekend" = service === "weekend" ? "weekend" : "weekday";
   const named = boards.filter((board) =>
-    (board.stopId ? board.stopId === stopId : board.stopRo === stopRo) && board[service].length > 0);
+    (board.stopId ? board.stopId === stopId : board.stopRo === stopRo) && board[day].length > 0);
   const compact = (value: string) => value.normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "").toLocaleLowerCase().replace(/[^a-z0-9]/g, "");
   const sameDestination = (left: string, right: string) => compact(left) === compact(right);

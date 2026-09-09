@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { parseHHMM, formatHHMM, serviceForDate, forwardDelta } from "../time";
+import { parseHHMM, formatHHMM, serviceForDate, isSchoolDay, forwardDelta } from "../time";
 
 describe("parseHHMM", () => {
   it("reads normal times", () => {
@@ -30,6 +30,31 @@ describe("serviceForDate", () => {
     expect(serviceForDate(new Date(2026, 7, 22))).toBe("weekend");  // Saturday
     expect(serviceForDate(new Date(2026, 7, 23))).toBe("weekend");  // Sunday
   });
+});
+
+describe("isSchoolDay", () => {
+  const terms: [string, string][] = [["20260907", "20261023"]];
+  it("true on a teaching weekday", () =>
+    expect(isSchoolDay(new Date(2026, 8, 9), terms, ["20261005"])).toBe(true));   // Wed Sep 9
+  it("false on the Oct 5 exception", () =>
+    expect(isSchoolDay(new Date(2026, 9, 5), terms, ["20261005"])).toBe(false));
+  it("false in the summer", () =>
+    expect(isSchoolDay(new Date(2026, 7, 15), terms, ["20261005"])).toBe(false));
+  it("false on a term weekend", () =>
+    expect(isSchoolDay(new Date(2026, 8, 12), terms, [])).toBe(false));           // Sat
+});
+
+describe("serviceForDate with a calendar", () => {
+  const cal = {
+    schoolTerms: [["20260907", "20261023"]] as [string, string][],
+    schoolExceptions: [] as string[],
+  };
+  it("school on a teaching weekday", () =>
+    expect(serviceForDate(new Date(2026, 8, 9), cal)).toBe("school"));
+  it("weekend stays weekend", () =>
+    expect(serviceForDate(new Date(2026, 8, 12), cal)).toBe("weekend"));
+  it("weekday out of term", () =>
+    expect(serviceForDate(new Date(2026, 10, 16), cal)).toBe("weekday"));   // Mon Nov 16, past the single term
 });
 
 describe("forwardDelta", () => {
