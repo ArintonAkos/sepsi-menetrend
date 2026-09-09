@@ -1,4 +1,5 @@
 import csv
+import json
 import tempfile
 import unittest
 from pathlib import Path
@@ -122,6 +123,24 @@ class RouteOverrideTests(unittest.TestCase):
             build_map.duration_seconds_for(direction, legs),
             [100, 50, 0],
         )
+
+    def test_no_stale_line_six_elisabeta_removecall_and_real_feed_applies(self):
+        """Fázis 2 rebuilt line-6/depart.json without Parcul Elisabeta, so a
+        removeCall for it makes apply_route_overrides fail closed on the real
+        feed. The override must be gone and load_directions must not raise."""
+        overrides = json.loads(build_map.ROUTE_OVERRIDES.read_text(encoding="utf-8"))
+
+        self.assertNotIn(
+            {"line": "6", "direction": "depart", "name": "Parcul Elisabeta"},
+            overrides["removeCalls"],
+        )
+        self.assertFalse([
+            call for call in overrides["removeCalls"]
+            if call["line"] == "6" and call["name"] == "Parcul Elisabeta"
+        ])
+
+        directions = build_map.load_directions()
+        self.assertTrue(directions)
 
     def test_can_rename_a_legacy_terminal_and_remove_only_the_second_duplicate(self):
         directions = [{
