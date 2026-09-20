@@ -412,7 +412,13 @@ def main():
     for line in ORDER:
         if line not in served_lines:
             continue
-        first = next(d for d in directions if d["line"] == line)
+        line_directions = [d for d in directions if d["line"] == line]
+        first = next(
+            (d for d in line_directions
+             if (record := trips_data.get(f"{d['line']}-{d['direction']}"))
+             and (trip_calls(record, "weekday") or trip_calls(record, "weekend"))),
+            line_directions[0],
+        )
         colour = official[line]
         route_rows.append({
             "route_id": line, "agency_id": AGENCY["agency_id"],

@@ -12,10 +12,20 @@
     "hu": "",
     "_note": "line 1B has no operator route page (Sept 2026); assembled from line 1 + line 1D geometry"
   },
-  "stop_count": 10,
+  "stop_count": 11,
   "stops": [
     {
       "stop_sequence": 1,
+      "name": {
+        "ro": "Multi-Trans",
+        "hu": "Multi-Trans"
+      },
+      "stop_lat": 45.8593,
+      "stop_lon": 25.8389,
+      "distance_to_next_m": 518
+    },
+    {
+      "stop_sequence": 2,
       "name": {
         "ro": "Câmpul Frumos",
         "hu": "Szépmező"
@@ -25,7 +35,7 @@
       "distance_to_next_m": 2148
     },
     {
-      "stop_sequence": 2,
+      "stop_sequence": 3,
       "name": {
         "ro": "Autoliv",
         "hu": "Autoliv"
@@ -35,7 +45,7 @@
       "distance_to_next_m": 747
     },
     {
-      "stop_sequence": 3,
+      "stop_sequence": 4,
       "name": {
         "ro": "Gara CFR",
         "hu": "Vasútállomás"
@@ -45,7 +55,7 @@
       "distance_to_next_m": 914
     },
     {
-      "stop_sequence": 4,
+      "stop_sequence": 5,
       "name": {
         "ro": "Str. Sporturilor",
         "hu": "Sport utca"
@@ -55,27 +65,27 @@
       "distance_to_next_m": 547
     },
     {
-      "stop_sequence": 5,
+      "stop_sequence": 6,
       "name": {
         "ro": "Biserica Reformată",
         "hu": "Református Templom"
       },
       "stop_lat": 45.8643,
       "stop_lon": 25.7919,
-      "distance_to_next_m": 497
-    },
-    {
-      "stop_sequence": 6,
-      "name": {
-        "ro": "Parcul Elisabeta",
-        "hu": "Erzsébet Park"
-      },
-      "stop_lat": 45.8643,
-      "stop_lon": 25.7866,
-      "distance_to_next_m": 641
+      "distance_to_next_m": 573
     },
     {
       "stop_sequence": 7,
+      "name": {
+        "ro": "Casa cu Arcade",
+        "hu": "Lábasház"
+      },
+      "stop_lat": 45.8636,
+      "stop_lon": 25.7866,
+      "distance_to_next_m": 564
+    },
+    {
+      "stop_sequence": 8,
       "name": {
         "ro": "Institutul de Proiectări",
         "hu": "Tervező Intézet"
@@ -85,7 +95,7 @@
       "distance_to_next_m": 636
     },
     {
-      "stop_sequence": 8,
+      "stop_sequence": 9,
       "name": {
         "ro": "Str. Dealului",
         "hu": "Domb utca"
@@ -95,7 +105,7 @@
       "distance_to_next_m": 493
     },
     {
-      "stop_sequence": 9,
+      "stop_sequence": 10,
       "name": {
         "ro": "Spitalul Județean",
         "hu": "Megyei Kórház"
@@ -105,7 +115,7 @@
       "distance_to_next_m": 466
     },
     {
-      "stop_sequence": 10,
+      "stop_sequence": 11,
       "name": {
         "ro": "Cap Linie Simeria",
         "hu": "Szemerja Végállomás"

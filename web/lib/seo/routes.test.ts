@@ -90,7 +90,7 @@ describe("journeyBetween", () => {
     const summary = journeyBetween(net, pair!.a, pair!.b, "hu");
     expect(summary).toEqual({
       legs: [
-        { lineLabel: "10-es busz", fromName: "Árkos központ", toName: "Lábasház", rideMin: 20, stops: 12 },
+        { lineLabel: "10-es busz", fromName: "Árkos központ", toName: "Lábasház", rideMin: 19, stops: 11 },
         { lineLabel: "2D-s busz", fromName: "Lábasház", toName: "Autoliv", rideMin: 21, stops: 9 },
       ],
       walkMin: 2,

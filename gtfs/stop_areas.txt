@@ -28,7 +28,7 @@ city,P26
 city,P27
 city,P28
 city,P29
-arcus,P30
+city,P30
 city,P31
 city,P32
 city,P33
@@ -38,10 +38,10 @@ city,P36
 city,P37
 city,P38
 city,P39
-city,P40
+arcus,P40
 arcus,P41
 arcus,P42
-arcus,P43
+city,P43
 city,P44
 city,P45
 city,P46
@@ -64,9 +64,9 @@ city,P62
 city,P63
 city,P64
 city,P65
-city,P66
+arcus,P66
 arcus,P67
-arcus,P68
+city,P68
 city,P69
 city,P70
 city,P71
@@ -100,4 +100,3 @@ city,P98
 city,P99
 city,P100
 city,P101
-city,P102

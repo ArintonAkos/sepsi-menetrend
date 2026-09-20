@@ -82,27 +82,27 @@
       },
       "stop_lat": 45.8616,
       "stop_lon": 25.7822,
-      "distance_to_next_m": 1610
+      "distance_to_next_m": 581
     },
     {
       "stop_sequence": 8,
-      "name": {
-        "ro": "Lic. Plugor Sándor",
-        "hu": "Plugor Sándor Líceum"
-      },
-      "stop_lat": 45.8681,
-      "stop_lon": 25.7874,
-      "distance_to_next_m": 1046
-    },
-    {
-      "stop_sequence": 9,
       "name": {
         "ro": "Casa cu Arcade",
         "hu": "Lábasház"
       },
       "stop_lat": 45.8636,
       "stop_lon": 25.7866,
-      "distance_to_next_m": 1414
+      "distance_to_next_m": 1029
+    },
+    {
+      "stop_sequence": 9,
+      "name": {
+        "ro": "Lic. Plugor Sándor",
+        "hu": "Plugor Sándor Líceum"
+      },
+      "stop_lat": 45.8681,
+      "stop_lon": 25.7874,
+      "distance_to_next_m": 384
     },
     {
       "stop_sequence": 10,

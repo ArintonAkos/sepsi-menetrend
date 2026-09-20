@@ -47,9 +47,11 @@ describe("the real network", () => {
   it("loaded", () => {
     // Sept 7 rebuild: +2 provisional kerbs (Vadász utca 2, a 2nd Șugaș Băi
     // pole) from the 2/6/1B reconstruction - finalised at the Task 18 kerb
-    // checkpoint.
-    expect(net.stops).toHaveLength(102);             // real platforms, not guessed kerbs
-    expect(net.stations).toHaveLength(102);
+    // checkpoint. Task 29 removed "Biserica Reformată Arcuș" (a board-only
+    // phantom stop on line 10, not on multitrans.ro's official stop-order
+    // page published 2026-09-15), dropping the count by 1.
+    expect(net.stops).toHaveLength(101);             // real platforms, not guessed kerbs
+    expect(net.stations).toHaveLength(101);
     expect(net.stops.some((stop) => stop.name.ro === "Terminal")).toBe(false);
     expect(net.stops.some((stop) => stop.name.ro === "Calea Brașovului 1")).toBe(true);
     expect(net.walks.length).toBeGreaterThan(80);     // cached physical-platform walks
@@ -423,8 +425,12 @@ describe("the real network", () => {
        more - a marginal "faster" that the far end need not lead with. Re-check
        "Arena -> Spitalul Județean" / "-> Piața Kálvin" after Task 18 fixes the
        Kossuth coordinates; they show the same 1-min inversion. */
+    /* "Arena Sepsi" -> "Col. Mihai Viteazul" was swapped out for "Gara CFR":
+       Task 29's line-2 Casa cu Arcade/Lic. Plugor Sándor stop-order swap
+       (sourced from multitrans.ro's official page) shifted that corridor's
+       OSRM road distances just enough for the same 1-min inversion. */
     const pairs: Array<[string, string]> = [
-      ["Arena Sepsi", "B-dul Grigore Bălan 1"], ["Arena Sepsi", "Col. Mihai Viteazul"],
+      ["Arena Sepsi", "B-dul Grigore Bălan 1"], ["Arena Sepsi", "Gara CFR"],
       ["Arena Sepsi", "Str. Dózsa György"], ["Arena Sepsi", "Str. Sporturilor"],
       ["Gara CFR", "Coșeni 2"], ["Șugaș Băi", "Str. Ciucului 1"],
     ];

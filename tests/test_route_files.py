@@ -198,7 +198,14 @@ class BoardCoverageTests(unittest.TestCase):
         route_stops = set()
         for d in ("depart", "return"):
             route_stops |= {s["name"]["ro"] for s in _load(f"line-10/{d}.json")["stops"]}
-        self.assertEqual(board_stops - route_stops, set())
+        # "Biserica Reformată Arcuș" was a board-only phantom stop (added in
+        # e9fba16 from the Sept 7 printed board, between Primăria Arcuș and
+        # Centru Arcuș). multitrans.ro's official stop-order page for line 10
+        # (published 2026-09-15) does not list it, so Task 29 removed it from
+        # both route files - the sourced official list overrides the earlier
+        # board-derived guess.
+        known_board_only_stops = {"Biserica Reformată Arcuș"}
+        self.assertEqual(board_stops - route_stops - known_board_only_stops, set())
 
     def test_line1d_2d_have_calea_brasovului(self):
         for line in ("1D", "2D"):

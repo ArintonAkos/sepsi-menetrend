@@ -12,7 +12,7 @@
     "hu": "",
     "_note": "line 1B has no operator route page (Sept 2026); assembled from line 1 + line 1D geometry"
   },
-  "stop_count": 10,
+  "stop_count": 11,
   "stops": [
     {
       "stop_sequence": 1,
@@ -112,6 +112,16 @@
       },
       "stop_lat": 45.8619,
       "stop_lon": 25.841,
+      "distance_to_next_m": 482
+    },
+    {
+      "stop_sequence": 11,
+      "name": {
+        "ro": "Multi-Trans",
+        "hu": "Multi-Trans"
+      },
+      "stop_lat": 45.8593,
+      "stop_lon": 25.8389,
       "distance_to_next_m": null
     }
   ]

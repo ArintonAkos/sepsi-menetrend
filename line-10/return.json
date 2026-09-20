@@ -11,7 +11,7 @@
     "ro": "https://multitrans.ro/jarat-10-retur.html",
     "hu": "https://multitrans.ro/jarat-10-retur-hu.html"
   },
-  "stop_count": 13,
+  "stop_count": 12,
   "stops": [
     {
       "stop_sequence": 1,
@@ -21,20 +21,10 @@
       },
       "stop_lat": 45.9031,
       "stop_lon": 25.7735,
-      "distance_to_next_m": 354
+      "distance_to_next_m": 603
     },
     {
       "stop_sequence": 2,
-      "name": {
-        "ro": "Biserica Reformată Arcuș",
-        "hu": "Árkosi Református Templom"
-      },
-      "stop_lat": 45.9009,
-      "stop_lon": 25.7725,
-      "distance_to_next_m": 489
-    },
-    {
-      "stop_sequence": 3,
       "name": {
         "ro": "Primăria Arcuș",
         "hu": "Árkosi Polgármesteri Hivatal"
@@ -44,7 +34,7 @@
       "distance_to_next_m": 635
     },
     {
-      "stop_sequence": 4,
+      "stop_sequence": 3,
       "name": {
         "ro": "Castelul Szentkereszty",
         "hu": "Szentkereszty kastély"
@@ -54,7 +44,7 @@
       "distance_to_next_m": 1976
     },
     {
-      "stop_sequence": 5,
+      "stop_sequence": 4,
       "name": {
         "ro": "Str. Kossuth Lajos 2",
         "hu": "Kossuth Lajos 2"
@@ -64,7 +54,7 @@
       "distance_to_next_m": 200
     },
     {
-      "stop_sequence": 6,
+      "stop_sequence": 5,
       "name": {
         "ro": "Str. Kossuth Lajos 1",
         "hu": "Kossuth Lajos 1"
@@ -74,7 +64,7 @@
       "distance_to_next_m": 565
     },
     {
-      "stop_sequence": 7,
+      "stop_sequence": 6,
       "name": {
         "ro": "Grădinărie",
         "hu": "Kertészet"
@@ -84,7 +74,7 @@
       "distance_to_next_m": 960
     },
     {
-      "stop_sequence": 8,
+      "stop_sequence": 7,
       "name": {
         "ro": "Str. Ciucului 2",
         "hu": "Csíki utca 2"
@@ -94,7 +84,7 @@
       "distance_to_next_m": 280
     },
     {
-      "stop_sequence": 9,
+      "stop_sequence": 8,
       "name": {
         "ro": "Str. Ciucului 1",
         "hu": "Csíki utca 1"
@@ -104,7 +94,7 @@
       "distance_to_next_m": 531
     },
     {
-      "stop_sequence": 10,
+      "stop_sequence": 9,
       "name": {
         "ro": "Piața Kálvin",
         "hu": "Kálvin tér"
@@ -114,7 +104,7 @@
       "distance_to_next_m": 275
     },
     {
-      "stop_sequence": 11,
+      "stop_sequence": 10,
       "name": {
         "ro": "Lic. Plugor Sándor",
         "hu": "Plugor Sándor Líceum"
@@ -124,7 +114,7 @@
       "distance_to_next_m": 574
     },
     {
-      "stop_sequence": 12,
+      "stop_sequence": 11,
       "name": {
         "ro": "Str. Gábor Áron",
         "hu": "Gábor Áron utca"
@@ -134,7 +124,7 @@
       "distance_to_next_m": 572
     },
     {
-      "stop_sequence": 13,
+      "stop_sequence": 12,
       "name": {
         "ro": "Casa cu Arcade",
         "hu": "Lábasház"

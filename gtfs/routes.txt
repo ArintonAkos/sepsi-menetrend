@@ -1,6 +1,6 @@
 route_id,agency_id,route_short_name,route_long_name,route_type,route_color,route_text_color
 1,multitrans,1,Cap Linie Simeria → Gara CFR,3,136F29,FFFFFF
-1B,multitrans,1B,Cap Linie Simeria → Câmpul Frumos (via Autoliv),3,E8A33D,000000
+1B,multitrans,1B,Câmpul Frumos → Cap Linie Simeria (via Autoliv),3,E8A33D,000000
 1D,multitrans,1D,Cap Linie Simeria → Câmpul Frumos,3,0A8F6B,000000
 2,multitrans,2,Cap Linie Simeria → Gara CFR (via Cart. Ciucului),3,DB4436,000000
 2D,multitrans,2D,Str. Bartók Béla → Câmpul Frumos,3,DB4436,000000
