@@ -663,27 +663,40 @@ describe("the itinerary markup", () => {
     /* React warns and hydration breaks when a <li> sits directly inside another
        <li> - which is what the ride entry did, wrapping the stop it ends at.
        A nested <ol> is fine, so the rule is about the parent, not the ancestry:
-       the collapsible "6 megálló" list is legitimate. */
-    const user = await setup();
-    await openFirstJourney(user);
-    const items = [...document.querySelectorAll("li")];
-    expect(items.length).toBeGreaterThan(3);
-    for (const item of items) {
-      expect(item.parentElement?.tagName,
-        `a list item sits in <${item.parentElement?.tagName.toLowerCase()}>`)
-        .toMatch(/^(OL|UL)$/);
+       the collapsible "6 megálló" list is legitimate.
+       Pinned to a known teaching weekday (see "asks for the school-day service"
+       above) - openFirstJourney needs a real bus itinerary, not the all-walk
+       fallback a weekend run would produce. */
+    vi.setSystemTime(new Date(2026, 8, 9, 8, 0, 0));
+    try {
+      const user = await setup();
+      await openFirstJourney(user);
+      const items = [...document.querySelectorAll("li")];
+      expect(items.length).toBeGreaterThan(3);
+      for (const item of items) {
+        expect(item.parentElement?.tagName,
+          `a list item sits in <${item.parentElement?.tagName.toLowerCase()}>`)
+          .toMatch(/^(OL|UL)$/);
+      }
+    } finally {
+      vi.useRealTimers();
     }
   });
 
   it("keeps every timeline entry a direct child of the list", async () => {
-    const user = await setup();
-    await openFirstJourney(user);
-    const list = document.querySelector("ol[class*='timeline']")!;
-    expect(list).toBeTruthy();
-    for (const child of list.children) {
-      expect(child.tagName, `${child.tagName} is not a list item`).toBe("LI");
+    vi.setSystemTime(new Date(2026, 8, 9, 8, 0, 0));
+    try {
+      const user = await setup();
+      await openFirstJourney(user);
+      const list = document.querySelector("ol[class*='timeline']")!;
+      expect(list).toBeTruthy();
+      for (const child of list.children) {
+        expect(child.tagName, `${child.tagName} is not a list item`).toBe("LI");
+      }
+      expect(list.children.length).toBeGreaterThan(2);
+    } finally {
+      vi.useRealTimers();
     }
-    expect(list.children.length).toBeGreaterThan(2);
   });
 });
 
@@ -1159,26 +1172,34 @@ describe("what the itinerary tells you", () => {
 
   it("shows the next buses of that line from the stop you board at", async () => {
     /* At a change this is the difference between "you have four minutes" and
-       "four minutes, or twenty-four if you miss it". */
-    const user = await setup();
-    await startPlanning(user);
-    await user.click(screen.getByRole("button", { name: /Indulás|Érkezés/ }));
-    fireEvent.change(screen.getByDisplayValue(/^\d{2}:\d{2}$/), { target: { value: "08:00" } });
-    await user.keyboard("{Escape}");
-    await waitFor(() => expect(screen.queryByRole("button", { name: "Érkezés ekkorra" })).not.toBeInTheDocument());
-    const first = (await screen.findAllByText("perc"))[0];
-    await user.click(first.closest("button")!);
+       "four minutes, or twenty-four if you miss it". Pinned to a known
+       teaching weekday (see "asks for the school-day service" above) - this
+       test specifically needs a journey with a transfer, which needs real
+       bus service, not the all-walk fallback a weekend run would produce. */
+    vi.setSystemTime(new Date(2026, 8, 9, 8, 0, 0));
+    try {
+      const user = await setup();
+      await startPlanning(user);
+      await user.click(screen.getByRole("button", { name: /Indulás|Érkezés/ }));
+      fireEvent.change(screen.getByDisplayValue(/^\d{2}:\d{2}$/), { target: { value: "08:00" } });
+      await user.keyboard("{Escape}");
+      await waitFor(() => expect(screen.queryByRole("button", { name: "Érkezés ekkorra" })).not.toBeInTheDocument());
+      const first = (await screen.findAllByText("perc"))[0];
+      await user.click(first.closest("button")!);
 
-    // a journey with a change shows one per boarding; check the first
-    const label = (await screen.findAllByText("Következő:"))[0];
-    const times = [...label.parentElement!.querySelectorAll("b")]
-      .map((b) => b.textContent!);
-    expect(times.length).toBeGreaterThan(0);
-    expect(times.length).toBeLessThanOrEqual(3);
-    for (const at of times) expect(at).toMatch(/^\d{2}:\d{2}$/);
-    // and they are later than the bus being suggested
-    const board = screen.getAllByText(/^\d{2}:\d{2}\*?$/)[0].textContent!.slice(0, 5);
-    expect(times.every((at) => at > board)).toBe(true);
+      // a journey with a change shows one per boarding; check the first
+      const label = (await screen.findAllByText("Következő:"))[0];
+      const times = [...label.parentElement!.querySelectorAll("b")]
+        .map((b) => b.textContent!);
+      expect(times.length).toBeGreaterThan(0);
+      expect(times.length).toBeLessThanOrEqual(3);
+      for (const at of times) expect(at).toMatch(/^\d{2}:\d{2}$/);
+      // and they are later than the bus being suggested
+      const board = screen.getAllByText(/^\d{2}:\d{2}\*?$/)[0].textContent!.slice(0, 5);
+      expect(times.every((at) => at > board)).toBe(true);
+    } finally {
+      vi.useRealTimers();
+    }
   });
 });
 
