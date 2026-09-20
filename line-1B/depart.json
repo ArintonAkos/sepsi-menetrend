@@ -8,9 +8,9 @@
     "hu": "Szemerja Végállomás → Szépmező (Autoliv felé)"
   },
   "source": {
-    "ro": "",
-    "hu": "",
-    "_note": "line 1B has no operator route page (Sept 2026); assembled from line 1 + line 1D geometry"
+    "ro": "https://multitrans.ro/jaratok/jarat-1b.html",
+    "hu": "https://multitrans.ro/jaratok/jarat-1b-hu.html",
+    "_note": "stop order + distances from the operator's page (published 2026-09-15); route polyline still unpublished, geometry stays OSRM-estimated (routesProvisional)"
   },
   "stop_count": 11,
   "stops": [
