@@ -4,25 +4,24 @@
   "circular": false,
   "closes_loop_at_start": false,
   "headsign": {
-    "ro": "Cap Linie Simeria → Arena Sepsi (via Cart. Ciucului)",
-    "hu": "Szemerja Végállomás → Sepsi Aréna (Csíki negyeden át)"
+    "ro": "Simeria (Str. Berzei) → Arena Sepsi",
+    "hu": "Szemerja Végállomás → Sepsi Aréna"
   },
   "source": {
-    "ro": "",
-    "hu": "",
-    "_note": "reconstructed from the Sept 7 board + FB post; no operator route diagram published"
+    "ro": "https://multitrans.ro/jaratok/jarat-6.html",
+    "hu": "https://multitrans.ro/jaratok/jarat-6-hu.html"
   },
   "stop_count": 18,
   "stops": [
     {
       "stop_sequence": 1,
       "name": {
-        "ro": "Cap Linie Simeria",
-        "hu": "Szemerja Végállomás"
+        "ro": "Simeria (Str. Berzei)",
+        "hu": "Szemerja (Gólya utca)"
       },
       "stop_lat": 45.868,
       "stop_lon": 25.7792,
-      "distance_to_next_m": 604
+      "distance_to_next_m": 633
     },
     {
       "stop_sequence": 2,
@@ -32,7 +31,7 @@
       },
       "stop_lat": 45.8645,
       "stop_lon": 25.7756,
-      "distance_to_next_m": 243
+      "distance_to_next_m": 242
     },
     {
       "stop_sequence": 3,
@@ -42,7 +41,7 @@
       },
       "stop_lat": 45.8648,
       "stop_lon": 25.7725,
-      "distance_to_next_m": 371
+      "distance_to_next_m": 376
     },
     {
       "stop_sequence": 4,
@@ -52,7 +51,7 @@
       },
       "stop_lat": 45.8633,
       "stop_lon": 25.7699,
-      "distance_to_next_m": 341
+      "distance_to_next_m": 340
     },
     {
       "stop_sequence": 5,
@@ -62,7 +61,7 @@
       },
       "stop_lat": 45.8609,
       "stop_lon": 25.7715,
-      "distance_to_next_m": 388
+      "distance_to_next_m": 465
     },
     {
       "stop_sequence": 6,
@@ -70,19 +69,19 @@
         "ro": "Str. Dealului",
         "hu": "Domb utca"
       },
-      "stop_lat": 45.8594,
-      "stop_lon": 25.776,
-      "distance_to_next_m": 645
+      "stop_lat": 45.8589,
+      "stop_lon": 25.7768,
+      "distance_to_next_m": 637
     },
     {
       "stop_sequence": 7,
       "name": {
-        "ro": "Institutul de Proiectări",
+        "ro": "Institutul de proiectări",
         "hu": "Tervező Intézet"
       },
       "stop_lat": 45.8616,
       "stop_lon": 25.7822,
-      "distance_to_next_m": 581
+      "distance_to_next_m": 600
     },
     {
       "stop_sequence": 8,
@@ -92,7 +91,7 @@
       },
       "stop_lat": 45.8636,
       "stop_lon": 25.7866,
-      "distance_to_next_m": 1029
+      "distance_to_next_m": 1020
     },
     {
       "stop_sequence": 9,
@@ -102,7 +101,7 @@
       },
       "stop_lat": 45.8681,
       "stop_lon": 25.7874,
-      "distance_to_next_m": 375
+      "distance_to_next_m": 390
     },
     {
       "stop_sequence": 10,
@@ -111,18 +110,18 @@
         "hu": "Kálvin tér"
       },
       "stop_lat": 45.8709,
-      "stop_lon": 25.7885,
-      "distance_to_next_m": 490
+      "stop_lon": 25.7887,
+      "distance_to_next_m": 470
     },
     {
       "stop_sequence": 11,
       "name": {
-        "ro": "Cartierul Ciucului",
+        "ro": "Cart. Ciucului",
         "hu": "Csíki negyed"
       },
       "stop_lat": 45.8739,
       "stop_lon": 25.792,
-      "distance_to_next_m": 377
+      "distance_to_next_m": 458
     },
     {
       "stop_sequence": 12,
@@ -130,9 +129,9 @@
         "ro": "Str. Ciucului 2",
         "hu": "Csíki utca 2"
       },
-      "stop_lat": 45.872,
-      "stop_lon": 25.7957,
-      "distance_to_next_m": 360
+      "stop_lat": 45.8714,
+      "stop_lon": 25.7951,
+      "distance_to_next_m": 279
     },
     {
       "stop_sequence": 13,
@@ -142,7 +141,7 @@
       },
       "stop_lat": 45.8693,
       "stop_lon": 25.7931,
-      "distance_to_next_m": 394
+      "distance_to_next_m": 397
     },
     {
       "stop_sequence": 14,
@@ -152,7 +151,7 @@
       },
       "stop_lat": 45.8671,
       "stop_lon": 25.7958,
-      "distance_to_next_m": 532
+      "distance_to_next_m": 507
     },
     {
       "stop_sequence": 15,
@@ -160,19 +159,19 @@
         "ro": "Str. Sporturilor",
         "hu": "Sport utca"
       },
-      "stop_lat": 45.8641,
-      "stop_lon": 25.7986,
-      "distance_to_next_m": 1003
+      "stop_lat": 45.864,
+      "stop_lon": 25.7983,
+      "distance_to_next_m": 1292
     },
     {
       "stop_sequence": 16,
       "name": {
-        "ro": "Centru Comercial",
+        "ro": "Centru comercial",
         "hu": "Bevásárlóközpont"
       },
       "stop_lat": 45.8693,
       "stop_lon": 25.801,
-      "distance_to_next_m": 649
+      "distance_to_next_m": 779
     },
     {
       "stop_sequence": 17,
@@ -180,9 +179,9 @@
         "ro": "Fabrica de Lapte",
         "hu": "Tejgyár"
       },
-      "stop_lat": 45.8751,
-      "stop_lon": 25.8007,
-      "distance_to_next_m": 1098
+      "stop_lat": 45.8763,
+      "stop_lon": 25.801,
+      "distance_to_next_m": 964
     },
     {
       "stop_sequence": 18,

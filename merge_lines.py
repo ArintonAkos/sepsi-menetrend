@@ -21,7 +21,7 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
-BASE = "https://multitrans.ro"
+BASE = "https://multitrans.ro/jaratok"
 SLUG = {"1D": "1d", "2D": "2d", "5D": "5d"}  # dir name -> url slug
 INFIX = {"depart": "", "return": "-retur"}
 RE_METRES = re.compile(r"^([\d.,]+)\s*m\b")
@@ -81,13 +81,26 @@ def merge(line, direction, ro_path, hu_path):
     first, last = stops[0], stops[-1]
     circular = (first["stop_lat"], first["stop_lon"]) == (last["stop_lat"], last["stop_lon"])
 
+    # A handful of "-retur" pages carry an <h1> copy-pasted verbatim from
+    # their own "depart" page (seen on 1B/1D/2D's Sept 15 return pages: title
+    # still reads "Simeria (...) -> Campul Frumos" even though the page's own
+    # stop list runs Multi-Trans -> ... -> Simeria). Detect the mismatch
+    # against this file's own first stop and rebuild the headsign from the
+    # real stop list instead of trusting a title known to be occasionally wrong.
+    parsed = {"ro": ro[0]["direction"], "hu": hu[0]["direction"]}
+    if not parsed["ro"].startswith(first["name"]["ro"]):
+        parsed = {
+            "ro": f"{first['name']['ro']} → {last['name']['ro']}",
+            "hu": f"{first['name']['hu']} → {last['name']['hu']}",
+        }
+
     return {
         "line": line,
         "direction": direction,
         "circular": circular,
         # on a loop the final entry re-states the first stop to close the circuit
         "closes_loop_at_start": circular,
-        "headsign": {"ro": ro[0]["direction"], "hu": hu[0]["direction"]},
+        "headsign": parsed,
         "source": {
             "ro": source_url(line, direction, "ro"),
             "hu": source_url(line, direction, "hu"),
@@ -113,6 +126,17 @@ def main():
                 problems.append(str(exc))
                 continue
             out = line_dir / f"{direction}.json"
+            # A hand-added "destination" board-binding gate (and its "_note")
+            # is reviewed, targeted intervention - e.g. 5D-depart's gate that
+            # keeps a serviceless direction from seeding phantom trips off a
+            # base line's marked events (see build_trips.py/trip_reconstruction.py).
+            # This script only knows the scraped stop list, so it must not
+            # silently drop a gate a previous run/reviewer already set.
+            if out.exists():
+                previous = json.loads(out.read_text(encoding="utf-8"))
+                for key in ("destination", "_note"):
+                    if key in previous and key not in data:
+                        data[key] = previous[key]
             out.write_text(json.dumps(data, indent=2, ensure_ascii=False), encoding="utf-8")
             written.append((out, data))
 

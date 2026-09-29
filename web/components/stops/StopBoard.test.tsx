@@ -59,21 +59,25 @@ describe("a stop's board", () => {
   });
 
   it("keeps equal-name circular platforms on their own official destination", () => {
+    // Sept 7's clean depart/return split retired the old "Str. Fabricii / Gyár
+    // utca" destination (that was the pre-timetable_segments circular-slicing
+    // model); "Biserica reformată" is the current equal-name case on line 4 -
+    // two physical kerbs (P8, P12), each with its own official destination.
     const board = (net.officialBoards ?? []).find((candidate) =>
       candidate.lineId === "4" &&
-      candidate.stopRo === "Fabrica de Țigarete" &&
-      candidate.destination === "Str. Fabricii / Gyár utca")!;
+      candidate.stopRo === "Biserica Reformată" &&
+      candidate.destination === "Str. Țigaretei 1 / Cigaretta utca 1")!;
     const stop = net.stops.find((candidate) => candidate.id === board.stopId)!;
     render(<StopBoard stop={stop} ctx={ctx}
                       lines={new Map(net.lines.map((line) => [line.id, line]))}
                       service="weekday" now={4 * 60} lang="hu" t={STRINGS.hu}
                       onClose={() => {}} />);
 
-    expect(screen.getAllByText("→ Str. Fabricii / Gyár utca").length).toBeGreaterThan(0);
-    // line 4's first weekday departure from this kerb on the Sept 7 board
-    expect(screen.getAllByText("06:07").length).toBeGreaterThan(0);
+    expect(screen.getAllByText("→ Str. Țigaretei 1 / Cigaretta utca 1").length).toBeGreaterThan(0);
+    // this kerb's first weekday departure on the Sept 7 board
+    expect(screen.getAllByText("04:47").length).toBeGreaterThan(0);
     expect(screen.queryByText("→ Câmpul Frumos / Szépmező")).toBeNull();
-    expect(screen.queryByText("05:19")).toBeNull();
+    expect(screen.queryByText("06:13")).toBeNull();
   });
 
   it("does not mix inferred route calls into a physical board with official columns", () => {

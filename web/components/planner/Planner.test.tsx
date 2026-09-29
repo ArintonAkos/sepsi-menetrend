@@ -751,7 +751,7 @@ describe("the timetables", () => {
     expect(await screen.findByRole("heading", { name: "Menetrendek" })).toBeInTheDocument();
     expect(screen.queryByLabelText("Honnan")).not.toBeInTheDocument();
     expect(screen.getAllByRole("button", {
-      name: "→ Cap Linie Simeria → Gara CFR",
+      name: "→ Simeria (Str. Berzei) → Gara CFR",
     })).toHaveLength(1);
 
     const grid = screen.getByRole("table");
@@ -982,7 +982,7 @@ describe("journey detail", () => {
 
   it("puts a wait on every change the rider has to stand through", async () => {
     const user = await setup();
-    await startPlanning(user, "Coșeni 2", "Cartierul Ciucului");
+    await startPlanning(user, "Coșeni 2", "Cart. Ciucului");
     await user.click(screen.getByRole("button", { name: /Indulás|Érkezés/ }));
     fireEvent.change(screen.getByDisplayValue(/^\d{2}:\d{2}$/), { target: { value: "13:00" } });
     await user.keyboard("{Escape}");

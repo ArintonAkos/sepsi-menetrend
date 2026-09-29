@@ -35,7 +35,7 @@
       "calls": [
         {
           "line": "5",
-          "direction": "depart-from-arena",
+          "direction": "return",
           "index": 1
         },
         {
@@ -80,8 +80,8 @@
       "calls": [
         {
           "line": "5",
-          "direction": "depart-to-arena",
-          "index": 16
+          "direction": "depart",
+          "index": 15
         },
         {
           "line": "6",
@@ -105,18 +105,13 @@
       "calls": [
         {
           "line": "3",
-          "direction": "depart-to-coseni",
+          "direction": "depart",
           "index": 16
         },
         {
           "line": "3",
-          "direction": "depart-from-coseni",
-          "index": 0
-        },
-        {
-          "line": "3",
-          "direction": "depart-from-coseni",
-          "index": 2
+          "direction": "return",
+          "index": 1
         }
       ]
     },
@@ -145,8 +140,13 @@
         },
         {
           "line": "1D",
+          "direction": "depart",
+          "index": 7
+        },
+        {
+          "line": "1D",
           "direction": "return",
-          "index": 5
+          "index": 7
         },
         {
           "line": "2",
@@ -156,27 +156,22 @@
         {
           "line": "2D",
           "direction": "return",
-          "index": 5
+          "index": 7
         },
         {
           "line": "3",
-          "direction": "depart-from-coseni",
-          "index": 9
+          "direction": "return",
+          "index": 8
         },
         {
           "line": "4",
-          "direction": "depart-from-campul-frumos",
+          "direction": "return",
           "index": 7
         },
         {
           "line": "6",
           "direction": "return",
           "index": 3
-        },
-        {
-          "line": "7",
-          "direction": "depart",
-          "index": 12
         },
         {
           "line": "7",
@@ -209,24 +204,29 @@
           "index": 3
         },
         {
+          "line": "1B",
+          "direction": "return",
+          "index": 6
+        },
+        {
+          "line": "1D",
+          "direction": "depart",
+          "index": 5
+        },
+        {
           "line": "1D",
           "direction": "return",
-          "index": 7
-        },
-        {
-          "line": "3",
-          "direction": "depart-from-coseni",
-          "index": 11
-        },
-        {
-          "line": "4",
-          "direction": "depart-from-campul-frumos",
           "index": 9
         },
         {
-          "line": "5",
-          "direction": "depart-to-arena",
-          "index": 8
+          "line": "3",
+          "direction": "return",
+          "index": 10
+        },
+        {
+          "line": "4",
+          "direction": "return",
+          "index": 9
         }
       ]
     },
@@ -244,11 +244,6 @@
       "osm_id": 1248719241,
       "calls": [
         {
-          "line": "1",
-          "direction": "return",
-          "index": 2
-        },
-        {
           "line": "1B",
           "direction": "return",
           "index": 5
@@ -256,26 +251,16 @@
         {
           "line": "1D",
           "direction": "return",
-          "index": 6
-        },
-        {
-          "line": "3",
-          "direction": "depart-from-coseni",
-          "index": 10
-        },
-        {
-          "line": "4",
-          "direction": "depart-from-campul-frumos",
           "index": 8
         },
         {
-          "line": "5",
-          "direction": "depart-to-arena",
+          "line": "3",
+          "direction": "return",
           "index": 9
         },
         {
-          "line": "5D",
-          "direction": "depart",
+          "line": "4",
+          "direction": "return",
           "index": 8
         }
       ]
@@ -310,23 +295,13 @@
         },
         {
           "line": "2D",
-          "direction": "return",
-          "index": 14
-        },
-        {
-          "line": "5",
-          "direction": "depart-from-arena",
-          "index": 10
-        },
-        {
-          "line": "5D",
-          "direction": "return",
-          "index": 10
+          "direction": "depart",
+          "index": 5
         },
         {
           "line": "6",
-          "direction": "return",
-          "index": 12
+          "direction": "depart",
+          "index": 5
         },
         {
           "line": "7",
@@ -349,11 +324,6 @@
       "osm_id": 1248719259,
       "calls": [
         {
-          "line": "1",
-          "direction": "return",
-          "index": 4
-        },
-        {
           "line": "1B",
           "direction": "return",
           "index": 7
@@ -361,27 +331,22 @@
         {
           "line": "1D",
           "direction": "return",
-          "index": 8
-        },
-        {
-          "line": "2",
-          "direction": "return",
-          "index": 9
+          "index": 10
         },
         {
           "line": "2D",
           "direction": "return",
-          "index": 13
+          "index": 15
         },
         {
           "line": "5",
-          "direction": "depart-from-arena",
+          "direction": "return",
           "index": 9
         },
         {
           "line": "5D",
           "direction": "return",
-          "index": 9
+          "index": 12
         },
         {
           "line": "6",
@@ -404,11 +369,6 @@
       "osm_id": 1248719271,
       "calls": [
         {
-          "line": "1",
-          "direction": "return",
-          "index": 6
-        },
-        {
           "line": "1B",
           "direction": "return",
           "index": 9
@@ -416,17 +376,12 @@
         {
           "line": "1D",
           "direction": "return",
-          "index": 10
-        },
-        {
-          "line": "2",
-          "direction": "return",
-          "index": 11
+          "index": 12
         },
         {
           "line": "2D",
           "direction": "return",
-          "index": 15
+          "index": 17
         },
         {
           "line": "6",
@@ -459,6 +414,11 @@
           "index": 5
         },
         {
+          "line": "1",
+          "direction": "return",
+          "index": 2
+        },
+        {
           "line": "1B",
           "direction": "depart",
           "index": 5
@@ -466,16 +426,26 @@
         {
           "line": "1D",
           "direction": "depart",
-          "index": 5
+          "index": 6
         },
         {
           "line": "3",
-          "direction": "depart-to-coseni",
+          "direction": "depart",
           "index": 8
         },
         {
           "line": "4",
-          "direction": "depart-to-campul-frumos",
+          "direction": "depart",
+          "index": 8
+        },
+        {
+          "line": "5",
+          "direction": "depart",
+          "index": 8
+        },
+        {
+          "line": "5D",
+          "direction": "depart",
           "index": 8
         },
         {
@@ -514,11 +484,6 @@
           "index": 6
         },
         {
-          "line": "1D",
-          "direction": "depart",
-          "index": 6
-        },
-        {
           "line": "2",
           "direction": "depart",
           "index": 14
@@ -526,22 +491,27 @@
         {
           "line": "2D",
           "direction": "depart",
-          "index": 10
+          "index": 14
         },
         {
           "line": "3",
-          "direction": "depart-to-coseni",
+          "direction": "depart",
           "index": 9
         },
         {
           "line": "4",
-          "direction": "depart-to-campul-frumos",
+          "direction": "depart",
           "index": 9
         },
         {
           "line": "6",
           "direction": "depart",
           "index": 14
+        },
+        {
+          "line": "7",
+          "direction": "depart",
+          "index": 12
         },
         {
           "line": "9",
@@ -574,11 +544,6 @@
           "index": 4
         },
         {
-          "line": "1B",
-          "direction": "return",
-          "index": 6
-        },
-        {
           "line": "1D",
           "direction": "depart",
           "index": 4
@@ -591,21 +556,21 @@
         {
           "line": "2D",
           "direction": "depart",
-          "index": 3
+          "index": 7
         },
         {
           "line": "3",
-          "direction": "depart-to-coseni",
+          "direction": "depart",
           "index": 7
         },
         {
           "line": "4",
-          "direction": "depart-to-campul-frumos",
+          "direction": "depart",
           "index": 7
         },
         {
           "line": "5",
-          "direction": "depart-to-arena",
+          "direction": "depart",
           "index": 7
         },
         {
@@ -636,7 +601,7 @@
         {
           "line": "10",
           "direction": "return",
-          "index": 11
+          "index": 12
         }
       ]
     },
@@ -659,6 +624,11 @@
           "index": 3
         },
         {
+          "line": "1",
+          "direction": "return",
+          "index": 4
+        },
+        {
           "line": "1B",
           "direction": "depart",
           "index": 3
@@ -674,9 +644,14 @@
           "index": 6
         },
         {
+          "line": "2",
+          "direction": "return",
+          "index": 9
+        },
+        {
           "line": "2D",
           "direction": "depart",
-          "index": 2
+          "index": 6
         },
         {
           "line": "6",
@@ -716,7 +691,7 @@
         {
           "line": "1D",
           "direction": "return",
-          "index": 9
+          "index": 11
         },
         {
           "line": "2",
@@ -725,13 +700,23 @@
         },
         {
           "line": "2D",
-          "direction": "depart",
-          "index": 1
+          "direction": "return",
+          "index": 16
+        },
+        {
+          "line": "5",
+          "direction": "return",
+          "index": 10
+        },
+        {
+          "line": "5D",
+          "direction": "return",
+          "index": 13
         },
         {
           "line": "6",
-          "direction": "depart",
-          "index": 5
+          "direction": "return",
+          "index": 12
         },
         {
           "line": "7",
@@ -759,9 +744,14 @@
           "index": 13
         },
         {
+          "line": "2",
+          "direction": "return",
+          "index": 2
+        },
+        {
           "line": "2D",
           "direction": "depart",
-          "index": 9
+          "index": 13
         },
         {
           "line": "6",
@@ -780,18 +770,13 @@
         45.8670161,
         25.7960357
       ],
-      "source": "osm",
+      "source": "override",
       "osm_id": 1706007749,
       "calls": [
         {
-          "line": "2",
-          "direction": "return",
-          "index": 2
-        },
-        {
           "line": "2D",
           "direction": "return",
-          "index": 6
+          "index": 8
         },
         {
           "line": "6",
@@ -802,66 +787,6 @@
           "line": "10",
           "direction": "depart",
           "index": 2
-        }
-      ]
-    },
-    {
-      "id": "osm-1706007752",
-      "name": {
-        "ro": "Cartierul Ciucului",
-        "hu": "Csíki negyed"
-      },
-      "point": [
-        45.8739434,
-        25.7923544
-      ],
-      "source": "osm",
-      "osm_id": 1706007752,
-      "calls": [
-        {
-          "line": "2",
-          "direction": "return",
-          "index": 5
-        },
-        {
-          "line": "2D",
-          "direction": "return",
-          "index": 9
-        },
-        {
-          "line": "6",
-          "direction": "return",
-          "index": 7
-        }
-      ]
-    },
-    {
-      "id": "osm-1706007754",
-      "name": {
-        "ro": "Cartierul Ciucului",
-        "hu": "Csíki negyed"
-      },
-      "point": [
-        45.8738501,
-        25.7922847
-      ],
-      "source": "osm",
-      "osm_id": 1706007754,
-      "calls": [
-        {
-          "line": "2",
-          "direction": "depart",
-          "index": 10
-        },
-        {
-          "line": "2D",
-          "direction": "depart",
-          "index": 6
-        },
-        {
-          "line": "6",
-          "direction": "depart",
-          "index": 10
         }
       ]
     },
@@ -880,13 +805,13 @@
       "calls": [
         {
           "line": "5",
-          "direction": "depart-from-arena",
+          "direction": "return",
           "index": 8
         },
         {
           "line": "5D",
           "direction": "return",
-          "index": 8
+          "index": 11
         },
         {
           "line": "7",
@@ -915,12 +840,12 @@
       "calls": [
         {
           "line": "5",
-          "direction": "depart-to-arena",
-          "index": 17
+          "direction": "depart",
+          "index": 16
         },
         {
           "line": "5",
-          "direction": "depart-from-arena",
+          "direction": "return",
           "index": 0
         },
         {
@@ -932,6 +857,26 @@
           "line": "6",
           "direction": "return",
           "index": 0
+        }
+      ]
+    },
+    {
+      "id": "source-autoliv-45.865700-25.815300",
+      "name": {
+        "ro": "Autoliv",
+        "hu": "Autoliv"
+      },
+      "point": [
+        45.8657,
+        25.8153
+      ],
+      "source": "source-fallback",
+      "osm_id": null,
+      "calls": [
+        {
+          "line": "1B",
+          "direction": "depart",
+          "index": 8
         }
       ]
     },
@@ -950,41 +895,6 @@
       "calls": [
         {
           "line": "1B",
-          "direction": "depart",
-          "index": 8
-        },
-        {
-          "line": "1B",
-          "direction": "return",
-          "index": 2
-        },
-        {
-          "line": "1D",
-          "direction": "depart",
-          "index": 8
-        },
-        {
-          "line": "1D",
-          "direction": "return",
-          "index": 2
-        },
-        {
-          "line": "2D",
-          "direction": "depart",
-          "index": 12
-        },
-        {
-          "line": "2D",
-          "direction": "return",
-          "index": 2
-        },
-        {
-          "line": "5D",
-          "direction": "depart",
-          "index": 14
-        },
-        {
-          "line": "5D",
           "direction": "return",
           "index": 2
         }
@@ -994,7 +904,7 @@
       "id": "source-bdulgrigorebalan1-45.862200-25.796200",
       "name": {
         "ro": "B-dul Grigore Bălan 1",
-        "hu": "G. Bálán sugárút 1"
+        "hu": "Grigore Bălan sugárút 1"
       },
       "point": [
         45.8622,
@@ -1005,18 +915,13 @@
       "calls": [
         {
           "line": "5",
-          "direction": "depart-to-arena",
-          "index": 10
+          "direction": "depart",
+          "index": 9
         },
         {
           "line": "5D",
           "direction": "depart",
           "index": 9
-        },
-        {
-          "line": "7",
-          "direction": "depart",
-          "index": 11
         },
         {
           "line": "7",
@@ -1026,10 +931,30 @@
       ]
     },
     {
+      "id": "source-bdulgrigorebalan1-45.862300-25.796400",
+      "name": {
+        "ro": "B-dul Grigore Bălan 1",
+        "hu": "Grigore Bălan sugárút 1"
+      },
+      "point": [
+        45.8623,
+        25.7964
+      ],
+      "source": "source-fallback",
+      "osm_id": null,
+      "calls": [
+        {
+          "line": "7",
+          "direction": "depart",
+          "index": 11
+        }
+      ]
+    },
+    {
       "id": "source-bdulgrigorebalan2-45.858000-25.796400",
       "name": {
         "ro": "B-dul Grigore Bălan 2",
-        "hu": "G. Bálán sugárút 2"
+        "hu": "Grigore Bălan sugárút 2"
       },
       "point": [
         45.858,
@@ -1040,8 +965,8 @@
       "calls": [
         {
           "line": "5",
-          "direction": "depart-to-arena",
-          "index": 11
+          "direction": "depart",
+          "index": 10
         },
         {
           "line": "5D",
@@ -1050,13 +975,28 @@
         },
         {
           "line": "7",
-          "direction": "depart",
-          "index": 10
-        },
-        {
-          "line": "7",
           "direction": "return",
           "index": 3
+        }
+      ]
+    },
+    {
+      "id": "source-bdulgrigorebalan2-45.858700-25.796700",
+      "name": {
+        "ro": "B-dul Grigore Bălan 2",
+        "hu": "Grigore Bălan sugárút 2"
+      },
+      "point": [
+        45.8587,
+        25.7967
+      ],
+      "source": "source-fallback",
+      "osm_id": null,
+      "calls": [
+        {
+          "line": "7",
+          "direction": "depart",
+          "index": 10
         }
       ]
     },
@@ -1095,13 +1035,13 @@
       "calls": [
         {
           "line": "5",
-          "direction": "depart-from-arena",
+          "direction": "return",
           "index": 6
         },
         {
           "line": "5D",
           "direction": "return",
-          "index": 6
+          "index": 9
         },
         {
           "line": "7",
@@ -1124,19 +1064,9 @@
       "osm_id": null,
       "calls": [
         {
-          "line": "5",
-          "direction": "depart-from-arena",
-          "index": 7
-        },
-        {
-          "line": "5D",
-          "direction": "return",
-          "index": 7
-        },
-        {
           "line": "7",
-          "direction": "return",
-          "index": 5
+          "direction": "depart",
+          "index": 8
         }
       ]
     },
@@ -1154,9 +1084,39 @@
       "osm_id": null,
       "calls": [
         {
+          "line": "5",
+          "direction": "return",
+          "index": 7
+        },
+        {
+          "line": "5D",
+          "direction": "return",
+          "index": 10
+        },
+        {
           "line": "7",
-          "direction": "depart",
-          "index": 8
+          "direction": "return",
+          "index": 5
+        }
+      ]
+    },
+    {
+      "id": "source-bisreformataarcus-45.900900-25.772500",
+      "name": {
+        "ro": "Bis. Reformată Arcuș",
+        "hu": "Árkosi Református Templom"
+      },
+      "point": [
+        45.9009,
+        25.7725
+      ],
+      "source": "source-fallback",
+      "osm_id": null,
+      "calls": [
+        {
+          "line": "10",
+          "direction": "return",
+          "index": 1
         }
       ]
     },
@@ -1175,27 +1135,7 @@
       "calls": [
         {
           "line": "3",
-          "direction": "depart-to-coseni",
-          "index": 11
-        }
-      ]
-    },
-    {
-      "id": "source-caleabrasovului1-45.857000-25.806900",
-      "name": {
-        "ro": "Calea Brașovului 1",
-        "hu": "Brassói út 1"
-      },
-      "point": [
-        45.857,
-        25.8069
-      ],
-      "source": "source-fallback",
-      "osm_id": null,
-      "calls": [
-        {
-          "line": "4",
-          "direction": "depart-to-campul-frumos",
+          "direction": "depart",
           "index": 11
         }
       ]
@@ -1216,21 +1156,26 @@
         {
           "line": "1D",
           "direction": "return",
-          "index": 4
+          "index": 5
         },
         {
           "line": "2D",
           "direction": "return",
-          "index": 4
+          "index": 5
         },
         {
           "line": "3",
-          "direction": "depart-from-coseni",
-          "index": 7
+          "direction": "return",
+          "index": 6
         },
         {
           "line": "4",
-          "direction": "depart-from-campul-frumos",
+          "direction": "return",
+          "index": 5
+        },
+        {
+          "line": "5D",
+          "direction": "return",
           "index": 5
         }
       ]
@@ -1250,8 +1195,8 @@
       "calls": [
         {
           "line": "3",
-          "direction": "depart-from-coseni",
-          "index": 6
+          "direction": "return",
+          "index": 5
         }
       ]
     },
@@ -1270,7 +1215,7 @@
       "calls": [
         {
           "line": "3",
-          "direction": "depart-to-coseni",
+          "direction": "depart",
           "index": 12
         }
       ]
@@ -1290,7 +1235,7 @@
       "calls": [
         {
           "line": "3",
-          "direction": "depart-to-coseni",
+          "direction": "depart",
           "index": 13
         }
       ]
@@ -1310,8 +1255,8 @@
       "calls": [
         {
           "line": "3",
-          "direction": "depart-from-coseni",
-          "index": 5
+          "direction": "return",
+          "index": 4
         }
       ]
     },
@@ -1341,132 +1286,102 @@
         {
           "line": "1D",
           "direction": "depart",
-          "index": 9
-        },
-        {
-          "line": "1D",
-          "direction": "return",
-          "index": 1
-        },
-        {
-          "line": "2D",
-          "direction": "depart",
           "index": 13
         },
         {
+          "line": "1D",
+          "direction": "return",
+          "index": 1
+        },
+        {
+          "line": "2D",
+          "direction": "depart",
+          "index": 20
+        },
+        {
           "line": "2D",
           "direction": "return",
           "index": 1
         },
         {
           "line": "4",
-          "direction": "depart-to-campul-frumos",
-          "index": 15
-        },
-        {
-          "line": "4",
-          "direction": "depart-from-campul-frumos",
-          "index": 1
-        },
-        {
-          "line": "5D",
           "direction": "depart",
-          "index": 15
-        },
-        {
-          "line": "5D",
-          "direction": "return",
-          "index": 1
-        }
-      ]
-    },
-    {
-      "id": "source-capliniesimeria-45.867100-25.779100",
-      "name": {
-        "ro": "Cap Linie Simeria",
-        "hu": "Szemerja Végállomás"
-      },
-      "point": [
-        45.8671,
-        25.7791
-      ],
-      "source": "source-fallback",
-      "osm_id": null,
-      "calls": [
-        {
-          "line": "1",
-          "direction": "return",
-          "index": 7
-        },
-        {
-          "line": "1B",
-          "direction": "return",
-          "index": 10
-        },
-        {
-          "line": "1D",
-          "direction": "return",
-          "index": 11
-        },
-        {
-          "line": "2",
-          "direction": "return",
-          "index": 12
-        },
-        {
-          "line": "6",
-          "direction": "return",
           "index": 14
         },
         {
-          "line": "7",
+          "line": "4",
           "direction": "return",
-          "index": 11
+          "index": 1
+        },
+        {
+          "line": "5D",
+          "direction": "depart",
+          "index": 18
+        },
+        {
+          "line": "5D",
+          "direction": "return",
+          "index": 1
         }
       ]
     },
     {
-      "id": "source-capliniesimeria-45.868000-25.779200",
+      "id": "source-cartciucului-45.873900-25.792000",
       "name": {
-        "ro": "Cap Linie Simeria",
-        "hu": "Szemerja Végállomás"
+        "ro": "Cart. Ciucului",
+        "hu": "Csíki negyed"
       },
       "point": [
-        45.868,
-        25.7792
+        45.8739,
+        25.792
       ],
       "source": "source-fallback",
       "osm_id": null,
       "calls": [
         {
-          "line": "1",
+          "line": "2",
           "direction": "depart",
-          "index": 0
-        },
-        {
-          "line": "1B",
-          "direction": "depart",
-          "index": 0
-        },
-        {
-          "line": "1D",
-          "direction": "depart",
-          "index": 0
+          "index": 10
         },
         {
           "line": "2",
+          "direction": "return",
+          "index": 5
+        },
+        {
+          "line": "2D",
           "direction": "depart",
-          "index": 0
+          "index": 10
         },
         {
           "line": "6",
           "direction": "depart",
-          "index": 0
+          "index": 10
+        }
+      ]
+    },
+    {
+      "id": "source-cartciucului-45.873900-25.792600",
+      "name": {
+        "ro": "Cart. Ciucului",
+        "hu": "Csíki negyed"
+      },
+      "point": [
+        45.8739,
+        25.7926
+      ],
+      "source": "source-fallback",
+      "osm_id": null,
+      "calls": [
+        {
+          "line": "2D",
+          "direction": "return",
+          "index": 11
         },
         {
-          "line": "7",
-          "direction": "depart",
-          "index": 0
+          "line": "6",
+          "direction": "return",
+          "index": 7
         }
       ]
     },
@@ -1506,7 +1421,7 @@
         {
           "line": "10",
           "direction": "return",
-          "index": 2
+          "index": 3
         }
       ]
     },
@@ -1514,7 +1429,7 @@
       "id": "source-centruarcus-45.903100-25.773500",
       "name": {
         "ro": "Centru Arcuș",
-        "hu": "Árkos központ"
+        "hu": "Árkos Központ"
       },
       "point": [
         45.9031,
@@ -1538,7 +1453,7 @@
     {
       "id": "source-centrucomercial-45.869300-25.801000",
       "name": {
-        "ro": "Centru Comercial",
+        "ro": "Centru comercial",
         "hu": "Bevásárlóközpont"
       },
       "point": [
@@ -1550,8 +1465,8 @@
       "calls": [
         {
           "line": "5",
-          "direction": "depart-to-arena",
-          "index": 15
+          "direction": "depart",
+          "index": 14
         },
         {
           "line": "6",
@@ -1563,7 +1478,7 @@
     {
       "id": "source-centrucomercial-45.869800-25.800600",
       "name": {
-        "ro": "Centru Comercial",
+        "ro": "Centru comercial",
         "hu": "Bevásárlóközpont"
       },
       "point": [
@@ -1575,7 +1490,7 @@
       "calls": [
         {
           "line": "5",
-          "direction": "depart-from-arena",
+          "direction": "return",
           "index": 2
         },
         {
@@ -1600,7 +1515,7 @@
       "calls": [
         {
           "line": "3",
-          "direction": "depart-to-coseni",
+          "direction": "depart",
           "index": 14
         }
       ]
@@ -1620,73 +1535,8 @@
       "calls": [
         {
           "line": "3",
-          "direction": "depart-from-coseni",
-          "index": 4
-        }
-      ]
-    },
-    {
-      "id": "source-colmihaiviteazul-45.860100-25.784200",
-      "name": {
-        "ro": "Col. Mihai Viteazul",
-        "hu": "Vitéz Mihály Líceum"
-      },
-      "point": [
-        45.8601,
-        25.7842
-      ],
-      "source": "source-fallback",
-      "osm_id": null,
-      "calls": [
-        {
-          "line": "3",
-          "direction": "depart-from-coseni",
-          "index": 12
-        },
-        {
-          "line": "4",
-          "direction": "depart-from-campul-frumos",
-          "index": 10
-        }
-      ]
-    },
-    {
-      "id": "source-colmihaiviteazul-45.861000-25.785500",
-      "name": {
-        "ro": "Col. Mihai Viteazul",
-        "hu": "Vitéz Mihály Líceum"
-      },
-      "point": [
-        45.861,
-        25.7855
-      ],
-      "source": "source-fallback",
-      "osm_id": null,
-      "calls": [
-        {
-          "line": "3",
-          "direction": "depart-to-coseni",
-          "index": 6
-        },
-        {
-          "line": "4",
-          "direction": "depart-to-campul-frumos",
-          "index": 6
-        },
-        {
-          "line": "5",
-          "direction": "depart-to-arena",
-          "index": 6
-        },
-        {
-          "line": "5D",
-          "direction": "depart",
-          "index": 6
-        },
-        {
-          "line": "7",
           "direction": "return",
-          "index": 7
+          "index": 3
         }
       ]
     },
@@ -1705,12 +1555,12 @@
       "calls": [
         {
           "line": "3",
-          "direction": "depart-to-coseni",
+          "direction": "depart",
           "index": 3
         },
         {
           "line": "4",
-          "direction": "depart-to-campul-frumos",
+          "direction": "depart",
           "index": 3
         },
         {
@@ -1735,13 +1585,13 @@
       "calls": [
         {
           "line": "3",
-          "direction": "depart-to-coseni",
+          "direction": "depart",
           "index": 17
         },
         {
           "line": "3",
-          "direction": "depart-from-coseni",
-          "index": 1
+          "direction": "return",
+          "index": 0
         }
       ]
     },
@@ -1760,7 +1610,7 @@
       "calls": [
         {
           "line": "5",
-          "direction": "depart-to-arena",
+          "direction": "depart",
           "index": 5
         },
         {
@@ -1785,12 +1635,12 @@
       "calls": [
         {
           "line": "3",
-          "direction": "depart-from-coseni",
-          "index": 13
+          "direction": "return",
+          "index": 12
         },
         {
           "line": "4",
-          "direction": "depart-from-campul-frumos",
+          "direction": "return",
           "index": 11
         },
         {
@@ -1876,12 +1726,12 @@
         {
           "line": "1D",
           "direction": "depart",
-          "index": 7
+          "index": 8
         },
         {
           "line": "1D",
           "direction": "return",
-          "index": 3
+          "index": 6
         },
         {
           "line": "2",
@@ -1896,41 +1746,41 @@
         {
           "line": "2D",
           "direction": "depart",
-          "index": 11
+          "index": 15
         },
         {
           "line": "2D",
           "direction": "return",
-          "index": 3
+          "index": 6
         },
         {
           "line": "3",
-          "direction": "depart-to-coseni",
+          "direction": "depart",
           "index": 10
         },
         {
           "line": "3",
-          "direction": "depart-from-coseni",
-          "index": 8
+          "direction": "return",
+          "index": 7
         },
         {
           "line": "4",
-          "direction": "depart-to-campul-frumos",
+          "direction": "depart",
           "index": 10
         },
         {
           "line": "4",
-          "direction": "depart-from-campul-frumos",
+          "direction": "return",
           "index": 6
         },
         {
           "line": "5",
-          "direction": "depart-to-arena",
-          "index": 14
+          "direction": "depart",
+          "index": 13
         },
         {
           "line": "5",
-          "direction": "depart-from-arena",
+          "direction": "return",
           "index": 3
         },
         {
@@ -1941,7 +1791,7 @@
         {
           "line": "5D",
           "direction": "return",
-          "index": 3
+          "index": 6
         },
         {
           "line": "7",
@@ -2001,7 +1851,7 @@
         {
           "line": "10",
           "direction": "return",
-          "index": 5
+          "index": 6
         }
       ]
     },
@@ -2020,13 +1870,158 @@
       "calls": [
         {
           "line": "5",
-          "direction": "depart-to-arena",
+          "direction": "depart",
           "index": 1
         },
         {
           "line": "5D",
           "direction": "depart",
           "index": 1
+        }
+      ]
+    },
+    {
+      "id": "source-kossuthlajos1-45.884000-25.800100",
+      "name": {
+        "ro": "Kossuth Lajos 1",
+        "hu": "Kossuth Lajos 1"
+      },
+      "point": [
+        45.884,
+        25.8001
+      ],
+      "source": "source-fallback",
+      "osm_id": null,
+      "calls": [
+        {
+          "line": "10",
+          "direction": "return",
+          "index": 5
+        }
+      ]
+    },
+    {
+      "id": "source-kossuthlajos1-45.884000-25.800300",
+      "name": {
+        "ro": "Kossuth Lajos 1",
+        "hu": "Kossuth Lajos 1"
+      },
+      "point": [
+        45.884,
+        25.8003
+      ],
+      "source": "source-fallback",
+      "osm_id": null,
+      "calls": [
+        {
+          "line": "10",
+          "direction": "depart",
+          "index": 6
+        }
+      ]
+    },
+    {
+      "id": "source-kossuthlajos2-45.889200-25.796600",
+      "name": {
+        "ro": "Kossuth Lajos 2",
+        "hu": "Kossuth Lajos 2"
+      },
+      "point": [
+        45.8892,
+        25.7966
+      ],
+      "source": "source-fallback",
+      "osm_id": null,
+      "calls": [
+        {
+          "line": "10",
+          "direction": "return",
+          "index": 4
+        }
+      ]
+    },
+    {
+      "id": "source-kossuthlajos2-45.889200-25.796800",
+      "name": {
+        "ro": "Kossuth Lajos 2",
+        "hu": "Kossuth Lajos 2"
+      },
+      "point": [
+        45.8892,
+        25.7968
+      ],
+      "source": "source-fallback",
+      "osm_id": null,
+      "calls": [
+        {
+          "line": "10",
+          "direction": "depart",
+          "index": 7
+        }
+      ]
+    },
+    {
+      "id": "source-liceulmviteazul-45.860100-25.784200",
+      "name": {
+        "ro": "Liceul M. Viteazul",
+        "hu": "Vitez Mihaly Lic."
+      },
+      "point": [
+        45.8601,
+        25.7842
+      ],
+      "source": "source-fallback",
+      "osm_id": null,
+      "calls": [
+        {
+          "line": "3",
+          "direction": "return",
+          "index": 11
+        },
+        {
+          "line": "4",
+          "direction": "return",
+          "index": 10
+        },
+        {
+          "line": "7",
+          "direction": "return",
+          "index": 7
+        }
+      ]
+    },
+    {
+      "id": "source-liceulmviteazul-45.861000-25.785500",
+      "name": {
+        "ro": "Liceul M. Viteazul",
+        "hu": "Vitez Mihaly Lic."
+      },
+      "point": [
+        45.861,
+        25.7855
+      ],
+      "source": "source-fallback",
+      "osm_id": null,
+      "calls": [
+        {
+          "line": "3",
+          "direction": "depart",
+          "index": 6
+        },
+        {
+          "line": "4",
+          "direction": "depart",
+          "index": 6
+        },
+        {
+          "line": "5",
+          "direction": "depart",
+          "index": 6
+        },
+        {
+          "line": "5D",
+          "direction": "depart",
+          "index": 6
         }
       ]
     },
@@ -2051,7 +2046,7 @@
         {
           "line": "2D",
           "direction": "depart",
-          "index": 4
+          "index": 8
         },
         {
           "line": "6",
@@ -2086,7 +2081,7 @@
         {
           "line": "2D",
           "direction": "return",
-          "index": 11
+          "index": 13
         },
         {
           "line": "6",
@@ -2101,7 +2096,7 @@
         {
           "line": "10",
           "direction": "return",
-          "index": 9
+          "index": 10
         }
       ]
     },
@@ -2120,7 +2115,7 @@
       "calls": [
         {
           "line": "3",
-          "direction": "depart-to-coseni",
+          "direction": "depart",
           "index": 15
         }
       ]
@@ -2140,8 +2135,8 @@
       "calls": [
         {
           "line": "3",
-          "direction": "depart-from-coseni",
-          "index": 3
+          "direction": "return",
+          "index": 2
         }
       ]
     },
@@ -2171,7 +2166,7 @@
         {
           "line": "1D",
           "direction": "depart",
-          "index": 10
+          "index": 14
         },
         {
           "line": "1D",
@@ -2181,7 +2176,7 @@
         {
           "line": "2D",
           "direction": "depart",
-          "index": 14
+          "index": 21
         },
         {
           "line": "2D",
@@ -2190,18 +2185,18 @@
         },
         {
           "line": "4",
-          "direction": "depart-to-campul-frumos",
-          "index": 16
+          "direction": "depart",
+          "index": 15
         },
         {
           "line": "4",
-          "direction": "depart-from-campul-frumos",
+          "direction": "return",
           "index": 0
         },
         {
           "line": "5D",
           "direction": "depart",
-          "index": 16
+          "index": 19
         },
         {
           "line": "5D",
@@ -2220,23 +2215,18 @@
         45.8709,
         25.7885
       ],
-      "source": "source-fallback",
+      "source": "override",
       "osm_id": null,
       "calls": [
         {
-          "line": "2",
-          "direction": "return",
-          "index": 6
-        },
-        {
           "line": "2D",
           "direction": "return",
-          "index": 10
+          "index": 12
         },
         {
           "line": "6",
-          "direction": "depart",
-          "index": 9
+          "direction": "return",
+          "index": 8
         },
         {
           "line": "9",
@@ -2246,7 +2236,7 @@
         {
           "line": "10",
           "direction": "return",
-          "index": 8
+          "index": 9
         }
       ]
     },
@@ -2269,14 +2259,19 @@
           "index": 9
         },
         {
+          "line": "2",
+          "direction": "return",
+          "index": 6
+        },
+        {
           "line": "2D",
           "direction": "depart",
-          "index": 5
+          "index": 9
         },
         {
           "line": "6",
-          "direction": "return",
-          "index": 8
+          "direction": "depart",
+          "index": 9
         },
         {
           "line": "9",
@@ -2301,7 +2296,7 @@
         {
           "line": "10",
           "direction": "return",
-          "index": 1
+          "index": 2
         }
       ]
     },
@@ -2326,6 +2321,106 @@
       ]
     },
     {
+      "id": "source-simeriastrberzei-45.867100-25.779100",
+      "name": {
+        "ro": "Simeria (Str. Berzei)",
+        "hu": "Szemerja (Gólya utca)"
+      },
+      "point": [
+        45.8671,
+        25.7791
+      ],
+      "source": "source-fallback",
+      "osm_id": null,
+      "calls": [
+        {
+          "line": "1",
+          "direction": "return",
+          "index": 7
+        },
+        {
+          "line": "1B",
+          "direction": "return",
+          "index": 10
+        },
+        {
+          "line": "1D",
+          "direction": "return",
+          "index": 13
+        },
+        {
+          "line": "2",
+          "direction": "return",
+          "index": 12
+        },
+        {
+          "line": "2D",
+          "direction": "return",
+          "index": 18
+        },
+        {
+          "line": "6",
+          "direction": "return",
+          "index": 14
+        },
+        {
+          "line": "7",
+          "direction": "return",
+          "index": 11
+        }
+      ]
+    },
+    {
+      "id": "source-simeriastrberzei-45.868000-25.779200",
+      "name": {
+        "ro": "Simeria (Str. Berzei)",
+        "hu": "Szemerja (Gólya utca)"
+      },
+      "point": [
+        45.868,
+        25.7792
+      ],
+      "source": "source-fallback",
+      "osm_id": null,
+      "calls": [
+        {
+          "line": "1",
+          "direction": "depart",
+          "index": 0
+        },
+        {
+          "line": "1B",
+          "direction": "depart",
+          "index": 0
+        },
+        {
+          "line": "1D",
+          "direction": "depart",
+          "index": 0
+        },
+        {
+          "line": "2",
+          "direction": "depart",
+          "index": 0
+        },
+        {
+          "line": "2D",
+          "direction": "depart",
+          "index": 0
+        },
+        {
+          "line": "6",
+          "direction": "depart",
+          "index": 0
+        },
+        {
+          "line": "7",
+          "direction": "depart",
+          "index": 0
+        }
+      ]
+    },
+    {
       "id": "source-spitaluljudetean-45.863900-25.778000",
       "name": {
         "ro": "Spitalul Județean",
@@ -2344,6 +2439,11 @@
           "index": 1
         },
         {
+          "line": "1",
+          "direction": "return",
+          "index": 6
+        },
+        {
           "line": "1B",
           "direction": "depart",
           "index": 1
@@ -2352,6 +2452,11 @@
           "line": "1D",
           "direction": "depart",
           "index": 1
+        },
+        {
+          "line": "2",
+          "direction": "return",
+          "index": 11
         },
         {
           "line": "7",
@@ -2381,12 +2486,7 @@
         {
           "line": "2D",
           "direction": "depart",
-          "index": 0
-        },
-        {
-          "line": "2D",
-          "direction": "return",
-          "index": 19
+          "index": 4
         },
         {
           "line": "6",
@@ -2449,9 +2549,14 @@
       "osm_id": null,
       "calls": [
         {
-          "line": "2",
+          "line": "2D",
           "direction": "return",
-          "index": 3
+          "index": 9
+        },
+        {
+          "line": "6",
+          "direction": "return",
+          "index": 5
         },
         {
           "line": "10",
@@ -2479,14 +2584,14 @@
           "index": 12
         },
         {
-          "line": "2D",
-          "direction": "depart",
-          "index": 8
+          "line": "2",
+          "direction": "return",
+          "index": 3
         },
         {
           "line": "2D",
-          "direction": "return",
-          "index": 7
+          "direction": "depart",
+          "index": 12
         },
         {
           "line": "6",
@@ -2494,14 +2599,9 @@
           "index": 12
         },
         {
-          "line": "6",
-          "direction": "return",
-          "index": 5
-        },
-        {
           "line": "10",
           "direction": "return",
-          "index": 7
+          "index": 8
         }
       ]
     },
@@ -2524,19 +2624,19 @@
           "index": 11
         },
         {
-          "line": "2D",
-          "direction": "depart",
-          "index": 7
+          "line": "2",
+          "direction": "return",
+          "index": 4
         },
         {
           "line": "2D",
-          "direction": "return",
-          "index": 8
+          "direction": "depart",
+          "index": 11
         },
         {
           "line": "10",
           "direction": "return",
-          "index": 6
+          "index": 7
         }
       ]
     },
@@ -2554,9 +2654,9 @@
       "osm_id": null,
       "calls": [
         {
-          "line": "2",
+          "line": "2D",
           "direction": "return",
-          "index": 4
+          "index": 10
         },
         {
           "line": "10",
@@ -2579,9 +2679,19 @@
       "osm_id": null,
       "calls": [
         {
+          "line": "2D",
+          "direction": "depart",
+          "index": 17
+        },
+        {
           "line": "4",
-          "direction": "depart-to-campul-frumos",
-          "index": 12
+          "direction": "depart",
+          "index": 11
+        },
+        {
+          "line": "5D",
+          "direction": "depart",
+          "index": 15
         }
       ]
     },
@@ -2599,8 +2709,28 @@
       "osm_id": null,
       "calls": [
         {
+          "line": "1D",
+          "direction": "depart",
+          "index": 10
+        },
+        {
+          "line": "1D",
+          "direction": "return",
+          "index": 4
+        },
+        {
+          "line": "2D",
+          "direction": "return",
+          "index": 4
+        },
+        {
           "line": "4",
-          "direction": "depart-from-campul-frumos",
+          "direction": "return",
+          "index": 4
+        },
+        {
+          "line": "5D",
+          "direction": "return",
           "index": 4
         }
       ]
@@ -2619,9 +2749,24 @@
       "osm_id": null,
       "calls": [
         {
+          "line": "1D",
+          "direction": "depart",
+          "index": 11
+        },
+        {
+          "line": "2D",
+          "direction": "depart",
+          "index": 18
+        },
+        {
           "line": "4",
-          "direction": "depart-to-campul-frumos",
-          "index": 13
+          "direction": "depart",
+          "index": 12
+        },
+        {
+          "line": "5D",
+          "direction": "depart",
+          "index": 16
         }
       ]
     },
@@ -2639,9 +2784,59 @@
       "osm_id": null,
       "calls": [
         {
-          "line": "4",
-          "direction": "depart-from-campul-frumos",
+          "line": "1D",
+          "direction": "return",
           "index": 3
+        },
+        {
+          "line": "2D",
+          "direction": "return",
+          "index": 3
+        },
+        {
+          "line": "4",
+          "direction": "return",
+          "index": 3
+        },
+        {
+          "line": "5D",
+          "direction": "return",
+          "index": 3
+        }
+      ]
+    },
+    {
+      "id": "source-strconstructorilor3-45.857900-25.818000",
+      "name": {
+        "ro": "Str. Constructorilor 3",
+        "hu": "Építők útja 3"
+      },
+      "point": [
+        45.8579,
+        25.818
+      ],
+      "source": "source-fallback",
+      "osm_id": null,
+      "calls": [
+        {
+          "line": "1D",
+          "direction": "return",
+          "index": 2
+        },
+        {
+          "line": "2D",
+          "direction": "return",
+          "index": 2
+        },
+        {
+          "line": "4",
+          "direction": "return",
+          "index": 2
+        },
+        {
+          "line": "5D",
+          "direction": "return",
+          "index": 2
         }
       ]
     },
@@ -2659,14 +2854,24 @@
       "osm_id": null,
       "calls": [
         {
-          "line": "4",
-          "direction": "depart-to-campul-frumos",
-          "index": 14
+          "line": "1D",
+          "direction": "depart",
+          "index": 12
+        },
+        {
+          "line": "2D",
+          "direction": "depart",
+          "index": 19
         },
         {
           "line": "4",
-          "direction": "depart-from-campul-frumos",
-          "index": 2
+          "direction": "depart",
+          "index": 13
+        },
+        {
+          "line": "5D",
+          "direction": "depart",
+          "index": 17
         }
       ]
     },
@@ -2685,12 +2890,12 @@
       "calls": [
         {
           "line": "5",
-          "direction": "depart-to-arena",
+          "direction": "depart",
           "index": 0
         },
         {
           "line": "5",
-          "direction": "depart-from-arena",
+          "direction": "return",
           "index": 11
         },
         {
@@ -2701,7 +2906,7 @@
         {
           "line": "5D",
           "direction": "return",
-          "index": 11
+          "index": 14
         }
       ]
     },
@@ -2720,12 +2925,12 @@
       "calls": [
         {
           "line": "3",
-          "direction": "depart-to-coseni",
+          "direction": "depart",
           "index": 4
         },
         {
           "line": "4",
-          "direction": "depart-to-campul-frumos",
+          "direction": "depart",
           "index": 4
         },
         {
@@ -2750,12 +2955,12 @@
       "calls": [
         {
           "line": "3",
-          "direction": "depart-to-coseni",
+          "direction": "depart",
           "index": 5
         },
         {
           "line": "4",
-          "direction": "depart-to-campul-frumos",
+          "direction": "depart",
           "index": 5
         }
       ]
@@ -2781,7 +2986,7 @@
         {
           "line": "2D",
           "direction": "return",
-          "index": 12
+          "index": 14
         },
         {
           "line": "6",
@@ -2796,7 +3001,7 @@
         {
           "line": "10",
           "direction": "return",
-          "index": 10
+          "index": 11
         }
       ]
     },
@@ -2820,8 +3025,8 @@
         },
         {
           "line": "2D",
-          "direction": "return",
-          "index": 18
+          "direction": "depart",
+          "index": 3
         },
         {
           "line": "6",
@@ -2834,7 +3039,7 @@
       "id": "source-strjozsefattila1-45.854400-25.777100",
       "name": {
         "ro": "Str. József Attila 1",
-        "hu": "József Attila u. 1"
+        "hu": "József Attila utca 1"
       },
       "point": [
         45.8544,
@@ -2845,7 +3050,7 @@
       "calls": [
         {
           "line": "5",
-          "direction": "depart-to-arena",
+          "direction": "depart",
           "index": 3
         },
         {
@@ -2859,7 +3064,7 @@
       "id": "source-strjozsefattila2-45.854100-25.772200",
       "name": {
         "ro": "Str. József Attila 2",
-        "hu": "József Attila u. 2"
+        "hu": "József Attila utca 2"
       },
       "point": [
         45.8541,
@@ -2870,7 +3075,7 @@
       "calls": [
         {
           "line": "5",
-          "direction": "depart-to-arena",
+          "direction": "depart",
           "index": 2
         },
         {
@@ -2881,107 +3086,27 @@
       ]
     },
     {
-      "id": "source-strkoskaroly-45.855900-25.779000",
+      "id": "source-strkoskaroly-45.857000-25.779500",
       "name": {
         "ro": "Str. Kós Károly",
         "hu": "Kós Károly utca"
       },
       "point": [
-        45.8559,
-        25.779
+        45.857,
+        25.7795
       ],
       "source": "source-fallback",
       "osm_id": null,
       "calls": [
         {
           "line": "5",
-          "direction": "depart-to-arena",
+          "direction": "depart",
           "index": 4
         },
         {
           "line": "5D",
           "direction": "depart",
           "index": 4
-        }
-      ]
-    },
-    {
-      "id": "source-strkossuthlajos1-45.883500-25.800000",
-      "name": {
-        "ro": "Str. Kossuth Lajos 1",
-        "hu": "Kossuth Lajos 1"
-      },
-      "point": [
-        45.8835,
-        25.8
-      ],
-      "source": "source-fallback",
-      "osm_id": null,
-      "calls": [
-        {
-          "line": "10",
-          "direction": "return",
-          "index": 4
-        }
-      ]
-    },
-    {
-      "id": "source-strkossuthlajos1-45.883500-25.800200",
-      "name": {
-        "ro": "Str. Kossuth Lajos 1",
-        "hu": "Kossuth Lajos 1"
-      },
-      "point": [
-        45.8835,
-        25.8002
-      ],
-      "source": "source-fallback",
-      "osm_id": null,
-      "calls": [
-        {
-          "line": "10",
-          "direction": "depart",
-          "index": 6
-        }
-      ]
-    },
-    {
-      "id": "source-strkossuthlajos2-45.884800-25.799600",
-      "name": {
-        "ro": "Str. Kossuth Lajos 2",
-        "hu": "Kossuth Lajos 2"
-      },
-      "point": [
-        45.8848,
-        25.7996
-      ],
-      "source": "source-fallback",
-      "osm_id": null,
-      "calls": [
-        {
-          "line": "10",
-          "direction": "return",
-          "index": 3
-        }
-      ]
-    },
-    {
-      "id": "source-strkossuthlajos2-45.884800-25.799800",
-      "name": {
-        "ro": "Str. Kossuth Lajos 2",
-        "hu": "Kossuth Lajos 2"
-      },
-      "point": [
-        45.8848,
-        25.7998
-      ],
-      "source": "source-fallback",
-      "osm_id": null,
-      "calls": [
-        {
-          "line": "10",
-          "direction": "depart",
-          "index": 7
         }
       ]
     },
@@ -3000,8 +3125,8 @@
       "calls": [
         {
           "line": "5",
-          "direction": "depart-to-arena",
-          "index": 13
+          "direction": "depart",
+          "index": 12
         },
         {
           "line": "5D",
@@ -3025,13 +3150,13 @@
       "calls": [
         {
           "line": "5",
-          "direction": "depart-from-arena",
+          "direction": "return",
           "index": 4
         },
         {
           "line": "5D",
           "direction": "return",
-          "index": 4
+          "index": 7
         }
       ]
     },
@@ -3050,23 +3175,38 @@
       "calls": [
         {
           "line": "5",
-          "direction": "depart-to-arena",
-          "index": 12
-        },
-        {
-          "line": "5",
-          "direction": "depart-from-arena",
-          "index": 5
-        },
-        {
-          "line": "5D",
           "direction": "depart",
           "index": 11
         },
         {
           "line": "5D",
+          "direction": "depart",
+          "index": 11
+        }
+      ]
+    },
+    {
+      "id": "source-strlacramioarei2-45.858100-25.797900",
+      "name": {
+        "ro": "Str. Lăcrămioarei 2",
+        "hu": "Gyöngyvirág utca 2"
+      },
+      "point": [
+        45.8581,
+        25.7979
+      ],
+      "source": "source-fallback",
+      "osm_id": null,
+      "calls": [
+        {
+          "line": "5",
           "direction": "return",
           "index": 5
+        },
+        {
+          "line": "5D",
+          "direction": "return",
+          "index": 8
         }
       ]
     },
@@ -3085,22 +3225,22 @@
       "calls": [
         {
           "line": "3",
-          "direction": "depart-to-coseni",
+          "direction": "depart",
           "index": 0
         },
         {
           "line": "3",
-          "direction": "depart-from-coseni",
-          "index": 14
+          "direction": "return",
+          "index": 13
         },
         {
           "line": "4",
-          "direction": "depart-to-campul-frumos",
+          "direction": "depart",
           "index": 0
         },
         {
           "line": "4",
-          "direction": "depart-from-campul-frumos",
+          "direction": "return",
           "index": 12
         },
         {
@@ -3125,12 +3265,12 @@
       "calls": [
         {
           "line": "3",
-          "direction": "depart-to-coseni",
+          "direction": "depart",
           "index": 1
         },
         {
           "line": "4",
-          "direction": "depart-to-campul-frumos",
+          "direction": "depart",
           "index": 1
         },
         {
@@ -3155,12 +3295,12 @@
       "calls": [
         {
           "line": "3",
-          "direction": "depart-to-coseni",
+          "direction": "depart",
           "index": 2
         },
         {
           "line": "4",
-          "direction": "depart-to-campul-frumos",
+          "direction": "depart",
           "index": 2
         },
         {
@@ -3190,8 +3330,8 @@
         },
         {
           "line": "2D",
-          "direction": "return",
-          "index": 16
+          "direction": "depart",
+          "index": 1
         },
         {
           "line": "6",
@@ -3220,8 +3360,8 @@
         },
         {
           "line": "2D",
-          "direction": "return",
-          "index": 17
+          "direction": "depart",
+          "index": 2
         },
         {
           "line": "6",
@@ -3254,6 +3394,36 @@
           "index": 0
         }
       ]
+    },
+    {
+      "id": "source-terminal-45.856800-25.806600",
+      "name": {
+        "ro": "Terminal",
+        "hu": "Terminal"
+      },
+      "point": [
+        45.8568,
+        25.8066
+      ],
+      "source": "source-fallback",
+      "osm_id": null,
+      "calls": [
+        {
+          "line": "1D",
+          "direction": "depart",
+          "index": 9
+        },
+        {
+          "line": "2D",
+          "direction": "depart",
+          "index": 16
+        },
+        {
+          "line": "5D",
+          "direction": "depart",
+          "index": 14
+        }
+      ]
     }
   ],
   "unmatched": [
@@ -3261,7 +3431,7 @@
       "line": "1",
       "direction": "depart",
       "index": 0,
-      "name": "Cap Linie Simeria",
+      "name": "Simeria (Str. Berzei)",
       "reason": "no matching OSM platform"
     },
     {
@@ -3288,15 +3458,22 @@
     {
       "line": "1",
       "direction": "return",
+      "index": 6,
+      "name": "Spitalul Județean",
+      "reason": "no matching OSM platform"
+    },
+    {
+      "line": "1",
+      "direction": "return",
       "index": 7,
-      "name": "Cap Linie Simeria",
+      "name": "Simeria (Str. Berzei)",
       "reason": "no matching OSM platform"
     },
     {
       "line": "1B",
       "direction": "depart",
       "index": 0,
-      "name": "Cap Linie Simeria",
+      "name": "Simeria (Str. Berzei)",
       "reason": "no matching OSM platform"
     },
     {
@@ -3366,14 +3543,14 @@
       "line": "1B",
       "direction": "return",
       "index": 10,
-      "name": "Cap Linie Simeria",
+      "name": "Simeria (Str. Berzei)",
       "reason": "no matching OSM platform"
     },
     {
       "line": "1D",
       "direction": "depart",
       "index": 0,
-      "name": "Cap Linie Simeria",
+      "name": "Simeria (Str. Berzei)",
       "reason": "no matching OSM platform"
     },
     {
@@ -3386,28 +3563,49 @@
     {
       "line": "1D",
       "direction": "depart",
-      "index": 7,
+      "index": 8,
       "name": "Gara CFR",
       "reason": "no matching OSM platform"
     },
     {
       "line": "1D",
       "direction": "depart",
-      "index": 8,
-      "name": "Autoliv",
-      "reason": "no matching OSM platform"
-    },
-    {
-      "line": "1D",
-      "direction": "depart",
       "index": 9,
-      "name": "Câmpul Frumos",
+      "name": "Terminal",
       "reason": "no matching OSM platform"
     },
     {
       "line": "1D",
       "direction": "depart",
       "index": 10,
+      "name": "Str. Constructorilor 1",
+      "reason": "no matching OSM platform"
+    },
+    {
+      "line": "1D",
+      "direction": "depart",
+      "index": 11,
+      "name": "Str. Constructorilor 2",
+      "reason": "no matching OSM platform"
+    },
+    {
+      "line": "1D",
+      "direction": "depart",
+      "index": 12,
+      "name": "Str. Constructorilor 3",
+      "reason": "no matching OSM platform"
+    },
+    {
+      "line": "1D",
+      "direction": "depart",
+      "index": 13,
+      "name": "Câmpul Frumos",
+      "reason": "no matching OSM platform"
+    },
+    {
+      "line": "1D",
+      "direction": "depart",
+      "index": 14,
       "name": "Multi-Trans",
       "reason": "no matching OSM platform"
     },
@@ -3429,35 +3627,49 @@
       "line": "1D",
       "direction": "return",
       "index": 2,
-      "name": "Autoliv",
+      "name": "Str. Constructorilor 3",
       "reason": "no matching OSM platform"
     },
     {
       "line": "1D",
       "direction": "return",
       "index": 3,
-      "name": "Gara CFR",
+      "name": "Str. Constructorilor 2",
       "reason": "no matching OSM platform"
     },
     {
       "line": "1D",
       "direction": "return",
       "index": 4,
+      "name": "Str. Constructorilor 1",
+      "reason": "no matching OSM platform"
+    },
+    {
+      "line": "1D",
+      "direction": "return",
+      "index": 5,
       "name": "Calea Brașovului 1",
       "reason": "no matching OSM platform"
     },
     {
       "line": "1D",
       "direction": "return",
-      "index": 11,
-      "name": "Cap Linie Simeria",
+      "index": 6,
+      "name": "Gara CFR",
+      "reason": "no matching OSM platform"
+    },
+    {
+      "line": "1D",
+      "direction": "return",
+      "index": 13,
+      "name": "Simeria (Str. Berzei)",
       "reason": "no matching OSM platform"
     },
     {
       "line": "2",
       "direction": "depart",
       "index": 0,
-      "name": "Cap Linie Simeria",
+      "name": "Simeria (Str. Berzei)",
       "reason": "no matching OSM platform"
     },
     {
@@ -3505,6 +3717,13 @@
     {
       "line": "2",
       "direction": "depart",
+      "index": 10,
+      "name": "Cart. Ciucului",
+      "reason": "no matching OSM platform"
+    },
+    {
+      "line": "2",
+      "direction": "depart",
       "index": 11,
       "name": "Str. Ciucului 2",
       "reason": "no matching OSM platform"
@@ -3547,6 +3766,13 @@
     {
       "line": "2",
       "direction": "return",
+      "index": 5,
+      "name": "Cart. Ciucului",
+      "reason": "no matching OSM platform"
+    },
+    {
+      "line": "2",
+      "direction": "return",
       "index": 6,
       "name": "Piața Kálvin",
       "reason": "no matching OSM platform"
@@ -3568,56 +3794,119 @@
     {
       "line": "2",
       "direction": "return",
+      "index": 11,
+      "name": "Spitalul Județean",
+      "reason": "no matching OSM platform"
+    },
+    {
+      "line": "2",
+      "direction": "return",
       "index": 12,
-      "name": "Cap Linie Simeria",
+      "name": "Simeria (Str. Berzei)",
       "reason": "no matching OSM platform"
     },
     {
       "line": "2D",
       "direction": "depart",
       "index": 0,
-      "name": "Str. Bartók Béla",
+      "name": "Simeria (Str. Berzei)",
+      "reason": "no matching OSM platform"
+    },
+    {
+      "line": "2D",
+      "direction": "depart",
+      "index": 1,
+      "name": "Str. Vânătorilor 1",
+      "reason": "no matching OSM platform"
+    },
+    {
+      "line": "2D",
+      "direction": "depart",
+      "index": 2,
+      "name": "Str. Vânătorilor 2",
+      "reason": "no matching OSM platform"
+    },
+    {
+      "line": "2D",
+      "direction": "depart",
+      "index": 3,
+      "name": "Str. Ghioceilor",
       "reason": "no matching OSM platform"
     },
     {
       "line": "2D",
       "direction": "depart",
       "index": 4,
-      "name": "Lic. Plugor Sándor",
+      "name": "Str. Bartók Béla",
       "reason": "no matching OSM platform"
     },
     {
       "line": "2D",
       "direction": "depart",
       "index": 8,
-      "name": "Str. Ciucului 1",
+      "name": "Lic. Plugor Sándor",
       "reason": "no matching OSM platform"
     },
     {
       "line": "2D",
       "direction": "depart",
-      "index": 11,
-      "name": "Gara CFR",
+      "index": 10,
+      "name": "Cart. Ciucului",
       "reason": "no matching OSM platform"
     },
     {
       "line": "2D",
       "direction": "depart",
       "index": 12,
-      "name": "Autoliv",
+      "name": "Str. Ciucului 1",
       "reason": "no matching OSM platform"
     },
     {
       "line": "2D",
       "direction": "depart",
-      "index": 13,
+      "index": 15,
+      "name": "Gara CFR",
+      "reason": "no matching OSM platform"
+    },
+    {
+      "line": "2D",
+      "direction": "depart",
+      "index": 16,
+      "name": "Terminal",
+      "reason": "no matching OSM platform"
+    },
+    {
+      "line": "2D",
+      "direction": "depart",
+      "index": 17,
+      "name": "Str. Constructorilor 1",
+      "reason": "no matching OSM platform"
+    },
+    {
+      "line": "2D",
+      "direction": "depart",
+      "index": 18,
+      "name": "Str. Constructorilor 2",
+      "reason": "no matching OSM platform"
+    },
+    {
+      "line": "2D",
+      "direction": "depart",
+      "index": 19,
+      "name": "Str. Constructorilor 3",
+      "reason": "no matching OSM platform"
+    },
+    {
+      "line": "2D",
+      "direction": "depart",
+      "index": 20,
       "name": "Câmpul Frumos",
       "reason": "no matching OSM platform"
     },
     {
       "line": "2D",
       "direction": "depart",
-      "index": 14,
+      "index": 21,
       "name": "Multi-Trans",
       "reason": "no matching OSM platform"
     },
@@ -3639,34 +3928,48 @@
       "line": "2D",
       "direction": "return",
       "index": 2,
-      "name": "Autoliv",
+      "name": "Str. Constructorilor 3",
       "reason": "no matching OSM platform"
     },
     {
       "line": "2D",
       "direction": "return",
       "index": 3,
-      "name": "Gara CFR",
+      "name": "Str. Constructorilor 2",
       "reason": "no matching OSM platform"
     },
     {
       "line": "2D",
       "direction": "return",
       "index": 4,
+      "name": "Str. Constructorilor 1",
+      "reason": "no matching OSM platform"
+    },
+    {
+      "line": "2D",
+      "direction": "return",
+      "index": 5,
       "name": "Calea Brașovului 1",
       "reason": "no matching OSM platform"
     },
     {
       "line": "2D",
       "direction": "return",
-      "index": 7,
+      "index": 6,
+      "name": "Gara CFR",
+      "reason": "no matching OSM platform"
+    },
+    {
+      "line": "2D",
+      "direction": "return",
+      "index": 9,
       "name": "Str. Ciucului 1",
       "reason": "no matching OSM platform"
     },
     {
       "line": "2D",
       "direction": "return",
-      "index": 8,
+      "index": 10,
       "name": "Str. Ciucului 2",
       "reason": "no matching OSM platform"
     },
@@ -3674,530 +3977,509 @@
       "line": "2D",
       "direction": "return",
       "index": 11,
+      "name": "Cart. Ciucului",
+      "reason": "no matching OSM platform"
+    },
+    {
+      "line": "2D",
+      "direction": "return",
+      "index": 13,
       "name": "Lic. Plugor Sándor",
       "reason": "no matching OSM platform"
     },
     {
       "line": "2D",
       "direction": "return",
-      "index": 12,
+      "index": 14,
       "name": "Str. Gábor Áron",
-      "reason": "no matching OSM platform"
-    },
-    {
-      "line": "2D",
-      "direction": "return",
-      "index": 16,
-      "name": "Str. Vânătorilor 1",
-      "reason": "no matching OSM platform"
-    },
-    {
-      "line": "2D",
-      "direction": "return",
-      "index": 17,
-      "name": "Str. Vânătorilor 2",
       "reason": "no matching OSM platform"
     },
     {
       "line": "2D",
       "direction": "return",
       "index": 18,
-      "name": "Str. Ghioceilor",
-      "reason": "no matching OSM platform"
-    },
-    {
-      "line": "2D",
-      "direction": "return",
-      "index": 19,
-      "name": "Str. Bartók Béla",
+      "name": "Simeria (Str. Berzei)",
       "reason": "no matching OSM platform"
     },
     {
       "line": "3",
-      "direction": "depart-to-coseni",
+      "direction": "depart",
       "index": 0,
       "name": "Str. Țigaretei 1",
       "reason": "no matching OSM platform"
     },
     {
       "line": "3",
-      "direction": "depart-to-coseni",
+      "direction": "depart",
       "index": 1,
       "name": "Str. Țigaretei 2",
       "reason": "no matching OSM platform"
     },
     {
       "line": "3",
-      "direction": "depart-to-coseni",
+      "direction": "depart",
       "index": 2,
       "name": "Str. Țigaretei 3",
       "reason": "no matching OSM platform"
     },
     {
       "line": "3",
-      "direction": "depart-to-coseni",
+      "direction": "depart",
       "index": 3,
       "name": "Comfort Residence",
       "reason": "no matching OSM platform"
     },
     {
       "line": "3",
-      "direction": "depart-to-coseni",
+      "direction": "depart",
       "index": 4,
       "name": "Str. Fabricii 1",
       "reason": "no matching OSM platform"
     },
     {
       "line": "3",
-      "direction": "depart-to-coseni",
+      "direction": "depart",
       "index": 5,
       "name": "Str. Fabricii 2",
       "reason": "no matching OSM platform"
     },
     {
       "line": "3",
-      "direction": "depart-to-coseni",
+      "direction": "depart",
       "index": 6,
-      "name": "Col. Mihai Viteazul",
+      "name": "Liceul M. Viteazul",
       "reason": "no matching OSM platform"
     },
     {
       "line": "3",
-      "direction": "depart-to-coseni",
+      "direction": "depart",
       "index": 10,
       "name": "Gara CFR",
       "reason": "no matching OSM platform"
     },
     {
       "line": "3",
-      "direction": "depart-to-coseni",
+      "direction": "depart",
       "index": 11,
       "name": "Calea Brașovului 1",
       "reason": "no matching OSM platform"
     },
     {
       "line": "3",
-      "direction": "depart-to-coseni",
+      "direction": "depart",
       "index": 12,
       "name": "Calea Brașovului 2",
       "reason": "no matching OSM platform"
     },
     {
       "line": "3",
-      "direction": "depart-to-coseni",
+      "direction": "depart",
       "index": 13,
       "name": "Calea Brașovului 3",
       "reason": "no matching OSM platform"
     },
     {
       "line": "3",
-      "direction": "depart-to-coseni",
+      "direction": "depart",
       "index": 14,
       "name": "Chilieni",
       "reason": "no matching OSM platform"
     },
     {
       "line": "3",
-      "direction": "depart-to-coseni",
+      "direction": "depart",
       "index": 15,
       "name": "Motel Calypso",
       "reason": "no matching OSM platform"
     },
     {
       "line": "3",
-      "direction": "depart-to-coseni",
+      "direction": "depart",
       "index": 17,
       "name": "Coșeni 2",
       "reason": "no matching OSM platform"
     },
     {
       "line": "3",
-      "direction": "depart-from-coseni",
-      "index": 1,
+      "direction": "return",
+      "index": 0,
       "name": "Coșeni 2",
       "reason": "no matching OSM platform"
     },
     {
       "line": "3",
-      "direction": "depart-from-coseni",
-      "index": 3,
+      "direction": "return",
+      "index": 2,
       "name": "Motel Calypso",
       "reason": "no matching OSM platform"
     },
     {
       "line": "3",
-      "direction": "depart-from-coseni",
-      "index": 4,
+      "direction": "return",
+      "index": 3,
       "name": "Chilieni",
       "reason": "no matching OSM platform"
     },
     {
       "line": "3",
-      "direction": "depart-from-coseni",
-      "index": 5,
+      "direction": "return",
+      "index": 4,
       "name": "Calea Brașovului 3",
       "reason": "no matching OSM platform"
     },
     {
       "line": "3",
-      "direction": "depart-from-coseni",
-      "index": 6,
+      "direction": "return",
+      "index": 5,
       "name": "Calea Brașovului 2",
       "reason": "no matching OSM platform"
     },
     {
       "line": "3",
-      "direction": "depart-from-coseni",
-      "index": 7,
+      "direction": "return",
+      "index": 6,
       "name": "Calea Brașovului 1",
       "reason": "no matching OSM platform"
     },
     {
       "line": "3",
-      "direction": "depart-from-coseni",
-      "index": 8,
+      "direction": "return",
+      "index": 7,
       "name": "Gara CFR",
       "reason": "no matching OSM platform"
     },
     {
       "line": "3",
-      "direction": "depart-from-coseni",
-      "index": 12,
-      "name": "Col. Mihai Viteazul",
+      "direction": "return",
+      "index": 11,
+      "name": "Liceul M. Viteazul",
       "reason": "no matching OSM platform"
     },
     {
       "line": "3",
-      "direction": "depart-from-coseni",
-      "index": 13,
+      "direction": "return",
+      "index": 12,
       "name": "Fabrica de Țigarete",
       "reason": "no matching OSM platform"
     },
     {
       "line": "3",
-      "direction": "depart-from-coseni",
-      "index": 14,
+      "direction": "return",
+      "index": 13,
       "name": "Str. Țigaretei 1",
       "reason": "no matching OSM platform"
     },
     {
       "line": "4",
-      "direction": "depart-to-campul-frumos",
+      "direction": "depart",
       "index": 0,
       "name": "Str. Țigaretei 1",
       "reason": "no matching OSM platform"
     },
     {
       "line": "4",
-      "direction": "depart-to-campul-frumos",
+      "direction": "depart",
       "index": 1,
       "name": "Str. Țigaretei 2",
       "reason": "no matching OSM platform"
     },
     {
       "line": "4",
-      "direction": "depart-to-campul-frumos",
+      "direction": "depart",
       "index": 2,
       "name": "Str. Țigaretei 3",
       "reason": "no matching OSM platform"
     },
     {
       "line": "4",
-      "direction": "depart-to-campul-frumos",
+      "direction": "depart",
       "index": 3,
       "name": "Comfort Residence",
       "reason": "no matching OSM platform"
     },
     {
       "line": "4",
-      "direction": "depart-to-campul-frumos",
+      "direction": "depart",
       "index": 4,
       "name": "Str. Fabricii 1",
       "reason": "no matching OSM platform"
     },
     {
       "line": "4",
-      "direction": "depart-to-campul-frumos",
+      "direction": "depart",
       "index": 5,
       "name": "Str. Fabricii 2",
       "reason": "no matching OSM platform"
     },
     {
       "line": "4",
-      "direction": "depart-to-campul-frumos",
+      "direction": "depart",
       "index": 6,
-      "name": "Col. Mihai Viteazul",
+      "name": "Liceul M. Viteazul",
       "reason": "no matching OSM platform"
     },
     {
       "line": "4",
-      "direction": "depart-to-campul-frumos",
+      "direction": "depart",
       "index": 10,
       "name": "Gara CFR",
       "reason": "no matching OSM platform"
     },
     {
       "line": "4",
-      "direction": "depart-to-campul-frumos",
+      "direction": "depart",
       "index": 11,
-      "name": "Calea Brașovului 1",
-      "reason": "no matching OSM platform"
-    },
-    {
-      "line": "4",
-      "direction": "depart-to-campul-frumos",
-      "index": 12,
       "name": "Str. Constructorilor 1",
       "reason": "no matching OSM platform"
     },
     {
       "line": "4",
-      "direction": "depart-to-campul-frumos",
-      "index": 13,
+      "direction": "depart",
+      "index": 12,
       "name": "Str. Constructorilor 2",
       "reason": "no matching OSM platform"
     },
     {
       "line": "4",
-      "direction": "depart-to-campul-frumos",
-      "index": 14,
+      "direction": "depart",
+      "index": 13,
       "name": "Str. Constructorilor 3",
       "reason": "no matching OSM platform"
     },
     {
       "line": "4",
-      "direction": "depart-to-campul-frumos",
-      "index": 15,
+      "direction": "depart",
+      "index": 14,
       "name": "Câmpul Frumos",
       "reason": "no matching OSM platform"
     },
     {
       "line": "4",
-      "direction": "depart-to-campul-frumos",
-      "index": 16,
+      "direction": "depart",
+      "index": 15,
       "name": "Multi-Trans",
       "reason": "no matching OSM platform"
     },
     {
       "line": "4",
-      "direction": "depart-from-campul-frumos",
+      "direction": "return",
       "index": 0,
       "name": "Multi-Trans",
       "reason": "no matching OSM platform"
     },
     {
       "line": "4",
-      "direction": "depart-from-campul-frumos",
+      "direction": "return",
       "index": 1,
       "name": "Câmpul Frumos",
       "reason": "no matching OSM platform"
     },
     {
       "line": "4",
-      "direction": "depart-from-campul-frumos",
+      "direction": "return",
       "index": 2,
       "name": "Str. Constructorilor 3",
       "reason": "no matching OSM platform"
     },
     {
       "line": "4",
-      "direction": "depart-from-campul-frumos",
+      "direction": "return",
       "index": 3,
       "name": "Str. Constructorilor 2",
       "reason": "no matching OSM platform"
     },
     {
       "line": "4",
-      "direction": "depart-from-campul-frumos",
+      "direction": "return",
       "index": 4,
       "name": "Str. Constructorilor 1",
       "reason": "no matching OSM platform"
     },
     {
       "line": "4",
-      "direction": "depart-from-campul-frumos",
+      "direction": "return",
       "index": 5,
       "name": "Calea Brașovului 1",
       "reason": "no matching OSM platform"
     },
     {
       "line": "4",
-      "direction": "depart-from-campul-frumos",
+      "direction": "return",
       "index": 6,
       "name": "Gara CFR",
       "reason": "no matching OSM platform"
     },
     {
       "line": "4",
-      "direction": "depart-from-campul-frumos",
+      "direction": "return",
       "index": 10,
-      "name": "Col. Mihai Viteazul",
+      "name": "Liceul M. Viteazul",
       "reason": "no matching OSM platform"
     },
     {
       "line": "4",
-      "direction": "depart-from-campul-frumos",
+      "direction": "return",
       "index": 11,
       "name": "Fabrica de Țigarete",
       "reason": "no matching OSM platform"
     },
     {
       "line": "4",
-      "direction": "depart-from-campul-frumos",
+      "direction": "return",
       "index": 12,
       "name": "Str. Țigaretei 1",
       "reason": "no matching OSM platform"
     },
     {
       "line": "5",
-      "direction": "depart-to-arena",
+      "direction": "depart",
       "index": 0,
       "name": "Str. Dózsa György",
       "reason": "no matching OSM platform"
     },
     {
       "line": "5",
-      "direction": "depart-to-arena",
+      "direction": "depart",
       "index": 1,
       "name": "Izvorul Sulfuros",
       "reason": "no matching OSM platform"
     },
     {
       "line": "5",
-      "direction": "depart-to-arena",
+      "direction": "depart",
       "index": 2,
       "name": "Str. József Attila 2",
       "reason": "no matching OSM platform"
     },
     {
       "line": "5",
-      "direction": "depart-to-arena",
+      "direction": "depart",
       "index": 3,
       "name": "Str. József Attila 1",
       "reason": "no matching OSM platform"
     },
     {
       "line": "5",
-      "direction": "depart-to-arena",
+      "direction": "depart",
       "index": 4,
       "name": "Str. Kós Károly",
       "reason": "no matching OSM platform"
     },
     {
       "line": "5",
-      "direction": "depart-to-arena",
+      "direction": "depart",
       "index": 5,
       "name": "Fabrica de Țigarete",
       "reason": "no matching OSM platform"
     },
     {
       "line": "5",
-      "direction": "depart-to-arena",
+      "direction": "depart",
       "index": 6,
-      "name": "Col. Mihai Viteazul",
+      "name": "Liceul M. Viteazul",
       "reason": "no matching OSM platform"
     },
     {
       "line": "5",
-      "direction": "depart-to-arena",
-      "index": 10,
+      "direction": "depart",
+      "index": 9,
       "name": "B-dul Grigore Bălan 1",
       "reason": "no matching OSM platform"
     },
     {
       "line": "5",
-      "direction": "depart-to-arena",
-      "index": 11,
+      "direction": "depart",
+      "index": 10,
       "name": "B-dul Grigore Bălan 2",
       "reason": "no matching OSM platform"
     },
     {
       "line": "5",
-      "direction": "depart-to-arena",
-      "index": 12,
+      "direction": "depart",
+      "index": 11,
       "name": "Str. Lăcrămioarei 2",
       "reason": "no matching OSM platform"
     },
     {
       "line": "5",
-      "direction": "depart-to-arena",
-      "index": 13,
+      "direction": "depart",
+      "index": 12,
       "name": "Str. Lăcrămioarei 1",
       "reason": "no matching OSM platform"
     },
     {
       "line": "5",
-      "direction": "depart-to-arena",
-      "index": 14,
+      "direction": "depart",
+      "index": 13,
       "name": "Gara CFR",
       "reason": "no matching OSM platform"
     },
     {
       "line": "5",
-      "direction": "depart-to-arena",
-      "index": 15,
-      "name": "Centru Comercial",
+      "direction": "depart",
+      "index": 14,
+      "name": "Centru comercial",
       "reason": "no matching OSM platform"
     },
     {
       "line": "5",
-      "direction": "depart-to-arena",
-      "index": 17,
+      "direction": "depart",
+      "index": 16,
       "name": "Arena Sepsi",
       "reason": "no matching OSM platform"
     },
     {
       "line": "5",
-      "direction": "depart-from-arena",
+      "direction": "return",
       "index": 0,
       "name": "Arena Sepsi",
       "reason": "no matching OSM platform"
     },
     {
       "line": "5",
-      "direction": "depart-from-arena",
+      "direction": "return",
       "index": 2,
-      "name": "Centru Comercial",
+      "name": "Centru comercial",
       "reason": "no matching OSM platform"
     },
     {
       "line": "5",
-      "direction": "depart-from-arena",
+      "direction": "return",
       "index": 3,
       "name": "Gara CFR",
       "reason": "no matching OSM platform"
     },
     {
       "line": "5",
-      "direction": "depart-from-arena",
+      "direction": "return",
       "index": 4,
       "name": "Str. Lăcrămioarei 1",
       "reason": "no matching OSM platform"
     },
     {
       "line": "5",
-      "direction": "depart-from-arena",
+      "direction": "return",
       "index": 5,
       "name": "Str. Lăcrămioarei 2",
       "reason": "no matching OSM platform"
     },
     {
       "line": "5",
-      "direction": "depart-from-arena",
+      "direction": "return",
       "index": 6,
       "name": "B-dul Nicolae Iorga 1",
       "reason": "no matching OSM platform"
     },
     {
       "line": "5",
-      "direction": "depart-from-arena",
+      "direction": "return",
       "index": 7,
       "name": "B-dul Nicolae Iorga 2",
       "reason": "no matching OSM platform"
     },
     {
       "line": "5",
-      "direction": "depart-from-arena",
+      "direction": "return",
       "index": 11,
       "name": "Str. Dózsa György",
       "reason": "no matching OSM platform"
@@ -4248,7 +4530,7 @@
       "line": "5D",
       "direction": "depart",
       "index": 6,
-      "name": "Col. Mihai Viteazul",
+      "name": "Liceul M. Viteazul",
       "reason": "no matching OSM platform"
     },
     {
@@ -4290,20 +4572,41 @@
       "line": "5D",
       "direction": "depart",
       "index": 14,
-      "name": "Autoliv",
+      "name": "Terminal",
       "reason": "no matching OSM platform"
     },
     {
       "line": "5D",
       "direction": "depart",
       "index": 15,
-      "name": "Câmpul Frumos",
+      "name": "Str. Constructorilor 1",
       "reason": "no matching OSM platform"
     },
     {
       "line": "5D",
       "direction": "depart",
       "index": 16,
+      "name": "Str. Constructorilor 2",
+      "reason": "no matching OSM platform"
+    },
+    {
+      "line": "5D",
+      "direction": "depart",
+      "index": 17,
+      "name": "Str. Constructorilor 3",
+      "reason": "no matching OSM platform"
+    },
+    {
+      "line": "5D",
+      "direction": "depart",
+      "index": 18,
+      "name": "Câmpul Frumos",
+      "reason": "no matching OSM platform"
+    },
+    {
+      "line": "5D",
+      "direction": "depart",
+      "index": 19,
       "name": "Multi-Trans",
       "reason": "no matching OSM platform"
     },
@@ -4325,48 +4628,69 @@
       "line": "5D",
       "direction": "return",
       "index": 2,
-      "name": "Autoliv",
+      "name": "Str. Constructorilor 3",
       "reason": "no matching OSM platform"
     },
     {
       "line": "5D",
       "direction": "return",
       "index": 3,
-      "name": "Gara CFR",
+      "name": "Str. Constructorilor 2",
       "reason": "no matching OSM platform"
     },
     {
       "line": "5D",
       "direction": "return",
       "index": 4,
-      "name": "Str. Lăcrămioarei 1",
+      "name": "Str. Constructorilor 1",
       "reason": "no matching OSM platform"
     },
     {
       "line": "5D",
       "direction": "return",
       "index": 5,
-      "name": "Str. Lăcrămioarei 2",
+      "name": "Calea Brașovului 1",
       "reason": "no matching OSM platform"
     },
     {
       "line": "5D",
       "direction": "return",
       "index": 6,
-      "name": "B-dul Nicolae Iorga 1",
+      "name": "Gara CFR",
       "reason": "no matching OSM platform"
     },
     {
       "line": "5D",
       "direction": "return",
       "index": 7,
+      "name": "Str. Lăcrămioarei 1",
+      "reason": "no matching OSM platform"
+    },
+    {
+      "line": "5D",
+      "direction": "return",
+      "index": 8,
+      "name": "Str. Lăcrămioarei 2",
+      "reason": "no matching OSM platform"
+    },
+    {
+      "line": "5D",
+      "direction": "return",
+      "index": 9,
+      "name": "B-dul Nicolae Iorga 1",
+      "reason": "no matching OSM platform"
+    },
+    {
+      "line": "5D",
+      "direction": "return",
+      "index": 10,
       "name": "B-dul Nicolae Iorga 2",
       "reason": "no matching OSM platform"
     },
     {
       "line": "5D",
       "direction": "return",
-      "index": 11,
+      "index": 14,
       "name": "Str. Dózsa György",
       "reason": "no matching OSM platform"
     },
@@ -4374,7 +4698,7 @@
       "line": "6",
       "direction": "depart",
       "index": 0,
-      "name": "Cap Linie Simeria",
+      "name": "Simeria (Str. Berzei)",
       "reason": "no matching OSM platform"
     },
     {
@@ -4422,6 +4746,13 @@
     {
       "line": "6",
       "direction": "depart",
+      "index": 10,
+      "name": "Cart. Ciucului",
+      "reason": "no matching OSM platform"
+    },
+    {
+      "line": "6",
+      "direction": "depart",
       "index": 12,
       "name": "Str. Ciucului 1",
       "reason": "no matching OSM platform"
@@ -4430,7 +4761,7 @@
       "line": "6",
       "direction": "depart",
       "index": 15,
-      "name": "Centru Comercial",
+      "name": "Centru comercial",
       "reason": "no matching OSM platform"
     },
     {
@@ -4451,7 +4782,7 @@
       "line": "6",
       "direction": "return",
       "index": 2,
-      "name": "Centru Comercial",
+      "name": "Centru comercial",
       "reason": "no matching OSM platform"
     },
     {
@@ -4459,6 +4790,13 @@
       "direction": "return",
       "index": 5,
       "name": "Str. Ciucului 1",
+      "reason": "no matching OSM platform"
+    },
+    {
+      "line": "6",
+      "direction": "return",
+      "index": 7,
+      "name": "Cart. Ciucului",
       "reason": "no matching OSM platform"
     },
     {
@@ -4486,14 +4824,14 @@
       "line": "6",
       "direction": "return",
       "index": 14,
-      "name": "Cap Linie Simeria",
+      "name": "Simeria (Str. Berzei)",
       "reason": "no matching OSM platform"
     },
     {
       "line": "7",
       "direction": "depart",
       "index": 0,
-      "name": "Cap Linie Simeria",
+      "name": "Simeria (Str. Berzei)",
       "reason": "no matching OSM platform"
     },
     {
@@ -4612,7 +4950,7 @@
       "line": "7",
       "direction": "return",
       "index": 7,
-      "name": "Col. Mihai Viteazul",
+      "name": "Liceul M. Viteazul",
       "reason": "no matching OSM platform"
     },
     {
@@ -4626,7 +4964,7 @@
       "line": "7",
       "direction": "return",
       "index": 11,
-      "name": "Cap Linie Simeria",
+      "name": "Simeria (Str. Berzei)",
       "reason": "no matching OSM platform"
     },
     {
@@ -4745,14 +5083,14 @@
       "line": "10",
       "direction": "depart",
       "index": 6,
-      "name": "Str. Kossuth Lajos 1",
+      "name": "Kossuth Lajos 1",
       "reason": "no matching OSM platform"
     },
     {
       "line": "10",
       "direction": "depart",
       "index": 7,
-      "name": "Str. Kossuth Lajos 2",
+      "name": "Kossuth Lajos 2",
       "reason": "no matching OSM platform"
     },
     {
@@ -4787,69 +5125,76 @@
       "line": "10",
       "direction": "return",
       "index": 1,
-      "name": "Primăria Arcuș",
+      "name": "Bis. Reformată Arcuș",
       "reason": "no matching OSM platform"
     },
     {
       "line": "10",
       "direction": "return",
       "index": 2,
-      "name": "Castelul Szentkereszty",
+      "name": "Primăria Arcuș",
       "reason": "no matching OSM platform"
     },
     {
       "line": "10",
       "direction": "return",
       "index": 3,
-      "name": "Str. Kossuth Lajos 2",
+      "name": "Castelul Szentkereszty",
       "reason": "no matching OSM platform"
     },
     {
       "line": "10",
       "direction": "return",
       "index": 4,
-      "name": "Str. Kossuth Lajos 1",
+      "name": "Kossuth Lajos 2",
       "reason": "no matching OSM platform"
     },
     {
       "line": "10",
       "direction": "return",
       "index": 5,
-      "name": "Grădinărie",
+      "name": "Kossuth Lajos 1",
       "reason": "no matching OSM platform"
     },
     {
       "line": "10",
       "direction": "return",
       "index": 6,
-      "name": "Str. Ciucului 2",
+      "name": "Grădinărie",
       "reason": "no matching OSM platform"
     },
     {
       "line": "10",
       "direction": "return",
       "index": 7,
-      "name": "Str. Ciucului 1",
+      "name": "Str. Ciucului 2",
       "reason": "no matching OSM platform"
     },
     {
       "line": "10",
       "direction": "return",
       "index": 8,
-      "name": "Piața Kálvin",
+      "name": "Str. Ciucului 1",
       "reason": "no matching OSM platform"
     },
     {
       "line": "10",
       "direction": "return",
       "index": 9,
-      "name": "Lic. Plugor Sándor",
+      "name": "Piața Kálvin",
       "reason": "no matching OSM platform"
     },
     {
       "line": "10",
       "direction": "return",
       "index": 10,
+      "name": "Lic. Plugor Sándor",
+      "reason": "no matching OSM platform"
+    },
+    {
+      "line": "10",
+      "direction": "return",
+      "index": 11,
       "name": "Str. Gábor Áron",
       "reason": "no matching OSM platform"
     }

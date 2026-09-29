@@ -24,7 +24,7 @@ from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
-BASE = "https://multitrans.ro"
+BASE = "https://multitrans.ro/jaratok"
 USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) MultiTrans-GTFS/1.0"
 SLUG = {"1D": "1d", "2D": "2d", "5D": "5d"}
 INFIX = {"depart": "", "return": "-retur"}

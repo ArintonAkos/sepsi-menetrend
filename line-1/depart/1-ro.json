@@ -1,10 +1,10 @@
 [
   {
     "stop_id": 1,
-    "stop_name_ro": "Cap Linie Simeria",
+    "stop_name_ro": "Simeria (Str. Berzei)",
     "stop_lat": 45.868,
     "stop_lon": 25.7792,
-    "direction": "Cap Linie Simeria → Gara CFR",
+    "direction": "Simeria (Str. Berzei) → Gara CFR",
     "distance_to_next": "468 m"
   },
   {
@@ -12,7 +12,7 @@
     "stop_name_ro": "Spitalul Județean",
     "stop_lat": 45.8639,
     "stop_lon": 25.778,
-    "direction": "Cap Linie Simeria → Gara CFR",
+    "direction": "Simeria (Str. Berzei) → Gara CFR",
     "distance_to_next": "670 m"
   },
   {
@@ -20,15 +20,15 @@
     "stop_name_ro": "Str. Dealului",
     "stop_lat": 45.8589,
     "stop_lon": 25.7768,
-    "direction": "Cap Linie Simeria → Gara CFR",
+    "direction": "Simeria (Str. Berzei) → Gara CFR",
     "distance_to_next": "637 m"
   },
   {
     "stop_id": 4,
-    "stop_name_ro": "Institutul de Proiectări",
+    "stop_name_ro": "Institutul de proiectări",
     "stop_lat": 45.8616,
     "stop_lon": 25.7822,
-    "direction": "Cap Linie Simeria → Gara CFR",
+    "direction": "Simeria (Str. Berzei) → Gara CFR",
     "distance_to_next": "600 m"
   },
   {
@@ -36,7 +36,7 @@
     "stop_name_ro": "Casa cu Arcade",
     "stop_lat": 45.8636,
     "stop_lon": 25.7866,
-    "direction": "Cap Linie Simeria → Gara CFR",
+    "direction": "Simeria (Str. Berzei) → Gara CFR",
     "distance_to_next": "648 m"
   },
   {
@@ -44,7 +44,7 @@
     "stop_name_ro": "Biserica Reformată",
     "stop_lat": 45.8638,
     "stop_lon": 25.7931,
-    "direction": "Cap Linie Simeria → Gara CFR",
+    "direction": "Simeria (Str. Berzei) → Gara CFR",
     "distance_to_next": "424 m"
   },
   {
@@ -52,7 +52,7 @@
     "stop_name_ro": "Str. Sporturilor",
     "stop_lat": 45.864,
     "stop_lon": 25.7983,
-    "direction": "Cap Linie Simeria → Gara CFR",
+    "direction": "Simeria (Str. Berzei) → Gara CFR",
     "distance_to_next": "932 m"
   },
   {
@@ -60,7 +60,7 @@
     "stop_name_ro": "Gara CFR",
     "stop_lat": 45.8631,
     "stop_lon": 25.8101,
-    "direction": "Cap Linie Simeria → Gara CFR",
+    "direction": "Simeria (Str. Berzei) → Gara CFR",
     "distance_to_next": "0 m"
   }
 ]

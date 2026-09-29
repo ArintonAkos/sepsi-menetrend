@@ -2,37 +2,37 @@
   "shape_id": "1-depart",
   "line": "1",
   "direction": "depart",
-  "profile": "mapbox/driving",
-  "note": "running time only; contains no waiting or timetable information",
-  "total_seconds": 793,
+  "profile": "osrm/driving",
+  "note": "running time only; contains no waiting or timetable information; OSRM free-flow",
+  "total_seconds": 423,
   "legs": [
     {
-      "seconds": 85,
-      "metres": 437
+      "seconds": 41,
+      "metres": 435
     },
     {
-      "seconds": 100,
+      "seconds": 66,
       "metres": 671
     },
     {
-      "seconds": 97,
+      "seconds": 51,
       "metres": 564
     },
     {
-      "seconds": 125,
+      "seconds": 65,
       "metres": 581
     },
     {
-      "seconds": 156,
-      "metres": 658
+      "seconds": 64,
+      "metres": 659
     },
     {
-      "seconds": 89,
-      "metres": 419
+      "seconds": 40,
+      "metres": 420
     },
     {
-      "seconds": 141,
-      "metres": 931
+      "seconds": 97,
+      "metres": 933
     }
   ]
 }

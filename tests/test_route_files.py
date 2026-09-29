@@ -62,149 +62,77 @@ class RouteFileValidatorTests(unittest.TestCase):
             self.assertEqual(check(p), [], str(p))
 
 
-class Line5AnchorTests(unittest.TestCase):
-    def test_line5_starts_at_dozsa_gyorgy(self):
-        d = json.load(open("line-5/depart.json"))
-        self.assertEqual(d["stops"][0]["name"]["ro"], "Str. Dózsa György")
-        self.assertEqual(d["stops"][-1]["name"]["ro"], "Str. Dózsa György")
+# The board (fetch_timetable.py, printed station timetable) and the route
+# files (fetch_multitrans.py + merge_lines.py, multitrans.ro/jaratok/ pages)
+# are two independently-maintained sources that occasionally spell the same
+# physical stop differently (case, abbreviation, or a genuinely different
+# generic word for the same building). Coverage checks below compare through
+# this alias map rather than raw string equality.
+_BOARD_TO_ROUTE_ALIASES = {
+    "Cap Linie Simeria": "Simeria (Str. Berzei)",
+    "Cartierul Ciucului": "Cart. Ciucului",
+    "Col. Mihai Viteazul": "Liceul M. Viteazul",
+}
 
-    def test_line5_is_still_a_29_stop_closed_circular(self):
-        d = _load("line-5/depart.json")
-        self.assertEqual(len(d["stops"]), 29)
-        self.assertTrue(d["circular"])
-        self.assertTrue(d["closes_loop_at_start"])
-        first, last = d["stops"][0], d["stops"][-1]
-        self.assertEqual((first["stop_lat"], first["stop_lon"]),
-                         (last["stop_lat"], last["stop_lon"]))
-        self.assertIsNone(last["distance_to_next_m"])
 
-    # The 28 distinct stops of the pre-Sept-7 line-5 loop (old stops[:-1], i.e.
-    # everything bar the loop-closing "Str. József Attila 2" duplicate), as a
-    # sorted (name_ro, name_hu, lat, lon) multiset. Inlined so the test needs no
-    # external fixture. Rotation only re-orders the loop, so the rotated file
-    # must still carry exactly this multiset in its own stops[:-1].
-    OLD_LINE5_DISTINCT_STOPS = sorted([
-        ("Arena Sepsi", "Sepsi Aréna", 45.8822, 25.8071),
-        ("B-dul Grigore Bălan 1", "G. Bálán sugárút 1", 45.8622, 25.7962),
-        ("B-dul Grigore Bălan 2", "G. Bálán sugárút 2", 45.858, 25.7964),
-        ("B-dul Nicolae Iorga 1", "N. Iorga sugárút 1", 45.858, 25.7948),
-        ("B-dul Nicolae Iorga 2", "N. Iorga sugárút 2", 45.8591, 25.792),
-        ("Biserica Reformată", "Református Templom", 45.8643, 25.7919),
-        ("Casa cu Arcade", "Lábasház", 45.8636, 25.7866),
-        ("Centru Comercial", "Bevásárlóközpont", 45.8693, 25.801),
-        ("Centru Comercial", "Bevásárlóközpont", 45.8698, 25.8006),
-        ("Col. Mihai Viteazul", "Vitéz Mihály Líceum", 45.861, 25.7855),
-        ("Fabrica de Lapte", "Tejgyár", 45.8751, 25.8007),
-        ("Fabrica de Lapte", "Tejgyár", 45.8751, 25.8007),
-        ("Fabrica de Țigarete", "Cigarettagyár", 45.8584, 25.7822),
-        ("Gara CFR", "Vasútállomás", 45.8631, 25.8101),
-        ("Gara CFR", "Vasútállomás", 45.8631, 25.8101),
-        ("Institutul de Proiectări", "Tervező Intézet", 45.8617, 25.7819),
-        ("Izvorul Sulfuros", "Büdöskút", 45.8555, 25.7672),
-        ("Parcul Elisabeta", "Erzsébet Park", 45.8643, 25.7866),
-        ("Str. Dealului", "Domb utca", 45.8589, 25.7768),
-        ("Str. Dózsa György", "Dózsa György utca", 45.8568, 25.7733),
-        ("Str. József Attila 1", "József Attila u. 1", 45.8544, 25.7771),
-        ("Str. József Attila 2", "József Attila u. 2", 45.8541, 25.7722),
-        ("Str. Kós Károly", "Kós Károly utca", 45.8559, 25.779),
-        ("Str. Lăcrămioarei 1", "Gyöngyvirág utca 1", 45.8598, 25.7995),
-        ("Str. Lăcrămioarei 1", "Gyöngyvirág utca 1", 45.8605, 25.8001),
-        ("Str. Lăcrămioarei 2", "Gyöngyvirág utca 2", 45.858, 25.7981),
-        ("Str. Lăcrămioarei 2", "Gyöngyvirág utca 2", 45.858, 25.7981),
-        ("Tribunal", "Törvényszék", 45.8624, 25.7879),
-    ])
-
-    def test_line5_keeps_the_same_stop_multiset_after_rotation(self):
-        """Same physical loop, just rotated: the distinct stops (everything bar
-        the loop-closing duplicate) are an exact permutation of the old file."""
-        d = _load("line-5/depart.json")
-        bag = sorted((s["name"]["ro"], s["name"]["hu"], s["stop_lat"], s["stop_lon"])
-                     for s in d["stops"][:-1])
-        self.assertEqual(bag, self.OLD_LINE5_DISTINCT_STOPS)
-
-    def test_line5_headsign_names_dozsa_gyorgy(self):
-        d = _load("line-5/depart.json")
-        self.assertEqual(d["headsign"]["ro"], "Str. Dózsa György – traseu circular")
-        self.assertEqual(d["headsign"]["hu"], "Dózsa György utca – körjárat")
-
-    def test_line5d_depart_is_re_anchored(self):
-        d = _load("line-5D/depart.json")
-        self.assertEqual(len(d["stops"]), 17)
-        self.assertEqual(d["stops"][0]["name"]["ro"], "Str. Dózsa György")
-        self.assertEqual(d["stops"][1]["name"]["ro"], "Izvorul Sulfuros")
-        self.assertEqual(d["stops"][2]["name"]["ro"], "Str. József Attila 2")
-        self.assertEqual(d["stops"][-1]["name"]["ro"], "Multi-Trans")
-        self.assertEqual(d["headsign"]["ro"], "Str. Dózsa György → Câmpul Frumos")
-        self.assertEqual(d["headsign"]["hu"], "Dózsa György utca → Szépmező")
-
-    def test_line5d_depart_does_not_gain_constructorilor(self):
-        d = _load("line-5D/depart.json")
-        self.assertNotIn("Str. Constructorilor",
-                         {s["name"]["ro"] for s in d["stops"]})
-
-    def test_line5d_return_is_truncated_to_dozsa_gyorgy(self):
-        d = _load("line-5D/return.json")
-        self.assertEqual(len(d["stops"]), 12)
-        self.assertEqual(d["stops"][0]["name"]["ro"], "Multi-Trans")
-        self.assertEqual(d["stops"][-1]["name"]["ro"], "Str. Dózsa György")
-        self.assertEqual(d["stops"][-2]["name"]["ro"], "Str. Dealului")
-        self.assertIsNone(d["stops"][-1]["distance_to_next_m"])
-        self.assertEqual(d["headsign"]["ro"], "Câmpul Frumos → Str. Dózsa György")
-        self.assertEqual(d["headsign"]["hu"], "Szépmező → Dózsa György utca")
-
-    def test_touched_route_files_pass_the_validator(self):
-        for p in ("line-5/depart.json", "line-5D/depart.json", "line-5D/return.json"):
-            self.assertEqual(check(p), [], p)
+def _canon(name):
+    name = _BOARD_TO_ROUTE_ALIASES.get(name, name)
+    return name.casefold().replace("str. ", "").strip()
 
 
 class BoardCoverageTests(unittest.TestCase):
     @unittest.skipUnless(Path("timetable.json").exists(), "timetable.json not built yet")
     def test_line5_route_file_covers_every_board_stop(self):
-        d = _load("line-5/depart.json")
-        route_names = {s["name"]["ro"] for s in d["stops"]}
-        self.assertEqual(board_line_stops("5") - route_names, set())
+        # Sept 7 split line 5 into a proper depart/return pair (was one
+        # circular ring), so both direction files now need checking - same
+        # shape as the line 2/6 coverage tests below.
+        route_names = set()
+        for d in ("depart", "return"):
+            route_names |= {_canon(s["name"]["ro"]) for s in _load(f"line-5/{d}.json")["stops"]}
+        board_names = {_canon(name) for name in board_line_stops("5")}
+        self.assertEqual(board_names - route_names, set())
 
     @unittest.skipUnless(Path("timetable.json").exists(), "timetable.json not built yet")
     def test_line2_covers_every_board_stop(self):
-        board_stops = board_line_stops("2")
+        board_stops = {_canon(name) for name in board_line_stops("2")}
         route_stops = set()
         for d in ("depart", "return"):
             p = Path(f"line-2/{d}.json")
             if p.exists():
-                route_stops |= {s["name"]["ro"] for s in _load(p)["stops"]}
+                route_stops |= {_canon(s["name"]["ro"]) for s in _load(p)["stops"]}
         self.assertEqual(board_stops - route_stops, set())
 
     @unittest.skipUnless(Path("timetable.json").exists(), "timetable.json not built yet")
     def test_line6_covers_every_board_stop(self):
-        board_stops = board_line_stops("6")
+        board_stops = {_canon(name) for name in board_line_stops("6")}
         route_stops = set()
         for d in ("depart", "return"):
             p = Path(f"line-6/{d}.json")
             if p.exists():
-                route_stops |= {s["name"]["ro"] for s in _load(p)["stops"]}
+                route_stops |= {_canon(s["name"]["ro"]) for s in _load(p)["stops"]}
         self.assertEqual(board_stops - route_stops, set())
 
     @unittest.skipUnless(Path("timetable.json").exists(), "timetable.json not built yet")
     def test_line1b_covers_every_board_stop(self):
-        board_stops = board_line_stops("1B")   # {"Câmpul Frumos"} on the current board
+        board_stops = {_canon(name) for name in board_line_stops("1B")}   # {"Câmpul Frumos"} on the current board
         route_stops = set()
         for d in ("depart", "return"):
-            route_stops |= {s["name"]["ro"] for s in _load(f"line-1B/{d}.json")["stops"]}
+            route_stops |= {_canon(s["name"]["ro"]) for s in _load(f"line-1B/{d}.json")["stops"]}
         self.assertEqual(board_stops - route_stops, set())
 
     @unittest.skipUnless(Path("timetable.json").exists(), "timetable.json not built yet")
     def test_line10_covers_every_board_stop(self):
-        board_stops = board_line_stops("10")
+        board_stops = {_canon(name) for name in board_line_stops("10")}
         route_stops = set()
         for d in ("depart", "return"):
-            route_stops |= {s["name"]["ro"] for s in _load(f"line-10/{d}.json")["stops"]}
+            route_stops |= {_canon(s["name"]["ro"]) for s in _load(f"line-10/{d}.json")["stops"]}
         # "Biserica Reformată Arcuș" was a board-only phantom stop (added in
         # e9fba16 from the Sept 7 printed board, between Primăria Arcuș and
         # Centru Arcuș). multitrans.ro's official stop-order page for line 10
         # (published 2026-09-15) does not list it, so Task 29 removed it from
         # both route files - the sourced official list overrides the earlier
         # board-derived guess.
-        known_board_only_stops = {"Biserica Reformată Arcuș"}
+        known_board_only_stops = {_canon("Biserica Reformată Arcuș")}
         self.assertEqual(board_stops - route_stops - known_board_only_stops, set())
 
     def test_line1d_2d_have_calea_brasovului(self):

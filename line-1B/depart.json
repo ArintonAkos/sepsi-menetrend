@@ -4,25 +4,24 @@
   "circular": false,
   "closes_loop_at_start": false,
   "headsign": {
-    "ro": "Cap Linie Simeria → Câmpul Frumos (via Autoliv)",
-    "hu": "Szemerja Végállomás → Szépmező (Autoliv felé)"
+    "ro": "Simeria (Str. Berzei) → Câmpul Frumos",
+    "hu": "Szemerja Végállomás → Szépmező"
   },
   "source": {
     "ro": "https://multitrans.ro/jaratok/jarat-1b.html",
-    "hu": "https://multitrans.ro/jaratok/jarat-1b-hu.html",
-    "_note": "stop order + distances from the operator's page (published 2026-09-15); route polyline still unpublished, geometry stays OSRM-estimated (routesProvisional)"
+    "hu": "https://multitrans.ro/jaratok/jarat-1b-hu.html"
   },
   "stop_count": 11,
   "stops": [
     {
       "stop_sequence": 1,
       "name": {
-        "ro": "Cap Linie Simeria",
-        "hu": "Szemerja Végállomás"
+        "ro": "Simeria (Str. Berzei)",
+        "hu": "Szemerja (Gólya utca)"
       },
       "stop_lat": 45.868,
       "stop_lon": 25.7792,
-      "distance_to_next_m": 435
+      "distance_to_next_m": 468
     },
     {
       "stop_sequence": 2,
@@ -32,7 +31,7 @@
       },
       "stop_lat": 45.8639,
       "stop_lon": 25.778,
-      "distance_to_next_m": 671
+      "distance_to_next_m": 670
     },
     {
       "stop_sequence": 3,
@@ -42,17 +41,17 @@
       },
       "stop_lat": 45.8589,
       "stop_lon": 25.7768,
-      "distance_to_next_m": 564
+      "distance_to_next_m": 637
     },
     {
       "stop_sequence": 4,
       "name": {
-        "ro": "Institutul de Proiectări",
+        "ro": "Institutul de proiectări",
         "hu": "Tervező Intézet"
       },
       "stop_lat": 45.8616,
       "stop_lon": 25.7822,
-      "distance_to_next_m": 581
+      "distance_to_next_m": 600
     },
     {
       "stop_sequence": 5,
@@ -62,7 +61,7 @@
       },
       "stop_lat": 45.8636,
       "stop_lon": 25.7866,
-      "distance_to_next_m": 659
+      "distance_to_next_m": 648
     },
     {
       "stop_sequence": 6,
@@ -72,7 +71,7 @@
       },
       "stop_lat": 45.8638,
       "stop_lon": 25.7931,
-      "distance_to_next_m": 420
+      "distance_to_next_m": 424
     },
     {
       "stop_sequence": 7,
@@ -82,7 +81,7 @@
       },
       "stop_lat": 45.864,
       "stop_lon": 25.7983,
-      "distance_to_next_m": 933
+      "distance_to_next_m": 932
     },
     {
       "stop_sequence": 8,
@@ -100,9 +99,9 @@
         "ro": "Autoliv",
         "hu": "Autoliv"
       },
-      "stop_lat": 45.8658,
+      "stop_lat": 45.8657,
       "stop_lon": 25.8153,
-      "distance_to_next_m": 2147
+      "distance_to_next_m": 2100
     },
     {
       "stop_sequence": 10,
@@ -112,7 +111,7 @@
       },
       "stop_lat": 45.8619,
       "stop_lon": 25.841,
-      "distance_to_next_m": 482
+      "distance_to_next_m": 487
     },
     {
       "stop_sequence": 11,

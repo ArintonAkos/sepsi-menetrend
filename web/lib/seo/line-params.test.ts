@@ -6,9 +6,9 @@ import { generateStaticParams as enParams } from "@/app/en/lines/[id]/page";
 /** Both dynamic line routes prerender one page per `Line.id`. The id is used
  *  verbatim in either language, so the two routes must enumerate the same set. */
 describe("line page static params", () => {
-  it("generates a param for every one of the 12 lines (HU route)", async () => {
+  it("generates a param for every one of the 13 lines (HU route)", async () => {
     const params = await huParams();
-    expect(params).toHaveLength(12);
+    expect(params).toHaveLength(13);
     const ids = params.map((p) => p.id);
     expect(ids).toEqual(expect.arrayContaining(["1", "1D", "10"]));
   });
@@ -17,13 +17,13 @@ describe("line page static params", () => {
     const ro = (await roParams()).map((p) => p.id);
     const hu = (await huParams()).map((p) => p.id);
     expect(ro).toEqual(hu);
-    expect(ro).toHaveLength(12);
+    expect(ro).toHaveLength(13);
   });
 
   it("enumerates the identical id set on the EN route", async () => {
     const en = (await enParams()).map((p) => p.id);
     const hu = (await huParams()).map((p) => p.id);
     expect(en).toEqual(hu);
-    expect(en).toHaveLength(12);
+    expect(en).toHaveLength(13);
   });
 });

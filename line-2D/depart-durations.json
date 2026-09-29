@@ -2,65 +2,93 @@
   "shape_id": "2D-depart",
   "line": "2D",
   "direction": "depart",
-  "profile": "mapbox/driving",
-  "note": "running time only; contains no waiting or timetable information",
-  "total_seconds": 1738,
+  "profile": "osrm/driving",
+  "note": "running time only; contains no waiting or timetable information; OSRM free-flow",
+  "total_seconds": 1323,
   "legs": [
     {
-      "seconds": 72,
-      "metres": 388
+      "seconds": 58,
+      "metres": 604
     },
     {
-      "seconds": 107,
-      "metres": 645
+      "seconds": 22,
+      "metres": 243
     },
     {
-      "seconds": 125,
+      "seconds": 39,
+      "metres": 371
+    },
+    {
+      "seconds": 31,
+      "metres": 341
+    },
+    {
+      "seconds": 43,
+      "metres": 469
+    },
+    {
+      "seconds": 51,
+      "metres": 564
+    },
+    {
+      "seconds": 65,
       "metres": 581
     },
     {
-      "seconds": 270,
-      "metres": 1307
+      "seconds": 102,
+      "metres": 1029
     },
     {
-      "seconds": 73,
-      "metres": 375
+      "seconds": 35,
+      "metres": 384
     },
     {
-      "seconds": 90,
-      "metres": 487
+      "seconds": 51,
+      "metres": 480
     },
     {
-      "seconds": 68,
-      "metres": 376
+      "seconds": 42,
+      "metres": 456
     },
     {
-      "seconds": 75,
-      "metres": 360
+      "seconds": 25,
+      "metres": 280
     },
     {
-      "seconds": 88,
+      "seconds": 43,
       "metres": 394
     },
     {
-      "seconds": 122,
+      "seconds": 57,
       "metres": 512
     },
     {
-      "seconds": 141,
-      "metres": 931
+      "seconds": 97,
+      "metres": 933
     },
     {
-      "seconds": 126,
-      "metres": 725
+      "seconds": 114,
+      "metres": 1021
     },
     {
-      "seconds": 213,
-      "metres": 2144
+      "seconds": 35,
+      "metres": 205
     },
     {
-      "seconds": 168,
-      "metres": 420
+      "seconds": 44,
+      "metres": 482
+    },
+    {
+      "seconds": 47,
+      "metres": 522
+    },
+    {
+      "seconds": 203,
+      "metres": 2591
+    },
+    {
+      "seconds": 119,
+      "metres": 482
     }
   ]
 }

@@ -1,0 +1,106 @@
+[
+  {
+    "stop_id": 1,
+    "stop_name_ro": "Multi-Trans",
+    "stop_lat": 45.8593,
+    "stop_lon": 25.8389,
+    "direction": "Multi-Trans → Str. Țigaretei 1",
+    "distance_to_next": "424 m"
+  },
+  {
+    "stop_id": 2,
+    "stop_name_ro": "Câmpul Frumos",
+    "stop_lat": 45.8619,
+    "stop_lon": 25.841,
+    "direction": "Multi-Trans → Str. Țigaretei 1",
+    "distance_to_next": "2661 m"
+  },
+  {
+    "stop_id": 3,
+    "stop_name_ro": "Str. Constructorilor 3",
+    "stop_lat": 45.8579,
+    "stop_lon": 25.818,
+    "direction": "Multi-Trans → Str. Țigaretei 1",
+    "distance_to_next": "444 m"
+  },
+  {
+    "stop_id": 4,
+    "stop_name_ro": "Str. Constructorilor 2",
+    "stop_lat": 45.8559,
+    "stop_lon": 25.8148,
+    "direction": "Multi-Trans → Str. Țigaretei 1",
+    "distance_to_next": "500 m"
+  },
+  {
+    "stop_id": 5,
+    "stop_name_ro": "Str. Constructorilor 1",
+    "stop_lat": 45.8562,
+    "stop_lon": 25.8083,
+    "direction": "Multi-Trans → Str. Țigaretei 1",
+    "distance_to_next": "176 m"
+  },
+  {
+    "stop_id": 6,
+    "stop_name_ro": "Calea Brașovului 1",
+    "stop_lat": 45.8571,
+    "stop_lon": 25.8072,
+    "direction": "Multi-Trans → Str. Țigaretei 1",
+    "distance_to_next": "953 m"
+  },
+  {
+    "stop_id": 7,
+    "stop_name_ro": "Gara CFR",
+    "stop_lat": 45.8631,
+    "stop_lon": 25.8101,
+    "direction": "Multi-Trans → Str. Țigaretei 1",
+    "distance_to_next": "907 m"
+  },
+  {
+    "stop_id": 8,
+    "stop_name_ro": "Str. Sporturilor",
+    "stop_lat": 45.8641,
+    "stop_lon": 25.7986,
+    "direction": "Multi-Trans → Str. Țigaretei 1",
+    "distance_to_next": "544 m"
+  },
+  {
+    "stop_id": 9,
+    "stop_name_ro": "Biserica Reformată",
+    "stop_lat": 45.8643,
+    "stop_lon": 25.7919,
+    "direction": "Multi-Trans → Str. Țigaretei 1",
+    "distance_to_next": "498 m"
+  },
+  {
+    "stop_id": 10,
+    "stop_name_ro": "Parcul Elisabeta",
+    "stop_lat": 45.8643,
+    "stop_lon": 25.7866,
+    "direction": "Multi-Trans → Str. Țigaretei 1",
+    "distance_to_next": "519 m"
+  },
+  {
+    "stop_id": 11,
+    "stop_name_ro": "Liceul M. Viteazul",
+    "stop_lat": 45.8601,
+    "stop_lon": 25.7842,
+    "direction": "Multi-Trans → Str. Țigaretei 1",
+    "distance_to_next": "184 m"
+  },
+  {
+    "stop_id": 12,
+    "stop_name_ro": "Fabrica de Țigarete",
+    "stop_lat": 45.8589,
+    "stop_lon": 25.7826,
+    "direction": "Multi-Trans → Str. Țigaretei 1",
+    "distance_to_next": "347 m"
+  },
+  {
+    "stop_id": 13,
+    "stop_name_ro": "Str. Țigaretei 1",
+    "stop_lat": 45.8566,
+    "stop_lon": 25.7821,
+    "direction": "Multi-Trans → Str. Țigaretei 1",
+    "distance_to_next": "0 m"
+  }
+]

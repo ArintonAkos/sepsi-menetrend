@@ -75,26 +75,27 @@ describe("journeyBetween", () => {
     }
   });
 
-  it("pins the representative journey for Árkos központ → Autoliv end to end", () => {
+  it("pins the representative journey for Árkos Központ → Autoliv end to end", () => {
     // Exact feed-derived values, like lines.test.ts - locks the walking-context
     // build, the ride-leg mapping and the boardFor wiring in one shot. `pair.a`
-    // is the name-slug-first place, i.e. Árkos központ.
+    // is the name-slug-first place, i.e. Árkos Központ.
     const pair = routeBySlug(net, "arkos-kozpont-autoliv");
     expect(pair).toBeDefined();
-    expect(pair!.a.name.hu).toBe("Árkos központ");
+    expect(pair!.a.name.hu).toBe("Árkos Központ");
 
-    // Re-pinned for the Sept 7 feed: line 10's Kossuth Lajos split + the
-    // Bis. Reformată Arcuș stop and 2D's Calea Brașovului return leg moved the
-    // change point to Lábasház; the longer rideMin values ride on the
-    // provisional OSRM geometry (routesProvisional), tighten at Task 18.
+    // Re-pinned for the Sept 7 feed now that every line's geometry comes from
+    // multitrans.ro's own routeLine data (published 2026-09-15): the change
+    // point is still Lábasház, but line 2D's real route no longer calls
+    // directly at Autoliv on this leg, so the journey rides to Vasútállomás
+    // and finishes with a walk.
     const summary = journeyBetween(net, pair!.a, pair!.b, "hu");
     expect(summary).toEqual({
       legs: [
-        { lineLabel: "10-es busz", fromName: "Árkos központ", toName: "Lábasház", rideMin: 19, stops: 11 },
-        { lineLabel: "2D-s busz", fromName: "Lábasház", toName: "Autoliv", rideMin: 21, stops: 9 },
+        { lineLabel: "10-es busz", fromName: "Árkos Központ", toName: "Lábasház", rideMin: 20, stops: 12 },
+        { lineLabel: "2D-s busz", fromName: "Lábasház", toName: "Vasútállomás", rideMin: 11, stops: 8 },
       ],
-      walkMin: 2,
-      totalMin: 53,
+      walkMin: 9,
+      totalMin: 50,
       transfers: 1,
       firstDep: 330,
       lastDep: 1415,

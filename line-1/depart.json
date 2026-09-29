@@ -4,20 +4,20 @@
   "circular": false,
   "closes_loop_at_start": false,
   "headsign": {
-    "ro": "Cap Linie Simeria → Gara CFR",
+    "ro": "Simeria (Str. Berzei) → Gara CFR",
     "hu": "Szemerja Végállomás → Vasútállomás"
   },
   "source": {
-    "ro": "https://multitrans.ro/jarat-1.html",
-    "hu": "https://multitrans.ro/jarat-1-hu.html"
+    "ro": "https://multitrans.ro/jaratok/jarat-1.html",
+    "hu": "https://multitrans.ro/jaratok/jarat-1-hu.html"
   },
   "stop_count": 8,
   "stops": [
     {
       "stop_sequence": 1,
       "name": {
-        "ro": "Cap Linie Simeria",
-        "hu": "Szemerja Végállomás"
+        "ro": "Simeria (Str. Berzei)",
+        "hu": "Szemerja (Gólya utca)"
       },
       "stop_lat": 45.868,
       "stop_lon": 25.7792,
@@ -46,7 +46,7 @@
     {
       "stop_sequence": 4,
       "name": {
-        "ro": "Institutul de Proiectări",
+        "ro": "Institutul de proiectări",
         "hu": "Tervező Intézet"
       },
       "stop_lat": 45.8616,

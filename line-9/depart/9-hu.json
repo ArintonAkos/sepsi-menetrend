@@ -5,7 +5,7 @@
     "stop_lat": 45.8631,
     "stop_lon": 25.8101,
     "direction": "Vasútállomás → Sugásfürdő",
-    "distance_to_next": "928 m"
+    "distance_to_next": "907 m"
   },
   {
     "stop_id": 2,
@@ -13,7 +13,7 @@
     "stop_lat": 45.8641,
     "stop_lon": 25.7986,
     "direction": "Vasútállomás → Sugásfürdő",
-    "distance_to_next": "974 m"
+    "distance_to_next": "960 m"
   },
   {
     "stop_id": 3,
@@ -21,7 +21,7 @@
     "stop_lat": 45.8624,
     "stop_lon": 25.7879,
     "direction": "Vasútállomás → Sugásfürdő",
-    "distance_to_next": "252 m"
+    "distance_to_next": "250 m"
   },
   {
     "stop_id": 4,
@@ -29,15 +29,15 @@
     "stop_lat": 45.8636,
     "stop_lon": 25.7866,
     "direction": "Vasútállomás → Sugásfürdő",
-    "distance_to_next": "1061 m"
+    "distance_to_next": "1020 m"
   },
   {
     "stop_id": 5,
-    "stop_name_ro": "Plugor Sándor Líceum",
+    "stop_name_ro": "Plugor Sándor Művészeti Líceum",
     "stop_lat": 45.8681,
     "stop_lon": 25.7874,
     "direction": "Vasútállomás → Sugásfürdő",
-    "distance_to_next": "410 m"
+    "distance_to_next": "390 m"
   },
   {
     "stop_id": 6,
@@ -45,7 +45,7 @@
     "stop_lat": 45.8709,
     "stop_lon": 25.7887,
     "direction": "Vasútállomás → Sugásfürdő",
-    "distance_to_next": "1258 m"
+    "distance_to_next": "1238 m"
   },
   {
     "stop_id": 7,
@@ -53,7 +53,7 @@
     "stop_lat": 45.8745,
     "stop_lon": 25.7753,
     "direction": "Vasútállomás → Sugásfürdő",
-    "distance_to_next": "2764 m"
+    "distance_to_next": "2754 m"
   },
   {
     "stop_id": 8,
@@ -61,7 +61,7 @@
     "stop_lat": 45.8724,
     "stop_lon": 25.741,
     "direction": "Vasútállomás → Sugásfürdő",
-    "distance_to_next": "4935 m"
+    "distance_to_next": "4837 m"
   },
   {
     "stop_id": 9,

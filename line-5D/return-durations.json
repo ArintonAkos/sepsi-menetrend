@@ -2,61 +2,65 @@
   "shape_id": "5D-return",
   "line": "5D",
   "direction": "return",
-  "profile": "mapbox/driving",
-  "note": "running time only; contains no waiting or timetable information",
-  "total_seconds": 1545,
+  "profile": "osrm/driving",
+  "note": "running time only; contains no waiting or timetable information; OSRM free-flow",
+  "total_seconds": 1040,
   "legs": [
     {
-      "seconds": 165,
-      "metres": 420
+      "seconds": 121,
+      "metres": 518
     },
     {
-      "seconds": 213,
-      "metres": 2145
+      "seconds": 221,
+      "metres": 2661
     },
     {
-      "seconds": 134,
-      "metres": 747
+      "seconds": 44,
+      "metres": 448
     },
     {
-      "seconds": 189,
+      "seconds": 53,
+      "metres": 534
+    },
+    {
+      "seconds": 16,
+      "metres": 177
+    },
+    {
+      "seconds": 84,
+      "metres": 865
+    },
+    {
+      "seconds": 138,
       "metres": 1337
     },
     {
-      "seconds": 70,
-      "metres": 330
+      "seconds": 29,
+      "metres": 322
     },
     {
-      "seconds": 72,
-      "metres": 315
+      "seconds": 36,
+      "metres": 323
     },
     {
-      "seconds": 56,
-      "metres": 250
+      "seconds": 26,
+      "metres": 284
     },
     {
-      "seconds": 124,
-      "metres": 677
+      "seconds": 69,
+      "metres": 643
     },
     {
-      "seconds": 144,
+      "seconds": 82,
       "metres": 713
     },
     {
-      "seconds": 99,
-      "metres": 555
+      "seconds": 57,
+      "metres": 636
     },
     {
-      "seconds": 94,
-      "metres": 532
-    },
-    {
-      "seconds": 129,
-      "metres": 587
-    },
-    {
-      "seconds": 56,
-      "metres": 437
+      "seconds": 65,
+      "metres": 714
     }
   ]
 }

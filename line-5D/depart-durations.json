@@ -4,7 +4,7 @@
   "direction": "depart",
   "profile": "osrm/driving",
   "note": "running time only; contains no waiting or timetable information; OSRM free-flow",
-  "total_seconds": 927,
+  "total_seconds": 1141,
   "legs": [
     {
       "seconds": 56,
@@ -19,12 +19,12 @@
       "metres": 389
     },
     {
-      "seconds": 28,
-      "metres": 263
+      "seconds": 40,
+      "metres": 395
     },
     {
-      "seconds": 36,
-      "metres": 393
+      "seconds": 23,
+      "metres": 262
     },
     {
       "seconds": 36,
@@ -35,12 +35,12 @@
       "metres": 301
     },
     {
-      "seconds": 52,
-      "metres": 551
+      "seconds": 64,
+      "metres": 659
     },
     {
-      "seconds": 51,
-      "metres": 518
+      "seconds": 39,
+      "metres": 411
     },
     {
       "seconds": 42,
@@ -59,12 +59,24 @@
       "metres": 1032
     },
     {
-      "seconds": 68,
-      "metres": 725
+      "seconds": 114,
+      "metres": 1021
     },
     {
-      "seconds": 160,
-      "metres": 2147
+      "seconds": 35,
+      "metres": 205
+    },
+    {
+      "seconds": 44,
+      "metres": 482
+    },
+    {
+      "seconds": 47,
+      "metres": 522
+    },
+    {
+      "seconds": 203,
+      "metres": 2591
     },
     {
       "seconds": 119,

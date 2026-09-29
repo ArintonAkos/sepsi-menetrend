@@ -2,49 +2,65 @@
   "shape_id": "1D-depart",
   "line": "1D",
   "direction": "depart",
-  "profile": "mapbox/driving",
-  "note": "running time only; contains no waiting or timetable information",
-  "total_seconds": 1299,
+  "profile": "osrm/driving",
+  "note": "running time only; contains no waiting or timetable information; OSRM free-flow",
+  "total_seconds": 985,
   "legs": [
     {
-      "seconds": 85,
-      "metres": 437
+      "seconds": 41,
+      "metres": 435
     },
     {
-      "seconds": 89,
+      "seconds": 59,
       "metres": 590
     },
     {
-      "seconds": 107,
+      "seconds": 58,
       "metres": 645
     },
     {
-      "seconds": 125,
+      "seconds": 65,
       "metres": 581
     },
     {
-      "seconds": 156,
-      "metres": 658
+      "seconds": 7,
+      "metres": 76
     },
     {
-      "seconds": 89,
-      "metres": 419
+      "seconds": 57,
+      "metres": 582
     },
     {
-      "seconds": 141,
-      "metres": 931
+      "seconds": 42,
+      "metres": 440
     },
     {
-      "seconds": 126,
-      "metres": 725
+      "seconds": 95,
+      "metres": 913
     },
     {
-      "seconds": 213,
-      "metres": 2144
+      "seconds": 114,
+      "metres": 1021
     },
     {
-      "seconds": 168,
-      "metres": 420
+      "seconds": 34,
+      "metres": 187
+    },
+    {
+      "seconds": 45,
+      "metres": 500
+    },
+    {
+      "seconds": 47,
+      "metres": 522
+    },
+    {
+      "seconds": 203,
+      "metres": 2591
+    },
+    {
+      "seconds": 119,
+      "metres": 482
     }
   ]
 }

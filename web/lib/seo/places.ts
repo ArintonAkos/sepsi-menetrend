@@ -170,7 +170,7 @@ export function placeOf(places: Place[], stopId: string): Place | undefined {
  *  stable and legible; a later task filters `places` on it. */
 export const NOTABLE_PLACE_SLUGS: readonly string[] = [
   "vasutallomas", // train station / Gara CFR - lines 1, 2, 7, 9 hub
-  "szemerja-vegallomas", // Cap Linie Simeria - west trunk terminus (1, 1D, 7)
+  "szemerja-golya-utca", // Simeria (Str. Berzei) - west trunk terminus (1, 1D, 7)
   "multi-trans", // operator depot - east terminus of every D-line plus 4 and 5
   "szepmezo", // Câmpul Frumos - line 4 terminus, headsign of 1D/2D/4/5D
   "megyei-korhaz", // county hospital / Spitalul Județean - line 2 terminus
@@ -181,6 +181,6 @@ export const NOTABLE_PLACE_SLUGS: readonly string[] = [
   "autoliv", // Autoliv plant - the town's largest single employer
   "bevasarlokozpont", // the shopping centre / Centru Comercial
   "kalvin-ter", // Piața Kálvin - central old-town square and interchange
-  "vitez-mihaly-liceum", // Mihai Viteazul college - large high school
+  "vitez-mihaly-lic", // Mihai Viteazul college - large high school
   "plugor-sandor-liceum", // Plugor Sándor college - large high school
 ];

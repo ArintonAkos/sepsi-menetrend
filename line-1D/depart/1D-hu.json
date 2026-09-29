@@ -1,11 +1,11 @@
 [
   {
     "stop_id": 1,
-    "stop_name_ro": "Szemerja Végállomás",
+    "stop_name_ro": "Szemerja (Gólya utca)",
     "stop_lat": 45.868,
     "stop_lon": 25.7792,
     "direction": "Szemerja Végállomás → Szépmező",
-    "distance_to_next": "470 m"
+    "distance_to_next": "466 m"
   },
   {
     "stop_id": 2,
@@ -13,7 +13,7 @@
     "stop_lat": 45.8639,
     "stop_lon": 25.778,
     "direction": "Szemerja Végállomás → Szépmező",
-    "distance_to_next": "682 m"
+    "distance_to_next": "526 m"
   },
   {
     "stop_id": 3,
@@ -21,7 +21,7 @@
     "stop_lat": 45.8594,
     "stop_lon": 25.776,
     "direction": "Szemerja Végállomás → Szépmező",
-    "distance_to_next": "657 m"
+    "distance_to_next": "535 m"
   },
   {
     "stop_id": 4,
@@ -29,7 +29,7 @@
     "stop_lat": 45.8616,
     "stop_lon": 25.7822,
     "direction": "Szemerja Végállomás → Szépmező",
-    "distance_to_next": "618 m"
+    "distance_to_next": "413 m"
   },
   {
     "stop_id": 5,
@@ -37,50 +37,82 @@
     "stop_lat": 45.8636,
     "stop_lon": 25.7866,
     "direction": "Szemerja Végállomás → Szépmező",
-    "distance_to_next": "670 m"
+    "distance_to_next": "78 m"
   },
   {
     "stop_id": 6,
+    "stop_name_ro": "Erzsébet Park",
+    "stop_lat": 45.8643,
+    "stop_lon": 25.7866,
+    "direction": "Szemerja Végállomás → Szépmező",
+    "distance_to_next": "502 m"
+  },
+  {
+    "stop_id": 7,
     "stop_name_ro": "Református Templom",
     "stop_lat": 45.8638,
     "stop_lon": 25.7931,
     "direction": "Szemerja Végállomás → Szépmező",
-    "distance_to_next": "429 m"
-  },
-  {
-    "stop_id": 7,
-    "stop_name_ro": "Sport utca",
-    "stop_lat": 45.864,
-    "stop_lon": 25.7983,
-    "direction": "Szemerja Végállomás → Szépmező",
-    "distance_to_next": "961 m"
+    "distance_to_next": "433 m"
   },
   {
     "stop_id": 8,
+    "stop_name_ro": "Sport utca",
+    "stop_lat": 45.8641,
+    "stop_lon": 25.7986,
+    "direction": "Szemerja Végállomás → Szépmező",
+    "distance_to_next": "898 m"
+  },
+  {
+    "stop_id": 9,
     "stop_name_ro": "Vasútállomás",
     "stop_lat": 45.8631,
     "stop_lon": 25.8101,
     "direction": "Szemerja Végállomás → Szépmező",
-    "distance_to_next": "734 m"
-  },
-  {
-    "stop_id": 9,
-    "stop_name_ro": "Autoliv",
-    "stop_lat": 45.8658,
-    "stop_lon": 25.8153,
-    "direction": "Szemerja Végállomás → Szépmező",
-    "distance_to_next": "2133 m"
+    "distance_to_next": "750 m"
   },
   {
     "stop_id": 10,
+    "stop_name_ro": "Terminal",
+    "stop_lat": 45.8568,
+    "stop_lon": 25.8066,
+    "direction": "Szemerja Végállomás → Szépmező",
+    "distance_to_next": "147 m"
+  },
+  {
+    "stop_id": 11,
+    "stop_name_ro": "Építők útja 1",
+    "stop_lat": 45.8562,
+    "stop_lon": 25.8083,
+    "direction": "Szemerja Végállomás → Szépmező",
+    "distance_to_next": "494 m"
+  },
+  {
+    "stop_id": 12,
+    "stop_name_ro": "Építők útja 2",
+    "stop_lat": 45.8557,
+    "stop_lon": 25.8147,
+    "direction": "Szemerja Végállomás → Szépmező",
+    "distance_to_next": "420 m"
+  },
+  {
+    "stop_id": 13,
+    "stop_name_ro": "Építők útja 3",
+    "stop_lat": 45.8585,
+    "stop_lon": 25.8183,
+    "direction": "Szemerja Végállomás → Szépmező",
+    "distance_to_next": "1801 m"
+  },
+  {
+    "stop_id": 14,
     "stop_name_ro": "Szépmező",
     "stop_lat": 45.8619,
     "stop_lon": 25.841,
     "direction": "Szemerja Végállomás → Szépmező",
-    "distance_to_next": "493 m"
+    "distance_to_next": "332 m"
   },
   {
-    "stop_id": 11,
+    "stop_id": 15,
     "stop_name_ro": "Multi-Trans",
     "stop_lat": 45.8593,
     "stop_lon": 25.8389,

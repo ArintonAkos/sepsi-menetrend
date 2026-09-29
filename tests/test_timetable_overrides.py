@@ -52,27 +52,32 @@ class TimetableOverrideTests(unittest.TestCase):
 
         self.assertEqual(result, entries)
 
-    def test_reassigns_the_line_three_factory_column_to_its_only_return_pass(self):
+    def test_reassigns_line_three_return_leg_columns(self):
+        """Sept 15's clean line-3 return.json replaced the old single-file
+        circular-slicing model (retired timetable_segments.json entries) - the
+        board still tags every line-3 column "depart", so the return leg's
+        columns need reassigning to the new "return" direction, same idea as
+        the 2D cases above."""
         entries = [{
-            "line": "3", "direction": "depart", "stop_ro": "Fabrica de Țigarete",
-            "destination": "Coșeni / Szotyor",
+            "line": "3", "direction": "depart", "stop_ro": "Coșeni 1",
+            "destination": "Str. Țigaretei 1 / Cigaretta utca 1",
         }]
 
         result = apply_timetable_overrides(entries)
 
-        self.assertEqual(result[0]["direction"], "depart")
-        self.assertEqual(result[0]["destination"], "Str. Fabricii / Gyár utca")
+        self.assertEqual(result[0]["direction"], "return")
+        self.assertEqual(result[0]["destination"], "Str. Țigaretei 1 / Cigaretta utca 1")
 
-    def test_reassigns_the_line_four_factory_column_to_its_only_return_pass(self):
+    def test_reassigns_line_four_return_leg_columns(self):
         entries = [{
-            "line": "4", "direction": "depart", "stop_ro": "Fabrica de Țigarete",
-            "destination": "Câmpul Frumos / Szépmező",
+            "line": "4", "direction": "depart", "stop_ro": "Câmpul Frumos",
+            "destination": "Str. Țigaretei 1 / Cigaretta utca 1",
         }]
 
         result = apply_timetable_overrides(entries)
 
-        self.assertEqual(result[0]["direction"], "depart")
-        self.assertEqual(result[0]["destination"], "Str. Fabricii / Gyár utca")
+        self.assertEqual(result[0]["direction"], "return")
+        self.assertEqual(result[0]["destination"], "Str. Țigaretei 1 / Cigaretta utca 1")
 
     def test_reassigns_line_six_western_return_board_columns_to_bartok(self):
         entries = [{

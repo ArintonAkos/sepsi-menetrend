@@ -1,122 +1,162 @@
 [
   {
     "stop_id": 1,
-    "stop_name_ro": "József Attila u. 2",
-    "stop_lat": 45.8541,
-    "stop_lon": 25.7722,
-    "direction": "József Attila u. 2 → Szépmező",
-    "distance_to_next": "399 m"
+    "stop_name_ro": "Dózsa György utca",
+    "stop_lat": 45.8568,
+    "stop_lon": 25.7733,
+    "direction": "Dózsa György utca → Multi-Trans",
+    "distance_to_next": "567 m"
   },
   {
     "stop_id": 2,
-    "stop_name_ro": "József Attila u. 1",
-    "stop_lat": 45.8544,
-    "stop_lon": 25.7771,
-    "direction": "József Attila u. 2 → Szépmező",
-    "distance_to_next": "274 m"
+    "stop_name_ro": "Büdöskút",
+    "stop_lat": 45.8555,
+    "stop_lon": 25.7672,
+    "direction": "Dózsa György utca → Multi-Trans",
+    "distance_to_next": "429 m"
   },
   {
     "stop_id": 3,
-    "stop_name_ro": "Kós Károly utca",
-    "stop_lat": 45.8559,
-    "stop_lon": 25.779,
-    "direction": "József Attila u. 2 → Szépmező",
-    "distance_to_next": "400 m"
+    "stop_name_ro": "József Attila utca 2",
+    "stop_lat": 45.8541,
+    "stop_lon": 25.7722,
+    "direction": "Dózsa György utca → Multi-Trans",
+    "distance_to_next": "391 m"
   },
   {
     "stop_id": 4,
-    "stop_name_ro": "Cigarettagyár",
-    "stop_lat": 45.8584,
-    "stop_lon": 25.7822,
-    "direction": "József Attila u. 2 → Szépmező",
-    "distance_to_next": "396 m"
+    "stop_name_ro": "József Attila utca 1",
+    "stop_lat": 45.8544,
+    "stop_lon": 25.7771,
+    "direction": "Dózsa György utca → Multi-Trans",
+    "distance_to_next": "394 m"
   },
   {
     "stop_id": 5,
-    "stop_name_ro": "Vitéz Mihály Líceum",
-    "stop_lat": 45.861,
-    "stop_lon": 25.7855,
-    "direction": "József Attila u. 2 → Szépmező",
-    "distance_to_next": "295 m"
+    "stop_name_ro": "Kós Károly utca",
+    "stop_lat": 45.857,
+    "stop_lon": 25.7795,
+    "direction": "Dózsa György utca → Multi-Trans",
+    "distance_to_next": "260 m"
   },
   {
     "stop_id": 6,
-    "stop_name_ro": "Lábasház",
-    "stop_lat": 45.8636,
-    "stop_lon": 25.7866,
-    "direction": "József Attila u. 2 → Szépmező",
-    "distance_to_next": "549 m"
+    "stop_name_ro": "Cigarettagyár",
+    "stop_lat": 45.8584,
+    "stop_lon": 25.7822,
+    "direction": "Dózsa György utca → Multi-Trans",
+    "distance_to_next": "388 m"
   },
   {
     "stop_id": 7,
-    "stop_name_ro": "Református Templom",
-    "stop_lat": 45.8643,
-    "stop_lon": 25.7919,
-    "direction": "József Attila u. 2 → Szépmező",
-    "distance_to_next": "550 m"
+    "stop_name_ro": "Vitez Mihaly Lic.",
+    "stop_lat": 45.861,
+    "stop_lon": 25.7855,
+    "direction": "Dózsa György utca → Multi-Trans",
+    "distance_to_next": "298 m"
   },
   {
     "stop_id": 8,
-    "stop_name_ro": "G. Bálán sugárút 1",
-    "stop_lat": 45.8622,
-    "stop_lon": 25.7962,
-    "direction": "József Attila u. 2 → Szépmező",
-    "distance_to_next": "469 m"
+    "stop_name_ro": "Lábasház",
+    "stop_lat": 45.8636,
+    "stop_lon": 25.7866,
+    "direction": "Dózsa György utca → Multi-Trans",
+    "distance_to_next": "648 m"
   },
   {
     "stop_id": 9,
-    "stop_name_ro": "G. Bálán sugárút 2",
-    "stop_lat": 45.858,
-    "stop_lon": 25.7964,
-    "direction": "József Attila u. 2 → Szépmező",
-    "distance_to_next": "270 m"
+    "stop_name_ro": "Református Templom",
+    "stop_lat": 45.8638,
+    "stop_lon": 25.7931,
+    "direction": "Dózsa György utca → Multi-Trans",
+    "distance_to_next": "411 m"
   },
   {
     "stop_id": 10,
-    "stop_name_ro": "Gyöngyvirág utca 2",
-    "stop_lat": 45.858,
-    "stop_lon": 25.7981,
-    "direction": "József Attila u. 2 → Szépmező",
-    "distance_to_next": "240 m"
+    "stop_name_ro": "Grigore Bălan sugárút 1",
+    "stop_lat": 45.8622,
+    "stop_lon": 25.7962,
+    "direction": "Dózsa György utca → Multi-Trans",
+    "distance_to_next": "474 m"
   },
   {
     "stop_id": 11,
-    "stop_name_ro": "Gyöngyvirág utca 1",
-    "stop_lat": 45.8598,
-    "stop_lon": 25.7995,
-    "direction": "József Attila u. 2 → Szépmező",
-    "distance_to_next": "1068 m"
+    "stop_name_ro": "Grigore Bălan sugárút 2",
+    "stop_lat": 45.858,
+    "stop_lon": 25.7964,
+    "direction": "Dózsa György utca → Multi-Trans",
+    "distance_to_next": "240 m"
   },
   {
     "stop_id": 12,
-    "stop_name_ro": "Vasútállomás",
-    "stop_lat": 45.8631,
-    "stop_lon": 25.8101,
-    "direction": "József Attila u. 2 → Szépmező",
-    "distance_to_next": "734 m"
+    "stop_name_ro": "Gyöngyvirág utca 2",
+    "stop_lat": 45.858,
+    "stop_lon": 25.7981,
+    "direction": "Dózsa György utca → Multi-Trans",
+    "distance_to_next": "240 m"
   },
   {
     "stop_id": 13,
-    "stop_name_ro": "Autoliv",
-    "stop_lat": 45.8658,
-    "stop_lon": 25.8153,
-    "direction": "József Attila u. 2 → Szépmező",
-    "distance_to_next": "2133 m"
+    "stop_name_ro": "Gyöngyvirág utca 1",
+    "stop_lat": 45.8598,
+    "stop_lon": 25.7995,
+    "direction": "Dózsa György utca → Multi-Trans",
+    "distance_to_next": "1028 m"
   },
   {
     "stop_id": 14,
-    "stop_name_ro": "Szépmező",
-    "stop_lat": 45.8619,
-    "stop_lon": 25.841,
-    "direction": "József Attila u. 2 → Szépmező",
-    "distance_to_next": "493 m"
+    "stop_name_ro": "Vasútállomás",
+    "stop_lat": 45.8631,
+    "stop_lon": 25.8101,
+    "direction": "Dózsa György utca → Multi-Trans",
+    "distance_to_next": "1092 m"
   },
   {
     "stop_id": 15,
+    "stop_name_ro": "Terminal",
+    "stop_lat": 45.8568,
+    "stop_lon": 25.8066,
+    "direction": "Dózsa György utca → Multi-Trans",
+    "distance_to_next": "200 m"
+  },
+  {
+    "stop_id": 16,
+    "stop_name_ro": "Építők útja 1",
+    "stop_lat": 45.856,
+    "stop_lon": 25.8085,
+    "direction": "Dózsa György utca → Multi-Trans",
+    "distance_to_next": "480 m"
+  },
+  {
+    "stop_id": 17,
+    "stop_name_ro": "Építők útja 2",
+    "stop_lat": 45.8557,
+    "stop_lon": 25.8147,
+    "direction": "Dózsa György utca → Multi-Trans",
+    "distance_to_next": "525 m"
+  },
+  {
+    "stop_id": 18,
+    "stop_name_ro": "Építők útja 3",
+    "stop_lat": 45.8585,
+    "stop_lon": 25.8183,
+    "direction": "Dózsa György utca → Multi-Trans",
+    "distance_to_next": "2545 m"
+  },
+  {
+    "stop_id": 19,
+    "stop_name_ro": "Szépmező",
+    "stop_lat": 45.8619,
+    "stop_lon": 25.841,
+    "direction": "Dózsa György utca → Multi-Trans",
+    "distance_to_next": "487 m"
+  },
+  {
+    "stop_id": 20,
     "stop_name_ro": "Multi-Trans",
     "stop_lat": 45.8593,
     "stop_lon": 25.8389,
-    "direction": "József Attila u. 2 → Szépmező",
+    "direction": "Dózsa György utca → Multi-Trans",
     "distance_to_next": "0 m"
   }
 ]

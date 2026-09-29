@@ -17,7 +17,7 @@ describe("sitemap", () => {
 
   it("emits one <loc> per language per inventory page", () => {
     expect(entries.length).toBe(allPages().length * 3);
-    expect(entries.length).toBe(528);
+    expect(entries.length).toBe(537);
   });
 
   it("gives a page's HU, RO and EN URL each its own entry", () => {

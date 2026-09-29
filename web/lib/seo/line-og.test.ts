@@ -31,8 +31,8 @@ describe("line OG card - Hungarian route", () => {
     expect(isPng(Buffer.from(await res.arrayBuffer()))).toBe(true);
   });
 
-  it("prerenders one card per line - all 12", async () => {
-    expect(await huParams()).toHaveLength(12);
+  it("prerenders one card per line - all 13", async () => {
+    expect(await huParams()).toHaveLength(13);
   });
 
   it("renders line 10 (Arcuș, black badge - not line 1's green)", async () => {
@@ -50,11 +50,11 @@ describe("line OG card - Hungarian route", () => {
 });
 
 describe("line OG card - Romanian route", () => {
-  it("enumerates the identical 12-line id set", async () => {
+  it("enumerates the identical 13-line id set", async () => {
     const ro = (await roParams()).map((p) => p.id);
     const hu = (await huParams()).map((p) => p.id);
     expect(ro).toEqual(hu);
-    expect(ro).toHaveLength(12);
+    expect(ro).toHaveLength(13);
   });
 
   it("renders a Romanian PNG for id 1", async () => {

@@ -4,16 +4,14 @@
   "circular": false,
   "closes_loop_at_start": false,
   "headsign": {
-    "ro": "Str. Dózsa György → Câmpul Frumos",
-    "hu": "Dózsa György utca → Szépmező"
+    "ro": "Str. Dózsa György → Multi-Trans",
+    "hu": "Dózsa György utca → Multi-Trans"
   },
-  "destination": "Câmpul Frumos / Szépmező",
-  "_note": "destination gates board binding: a 5D-depart trip may only take a board column that names Câmpul Frumos as its destination (as the operator's own dedicated 5D columns did on the Aug board). The Sept 7 board publishes none, so 5D-depart binds nothing rather than seed phantom trips off line 5's segmented marked events.",
   "source": {
-    "ro": "https://multitrans.ro/jarat-5d.html",
-    "hu": "https://multitrans.ro/jarat-5d-hu.html"
+    "ro": "https://multitrans.ro/jaratok/jarat-5d.html",
+    "hu": "https://multitrans.ro/jaratok/jarat-5d-hu.html"
   },
-  "stop_count": 17,
+  "stop_count": 20,
   "stops": [
     {
       "stop_sequence": 1,
@@ -23,7 +21,7 @@
       },
       "stop_lat": 45.8568,
       "stop_lon": 25.7733,
-      "distance_to_next_m": 587
+      "distance_to_next_m": 567
     },
     {
       "stop_sequence": 2,
@@ -33,27 +31,27 @@
       },
       "stop_lat": 45.8555,
       "stop_lon": 25.7672,
-      "distance_to_next_m": 438
+      "distance_to_next_m": 429
     },
     {
       "stop_sequence": 3,
       "name": {
         "ro": "Str. József Attila 2",
-        "hu": "József Attila u. 2"
+        "hu": "József Attila utca 2"
       },
       "stop_lat": 45.8541,
       "stop_lon": 25.7722,
-      "distance_to_next_m": 389
+      "distance_to_next_m": 391
     },
     {
       "stop_sequence": 4,
       "name": {
         "ro": "Str. József Attila 1",
-        "hu": "József Attila u. 1"
+        "hu": "József Attila utca 1"
       },
       "stop_lat": 45.8544,
       "stop_lon": 25.7771,
-      "distance_to_next_m": 263
+      "distance_to_next_m": 394
     },
     {
       "stop_sequence": 5,
@@ -61,9 +59,9 @@
         "ro": "Str. Kós Károly",
         "hu": "Kós Károly utca"
       },
-      "stop_lat": 45.8559,
-      "stop_lon": 25.779,
-      "distance_to_next_m": 393
+      "stop_lat": 45.857,
+      "stop_lon": 25.7795,
+      "distance_to_next_m": 260
     },
     {
       "stop_sequence": 6,
@@ -73,17 +71,17 @@
       },
       "stop_lat": 45.8584,
       "stop_lon": 25.7822,
-      "distance_to_next_m": 384
+      "distance_to_next_m": 388
     },
     {
       "stop_sequence": 7,
       "name": {
-        "ro": "Col. Mihai Viteazul",
-        "hu": "Vitéz Mihály Líceum"
+        "ro": "Liceul M. Viteazul",
+        "hu": "Vitez Mihaly Lic."
       },
       "stop_lat": 45.861,
       "stop_lon": 25.7855,
-      "distance_to_next_m": 301
+      "distance_to_next_m": 298
     },
     {
       "stop_sequence": 8,
@@ -93,7 +91,7 @@
       },
       "stop_lat": 45.8636,
       "stop_lon": 25.7866,
-      "distance_to_next_m": 551
+      "distance_to_next_m": 648
     },
     {
       "stop_sequence": 9,
@@ -101,29 +99,29 @@
         "ro": "Biserica Reformată",
         "hu": "Református Templom"
       },
-      "stop_lat": 45.8643,
-      "stop_lon": 25.7919,
-      "distance_to_next_m": 518
+      "stop_lat": 45.8638,
+      "stop_lon": 25.7931,
+      "distance_to_next_m": 411
     },
     {
       "stop_sequence": 10,
       "name": {
         "ro": "B-dul Grigore Bălan 1",
-        "hu": "G. Bálán sugárút 1"
+        "hu": "Grigore Bălan sugárút 1"
       },
       "stop_lat": 45.8622,
       "stop_lon": 25.7962,
-      "distance_to_next_m": 470
+      "distance_to_next_m": 474
     },
     {
       "stop_sequence": 11,
       "name": {
         "ro": "B-dul Grigore Bălan 2",
-        "hu": "G. Bálán sugárút 2"
+        "hu": "Grigore Bălan sugárút 2"
       },
       "stop_lat": 45.858,
       "stop_lon": 25.7964,
-      "distance_to_next_m": 236
+      "distance_to_next_m": 240
     },
     {
       "stop_sequence": 12,
@@ -133,7 +131,7 @@
       },
       "stop_lat": 45.858,
       "stop_lon": 25.7981,
-      "distance_to_next_m": 241
+      "distance_to_next_m": 240
     },
     {
       "stop_sequence": 13,
@@ -143,7 +141,7 @@
       },
       "stop_lat": 45.8598,
       "stop_lon": 25.7995,
-      "distance_to_next_m": 1032
+      "distance_to_next_m": 1028
     },
     {
       "stop_sequence": 14,
@@ -153,30 +151,60 @@
       },
       "stop_lat": 45.8631,
       "stop_lon": 25.8101,
-      "distance_to_next_m": 725
+      "distance_to_next_m": 1092
     },
     {
       "stop_sequence": 15,
       "name": {
-        "ro": "Autoliv",
-        "hu": "Autoliv"
+        "ro": "Terminal",
+        "hu": "Terminal"
       },
-      "stop_lat": 45.8658,
-      "stop_lon": 25.8153,
-      "distance_to_next_m": 2147
+      "stop_lat": 45.8568,
+      "stop_lon": 25.8066,
+      "distance_to_next_m": 200
     },
     {
       "stop_sequence": 16,
+      "name": {
+        "ro": "Str. Constructorilor 1",
+        "hu": "Építők útja 1"
+      },
+      "stop_lat": 45.856,
+      "stop_lon": 25.8085,
+      "distance_to_next_m": 480
+    },
+    {
+      "stop_sequence": 17,
+      "name": {
+        "ro": "Str. Constructorilor 2",
+        "hu": "Építők útja 2"
+      },
+      "stop_lat": 45.8557,
+      "stop_lon": 25.8147,
+      "distance_to_next_m": 525
+    },
+    {
+      "stop_sequence": 18,
+      "name": {
+        "ro": "Str. Constructorilor 3",
+        "hu": "Építők útja 3"
+      },
+      "stop_lat": 45.8585,
+      "stop_lon": 25.8183,
+      "distance_to_next_m": 2545
+    },
+    {
+      "stop_sequence": 19,
       "name": {
         "ro": "Câmpul Frumos",
         "hu": "Szépmező"
       },
       "stop_lat": 45.8619,
       "stop_lon": 25.841,
-      "distance_to_next_m": 482
+      "distance_to_next_m": 487
     },
     {
-      "stop_sequence": 17,
+      "stop_sequence": 20,
       "name": {
         "ro": "Multi-Trans",
         "hu": "Multi-Trans"
@@ -185,5 +213,7 @@
       "stop_lon": 25.8389,
       "distance_to_next_m": null
     }
-  ]
+  ],
+  "destination": "Câmpul Frumos / Szépmező",
+  "_note": "destination gates board binding: a 5D-depart trip may only take a board column that names Câmpul Frumos as its destination (as the operator's own dedicated 5D columns did on the Aug board). The Sept 7 board publishes none, so 5D-depart binds nothing rather than seed phantom trips off line 5's segmented marked events."
 }

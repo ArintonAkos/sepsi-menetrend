@@ -110,9 +110,9 @@ class PlatformResolutionTests(unittest.TestCase):
         )
 
         to_arena = next(item for item in directions
-                        if item["line"] == "5" and item["direction"] == "depart-to-arena")
+                        if item["line"] == "5" and item["direction"] == "depart")
         from_arena = next(item for item in directions
-                          if item["line"] == "5" and item["direction"] == "depart-from-arena")
+                          if item["line"] == "5" and item["direction"] == "return")
         milk_calls = [
             topology["call_platforms"][("5", direction["direction"], index)]
             for direction in (to_arena, from_arena)

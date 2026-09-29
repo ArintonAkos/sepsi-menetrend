@@ -6,43 +6,16 @@ from timetable_segments import expand_timetable_segments
 
 
 class TimetableSegmentTests(unittest.TestCase):
-    def test_real_multitrans_turn_is_only_the_line_four_overlap(self):
+    def test_no_line_needs_loop_segments_any_more(self):
+        """Every line (1, 3, 4, 5 included) now has its own clean depart/return
+        pages on multitrans.ro (published 2026-09-15), so there is no more
+        single shared circular page to slice by destination for any of them -
+        timetable_segments.json's whole mechanism is retired, not just for the
+        lines 2/6 re-anchoring already covered above."""
         segments = json.loads((Path(__file__).resolve().parents[1] /
                                "timetable_segments.json").read_text(encoding="utf-8"))
 
-        self.assertEqual(segments["3-depart"][0]["end"], 17)
-        self.assertEqual(segments["4-depart"][0]["end"], 18)
-        self.assertEqual(segments["4-depart"][1]["start"], 18)
-
-    def test_bidirectional_lines_two_and_six_have_no_loop_segments(self):
-        """Fázis 2 re-anchored lines 2 and 6 to separate depart/return files.
-        Each direction now carries one headsign, so there is no circuit to
-        split and no segment key may remain."""
-        segments = json.loads((Path(__file__).resolve().parents[1] /
-                               "timetable_segments.json").read_text(encoding="utf-8"))
-
-        self.assertNotIn("2-depart", segments)
-        self.assertNotIn("6-depart", segments)
-
-    def test_circular_lines_are_split_where_the_official_headsign_changes(self):
-        """A single drawn loop is not one timetable run once its displayed
-        destination changes at the railway station or Arena terminal."""
-        segments = json.loads((Path(__file__).resolve().parents[1] /
-                               "timetable_segments.json").read_text(encoding="utf-8"))
-
-        self.assertEqual(segments["5-depart"], [
-            {"id": "to-arena", "start": 0, "end": 17,
-             "destination": "Arena Sepsi / Sepsi Aréna"},
-            {"id": "from-arena", "start": 17, "end": 28,
-             "destination": "Str. Dózsa György / Dózsa György utca"},
-        ])
-
-    def test_line5_segments_use_dozsa_gyorgy_anchor(self):
-        raw = json.load(open("timetable_segments.json"))
-        seg = {s["id"]: s for s in raw["5-depart"]}
-        d = json.load(open("line-5/depart.json"))
-        names = [s["name"]["ro"] for s in d["stops"]]
-        self.assertEqual(names[seg["to-arena"]["start"]], "Str. Dózsa György")
+        self.assertEqual(segments, {})
 
     def test_keeps_same_name_calls_on_their_destination_specific_passes(self):
         direction = {

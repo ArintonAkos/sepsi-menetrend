@@ -120,10 +120,13 @@ describe("LinePage", () => {
     expect(alt).toMatch(/Route of line 1 on the map:/);
   });
 
-  it("flags a reconstructed line's route as provisional, but not a stable one", async () => {
-    // line 2 is one of the Sept 7 re-anchored lines; line 1 kept its shape
+  it("shows no provisional-route marker now that every line's geometry is operator-sourced", async () => {
+    // Every line's polyline now comes from multitrans.ro's own routeLine data
+    // (published 2026-09-15), so net.routesProvisional is false and the
+    // marker (gated on that flag) never renders, even for line 2 - one of the
+    // Sept 7 re-anchored lines that used to be flagged.
     const two = await renderLine({ lang: "hu", id: "2" });
-    expect(two.container.textContent).toMatch(/ideiglenes rekonstrukció/);
+    expect(two.container.textContent).not.toMatch(/ideiglenes rekonstrukció/);
     two.unmount();
 
     const one = await renderLine({ lang: "hu", id: "1" });

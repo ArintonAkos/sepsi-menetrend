@@ -333,12 +333,24 @@ K = math.cos(math.radians(LAT0))
 project = lambda lon, lat: (lon * K * 111320, lat * 111320)
 
 
+# Some lines' geometry is now sourced from multitrans.ro's own routeLine
+# (their own Leaflet-drawn polyline, published 2026-09-15) rather than a dense
+# OSRM road trace - a real, deliberately-placed waypoint can sit 100+ metres
+# from its neighbour. Cutting that corner would draw a curve the operator
+# never drew, so only segments at the coordinate-rounding "staircase" scale
+# this function exists to fix get smoothed; wider gaps pass through untouched.
+STAIRCASE_M = 25
+
+
 def smooth_shape(points):
     """Drop repeated points and round off the grid staircase.
 
-    Chaikin corner cutting: each segment gives up its ends, so every corner
-    becomes a short curve. Two rounds is enough to read as a road and keeps the
-    line within a metre or so of where it started.
+    Chaikin corner cutting: a short segment gives up its ends, so every
+    staircase corner becomes a short curve. Two rounds is enough to read as a
+    road and keeps the line within a metre or so of where it started. A
+    segment already wider than the rounding grid (a real sparse waypoint gap)
+    is left as a sharp vertex instead of being smoothed into a curve that
+    isn't there.
     """
     kept = [points[0]]
     for p in points[1:]:
@@ -349,8 +361,11 @@ def smooth_shape(points):
     for _ in range(2):
         smoothed = [kept[0]]
         for a, b in zip(kept, kept[1:]):
-            smoothed.append((a[0] * 0.75 + b[0] * 0.25, a[1] * 0.75 + b[1] * 0.25))
-            smoothed.append((a[0] * 0.25 + b[0] * 0.75, a[1] * 0.25 + b[1] * 0.75))
+            if metres(a, b) <= STAIRCASE_M:
+                smoothed.append((a[0] * 0.75 + b[0] * 0.25, a[1] * 0.75 + b[1] * 0.25))
+                smoothed.append((a[0] * 0.25 + b[0] * 0.75, a[1] * 0.25 + b[1] * 0.75))
+            else:
+                smoothed.append(b)
         smoothed.append(kept[-1])
         kept = smoothed
     return thin(kept, 1.0)
@@ -445,7 +460,7 @@ ALIASES = {
     "Spitalul Județean": ["Kórház", "Spital"],
     "Gara CFR": ["Állomás", "Gara"],
     "Sepsi Value Centre": ["Sepsi Value Center", "Value Center"],
-    "Centru Comercial": ["Sepsi Value Center", "Bevásárló"],
+    "Centru comercial": ["Sepsi Value Center", "Bevásárló"],
 }
 
 KIND_BY_TAG = {
@@ -758,7 +773,7 @@ def main():
         "version": feed.get("feed_version", "dev"),
         "generated": feed.get("feed_start_date", ""),
         "validFrom": feed.get("feed_start_date", ""),
-        "routesProvisional": True,   # reconstructed routes for lines 2/6/1B/10/1D/2D — cleared when Multi-Trans publishes the official maps
+        "routesProvisional": False,  # every line's geometry now comes from Multi-Trans's own published routeLine polyline (2026-09-15 jaratok/ pages)
         "schoolTerms": [list(t) for t in SCHOOL_TERMS],
         "schoolExceptions": SCHOOL_EXCEPTIONS,
         "lines": lines, "stops": stops, "stations": station_list,

@@ -25,22 +25,22 @@ const childLinks = (root: HTMLElement, base: string): string[] => {
 };
 
 describe("line index", () => {
-  it("lists exactly the 12 lines, each linking to /vonalak/{id}/", async () => {
+  it("lists exactly the 13 lines, each linking to /vonalak/{id}/", async () => {
     const { container } = render(await (Lines as PageComponent)());
-    expect(childLinks(container, "/vonalak/")).toHaveLength(12);
+    expect(childLinks(container, "/vonalak/")).toHaveLength(13);
   });
 
   it("renders a colour swatch and the termini for each line row", async () => {
     const { container } = render(await (Lines as PageComponent)());
     // the operator's published colour, decorative (aria-hidden span)
     expect(container.querySelector('[class*="swatch"]')).toBeTruthy();
-    // line 1 runs Szemerja Végállomás – Vasútállomás; the termini text is on the page
-    expect(container.textContent).toContain("Szemerja Végállomás");
+    // line 1 runs Szemerja (Gólya utca) – Vasútállomás; the termini text is on the page
+    expect(container.textContent).toContain("Szemerja (Gólya utca)");
   });
 
   it("the RO twin links every line under /ro/linii/", async () => {
     const { container } = render(await (LinesRo as PageComponent)());
-    expect(childLinks(container, "/ro/linii/")).toHaveLength(12);
+    expect(childLinks(container, "/ro/linii/")).toHaveLength(13);
     // every line link is RO-tree; the only HU path is the language-twin pill
     const twin = hrefs(container).filter((h) => h?.startsWith("/vonalak/"));
     expect(twin).toEqual(["/vonalak/"]);
@@ -48,9 +48,9 @@ describe("line index", () => {
 });
 
 describe("stop index", () => {
-  it("links exactly the 65 places, each under an A-Z letter heading", async () => {
+  it("links exactly the 67 places, each under an A-Z letter heading", async () => {
     const { container } = render(await (Stops as PageComponent)());
-    expect(childLinks(container, "/megallok/")).toHaveLength(65);
+    expect(childLinks(container, "/megallok/")).toHaveLength(67);
     expect(container.querySelectorAll("h2").length).toBeGreaterThan(0);
   });
 
@@ -87,7 +87,7 @@ describe("stop index", () => {
   it("the RO twin links places by their own RO slug, not the HU one", async () => {
     const { container } = render(await (StopsRo as PageComponent)());
     const stopHrefs = childLinks(container, "/ro/statii/");
-    expect(stopHrefs).toHaveLength(65);
+    expect(stopHrefs).toHaveLength(67);
     // "Bevásárlóközpont" (HU slug "bevasarlokozpont") is "Centru Comercial" /
     // "centru-comercial" in Romanian - the RO href must carry the RO slug.
     expect(stopHrefs).toContain("/ro/statii/centru-comercial/");
@@ -98,14 +98,14 @@ describe("stop index", () => {
 describe("English index pages", () => {
   it("links every line under /en/lines/ with an English h1", () => {
     const { container } = render(<LineIndex lang="en" />);
-    expect(childLinks(container, "/en/lines/")).toHaveLength(12);
+    expect(childLinks(container, "/en/lines/")).toHaveLength(13);
     expect(container.querySelector("h1")?.textContent).toMatch(/bus lines/i);
   });
 
   it("links every place under /en/stops/ by its HU slug with an English h1", () => {
     const { container } = render(<StopIndex lang="en" />);
     const stopHrefs = childLinks(container, "/en/stops/");
-    expect(stopHrefs).toHaveLength(65);
+    expect(stopHrefs).toHaveLength(67);
     expect(stopHrefs).toContain("/en/stops/arkos-kozpont/");
     expect(container.querySelector("h1")?.textContent).toMatch(/bus stops/i);
   });

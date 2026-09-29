@@ -5,7 +5,7 @@
     "stop_lat": 45.8967,
     "stop_lon": 25.7071,
     "direction": "Șugaș Băi → Gara CFR",
-    "distance_to_next": "4950 m"
+    "distance_to_next": "4848 m"
   },
   {
     "stop_id": 2,
@@ -13,7 +13,7 @@
     "stop_lat": 45.8723,
     "stop_lon": 25.7412,
     "direction": "Șugaș Băi → Gara CFR",
-    "distance_to_next": "2748 m"
+    "distance_to_next": "2743 m"
   },
   {
     "stop_id": 3,
@@ -21,7 +21,7 @@
     "stop_lat": 45.8744,
     "stop_lon": 25.7753,
     "direction": "Șugaș Băi → Gara CFR",
-    "distance_to_next": "1248 m"
+    "distance_to_next": "1219 m"
   },
   {
     "stop_id": 4,
@@ -29,15 +29,15 @@
     "stop_lat": 45.8709,
     "stop_lon": 25.7885,
     "direction": "Șugaș Băi → Gara CFR",
-    "distance_to_next": "279 m"
+    "distance_to_next": "268 m"
   },
   {
     "stop_id": 5,
-    "stop_name_ro": "Lic. Plugor Sándor",
+    "stop_name_ro": "Liceul de Artă Plugor Sándor",
     "stop_lat": 45.8689,
     "stop_lon": 25.7868,
     "direction": "Șugaș Băi → Gara CFR",
-    "distance_to_next": "582 m"
+    "distance_to_next": "578 m"
   },
   {
     "stop_id": 6,
@@ -45,7 +45,7 @@
     "stop_lat": 45.8648,
     "stop_lon": 25.7851,
     "direction": "Șugaș Băi → Gara CFR",
-    "distance_to_next": "589 m"
+    "distance_to_next": "571 m"
   },
   {
     "stop_id": 7,
@@ -53,7 +53,7 @@
     "stop_lat": 45.8636,
     "stop_lon": 25.7866,
     "direction": "Șugaș Băi → Gara CFR",
-    "distance_to_next": "670 m"
+    "distance_to_next": "648 m"
   },
   {
     "stop_id": 8,
@@ -61,7 +61,7 @@
     "stop_lat": 45.8638,
     "stop_lon": 25.7931,
     "direction": "Șugaș Băi → Gara CFR",
-    "distance_to_next": "429 m"
+    "distance_to_next": "424 m"
   },
   {
     "stop_id": 9,
@@ -69,7 +69,7 @@
     "stop_lat": 45.864,
     "stop_lon": 25.7983,
     "direction": "Șugaș Băi → Gara CFR",
-    "distance_to_next": "961 m"
+    "distance_to_next": "932 m"
   },
   {
     "stop_id": 10,

@@ -88,26 +88,43 @@ class GtfsTopologyTests(unittest.TestCase):
         )
 
     def test_real_feed_omits_removed_terminal_but_keeps_brasovului(self):
-        """The unverified Terminal source call must not create a fake platform."""
+        """"Terminal" is a real stop the operator's own pages list on several
+        lines (1D, 2D, 4, 5D) - it is not scrubbed feed-wide any more. Lines
+        3 and 4 depart specifically keep their own route_overrides.json entry
+        (rename to Calea Brașovului 1 for line 3; drop for line 4, an
+        unverified board call for that particular direction), so only those
+        two must not carry the literal name."""
+        self.build_in_temporary_directory()
+        directions = build_map.load_directions()
+        for line in ("3", "4"):
+            depart = next(d for d in directions if d["line"] == line and d["direction"] == "depart")
+            names = [stop["name"]["ro"] for stop in depart["stops"]]
+            self.assertNotIn("Terminal", names, f"line {line} depart")
         rows = self.build_in_temporary_directory()
         names = {row["stop_name"] for row in rows}
-
-        self.assertNotIn("Terminal", names)
         self.assertIn("Calea Brașovului 1", names)
 
-    def test_real_feed_adds_1b_and_omits_serviceless_5d(self):
-        """1B joined ORDER with weekday trips; 5D keeps its geometry in ORDER
-        but the Sept 7 board dropped every 5D column, so it must not leave a
-        serviceless routes.txt row (nor a translation pointing at one)."""
+    def test_real_feed_adds_1b_and_keeps_5d_to_its_two_marked_runs(self):
+        """1B joined ORDER with weekday trips. The Sept 7 board dropped every
+        dedicated 5D-depart column (that direction's destination gate keeps it
+        at zero trips, unchanged), but line 5's own return-direction board
+        columns carry 2 weekday runs marked as also serving the 5D extension
+        (06:2x and 14:2x, "Str. Dózsa György (Arena Sepsi felől)" destination)
+        - genuine printed board data, so 5D is not fully serviceless: it gets
+        a routes.txt row for those 2 return runs, none for depart."""
         self.build_in_temporary_directory()
         with (build_gtfs.OUT / "routes.txt").open(encoding="utf-8", newline="") as handle:
             route_ids = {row["route_id"] for row in csv.DictReader(handle)}
         self.assertIn("1B", route_ids)
-        self.assertNotIn("5D", route_ids)
+        self.assertIn("5D", route_ids)
+        with (build_gtfs.OUT / "trips.txt").open(encoding="utf-8", newline="") as handle:
+            rows = list(csv.DictReader(handle))
+        fivd_d_directions = {row["trip_headsign"] for row in rows if row["route_id"] == "5D"}
+        self.assertTrue(fivd_d_directions, "5D must keep at least its 2 marked return runs")
         with (build_gtfs.OUT / "translations.txt").open(encoding="utf-8", newline="") as handle:
             route_records = {row["record_id"] for row in csv.DictReader(handle)
                              if row["table_name"] == "routes"}
-        self.assertNotIn("5D", route_records)
+        self.assertIn("5D", route_records)
 
     def test_school_service_mirrors_every_weekday_trip_with_dated_calendar(self):
         """The school service is a weekday superset: build_gtfs emits a
@@ -158,15 +175,17 @@ class GtfsTopologyTests(unittest.TestCase):
 
         self.assertEqual(depart["stops"][-1]["name"]["ro"], "Arena Sepsi")
         self.assertEqual(ret["stops"][0]["name"]["ro"], "Arena Sepsi")
-        self.assertEqual(ret["stops"][-1]["name"]["ro"], "Cap Linie Simeria")
+        self.assertEqual(ret["stops"][-1]["name"]["ro"], "Simeria (Str. Berzei)")
         self.assertNotIn("Parcul Elisabeta",
                          [stop["name"]["ro"] for stop in depart["stops"]])
 
     def test_line_four_to_campul_frumos_stops_at_casa_not_elisabeta(self):
+        # Sept 15's clean depart/return pages retired timetable_segments.json's
+        # "depart-to-campul-frumos" slicing - line 4 depart is just "depart" now.
         directions = build_map.load_directions()
         toward_campul = next(
             direction for direction in directions
-            if direction["line"] == "4" and direction["direction"] == "depart-to-campul-frumos"
+            if direction["line"] == "4" and direction["direction"] == "depart"
         )
         names = [stop["name"]["ro"] for stop in toward_campul["stops"]]
 

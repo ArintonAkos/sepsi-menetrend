@@ -7,6 +7,6 @@ describe("loadNetwork", () => {
   });
 
   it("parses the published feed", () => {
-    expect(loadNetwork().lines.length).toBe(12);
+    expect(loadNetwork().lines.length).toBe(13);
   });
 });

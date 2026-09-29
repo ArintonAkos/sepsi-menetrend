@@ -1,0 +1,114 @@
+[
+  {
+    "stop_id": 1,
+    "stop_name_ro": "Coșeni",
+    "stop_lat": 45.8129,
+    "stop_lon": 25.7993,
+    "direction": "Coșeni → Str. Țigaretei 1",
+    "distance_to_next": "229 m"
+  },
+  {
+    "stop_id": 2,
+    "stop_name_ro": "Coșeni 1",
+    "stop_lat": 45.8149,
+    "stop_lon": 25.7989,
+    "direction": "Coșeni → Str. Țigaretei 1",
+    "distance_to_next": "1098 m"
+  },
+  {
+    "stop_id": 3,
+    "stop_name_ro": "Motel Calypso",
+    "stop_lat": 45.8247,
+    "stop_lon": 25.8004,
+    "direction": "Coșeni → Str. Țigaretei 1",
+    "distance_to_next": "1384 m"
+  },
+  {
+    "stop_id": 4,
+    "stop_name_ro": "Chilieni",
+    "stop_lat": 45.8367,
+    "stop_lon": 25.8042,
+    "direction": "Coșeni → Str. Țigaretei 1",
+    "distance_to_next": "1343 m"
+  },
+  {
+    "stop_id": 5,
+    "stop_name_ro": "Calea Brașovului 3",
+    "stop_lat": 45.8486,
+    "stop_lon": 25.8054,
+    "direction": "Coșeni → Str. Țigaretei 1",
+    "distance_to_next": "342 m"
+  },
+  {
+    "stop_id": 6,
+    "stop_name_ro": "Calea Brașovului 2",
+    "stop_lat": 45.8516,
+    "stop_lon": 25.806,
+    "direction": "Coșeni → Str. Țigaretei 1",
+    "distance_to_next": "612 m"
+  },
+  {
+    "stop_id": 7,
+    "stop_name_ro": "Calea Brașovului 1",
+    "stop_lat": 45.8571,
+    "stop_lon": 25.8072,
+    "direction": "Coșeni → Str. Țigaretei 1",
+    "distance_to_next": "953 m"
+  },
+  {
+    "stop_id": 8,
+    "stop_name_ro": "Gara CFR",
+    "stop_lat": 45.8631,
+    "stop_lon": 25.8101,
+    "direction": "Coșeni → Str. Țigaretei 1",
+    "distance_to_next": "907 m"
+  },
+  {
+    "stop_id": 9,
+    "stop_name_ro": "Str. Sporturilor",
+    "stop_lat": 45.8641,
+    "stop_lon": 25.7986,
+    "direction": "Coșeni → Str. Țigaretei 1",
+    "distance_to_next": "544 m"
+  },
+  {
+    "stop_id": 10,
+    "stop_name_ro": "Biserica Reformată",
+    "stop_lat": 45.8643,
+    "stop_lon": 25.7919,
+    "direction": "Coșeni → Str. Țigaretei 1",
+    "distance_to_next": "498 m"
+  },
+  {
+    "stop_id": 11,
+    "stop_name_ro": "Parcul Elisabeta",
+    "stop_lat": 45.8643,
+    "stop_lon": 25.7866,
+    "direction": "Coșeni → Str. Țigaretei 1",
+    "distance_to_next": "519 m"
+  },
+  {
+    "stop_id": 12,
+    "stop_name_ro": "Liceul M. Viteazul",
+    "stop_lat": 45.8601,
+    "stop_lon": 25.7842,
+    "direction": "Coșeni → Str. Țigaretei 1",
+    "distance_to_next": "184 m"
+  },
+  {
+    "stop_id": 13,
+    "stop_name_ro": "Fabrica de Țigarete",
+    "stop_lat": 45.8589,
+    "stop_lon": 25.7826,
+    "direction": "Coșeni → Str. Țigaretei 1",
+    "distance_to_next": "347 m"
+  },
+  {
+    "stop_id": 14,
+    "stop_name_ro": "Str. Țigaretei 1",
+    "stop_lat": 45.8566,
+    "stop_lon": 25.7821,
+    "direction": "Coșeni → Str. Țigaretei 1",
+    "distance_to_next": "0 m"
+  }
+]

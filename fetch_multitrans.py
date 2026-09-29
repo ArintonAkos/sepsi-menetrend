@@ -25,13 +25,14 @@ import urllib.request
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
-BASE = "https://multitrans.ro"
+BASE = "https://multitrans.ro/jaratok"
 OUT_ROOT = Path(__file__).resolve().parent
 USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) MultiTrans-GTFS/1.0"
 
 # Line label -> url slug. Labels are used for directory/file names.
 LINES = [
     ("1", "1"),
+    ("1B", "1b"),
     ("1D", "1d"),
     ("2", "2"),
     ("2D", "2d"),

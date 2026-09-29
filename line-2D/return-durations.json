@@ -4,51 +4,59 @@
   "direction": "return",
   "profile": "osrm/driving",
   "note": "running time only; contains no waiting or timetable information; OSRM free-flow",
-  "total_seconds": 1168,
+  "total_seconds": 1118,
   "legs": [
     {
       "seconds": 121,
       "metres": 518
     },
     {
-      "seconds": 169,
-      "metres": 2148
+      "seconds": 221,
+      "metres": 2661
     },
     {
-      "seconds": 75,
-      "metres": 747
+      "seconds": 44,
+      "metres": 448
     },
     {
-      "seconds": 98,
-      "metres": 910
+      "seconds": 53,
+      "metres": 534
     },
     {
-      "seconds": 131,
-      "metres": 1353
+      "seconds": 16,
+      "metres": 177
     },
     {
-      "seconds": 48,
-      "metres": 482
+      "seconds": 84,
+      "metres": 865
     },
     {
-      "seconds": 40,
-      "metres": 394
+      "seconds": 94,
+      "metres": 914
+    },
+    {
+      "seconds": 49,
+      "metres": 492
+    },
+    {
+      "seconds": 39,
+      "metres": 379
+    },
+    {
+      "seconds": 33,
+      "metres": 365
+    },
+    {
+      "seconds": 33,
+      "metres": 337
+    },
+    {
+      "seconds": 58,
+      "metres": 535
     },
     {
       "seconds": 25,
-      "metres": 280
-    },
-    {
-      "seconds": 40,
-      "metres": 417
-    },
-    {
-      "seconds": 57,
-      "metres": 525
-    },
-    {
-      "seconds": 26,
-      "metres": 284
+      "metres": 275
     },
     {
       "seconds": 60,
@@ -59,28 +67,16 @@
       "metres": 456
     },
     {
-      "seconds": 50,
-      "metres": 555
+      "seconds": 57,
+      "metres": 636
     },
     {
-      "seconds": 54,
-      "metres": 574
+      "seconds": 46,
+      "metres": 493
     },
     {
-      "seconds": 39,
-      "metres": 364
-    },
-    {
-      "seconds": 22,
-      "metres": 243
-    },
-    {
-      "seconds": 39,
-      "metres": 371
-    },
-    {
-      "seconds": 31,
-      "metres": 341
+      "seconds": 44,
+      "metres": 466
     }
   ]
 }

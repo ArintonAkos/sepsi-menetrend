@@ -4,14 +4,14 @@
   "circular": false,
   "closes_loop_at_start": false,
   "headsign": {
-    "ro": "Câmpul Frumos → Str. Dózsa György",
-    "hu": "Szépmező → Dózsa György utca"
+    "ro": "Multi-Trans → Str. Dózsa György",
+    "hu": "Multi-Trans → Dózsa György utca"
   },
   "source": {
-    "ro": "https://multitrans.ro/jarat-5d-retur.html",
-    "hu": "https://multitrans.ro/jarat-5d-retur-hu.html"
+    "ro": "https://multitrans.ro/jaratok/jarat-5d-retur.html",
+    "hu": "https://multitrans.ro/jaratok/jarat-5d-retur-hu.html"
   },
-  "stop_count": 12,
+  "stop_count": 15,
   "stops": [
     {
       "stop_sequence": 1,
@@ -21,7 +21,7 @@
       },
       "stop_lat": 45.8593,
       "stop_lon": 25.8389,
-      "distance_to_next_m": 431
+      "distance_to_next_m": 424
     },
     {
       "stop_sequence": 2,
@@ -31,100 +31,130 @@
       },
       "stop_lat": 45.8619,
       "stop_lon": 25.841,
-      "distance_to_next_m": 2161
+      "distance_to_next_m": 2661
     },
     {
       "stop_sequence": 3,
       "name": {
-        "ro": "Autoliv",
-        "hu": "Autoliv"
+        "ro": "Str. Constructorilor 3",
+        "hu": "Építők útja 3"
       },
-      "stop_lat": 45.8658,
-      "stop_lon": 25.8153,
-      "distance_to_next_m": 760
+      "stop_lat": 45.8579,
+      "stop_lon": 25.818,
+      "distance_to_next_m": 444
     },
     {
       "stop_sequence": 4,
+      "name": {
+        "ro": "Str. Constructorilor 2",
+        "hu": "Építők útja 2"
+      },
+      "stop_lat": 45.8559,
+      "stop_lon": 25.8148,
+      "distance_to_next_m": 500
+    },
+    {
+      "stop_sequence": 5,
+      "name": {
+        "ro": "Str. Constructorilor 1",
+        "hu": "Építők útja 1"
+      },
+      "stop_lat": 45.8562,
+      "stop_lon": 25.8083,
+      "distance_to_next_m": 176
+    },
+    {
+      "stop_sequence": 6,
+      "name": {
+        "ro": "Calea Brașovului 1",
+        "hu": "Brassói út 1"
+      },
+      "stop_lat": 45.8571,
+      "stop_lon": 25.8072,
+      "distance_to_next_m": 953
+    },
+    {
+      "stop_sequence": 7,
       "name": {
         "ro": "Gara CFR",
         "hu": "Vasútállomás"
       },
       "stop_lat": 45.8631,
       "stop_lon": 25.8101,
-      "distance_to_next_m": 1378
+      "distance_to_next_m": 1314
     },
     {
-      "stop_sequence": 5,
+      "stop_sequence": 8,
       "name": {
         "ro": "Str. Lăcrămioarei 1",
         "hu": "Gyöngyvirág utca 1"
       },
       "stop_lat": 45.8605,
       "stop_lon": 25.8001,
-      "distance_to_next_m": 328
+      "distance_to_next_m": 324
     },
     {
-      "stop_sequence": 6,
+      "stop_sequence": 9,
       "name": {
         "ro": "Str. Lăcrămioarei 2",
         "hu": "Gyöngyvirág utca 2"
       },
-      "stop_lat": 45.858,
-      "stop_lon": 25.7981,
-      "distance_to_next_m": 327
+      "stop_lat": 45.8581,
+      "stop_lon": 25.7979,
+      "distance_to_next_m": 315
     },
     {
-      "stop_sequence": 7,
+      "stop_sequence": 10,
       "name": {
         "ro": "B-dul Nicolae Iorga 1",
         "hu": "N. Iorga sugárút 1"
       },
       "stop_lat": 45.858,
       "stop_lon": 25.7948,
-      "distance_to_next_m": 264
+      "distance_to_next_m": 276
     },
     {
-      "stop_sequence": 8,
+      "stop_sequence": 11,
       "name": {
         "ro": "B-dul Nicolae Iorga 2",
         "hu": "N. Iorga sugárút 2"
       },
-      "stop_lat": 45.8591,
-      "stop_lon": 25.792,
-      "distance_to_next_m": 693
+      "stop_lat": 45.8595,
+      "stop_lon": 25.7919,
+      "distance_to_next_m": 645
     },
     {
-      "stop_sequence": 9,
+      "stop_sequence": 12,
       "name": {
         "ro": "Tribunal",
         "hu": "Törvényszék"
       },
       "stop_lat": 45.8624,
       "stop_lon": 25.7879,
-      "distance_to_next_m": 747
+      "distance_to_next_m": 717
     },
     {
-      "stop_sequence": 10,
+      "stop_sequence": 13,
       "name": {
-        "ro": "Institutul de Proiectări",
+        "ro": "Institutul de proiectări",
         "hu": "Tervező Intézet"
       },
       "stop_lat": 45.8617,
       "stop_lon": 25.7819,
-      "distance_to_next_m": 566
+      "distance_to_next_m": 626
     },
     {
-      "stop_sequence": 11,
+      "stop_sequence": 14,
       "name": {
         "ro": "Str. Dealului",
         "hu": "Domb utca"
       },
-      "stop_lat": 45.8589,
-      "stop_lon": 25.7768,
-      "distance_to_next_m": 820
+      "stop_lat": 45.8594,
+      "stop_lon": 25.776,
+      "distance_to_next_m": 722
     },
     {
-      "stop_sequence": 12,
+      "stop_sequence": 15,
       "name": {
         "ro": "Str. Dózsa György",
         "hu": "Dózsa György utca"

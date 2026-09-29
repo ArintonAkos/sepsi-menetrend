@@ -2,37 +2,37 @@
   "shape_id": "1-return",
   "line": "1",
   "direction": "return",
-  "profile": "mapbox/driving",
-  "note": "running time only; contains no waiting or timetable information",
-  "total_seconds": 765,
+  "profile": "osrm/driving",
+  "note": "running time only; contains no waiting or timetable information; OSRM free-flow",
+  "total_seconds": 418,
   "legs": [
     {
-      "seconds": 149,
-      "metres": 913
+      "seconds": 94,
+      "metres": 914
     },
     {
-      "seconds": 110,
-      "metres": 547
+      "seconds": 42,
+      "metres": 440
     },
     {
-      "seconds": 126,
-      "metres": 497
+      "seconds": 66,
+      "metres": 604
     },
     {
-      "seconds": 114,
-      "metres": 641
+      "seconds": 68,
+      "metres": 632
     },
     {
-      "seconds": 109,
-      "metres": 636
+      "seconds": 58,
+      "metres": 645
     },
     {
-      "seconds": 83,
-      "metres": 493
+      "seconds": 55,
+      "metres": 590
     },
     {
-      "seconds": 74,
-      "metres": 467
+      "seconds": 35,
+      "metres": 370
     }
   ]
 }

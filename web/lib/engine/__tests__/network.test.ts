@@ -45,17 +45,18 @@ const rides = (j: { legs: Array<{ kind: string }> }) =>
 
 describe("the real network", () => {
   it("loaded", () => {
-    // Sept 7 rebuild: +2 provisional kerbs (Vadász utca 2, a 2nd Șugaș Băi
-    // pole) from the 2/6/1B reconstruction - finalised at the Task 18 kerb
-    // checkpoint. Task 29 removed "Biserica Reformată Arcuș" (a board-only
-    // phantom stop on line 10, not on multitrans.ro's official stop-order
-    // page published 2026-09-15), dropping the count by 1.
-    expect(net.stops).toHaveLength(101);             // real platforms, not guessed kerbs
-    expect(net.stations).toHaveLength(101);
-    expect(net.stops.some((stop) => stop.name.ro === "Terminal")).toBe(false);
+    // Every line's geometry now comes from multitrans.ro's own jaratok/ pages
+    // (published 2026-09-15) instead of a board/FB-post/OSRM reconstruction -
+    // real platform positions and stop counts differ from the earlier
+    // best-effort numbers, including "Terminal" now being a genuine stop
+    // (1D/2D/4/5D all list it) rather than a board-only artifact, and 5D
+    // rejoining the feed via 2 real marked return runs.
+    expect(net.stops).toHaveLength(107);             // real platforms, not guessed kerbs
+    expect(net.stations).toHaveLength(107);
+    expect(net.stops.some((stop) => stop.name.ro === "Terminal")).toBe(true);
     expect(net.stops.some((stop) => stop.name.ro === "Calea Brașovului 1")).toBe(true);
     expect(net.walks.length).toBeGreaterThan(80);     // cached physical-platform walks
-    expect(net.lines).toHaveLength(12);
+    expect(net.lines).toHaveLength(13);
     expect(net.trips.length).toBeGreaterThan(400);
   });
 
@@ -69,9 +70,11 @@ describe("the real network", () => {
     expect(school).toBeGreaterThanOrEqual(weekday);
   });
 
-  it("is the Sept 7 feed and flags provisional routes", () => {
+  it("is the Sept 7 feed with operator-sourced route geometry", () => {
     expect(net.validFrom).toBe("20260907");
-    expect(net.routesProvisional).toBe(true);
+    // Every line's polyline now comes from multitrans.ro's own routeLine
+    // data (published 2026-09-15), so nothing is flagged provisional any more.
+    expect(net.routesProvisional).toBe(false);
     expect(net.lines.map((l) => l.id)).toContain("1B");
   });
 
@@ -189,7 +192,7 @@ describe("the real network", () => {
   });
 
   it("leaves Árkos on line 10, the only line that goes there", () => {
-    const found = plan(ctx, ask("Centru Arcuș", "Cartierul Ciucului", { time: 7 * 60 + 30 }));
+    const found = plan(ctx, ask("Centru Arcuș", "Cart. Ciucului", { time: 7 * 60 + 30 }));
     expect(found.length).toBeGreaterThan(0);
     for (const j of found) expect(rides(j)[0].lineId).toBe("10");
   });
@@ -197,7 +200,7 @@ describe("the real network", () => {
   it("offers a real speed-against-walking choice on that journey", () => {
     // riding line 10 further and walking 500 m beats changing onto line 6 by
     // eight minutes - the door-to-door search finds this, stop-to-stop cannot
-    const found = plan(ctx, ask("Centru Arcuș", "Cartierul Ciucului", { time: 7 * 60 + 30 }));
+    const found = plan(ctx, ask("Centru Arcuș", "Cart. Ciucului", { time: 7 * 60 + 30 }));
     const quickest = found.reduce((a, b) => (b.arrive - b.depart) < (a.arrive - a.depart) ? b : a);
     const gentlest = found.reduce((a, b) => b.walkMinutes < a.walkMinutes ? b : a);
     expect(quickest).not.toBe(gentlest);
@@ -207,7 +210,7 @@ describe("the real network", () => {
 
   it("puts the gentler option first when the rider hates walking", () => {
     const req = (walkAversion: number) =>
-      plan(ctx, ask("Centru Arcuș", "Cartierul Ciucului", { time: 7 * 60 + 30, walkAversion }))[0];
+      plan(ctx, ask("Centru Arcuș", "Cart. Ciucului", { time: 7 * 60 + 30, walkAversion }))[0];
     expect(req(0).walkMinutes).toBeGreaterThan(req(1).walkMinutes);
   });
 
@@ -218,7 +221,7 @@ describe("the real network", () => {
   });
 
   it("keeps every journey self-consistent", () => {
-    for (const name of ["Cartierul Ciucului", "Arena Sepsi", "Spitalul Județean"]) {
+    for (const name of ["Cart. Ciucului", "Arena Sepsi", "Spitalul Județean"]) {
       for (const j of plan(ctx, ask("Gara CFR", name))) {
         expect(j.arrive).toBeGreaterThan(j.depart);
         const legs = rides(j);
@@ -245,20 +248,20 @@ describe("the real network", () => {
   });
 
   it("respects a line filter on the real feed", () => {
-    const only10 = plan(ctx, ask("Centru Arcuș", "Cartierul Ciucului",
+    const only10 = plan(ctx, ask("Centru Arcuș", "Cart. Ciucului",
       { time: 7 * 60 + 30, lines: new Set(["10"]) }));
     for (const j of only10) for (const r of rides(j)) expect(r.lineId).toBe("10");
   });
 
   it("arrive-by lands in time on the real feed", () => {
-    const found = plan(ctx, ask("Centru Arcuș", "Cartierul Ciucului",
+    const found = plan(ctx, ask("Centru Arcuș", "Cart. Ciucului",
       { mode: "arriveBy", time: 9 * 60 }));
     expect(found.length).toBeGreaterThan(0);
     for (const j of found) expect(j.arrive).toBeLessThanOrEqual(9 * 60);
   });
 
   it("charges the Arcuș fare for a journey that leaves the city", () => {
-    const [best] = plan(ctx, ask("Centru Arcuș", "Cartierul Ciucului", { time: 7 * 60 + 30 }));
+    const [best] = plan(ctx, ask("Centru Arcuș", "Cart. Ciucului", { time: 7 * 60 + 30 }));
     const stops = new Map(net.stops.map((s) => [s.id, s]));
     const patterns = new Map(net.patterns.map((p) => [p.id, p]));
     const touched = rides(best).flatMap((r) =>
