@@ -61,12 +61,21 @@ export default function StopBoard({
       times: column[day].filter((at) => !marked.has(at) || !extension.has(at)),
     };
   }).filter((row) => row.times.length > 0);
-  /* A physical pole's published columns are the whole public timetable for
-     that side of the street.  Route reconstruction has estimated calls for
-     planning through unprinted intermediate stops, but appending them here
-     creates fictional duplicate directions beside literal operator columns.
-     Therefore estimate only when this pole has no official board at all. */
-  const inferred = officialRows.length === 0 ? board : [];
+  /* A published column is the whole public timetable for its own line at
+     this pole - appending an estimated row beside it would be a fictional
+     duplicate direction next to a literal operator column. But a pole can be
+     an official stop for one line and only a reconstructed intermediate call
+     for another (e.g. line 4 prints a column at "Str. Constructorilor 2"
+     while 1D/2D/5D genuinely stop there too, without their own printed
+     column) - suppressing every inferred row site-wide hid those other
+     lines' buses entirely, not just the duplicate. Estimate per line: only
+     the lines this pole has no official column for - and, for a base line
+     with an official column, its own D-extension too, since an extension's
+     departures are the same physical buses the marked-event folding above
+     already accounts for within the base line's own column. */
+  const officialLines = new Set(officialRows.flatMap(({ column }) =>
+    [column.lineId, `${column.lineId}D`]));
+  const inferred = board.filter((column) => !officialLines.has(column.lineId));
   /* Buses that finish here are worth listing - somebody is being collected -
      but they are not something you board, so they go last under their own
      heading rather than sitting between two departures of the same line. */
@@ -75,7 +84,7 @@ export default function StopBoard({
   const stops = ctx.stops;
   const name = lang === "hu" ? stop.name.hu : stop.name.ro;
   const other = lang === "hu" ? stop.name.ro : stop.name.hu;
-  const estimated = officialRows.length === 0 && inferred.length > 0;
+  const estimated = inferred.length > 0;
 
   return (
     <section className={styles.sheet} aria-label={name} style={pullDismiss.style} {...pullDismiss.handlers}>

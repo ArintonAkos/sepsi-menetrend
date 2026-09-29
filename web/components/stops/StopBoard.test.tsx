@@ -80,6 +80,22 @@ describe("a stop's board", () => {
     expect(screen.queryByText("06:13")).toBeNull();
   });
 
+  it("still shows a line that only has an inferred call at a pole another line prints a column for", () => {
+    // Reported live: "Str. Constructorilor 2" prints an official column for
+    // line 4, but 1D/2D/5D genuinely stop there too (no printed column of
+    // their own) - the pole-wide suppression this replaces hid them entirely,
+    // even though the route line drawn on the map clearly passes through.
+    const stop = net.stops.find((candidate) => candidate.id === "P86")!;
+    render(<StopBoard stop={stop} ctx={ctx}
+                      lines={new Map(net.lines.map((line) => [line.id, line]))}
+                      service="weekday" now={8 * 60} lang="hu" t={STRINGS.hu}
+                      onClose={() => {}} />);
+    const pills = new Set(screen.getAllByText(/^\d+[A-Z]?$/).map((el) => el.textContent));
+    expect(pills).toContain("4");     // the official column
+    expect(pills).toContain("1D");    // an inferred call, no printed column here
+    expect(pills).toContain("2D");
+  });
+
   it("does not mix inferred route calls into a physical board with official columns", () => {
     const returnDebren = net.stops.find((candidate) => candidate.id === "P18")!;
     render(<StopBoard stop={returnDebren} ctx={ctx}
@@ -141,8 +157,12 @@ describe("a stop's board", () => {
     const next = times.filter((el) => el.className.includes("soon"));
     expect(gone.length).toBeGreaterThan(0);
     expect(next.length).toBeGreaterThan(0);
-    // one "next" per line-direction, never more than there are rows
-    expect(next.length).toBeLessThanOrEqual(screen.getAllByText(/^\d+D?$/).length);
+    // one "next" per line-direction, never more than there are rows. A line
+    // id is a number with an optional letter suffix (1B, 2D, ...), not just
+    // an optional "D" - a hub like Gara CFR now also shows lines whose only
+    // column here is an inferred one (see the per-line official/inferred
+    // split above), including letter-suffixed ids.
+    expect(next.length).toBeLessThanOrEqual(screen.getAllByText(/^\d+[A-Z]?$/).length);
   });
 
   it("says a terminus ends there rather than pointing somewhere", () => {
