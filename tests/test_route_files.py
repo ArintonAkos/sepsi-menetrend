@@ -142,5 +142,33 @@ class BoardCoverageTests(unittest.TestCase):
             self.assertIn("Calea Brașovului 1", names)
 
 
+class ReturnHeadsignTests(unittest.TestCase):
+    """merge_lines.py detects and corrects a real bug on multitrans.ro: 1B/1D/
+    2D's "-retur" pages carry an <h1> copy-pasted from their "depart" twin.
+    The detector (a positive match of the page's own title against this
+    file's LAST stop) must catch exactly those, and not lines whose real
+    title is merely a shorter phrasing of the first stop (line 10 - "Arcuș"
+    for "Centru Arcuș" - is NOT a reversed title and must survive untouched)."""
+
+    def test_corrects_the_genuinely_reversed_titles(self):
+        for line, first, last in (
+            ("1B", "Multi-Trans", "Simeria (Str. Berzei)"),
+            ("1D", "Multi-Trans", "Simeria (Str. Berzei)"),
+            ("2D", "Multi-Trans", "Simeria (Str. Berzei)"),
+        ):
+            d = _load(f"line-{line}/return.json")
+            self.assertEqual(d["stops"][0]["name"]["ro"], first, line)
+            self.assertEqual(d["stops"][-1]["name"]["ro"], last, line)
+            self.assertEqual(d["headsign"]["ro"], f"{first} → {last}", line)
+
+    def test_keeps_the_operators_own_title_when_it_is_not_reversed(self):
+        d = _load("line-10/return.json")
+        self.assertEqual(d["stops"][0]["name"]["ro"], "Centru Arcuș")
+        self.assertEqual(d["stops"][-1]["name"]["ro"], "Casa cu Arcade")
+        # the operator's own (correct, just abbreviated) title, not a
+        # synthesized "Centru Arcuș → Casa cu Arcade"
+        self.assertEqual(d["headsign"]["ro"], "Arcuș → Casa cu Arcade")
+
+
 if __name__ == "__main__":
     unittest.main()

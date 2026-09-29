@@ -22,10 +22,10 @@ export const HU_FROM: Record<string, string> = {
   "plugor-sandor-liceum": "Plugor Sándor Líceumtól",
   "sepsi-arena": "Sepsi Arénától",
   "sugasfurdo": "Sugásfürdőtől",
-  "szemerja-vegallomas": "Szemerja Végállomástól",
+  "szemerja-golya-utca": "Szemerjai Gólya utcától",
   "szepmezo": "Szépmezőtől",
   "vasutallomas": "Vasútállomástól",
-  "vitez-mihaly-liceum": "Vitéz Mihály Líceumtól",
+  "vitez-mihaly-lic": "Vitéz Mihály Líceumtól",
 };
 
 /** "to X" - Hungarian terminative, keyed by the HU place slug. */
@@ -40,10 +40,10 @@ export const HU_TO: Record<string, string> = {
   "plugor-sandor-liceum": "Plugor Sándor Líceumig",
   "sepsi-arena": "Sepsi Arénáig",
   "sugasfurdo": "Sugásfürdőig",
-  "szemerja-vegallomas": "Szemerja Végállomásig",
+  "szemerja-golya-utca": "Szemerjai Gólya utcáig",
   "szepmezo": "Szépmezőig",
   "vasutallomas": "Vasútállomásig",
-  "vitez-mihaly-liceum": "Vitéz Mihály Líceumig",
+  "vitez-mihaly-lic": "Vitéz Mihály Líceumig",
 };
 
 /** "Vasútállomástól Megyei Kórházig" - the grammatical A→B phrase for a

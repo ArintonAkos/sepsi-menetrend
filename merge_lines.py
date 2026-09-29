@@ -84,11 +84,17 @@ def merge(line, direction, ro_path, hu_path):
     # A handful of "-retur" pages carry an <h1> copy-pasted verbatim from
     # their own "depart" page (seen on 1B/1D/2D's Sept 15 return pages: title
     # still reads "Simeria (...) -> Campul Frumos" even though the page's own
-    # stop list runs Multi-Trans -> ... -> Simeria). Detect the mismatch
-    # against this file's own first stop and rebuild the headsign from the
-    # real stop list instead of trusting a title known to be occasionally wrong.
+    # stop list runs Multi-Trans -> ... -> Simeria). The tell is specific: the
+    # title's own origin text is actually this file's real LAST stop - not
+    # merely "doesn't start with the real first stop", which also flags
+    # legitimate titles that just abbreviate the first stop's name (line 10's
+    # return page: title "Arcuș -> Casa cu Arcade" for a file starting at
+    # "Centru Arcuș" - correct, "Arcuș" is just short for "Centru Arcuș").
+    # Detect the swap against this file's own last stop and rebuild the
+    # headsign from the real stop list instead of trusting a title known to
+    # be occasionally wrong.
     parsed = {"ro": ro[0]["direction"], "hu": hu[0]["direction"]}
-    if not parsed["ro"].startswith(first["name"]["ro"]):
+    if parsed["ro"].startswith(last["name"]["ro"]):
         parsed = {
             "ro": f"{first['name']['ro']} → {last['name']['ro']}",
             "hu": f"{first['name']['hu']} → {last['name']['hu']}",

@@ -4,8 +4,8 @@
   "circular": false,
   "closes_loop_at_start": false,
   "headsign": {
-    "ro": "Coșeni 2 → Str. Țigaretei 1",
-    "hu": "Szotyor 2 → Cigaretta utca 1"
+    "ro": "Coșeni → Str. Țigaretei 1",
+    "hu": "Szotyor → Cigaretta utca 1"
   },
   "source": {
     "ro": "https://multitrans.ro/jaratok/jarat-3-retur.html",
