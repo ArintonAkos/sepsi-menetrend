@@ -592,9 +592,10 @@ export default function Planner({
       const servicePart = timetableState.service && timetableState.service !== "weekday" ? `&service=${timetableState.service}` : "";
       const dirPart = timetableState.patternId ? `&dir=${encodeURIComponent(timetableState.patternId)}` : "";
       query = `?timetable=1${linePart}${servicePart}${dirPart}`;
-    } else if (boardStop) {
-      query = `?stop=${encodeURIComponent(boardStop)}`;
     } else if (from || to) {
+      // A planned trip is the rider's primary intent - it wins over a stop
+      // board that only happens to still be open behind it (e.g. opened via
+      // ?stop=, never explicitly closed while a journey was planned).
       query = encodeTrip({
         from: from && { name: from.name, at: from.at },
         to: to && { name: to.name, at: to.at },
@@ -602,6 +603,8 @@ export default function Planner({
         mode: mode !== "departAt" ? mode : null,
         journey: sharedJourney,
       });
+    } else if (boardStop) {
+      query = `?stop=${encodeURIComponent(boardStop)}`;
     }
     const link = base + query;
     let what = t.title;
@@ -744,9 +747,9 @@ export default function Planner({
       const servicePart = timetableState.service && timetableState.service !== "weekday" ? `&service=${timetableState.service}` : "";
       const dirPart = timetableState.patternId ? `&dir=${encodeURIComponent(timetableState.patternId)}` : "";
       nextQuery = `?timetable=1${linePart}${servicePart}${dirPart}`;
-    } else if (boardStop) {
-      nextQuery = `?stop=${encodeURIComponent(boardStop)}`;
     } else if (from || to) {
+      // Same priority as `share()` above: a planned trip wins over a stop
+      // board that only happens to still be open behind it.
       nextQuery = encodeTrip({
         from: from && { name: from.name, at: from.at },
         to: to && { name: to.name, at: to.at },
@@ -754,6 +757,8 @@ export default function Planner({
         mode: mode !== "departAt" ? mode : null,
         journey: sharedJourney,
       });
+    } else if (boardStop) {
+      nextQuery = `?stop=${encodeURIComponent(boardStop)}`;
     }
 
     const currentQuery = window.location.search;

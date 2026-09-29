@@ -928,6 +928,18 @@ describe("a shared link", () => {
     expect((screen.getByLabelText("Honnan") as HTMLInputElement).value).toBe("");
     expect((screen.getByLabelText("Hová") as HTMLInputElement).value).toBe("");
   });
+
+  it("lets a newly planned trip take over the address bar from a lingering stop board", async () => {
+    // Opening ?stop=P9 leaves a board open; planning a journey afterwards
+    // must not get stuck behind it - the trip is the rider's current intent
+    // and is what a share of *this* screen should carry.
+    at("/?stop=P9");
+    const user = await setup();
+    await waitFor(() => expect(window.location.search).toBe("?stop=P9"));
+    await startPlanning(user);
+    await waitFor(() => expect(window.location.search).toContain("from="));
+    expect(window.location.search).not.toContain("stop=P9");
+  });
 });
 
 describe("journey detail", () => {
