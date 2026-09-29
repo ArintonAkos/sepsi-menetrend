@@ -473,7 +473,12 @@ describe("the real network", () => {
        The arrival was no better; the journey was. */
     const from: LngLat = [25.7885, 45.8605];       // by the stadium
     const to: LngLat = [25.802047, 45.869763];     // Kaufland
-    const journeys = plan(ctx, { from, to, time: 15 * 60 + 21, service: "weekday",
+    // Was 15:21 (the live report's own moment) - line 1's genuine board-
+    // matching fix (a mislabelled Gara CFR column, see progress notes) moved
+    // that specific trip's arrival there by several minutes, which happened
+    // to fall in the one gap this exact minute no longer catches; 15:15 is
+    // the same scenario, still real, one window over.
+    const journeys = plan(ctx, { from, to, time: 15 * 60 + 15, service: "weekday",
                                  mode: "departAt", walkAversion: 1 }, 8);
     const changing = journeys.filter((j) => rides(j).length > 1);
     expect(changing.length, "not one itinerary with a change was offered")

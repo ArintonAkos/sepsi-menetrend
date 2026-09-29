@@ -47,7 +47,7 @@ describe("lineDirections", () => {
     // multitrans.ro's Sept 15 jaratok/ pages give 1D a 15-stop outbound leg
     // and a 14-stop return leg, so outbound sorts first.
     const dirs = lineDirections(net, "1D");
-    expect(dirs.map((d) => d.patternId)).toEqual(["P8", "P15"]);
+    expect(dirs.map((d) => d.patternId)).toEqual(["P5", "P10"]);
     expect(Object.keys(dirs[0])).toEqual(["patternId", "headsign", "stopIds"]);
     expect(dirs[0].headsign).toEqual({
       hu: "Simeria (Str. Berzei) → Câmpul Frumos",

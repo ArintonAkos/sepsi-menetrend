@@ -48,6 +48,14 @@
   ],
   "rewriteColumns": [
     {
+      "line": "1",
+      "fromDirection": "depart",
+      "fromDestination": "Gara CFR / Vasútállomás (indulás Simeria felé)",
+      "stops": ["Gara CFR"],
+      "direction": "return",
+      "destination": "Simeria (Str. Berzei) / Szemerja Végállomás"
+    },
+    {
       "line": "3",
       "fromDirection": "depart",
       "fromDestination": "Str. Țigaretei 1 / Cigaretta utca 1",
