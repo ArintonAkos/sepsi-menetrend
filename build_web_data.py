@@ -48,6 +48,15 @@ from school_calendar import SCHOOL_EXCEPTIONS, SCHOOL_TERMS  # noqa: E402
 ROOT = Path(__file__).resolve().parent
 GTFS = ROOT / "gtfs"
 OUT = ROOT / "web" / "public" / "data"
+
+# Every statutory holiday (Codul Muncii art. 139) runs the weekend timetable,
+# not the weekday one, whatever day of the week it lands on - years of local
+# experience, not something the operator publishes anywhere. YYYYMMDD, same
+# convention as schoolTerms/schoolExceptions.
+PUBLIC_HOLIDAYS = sorted(
+    d.replace("-", "")
+    for d in json.loads((OUT / "ro-holidays.json").read_text(encoding="utf-8"))["dates"]
+)
 LAT0 = 45.865
 # What counts as "in the area" is distance from the nearest stop, not a box.
 #
@@ -776,6 +785,7 @@ def main():
         "routesProvisional": False,  # every line's geometry now comes from Multi-Trans's own published routeLine polyline (2026-09-15 jaratok/ pages)
         "schoolTerms": [list(t) for t in SCHOOL_TERMS],
         "schoolExceptions": SCHOOL_EXCEPTIONS,
+        "publicHolidays": PUBLIC_HOLIDAYS,
         "lines": lines, "stops": stops, "stations": station_list,
         "patterns": list(patterns.values()), "trips": trips, "walks": walks,
         "officialBoards": official_boards(timetable, board_bindings, strict=False,

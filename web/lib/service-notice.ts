@@ -1,22 +1,22 @@
-/** Multi-Trans published the 2026-09-07 departure times but not the new route
- *  maps, so the geometry of the re-anchored lines (2, 6, 10) and the new line
- *  1B is a best-effort reconstruction. While that is the case the planner and
- *  the Timetable carry a strip pointing riders at the stop sign for the exact
- *  route.
- *
- *  Driven by `network.json`'s `routesProvisional` flag - the build sets it, and
- *  the commit that ships the operator's official maps clears it and deletes
- *  this component. */
+/** Buses run the weekend timetable on statutory holidays (Codul Muncii art.
+ *  139), whatever weekday they land on - years of local riding experience,
+ *  not something the operator publishes anywhere. The planner carries a
+ *  dismissible strip on such a day so riders checking a normal-looking
+ *  weekday aren't caught out. Driven by `network.json`'s `publicHolidays`. */
+
+import { ymd } from "./engine/time";
 
 export interface ServiceNoticeState {
   show: boolean;
 }
 
-/** Show the strip while the feed's routes are provisional and the rider has
- *  not dismissed it. */
+/** Show the strip when the viewed date is a public holiday and the rider has
+ *  not already dismissed it for that specific date. */
 export function serviceNoticeState(
-  routesProvisional: boolean | undefined,
-  dismissed: boolean,
+  date: Date,
+  publicHolidays: string[] | undefined,
+  dismissedDate: string | null,
 ): ServiceNoticeState {
-  return { show: Boolean(routesProvisional) && !dismissed };
+  const today = ymd(date);
+  return { show: Boolean(publicHolidays?.includes(today)) && dismissedDate !== today };
 }

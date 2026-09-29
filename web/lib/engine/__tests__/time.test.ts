@@ -57,6 +57,24 @@ describe("serviceForDate with a calendar", () => {
     expect(serviceForDate(new Date(2026, 10, 16), cal)).toBe("weekday"));   // Mon Nov 16, past the single term
 });
 
+describe("serviceForDate on a statutory holiday", () => {
+  // Dec 1 2026 (Great Union Day) is a Tuesday inside a teaching term - would
+  // resolve "school" on terms alone, but years of local riding experience say
+  // the operator runs the weekend timetable on it regardless. Checked before
+  // the school-day check, so the holiday wins.
+  const cal = {
+    schoolTerms: [["20261102", "20261222"]] as [string, string][],
+    schoolExceptions: [] as string[],
+    publicHolidays: ["20261201"],
+  };
+  it("weekend, even though it falls inside a school term", () =>
+    expect(serviceForDate(new Date(2026, 11, 1), cal)).toBe("weekend"));
+  it("an ordinary teaching day in the same term is unaffected", () =>
+    expect(serviceForDate(new Date(2026, 11, 2), cal)).toBe("school"));
+  it("without a calendar, an unlisted holiday still resolves as a plain weekday", () =>
+    expect(serviceForDate(new Date(2026, 11, 1))).toBe("weekday"));
+});
+
 describe("forwardDelta", () => {
   it("measures forward in time", () => expect(forwardDelta(600, 660)).toBe(60));
   it("crosses midnight instead of going negative", () =>

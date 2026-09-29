@@ -100,6 +100,7 @@ export default function Planner({
   const cal = useMemo(() => ({
     schoolTerms: network.schoolTerms ?? [],
     schoolExceptions: network.schoolExceptions ?? [],
+    publicHolidays: network.publicHolidays ?? [],
   }), [network]);
   const area = useMemo(
     () => ({ box, reach, stops: network.stops.map((s) => s.at) }),
@@ -929,7 +930,7 @@ export default function Planner({
         )}
         <div className={styles.panel}>
           {!searching && detail === null && (
-            <ServiceNotice routesProvisional={network.routesProvisional} t={t} />
+            <ServiceNotice date={date} publicHolidays={network.publicHolidays} t={t} />
           )}
           <div className={styles.searchHead}>
             <button onClick={closeSearching} aria-label={t.back}><Back /></button>

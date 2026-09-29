@@ -13,7 +13,7 @@ export function formatHHMM(min: Minute): string {
   return `${String(Math.floor(m / 60)).padStart(2, "0")}:${String(m % 60).padStart(2, "0")}`;
 }
 
-function ymd(d: Date): string {
+export function ymd(d: Date): string {
   return `${d.getFullYear()}${String(d.getMonth() + 1).padStart(2, "0")}${String(d.getDate()).padStart(2, "0")}`;
 }
 
@@ -36,13 +36,22 @@ export function isSchoolDay(
  *
  *  Multi-Trans publishes two patterns: weekdays, and Saturday+Sunday together.
  *  The school-day service is a superset the app layers on top - see
- *  `build_web_data.py` / `build_gtfs.py`. */
+ *  `build_web_data.py` / `build_gtfs.py`. A statutory holiday (Codul Muncii
+ *  art. 139) runs the weekend timetable regardless of the weekday it lands
+ *  on - years of local riding experience, not something the operator
+ *  publishes; checked before the school day, since a holiday is never a
+ *  teaching day either. */
 export function serviceForDate(
   date: Date,
-  cal?: { schoolTerms: [string, string][]; schoolExceptions: string[] },
+  cal?: {
+    schoolTerms: [string, string][];
+    schoolExceptions: string[];
+    publicHolidays?: string[];
+  },
 ): ServiceId {
   const day = date.getDay();
   if (day === 0 || day === 6) return "weekend";
+  if (cal?.publicHolidays?.includes(ymd(date))) return "weekend";
   if (cal && isSchoolDay(date, cal.schoolTerms, cal.schoolExceptions)) return "school";
   return "weekday";
 }

@@ -107,14 +107,19 @@ export interface Network {
   version: string;
   generated: string;
   validFrom: string;
-  /** Routes rebuilt from the operator's stop boards, not their published
-   *  route maps - set until Multi-Trans publishes the Sept 7 maps. */
+  /** True while a line's drawn route is a reconstruction rather than the
+   *  operator's own published geometry. False now that every line's polyline
+   *  comes from multitrans.ro's own routeLine data (2026-09-15). */
   routesProvisional?: boolean;
   /** The 2026-27 school year, baked from `school_calendar.py`. `serviceForDate`
    *  resolves a teaching weekday to the "school" service; on any other day these
    *  are unused. `[startYMD, endYMD]` term ranges and `YMD` holiday exceptions. */
   schoolTerms?: [string, string][];
   schoolExceptions?: string[];
+  /** Statutory holidays (Codul Muncii art. 139), `YMD`. `serviceForDate`
+   *  resolves any of these to the "weekend" service, whatever weekday they
+   *  land on - baked from `web/public/data/ro-holidays.json`. */
+  publicHolidays?: string[];
   lines: Line[];
   stops: Stop[];
   stations: Station[];

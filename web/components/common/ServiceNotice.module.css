@@ -1,5 +1,4 @@
-/* A temporary strip - reads on both the olive planner panel and the paper
-   Timetable header, so it carries its own surface. */
+/* A dismissible strip on the olive planner panel; carries its own surface. */
 .notice {
   display: flex;
   align-items: flex-start;

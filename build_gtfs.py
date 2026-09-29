@@ -69,6 +69,20 @@ SERVICES = {
 FEED_START = "20260907"        # "2026. szeptember 7-től érvényes"
 FEED_END = "20271231"
 
+_HOLIDAYS = json.loads(
+    (ROOT / "web/public/data/ro-holidays.json").read_text(encoding="utf-8"))["dates"]
+
+
+def holiday_weekdays():
+    """Every statutory holiday (Codul Muncii art. 139), as YYYYMMDD, that falls
+    on a Mon-Fri within the feed window - years of local riding experience:
+    the operator runs the weekend timetable on these, not the weekday one."""
+    for h in _HOLIDAYS:
+        d = date.fromisoformat(h)
+        s = d.strftime("%Y%m%d")
+        if d.weekday() < 5 and FEED_START <= s <= FEED_END:
+            yield s
+
 
 def gtfs_time(minutes):
     """GTFS lets a trip run past midnight as 24:xx, so hours are not clamped."""
@@ -527,11 +541,19 @@ def main():
                               [dict(service_id=k, **v, start_date=FEED_START,
                                     end_date=FEED_END) for k, v in SERVICES.items()]),
         # The "school" service runs on no fixed weekday; every teaching day it
-        # runs is listed here explicitly (exception_type 1 = "added").
+        # runs is listed here explicitly (exception_type 1 = "added"). A
+        # statutory holiday landing on a weekday swaps "weekday" out for
+        # "weekend" (exception_type 2 = "removed", 1 = "added"); "school"
+        # needs no matching removal since school_days() already excludes
+        # holidays (see school_calendar.py).
         "calendar_dates.txt": write("calendar_dates.txt",
                                     ["service_id", "date", "exception_type"],
                                     [{"service_id": "school", "date": d,
-                                      "exception_type": 1} for d in school_days()]),
+                                      "exception_type": 1} for d in school_days()]
+                                    + [{"service_id": "weekday", "date": d,
+                                        "exception_type": 2} for d in holiday_weekdays()]
+                                    + [{"service_id": "weekend", "date": d,
+                                        "exception_type": 1} for d in holiday_weekdays()]),
         "shapes.txt": write("shapes.txt", ["shape_id", "shape_pt_lat", "shape_pt_lon",
                                            "shape_pt_sequence",
                                            "shape_dist_traveled"], shape_rows),

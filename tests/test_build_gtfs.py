@@ -155,12 +155,38 @@ class GtfsTopologyTests(unittest.TestCase):
 
         with (build_gtfs.OUT / "calendar_dates.txt").open(encoding="utf-8", newline="") as handle:
             dates = list(csv.DictReader(handle))
-        self.assertGreater(len(dates), 150)
-        self.assertTrue(all(row["service_id"] == "school" for row in dates))
-        self.assertTrue(all(row["exception_type"] == "1" for row in dates))
+        school_rows = [row for row in dates if row["service_id"] == "school"]
+        self.assertGreater(len(school_rows), 150)
+        self.assertTrue(all(row["exception_type"] == "1" for row in school_rows))
 
         with zipfile.ZipFile(build_gtfs.ARCHIVE) as archive:
             self.assertIn("calendar_dates.txt", archive.namelist())
+
+    def test_public_holiday_landing_on_a_weekday_swaps_to_the_weekend_service(self):
+        """A statutory holiday that falls on a weekday (e.g. Dec 1, Great Union
+        Day) removes that date's "weekday" service and adds "weekend" service
+        instead - years of local riding experience: the operator runs the
+        Saturday/Sunday timetable on these, not the Monday-Friday one. A
+        holiday landing on a weekend needs no exception; "weekend" already
+        runs that day, and "school" needs none either since school_days()
+        already excludes every such date (school_calendar.py)."""
+        self.build_in_temporary_directory()
+
+        with (build_gtfs.OUT / "calendar_dates.txt").open(encoding="utf-8", newline="") as handle:
+            dates = list(csv.DictReader(handle))
+
+        holiday_dates = set(build_gtfs.holiday_weekdays())
+        self.assertGreater(len(holiday_dates), 0)
+
+        removed = {row["date"] for row in dates
+                   if row["service_id"] == "weekday" and row["exception_type"] == "2"}
+        added = {row["date"] for row in dates
+                 if row["service_id"] == "weekend" and row["exception_type"] == "1"}
+        self.assertEqual(removed, holiday_dates)
+        self.assertEqual(added, holiday_dates)
+
+        from school_calendar import school_days
+        self.assertEqual(holiday_dates & set(school_days()), set())
 
     def test_line_six_reaches_the_arena_outbound_and_returns_as_a_separate_pass(self):
         # Fázis 2 re-anchored line 6 to the Gólya utca terminus and split it into
