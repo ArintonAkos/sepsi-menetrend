@@ -90,7 +90,17 @@ export const HU: Record<GuideKey, GuideCopy> = {
       },
       { h2: "Bérletek" },
       {
-        p: "A Multi-Trans 2026. februári díjtáblázata szerint a havi bérlet minden vonalra 84 lej. A nyugdíjasok a nyugdíjuk összegétől függően ingyenes vagy kedvezményes bérletet kapnak, a sepsiszentgyörgyi iskolák diákjainak pedig ingyenes. A bérletet a Multi-Trans jegypénztáraiban lehet igényelni.",
+        p: "A Multi-Trans 2026. februári díjtáblázata szerint a havi bérlet minden vonalra 84 lej. A nyugdíjasoknak a nyugdíj összege szerint jár kedvezmény:",
+      },
+      {
+        ul: [
+          "1600 lejig terjedő nyugdíj esetén: ingyenes bérlet",
+          "1601–2000 lej közötti nyugdíj esetén: 75% kedvezmény, 21 lej",
+          "2001–2400 lej közötti nyugdíj esetén: 50% kedvezmény, 42 lej",
+        ],
+      },
+      {
+        p: "A sepsiszentgyörgyi municípium iskoláinak diákjai számára a bérlet szintén ingyenes. A bérletet a Multi-Trans jegypénztáraiban lehet igényelni.",
       },
       { h2: "Ingyenes péntek" },
       {

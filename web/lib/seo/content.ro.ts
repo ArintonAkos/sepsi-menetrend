@@ -90,7 +90,17 @@ export const RO: Record<GuideKey, GuideCopy> = {
       },
       { h2: "Abonamente" },
       {
-        p: "Conform tabelului de tarife Multi-Trans din februarie 2026, abonamentul lunar pe toate liniile costă 84 lei. Pensionarii primesc abonament gratuit sau redus în funcție de valoarea pensiei, iar elevii școlilor din Sfântu Gheorghe îl primesc gratuit. Abonamentul se obține de la chioșcurile Multi-Trans.",
+        p: "Conform tabelului de tarife Multi-Trans din februarie 2026, abonamentul lunar pe toate liniile costă 84 lei. Pensionarii primesc reducere în funcție de valoarea pensiei:",
+      },
+      {
+        ul: [
+          "pensie până la 1600 lei: abonament gratuit",
+          "pensie între 1601–2000 lei: reducere 75%, 21 lei",
+          "pensie între 2001–2400 lei: reducere 50%, 42 lei",
+        ],
+      },
+      {
+        p: "Elevii unităților de învățământ din municipiul Sfântu Gheorghe primesc de asemenea abonament gratuit. Abonamentul se obține de la chioșcurile Multi-Trans.",
       },
       { h2: "Vinerea gratuită" },
       {
