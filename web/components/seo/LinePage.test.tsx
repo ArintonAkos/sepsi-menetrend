@@ -142,4 +142,18 @@ describe("LinePage", () => {
     expect(src).toMatch(/import RouteShape from/);
     expect(src).toMatch(/<RouteShape\b/);
   });
+
+  it("titles each direction in the page's language", async () => {
+    await renderLine({ lang: "hu", id: "6" });
+    const hu = screen.getAllByRole("heading", { level: 2 }).map((h) => h.textContent);
+    expect(hu).toContain("Csíki negyed → Vasútállomás (iskolajárat)");
+    expect(hu.join(" ")).not.toMatch(/Gara CFR|Gară CFR/);
+  });
+
+  it("translates the school-run tag on the English page", async () => {
+    await renderLine({ lang: "en", id: "6" });
+    const en = screen.getAllByRole("heading", { level: 2 }).map((h) => h.textContent);
+    expect(en).toContain("Csíki negyed → Vasútállomás (school run)");
+    expect(en.join(" ")).not.toMatch(/iskolajárat/);
+  });
 });

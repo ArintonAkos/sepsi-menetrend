@@ -59,6 +59,14 @@ const PROVISIONAL_LINES = new Set(["10B"]);
  *  getting announced as a recurring thing worth baking into the data instead. */
 const BIKE_SUSPENDED_LINES = new Set(["9"]);
 
+/** A direction's heading. English pages reuse the Hungarian stop names (the
+ *  feed has no English ones), but the school-run tag is a word, not a name,
+ *  so it is translated rather than left as "(iskolajárat)". */
+function directionName(headsign: { hu: string; ro: string }, lang: SeoLang): string {
+  const name = pickName(headsign, lang);
+  return lang === "en" ? name.replace(" (iskolajárat)", " (school run)") : name;
+}
+
 const huPath = (id: string) => `/vonalak/${lineSlug(id)}/`;
 const roPath = (id: string) => `/ro/linii/${lineSlug(id)}/`;
 const enPathFn = (id: string) => `/en/lines/${lineSlug(id)}/`;
@@ -263,7 +271,7 @@ export default async function LinePage({ lang, id }: { lang: SeoLang; id: string
         const board = boardFor(net, id, dir.stopIds[0]);
         const pattern = net.patterns.find((p) => p.id === dir.patternId);
         const stops = stopEntries(places, dir.stopIds, lang);
-        const headsign = pickName(dir.headsign, lang);
+        const headsign = directionName(dir.headsign, lang);
         const mapSrc = mapImage(id, i);
         // Both directions carry a map; the headsign in the alt is what lets a
         // screen reader or a crawler tell the two apart.
