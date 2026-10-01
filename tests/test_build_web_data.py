@@ -2,7 +2,9 @@ import json
 import unittest
 from pathlib import Path
 
-from build_web_data import official_board_bindings, official_boards, pattern_key, platform_side
+from build_web_data import (
+    headsign_hu, official_board_bindings, official_boards, pattern_key, platform_side,
+)
 
 ROOT = Path(__file__).resolve().parent.parent
 NETWORK = ROOT / "web" / "public" / "data" / "network.json"
@@ -180,6 +182,25 @@ class SchoolServiceTests(unittest.TestCase):
         school = [t for t in net["trips"] if t["service"] == "school"]
         self.assertGreater(len(weekday), 0)
         self.assertGreaterEqual(len(school), len(weekday))
+
+
+class HeadsignTests(unittest.TestCase):
+    HU = {"Simeria (Str. Berzei)": "Szemerja (Gólya utca)", "Gara CFR": "Vasútállomás",
+          "Cartierul Ciucului": "Csíki negyed"}
+
+    def test_translates_each_end_of_the_headsign(self):
+        self.assertEqual(headsign_hu("Simeria (Str. Berzei) → Gara CFR", self.HU),
+                         "Szemerja (Gólya utca) → Vasútállomás")
+
+    def test_town_termini_and_school_suffix(self):
+        self.assertEqual(headsign_hu("Arcuș → Casa cu Arcade", self.HU), "Árkos → Casa cu Arcade")
+        self.assertEqual(headsign_hu("Cartierul Ciucului → Gară CFR (cursă școlară)", self.HU),
+                         "Csíki negyed → Vasútállomás (iskolajárat)")
+
+    def test_built_feed_has_no_romanian_hungarian_headsign(self):
+        net = json.loads(NETWORK.read_text(encoding="utf-8"))
+        for p in net["patterns"]:
+            self.assertNotRegex(p["headsign"]["hu"], "[șțăâî]|Gara CFR", p["id"])
 
 
 if __name__ == "__main__":

@@ -589,6 +589,24 @@ def write_fares():
         print(f"  {t['id']:14} {t['price']} lej / {t['validFor']} min")
 
 
+# A headsign is "From → To" in Romanian, while `hu` is keyed by single stop
+# names - so it has to be translated end by end. A looked-up whole headsign
+# never matched, and every Hungarian line page carried Romanian direction
+# headings ("Gara CFR" for "Vasútállomás"). Some termini are town names rather
+# than stop names, and one board spells the station with a stray breve.
+HEADSIGN_HU = {"Arcuș": "Árkos", "Coșeni": "Szotyor", "Gară CFR": "Vasútállomás"}
+SCHOOL_SUFFIX = (" (cursă școlară)", " (iskolajárat)")
+
+
+def headsign_hu(ro, hu):
+    """Hungarian form of a Romanian "From → To" headsign; unknown ends pass through."""
+    suffix = ""
+    if ro.endswith(SCHOOL_SUFFIX[0]):
+        ro, suffix = ro[: -len(SCHOOL_SUFFIX[0])], SCHOOL_SUFFIX[1]
+    ends = [hu.get(end) or HEADSIGN_HU.get(end, end) for end in ro.split(" → ")]
+    return " → ".join(ends) + suffix
+
+
 def main():
     OUT.mkdir(parents=True, exist_ok=True)
     stops_raw = read("stops.txt")
@@ -688,7 +706,7 @@ def main():
             patterns[pid] = {
                 "id": pid, "lineId": trip["route_id"], "shapeId": trip["shape_id"],
                 "headsign": {"ro": trip["trip_headsign"],
-                             "hu": hu.get(trip["trip_headsign"], trip["trip_headsign"])},
+                             "hu": headsign_hu(trip["trip_headsign"], hu)},
                 "stopIds": [r["stop_id"] for r in rows],
                 "offsets": [(seconds(r["departure_time"]) - base) // 60 for r in rows],
                 "published": [r.get("timepoint") == "1" for r in rows],

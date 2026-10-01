@@ -751,7 +751,7 @@ describe("the timetables", () => {
     expect(await screen.findByRole("heading", { name: "Menetrendek" })).toBeInTheDocument();
     expect(screen.queryByLabelText("Honnan")).not.toBeInTheDocument();
     expect(screen.getAllByRole("button", {
-      name: "→ Simeria (Str. Berzei) → Gara CFR",
+      name: "→ Szemerja (Gólya utca) → Vasútállomás",
     })).toHaveLength(1);
 
     const grid = screen.getByRole("table");

@@ -52,7 +52,7 @@ describe("lineDirections", () => {
     expect(dirs.map((d) => d.patternId)).toEqual(["P7", "P12"]);
     expect(Object.keys(dirs[0])).toEqual(["patternId", "headsign", "stopIds"]);
     expect(dirs[0].headsign).toEqual({
-      hu: "Simeria (Str. Berzei) → Câmpul Frumos",
+      hu: "Szemerja (Gólya utca) → Szépmező",
       ro: "Simeria (Str. Berzei) → Câmpul Frumos",
     });
     expect(dirs[0].stopIds.length).toBe(16);
