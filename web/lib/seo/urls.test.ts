@@ -2,7 +2,7 @@ import { describe, it, expect } from "vitest";
 import { loadNetwork } from "./network";
 import { buildPlaces } from "./places";
 import { notablePairs } from "./routes";
-import { allPages } from "./urls";
+import { allPages, isoDate } from "./urls";
 
 const net = loadNetwork();
 const pages = allPages();
@@ -66,9 +66,16 @@ describe("allPages", () => {
     expect(terms?.priority).toBe(0.4);
   });
 
-  it("derives lastModified from net.generated (YYYYMMDD -> ISO)", () => {
-    expect(pages[0].lastModified).toBe("2026-09-07");
-    expect(pages.every((p) => p.lastModified === "2026-09-07")).toBe(true);
+  it("derives lastModified from net.generated, the feed's build day", () => {
+    // feed_version of the Oct 1 2026 revision - not feed_start_date
+    // (2026-09-07), which no later revision moves
+    expect(pages[0].lastModified).toBe("2026-10-01");
+    expect(pages.every((p) => p.lastModified === "2026-10-01")).toBe(true);
+  });
+
+  it("accepts both stamp shapes", () => {
+    expect(isoDate("2026-10-01")).toBe("2026-10-01");
+    expect(isoDate("20260907")).toBe("2026-09-07");
   });
 
   it("orders static pages first, then lines, then places, then routes", () => {

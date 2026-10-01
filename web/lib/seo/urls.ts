@@ -27,9 +27,11 @@ export interface PageEntry {
   priority: number;
 }
 
-/** `"20260807"` -> `"2026-08-07"`. A stamp that isn't 8 digits falls back to
- *  today rather than sinking the whole build over a bad feed field. */
-function isoDate(generated: string): string {
+/** `"2026-10-01"` (feed_version) or `"20261001"` -> `"2026-10-01"`. Anything
+ *  else falls back to today rather than sinking the whole build over a bad
+ *  feed field. */
+export function isoDate(generated: string): string {
+  if (/^\d{4}-\d{2}-\d{2}$/.test(generated)) return generated;
   return /^\d{8}$/.test(generated)
     ? `${generated.slice(0, 4)}-${generated.slice(4, 6)}-${generated.slice(6, 8)}`
     : new Date().toISOString().slice(0, 10);

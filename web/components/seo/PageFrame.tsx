@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import { breadcrumbLd, jsonLdScript } from "@/lib/seo/jsonld";
 import { Back } from "@/components/common/icons";
 import type { SeoLang } from "@/lib/seo/lang";
+import { formatRevised, revisedOn } from "@/lib/seo/freshness";
 import styles from "./PageFrame.module.css";
 
 /** The shared chrome around every generated SEO page: the app header (brand
@@ -40,6 +41,7 @@ const T = {
     back: "Vissza",
     switcherLabel: "Nyelvválasztó",
     disclaimer: "Nem a Multi-Trans SA hivatalos oldala",
+    revised: "Menetrend-adatok frissítve:",
     operator: "A Multi-Trans hivatalos oldala: multitrans.ro",
     pillar: { href: "/buszmenetrend/", label: "Teljes buszmenetrend" },
     planner: { href: "/", label: "Útvonaltervező" },
@@ -49,6 +51,7 @@ const T = {
     back: "Înapoi",
     switcherLabel: "Selector de limbă",
     disclaimer: "Nu este site-ul oficial Multi-Trans SA",
+    revised: "Date de orar actualizate:",
     operator: "Site-ul oficial Multi-Trans: multitrans.ro",
     pillar: { href: "/ro/orar-autobuz/", label: "Orar autobuz complet" },
     planner: { href: "/ro/", label: "Planificator de rute" },
@@ -58,6 +61,7 @@ const T = {
     back: "Back",
     switcherLabel: "Language",
     disclaimer: "Not the official Multi-Trans SA website",
+    revised: "Timetable data updated:",
     operator: "The official Multi-Trans site: multitrans.ro",
     pillar: { href: "/en/bus-schedule/", label: "Full bus schedule" },
     planner: { href: "/en/", label: "Route planner" },
@@ -69,6 +73,7 @@ const SWITCH: Record<SeoLang, string> = { hu: "Magyar", ro: "Română", en: "Eng
 
 export default function PageFrame({ lang, kind, crumbs, paths, children }: PageFrameProps) {
   const t = T[lang];
+  const revised = revisedOn();
   // the back arrow goes up one level: the crumb directly above this page (its
   // index / section), falling back to the site root when there is no parent.
   const up =
@@ -138,6 +143,9 @@ export default function PageFrame({ lang, kind, crumbs, paths, children }: PageF
             <footer> inside <main> gets no `contentinfo` landmark. */}
         <footer className={styles.footerNav}>
           <p className={styles.disclaimer}>{t.disclaimer}</p>
+          <p className={styles.revised}>
+            {t.revised} <time dateTime={revised}>{formatRevised(revised, lang)}</time>
+          </p>
           <div className={styles.footerLinks}>
             <a href={t.planner.href}>{t.planner.label}</a>
             <a href={t.pillar.href}>{t.pillar.label}</a>

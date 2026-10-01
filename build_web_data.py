@@ -798,7 +798,11 @@ def main():
 
     network = {
         "version": feed.get("feed_version", "dev"),
-        "generated": feed.get("feed_start_date", ""),
+        # the day this feed was built from the operator's latest timetable -
+        # what the sitemap's lastmod and the pages' "updated" line report.
+        # (It was feed_start_date, which stayed 2026-09-07 through the Oct 1
+        # revision, so every page claimed to be a month stale.)
+        "generated": feed.get("feed_version", ""),
         "validFrom": feed.get("feed_start_date", ""),
         "routesProvisional": True,  # line 10B (added 2026-10-01) has no published jarat-10b.html yet; every other line's geometry is Multi-Trans's own routeLine polyline (2026-09-15)
         "schoolTerms": [list(t) for t in SCHOOL_TERMS],
