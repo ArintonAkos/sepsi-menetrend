@@ -1,0 +1,138 @@
+{
+  "line": "10B",
+  "direction": "depart",
+  "circular": false,
+  "closes_loop_at_start": false,
+  "headsign": {
+    "ro": "Spitalul Județean → Arcuș",
+    "hu": "Megyei Kórház → Árkos"
+  },
+  "source": {
+    "ro": "https://www.multitrans.ro/orarele/multitrans_menetrendek_web.html (no dedicated jarat-10b.html exists yet)",
+    "hu": "https://www.multitrans.ro/orarele/multitrans_menetrendek_web.html (nincs külön jarat-10b.html oldal)"
+  },
+  "stop_count": 12,
+  "_note": "Built 2026-10-01: Multi-Trans's Oct 1 2026 timetable board adds a '10B' line - during the school term it runs Spitalul Județean <-> Arcuș instead of line 10's usual Casa cu Arcade <-> Arcuș, prepending/appending exactly one real stop (Spitalul Județean, already used by line 1) to line 10's own existing, unchanged stop sequence. No official 10B route map exists yet (jarat-10.html is still Sept 15); the Casa cu Arcade<->Arcuș portion reuses line 10's own geometry, the new hospital hop is OSRM-routed. Stop order confirmed against the operator's own per-stop board listings for '10B' (pasted by the owner 2026-10-01), not guessed. In vacation periods 10B reverts to exactly line 10's own route (not modeled here as a separate pattern - its 3 daily trips are a known, deferred gap).",
+  "stops": [
+    {
+      "name": {
+        "ro": "Spitalul Județean",
+        "hu": "Megyei Kórház"
+      },
+      "stop_lat": 45.8639,
+      "stop_lon": 25.778,
+      "stop_sequence": 1,
+      "distance_to_next_m": 934
+    },
+    {
+      "stop_sequence": 2,
+      "name": {
+        "ro": "Casa cu Arcade",
+        "hu": "Lábasház"
+      },
+      "stop_lat": 45.8636,
+      "stop_lon": 25.7866,
+      "distance_to_next_m": 659
+    },
+    {
+      "stop_sequence": 3,
+      "name": {
+        "ro": "Biserica Reformată",
+        "hu": "Református Templom"
+      },
+      "stop_lat": 45.8638,
+      "stop_lon": 25.7931,
+      "distance_to_next_m": 586
+    },
+    {
+      "stop_sequence": 4,
+      "name": {
+        "ro": "Debren",
+        "hu": "Debren"
+      },
+      "stop_lat": 45.8672,
+      "stop_lon": 25.7961,
+      "distance_to_next_m": 379
+    },
+    {
+      "stop_sequence": 5,
+      "name": {
+        "ro": "Str. Ciucului 1",
+        "hu": "Csíki utca 1"
+      },
+      "stop_lat": 45.8692,
+      "stop_lon": 25.7932,
+      "distance_to_next_m": 365
+    },
+    {
+      "stop_sequence": 6,
+      "name": {
+        "ro": "Str. Ciucului 2",
+        "hu": "Csíki utca 2"
+      },
+      "stop_lat": 45.872,
+      "stop_lon": 25.7957,
+      "distance_to_next_m": 870
+    },
+    {
+      "stop_sequence": 7,
+      "name": {
+        "ro": "Grădinărie",
+        "hu": "Kertészet"
+      },
+      "stop_lat": 45.8789,
+      "stop_lon": 25.7971,
+      "distance_to_next_m": 627
+    },
+    {
+      "stop_sequence": 8,
+      "name": {
+        "ro": "Kossuth Lajos 1",
+        "hu": "Kossuth Lajos 1"
+      },
+      "stop_lat": 45.884,
+      "stop_lon": 25.8003,
+      "distance_to_next_m": 647
+    },
+    {
+      "stop_sequence": 9,
+      "name": {
+        "ro": "Kossuth Lajos 2",
+        "hu": "Kossuth Lajos 2"
+      },
+      "stop_lat": 45.8892,
+      "stop_lon": 25.7968,
+      "distance_to_next_m": 1253
+    },
+    {
+      "stop_sequence": 10,
+      "name": {
+        "ro": "Castelul Szentkereszty",
+        "hu": "Szentkereszty kastély"
+      },
+      "stop_lat": 45.8977,
+      "stop_lon": 25.7879,
+      "distance_to_next_m": 762
+    },
+    {
+      "stop_sequence": 11,
+      "name": {
+        "ro": "Primăria Arcuș",
+        "hu": "Árkosi Polgármesteri Hivatal"
+      },
+      "stop_lat": 45.8997,
+      "stop_lon": 25.7788,
+      "distance_to_next_m": 560
+    },
+    {
+      "stop_sequence": 12,
+      "name": {
+        "ro": "Centru Arcuș",
+        "hu": "Árkos Központ"
+      },
+      "stop_lat": 45.9031,
+      "stop_lon": 25.7735,
+      "distance_to_next_m": null
+    }
+  ]
+}

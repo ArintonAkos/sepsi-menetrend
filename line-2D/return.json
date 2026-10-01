@@ -21,7 +21,7 @@
       },
       "stop_lat": 45.8593,
       "stop_lon": 25.8389,
-      "distance_to_next_m": 424
+      "distance_to_next_m": 518
     },
     {
       "stop_sequence": 2,
@@ -31,170 +31,180 @@
       },
       "stop_lat": 45.8619,
       "stop_lon": 25.841,
-      "distance_to_next_m": 2661
+      "distance_to_next_m": 2419
     },
     {
       "stop_sequence": 3,
+      "name": {
+        "ro": "Str. Constructorilor 4",
+        "hu": "Építők útja 4"
+      },
+      "stop_lat": 45.8614,
+      "stop_lon": 25.8173,
+      "distance_to_next_m": 474
+    },
+    {
+      "stop_sequence": 4,
       "name": {
         "ro": "Str. Constructorilor 3",
         "hu": "Építők útja 3"
       },
       "stop_lat": 45.8579,
       "stop_lon": 25.818,
-      "distance_to_next_m": 444
+      "distance_to_next_m": 448
     },
     {
-      "stop_sequence": 4,
+      "stop_sequence": 5,
       "name": {
         "ro": "Str. Constructorilor 2",
         "hu": "Építők útja 2"
       },
       "stop_lat": 45.8559,
       "stop_lon": 25.8148,
-      "distance_to_next_m": 500
+      "distance_to_next_m": 534
     },
     {
-      "stop_sequence": 5,
+      "stop_sequence": 6,
       "name": {
         "ro": "Str. Constructorilor 1",
         "hu": "Építők útja 1"
       },
       "stop_lat": 45.8562,
       "stop_lon": 25.8083,
-      "distance_to_next_m": 176
+      "distance_to_next_m": 177
     },
     {
-      "stop_sequence": 6,
+      "stop_sequence": 7,
       "name": {
         "ro": "Calea Brașovului 1",
         "hu": "Brassói út 1"
       },
       "stop_lat": 45.8571,
       "stop_lon": 25.8072,
-      "distance_to_next_m": 953
+      "distance_to_next_m": 865
     },
     {
-      "stop_sequence": 7,
+      "stop_sequence": 8,
       "name": {
         "ro": "Gara CFR",
         "hu": "Vasútállomás"
       },
       "stop_lat": 45.8631,
       "stop_lon": 25.8101,
-      "distance_to_next_m": 907
+      "distance_to_next_m": 914
     },
     {
-      "stop_sequence": 8,
+      "stop_sequence": 9,
       "name": {
         "ro": "Str. Sporturilor",
         "hu": "Sport utca"
       },
       "stop_lat": 45.8641,
       "stop_lon": 25.7986,
-      "distance_to_next_m": 487
+      "distance_to_next_m": 492
     },
     {
-      "stop_sequence": 9,
+      "stop_sequence": 10,
       "name": {
         "ro": "Debren",
         "hu": "Debren"
       },
       "stop_lat": 45.8672,
       "stop_lon": 25.7961,
-      "distance_to_next_m": 383
+      "distance_to_next_m": 379
     },
     {
-      "stop_sequence": 10,
+      "stop_sequence": 11,
       "name": {
         "ro": "Str. Ciucului 1",
         "hu": "Csíki utca 1"
       },
       "stop_lat": 45.8692,
       "stop_lon": 25.7932,
-      "distance_to_next_m": 367
+      "distance_to_next_m": 365
     },
     {
-      "stop_sequence": 11,
+      "stop_sequence": 12,
       "name": {
         "ro": "Str. Ciucului 2",
         "hu": "Csíki utca 2"
       },
       "stop_lat": 45.872,
       "stop_lon": 25.7957,
-      "distance_to_next_m": 333
+      "distance_to_next_m": 337
     },
     {
-      "stop_sequence": 12,
+      "stop_sequence": 13,
       "name": {
         "ro": "Cart. Ciucului",
         "hu": "Csíki negyed"
       },
       "stop_lat": 45.8739,
       "stop_lon": 25.7926,
-      "distance_to_next_m": 543
+      "distance_to_next_m": 535
     },
     {
-      "stop_sequence": 13,
+      "stop_sequence": 14,
       "name": {
         "ro": "Piața Kálvin",
         "hu": "Kálvin tér"
       },
       "stop_lat": 45.8709,
       "stop_lon": 25.7885,
-      "distance_to_next_m": 268
+      "distance_to_next_m": 275
     },
     {
-      "stop_sequence": 14,
+      "stop_sequence": 15,
       "name": {
         "ro": "Lic. Plugor Sándor",
         "hu": "Plugor Sándor Líceum"
       },
       "stop_lat": 45.8689,
       "stop_lon": 25.7868,
-      "distance_to_next_m": 578
+      "distance_to_next_m": 574
     },
     {
-      "stop_sequence": 15,
+      "stop_sequence": 16,
       "name": {
         "ro": "Str. Gábor Áron",
         "hu": "Gábor Áron utca"
       },
       "stop_lat": 45.8648,
       "stop_lon": 25.7851,
-      "distance_to_next_m": 454
+      "distance_to_next_m": 456
     },
     {
-      "stop_sequence": 16,
+      "stop_sequence": 17,
       "name": {
         "ro": "Institutul de proiectări",
         "hu": "Tervező Intézet"
       },
       "stop_lat": 45.8617,
       "stop_lon": 25.7819,
-      "distance_to_next_m": 626
+      "distance_to_next_m": 636
     },
     {
-      "stop_sequence": 17,
+      "stop_sequence": 18,
       "name": {
         "ro": "Str. Dealului",
         "hu": "Domb utca"
       },
       "stop_lat": 45.8594,
       "stop_lon": 25.776,
-      "distance_to_next_m": 507
+      "distance_to_next_m": 493
     },
     {
-      "stop_sequence": 18,
+      "stop_sequence": 19,
       "name": {
         "ro": "Spitalul Județean",
         "hu": "Megyei Kórház"
       },
       "stop_lat": 45.863,
       "stop_lon": 25.7778,
-      "distance_to_next_m": 459
+      "distance_to_next_m": 466
     },
     {
-      "stop_sequence": 19,
+      "stop_sequence": 20,
       "name": {
         "ro": "Simeria (Str. Berzei)",
         "hu": "Szemerja (Gólya utca)"
@@ -203,5 +213,6 @@
       "stop_lon": 25.7791,
       "distance_to_next_m": null
     }
-  ]
+  ],
+  "_note": "Hand-inserted 2026-10-01: Multi-Trans announced a new stop near Dunapack on Str. Constructorilor / Építők útja, effective with the Oct 1 timetable, but their own jarat-*.html route pages (last modified 2026-09-15) still don't list it. Coordinates are an estimate anchored on the Dunapack building (OSM), not an official position. A future merge_lines.py re-run against an updated operator page will silently drop this stop - reconcile by hand when that page appears."
 }

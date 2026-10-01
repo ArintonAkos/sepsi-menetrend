@@ -59,15 +59,19 @@ describe("PlacePage", () => {
   });
 
   it("renders a board for each direction the feed binds to one hub kerb", async () => {
-    // Lábasház (P14) carries line 9 in both directions on one kerb
-    const labas = buildPlaces(loadNetwork()).find((p) => p.slug === "labashaz")!;
-    const { container } = await renderPlace({ lang: "hu", slug: labas.slug });
+    // Gara CFR (P54) carries line 4 in both directions on one kerb - the Oct
+    // 1 2026 board fix that recovered line 4's dropped departures (it was
+    // silently losing ~all of them to an unmatched destination before) means
+    // this is now a cleaner example than Lábasház/line 9, whose return
+    // columns the same board no longer prints at that specific stop.
+    const vasutallomas = buildPlaces(loadNetwork()).find((p) => p.slug === "vasutallomas")!;
+    const { container } = await renderPlace({ lang: "hu", slug: vasutallomas.slug });
 
-    const line9 = [...container.querySelectorAll("h2")].filter((h) =>
-      /^9-es busz →/.test(h.textContent ?? ""),
+    const line4 = [...container.querySelectorAll("h2")].filter((h) =>
+      /^4-es busz →/.test(h.textContent ?? ""),
     );
-    expect(line9.length).toBe(2);
-    expect(new Set(line9.map((h) => h.textContent)).size).toBe(2);
+    expect(line4.length).toBe(2);
+    expect(new Set(line4.map((h) => h.textContent)).size).toBe(2);
   });
 
   it("calls notFound() for an unknown slug", async () => {

@@ -2,11 +2,97 @@ import unittest
 
 from fetch_timetable import (
     ALIASES,
+    direction_for,
     events_of,
     normalise_station_names,
     times_of,
     validate_coverage,
 )
+
+
+class DirectionMatchingTests(unittest.TestCase):
+    def test_matches_a_destination_that_names_an_intermediate_stop_not_the_terminus(self):
+        """The Oct 1 2026 board prints line 9's return columns with "Casa cu
+        Arcade / Lábasház" as the destination at several stops - an existing
+        intermediate stop on that leg, not its real terminus "Gara CFR". The
+        headsign alone no longer matches; the stop list should."""
+        candidates = [
+            {
+                "direction": "depart",
+                "headsign": {"ro": "Gara CFR → Șugaș Băi", "hu": "Vasútállomás → Sugásfürdő"},
+                "stops": [
+                    {"name": {"ro": "Gara CFR", "hu": "Vasútállomás"}},
+                    {"name": {"ro": "Șugaș Băi", "hu": "Sugásfürdő"}},
+                ],
+            },
+            {
+                "direction": "return",
+                "headsign": {"ro": "Șugaș Băi → Gara CFR", "hu": "Sugásfürdő → Vasútállomás"},
+                "stops": [
+                    {"name": {"ro": "Șugaș Băi", "hu": "Sugásfürdő"}},
+                    {"name": {"ro": "Casa cu Arcade", "hu": "Lábasház"}},
+                    {"name": {"ro": "Gara CFR", "hu": "Vasútállomás"}},
+                ],
+            },
+        ]
+
+        direction, score = direction_for(
+            "Casa cu Arcade / Lábasház", candidates, at_stop="Str. Gábor Áron")
+
+        self.assertEqual(direction, "return")
+        self.assertGreater(score, 0)
+
+    def test_resolves_a_landmark_shared_by_both_directions_using_stop_order(self):
+        """At "Șugaș Băi" (the depart terminus and the return origin) the real
+        board also prints "Casa cu Arcade / Lábasház" as line 9's destination.
+        "Casa cu Arcade" is a stop on BOTH directions, so a plain stop-list
+        word-overlap ties - the real answer is "return", because Casa cu
+        Arcade is still ahead of Șugaș Băi there, not already behind it as on
+        depart."""
+        candidates = [
+            {
+                "direction": "depart",
+                "headsign": {"ro": "Gara CFR → Șugaș Băi", "hu": "Vasútállomás → Sugásfürdő"},
+                "stops": [
+                    {"name": {"ro": "Gara CFR", "hu": "Vasútállomás"}},
+                    {"name": {"ro": "Casa cu Arcade", "hu": "Lábasház"}},
+                    {"name": {"ro": "Șugaș Băi", "hu": "Sugásfürdő"}},
+                ],
+            },
+            {
+                "direction": "return",
+                "headsign": {"ro": "Șugaș Băi → Gara CFR", "hu": "Sugásfürdő → Vasútállomás"},
+                "stops": [
+                    {"name": {"ro": "Șugaș Băi", "hu": "Sugásfürdő"}},
+                    {"name": {"ro": "Casa cu Arcade", "hu": "Lábasház"}},
+                    {"name": {"ro": "Gara CFR", "hu": "Vasútállomás"}},
+                ],
+            },
+        ]
+
+        direction, score = direction_for(
+            "Casa cu Arcade / Lábasház", candidates, at_stop="Șugaș Băi")
+
+        self.assertEqual(direction, "return")
+        self.assertGreater(score, 0)
+
+    def test_still_prefers_a_headsign_match_over_the_stop_list_fallback(self):
+        candidates = [
+            {
+                "direction": "depart",
+                "headsign": {"ro": "Gara CFR → Șugaș Băi", "hu": "Vasútállomás → Sugásfürdő"},
+                "stops": [{"name": {"ro": "Gara CFR", "hu": "Vasútállomás"}}],
+            },
+            {
+                "direction": "return",
+                "headsign": {"ro": "Șugaș Băi → Gara CFR", "hu": "Sugásfürdő → Vasútállomás"},
+                "stops": [{"name": {"ro": "Șugaș Băi", "hu": "Sugásfürdő"}}],
+            },
+        ]
+
+        direction, score = direction_for("Șugaș Băi / Sugásfürdő", candidates)
+
+        self.assertEqual(direction, "depart")
 
 
 class CurrentOperatorTimetableTests(unittest.TestCase):

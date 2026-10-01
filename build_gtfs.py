@@ -491,9 +491,20 @@ def main():
                 # the whole weekday timetable (its dates live in
                 # calendar_dates.txt), so mirror each weekday trip under it. This
                 # matches the web bundle, where build_web_data does the same.
-                emitted = [(name, f"{key}-{name}-{n:03d}")]
-                if name == "weekday":
-                    emitted.append(("school", f"{key}-school-{n:03d}"))
+                #
+                # Line 10B inverts this: Multi-Trans's board labels its
+                # hospital-extended pattern "10B" year-round, but it only
+                # actually runs that pattern during the school term - in
+                # vacation it reverts to plain line 10 (see
+                # line-10B/*.json's _note). Emit it as "school" only, not
+                # also "weekday"; the vacation-period trips are a known,
+                # deferred gap, not this line's own pattern.
+                if d["line"] == "10B" and name == "weekday":
+                    emitted = [("school", f"{key}-school-{n:03d}")]
+                else:
+                    emitted = [(name, f"{key}-{name}-{n:03d}")]
+                    if name == "weekday":
+                        emitted.append(("school", f"{key}-school-{n:03d}"))
                 for service_id, trip_id in emitted:
                     trip_rows.append({
                         "route_id": d["line"], "service_id": service_id, "trip_id": trip_id,

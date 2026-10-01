@@ -1,14 +1,14 @@
 route_id,agency_id,route_short_name,route_long_name,route_type,route_color,route_text_color
 1,multitrans,1,Simeria (Str. Berzei) → Gara CFR,3,136F29,FFFFFF
-1B,multitrans,1B,Multi-Trans → Simeria (Str. Berzei),3,E8A33D,000000
-1D,multitrans,1D,Simeria (Str. Berzei) → Câmpul Frumos,3,0A8F6B,000000
+1B,multitrans,1B,Simeria (Str. Berzei) → Câmpul Frumos,3,136F29,FFFFFF
+1D,multitrans,1D,Simeria (Str. Berzei) → Câmpul Frumos,3,136F29,FFFFFF
 2,multitrans,2,Simeria (Str. Berzei) → Gara CFR,3,DB4436,000000
 2D,multitrans,2D,Simeria (Str. Berzei) → Câmpul Frumos,3,DB4436,000000
 3,multitrans,3,Str. Țigaretei 1 → Coșeni,3,00B0F0,000000
 4,multitrans,4,Str. Țigaretei 1 → Multi-Trans,3,F4B400,000000
 5,multitrans,5,Str. Dózsa György → Arena Sepsi,3,7030A0,FFFFFF
-5D,multitrans,5D,Multi-Trans → Str. Dózsa György,3,7C3592,FFFFFF
 6,multitrans,6,Simeria (Str. Berzei) → Arena Sepsi,3,A9FE00,000000
 7,multitrans,7,Simeria (Str. Berzei) → Gara CFR,3,FF3EFF,000000
 9,multitrans,9,Gara CFR → Șugaș Băi,3,B27E62,000000
 10,multitrans,10,Casa cu Arcade → Arcuș,3,000000,FFFFFF
+10B,multitrans,10B,Spitalul Județean → Arcuș,3,000000,FFFFFF

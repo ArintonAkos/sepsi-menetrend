@@ -49,10 +49,13 @@ describe("the real network", () => {
     // (published 2026-09-15) instead of a board/FB-post/OSRM reconstruction -
     // real platform positions and stop counts differ from the earlier
     // best-effort numbers, including "Terminal" now being a genuine stop
-    // (1D/2D/4/5D all list it) rather than a board-only artifact, and 5D
-    // rejoining the feed via 2 real marked return runs.
-    expect(net.stops).toHaveLength(107);             // real platforms, not guessed kerbs
-    expect(net.stations).toHaveLength(107);
+    // (1D/2D/4/5D all list it) rather than a board-only artifact. The Oct 1
+    // 2026 update added one more real stop (Str. Constructorilor 4 / Építők
+    // útja 4, near Dunapack) and, on the same day, line 5's board dropped
+    // the marked events that used to keep 5D's 2 return runs alive - 5D is
+    // now fully serviceless (see build_gtfs.py's test).
+    expect(net.stops).toHaveLength(108);              // real platforms, not guessed kerbs
+    expect(net.stations).toHaveLength(108);
     expect(net.stops.some((stop) => stop.name.ro === "Terminal")).toBe(true);
     expect(net.stops.some((stop) => stop.name.ro === "Calea Brașovului 1")).toBe(true);
     expect(net.walks.length).toBeGreaterThan(80);     // cached physical-platform walks
@@ -72,10 +75,13 @@ describe("the real network", () => {
 
   it("is the Sept 7 feed with operator-sourced route geometry", () => {
     expect(net.validFrom).toBe("20260907");
-    // Every line's polyline now comes from multitrans.ro's own routeLine
-    // data (published 2026-09-15), so nothing is flagged provisional any more.
-    expect(net.routesProvisional).toBe(false);
+    // Almost every line's polyline comes from multitrans.ro's own routeLine
+    // data (published 2026-09-15). Line 10B (added 2026-10-01, see
+    // LinePage.tsx's PROVISIONAL_LINES) has no published route page yet, so
+    // the feed is flagged provisional again.
+    expect(net.routesProvisional).toBe(true);
     expect(net.lines.map((l) => l.id)).toContain("1B");
+    expect(net.lines.map((l) => l.id)).toContain("10B");
   });
 
   it("uses only the real Erzsébet park and Lábasház platforms", () => {
@@ -371,9 +377,10 @@ describe("the real network", () => {
     // Keep the real-feed regression anchored to the literal, current stop
     // boards.  The old 05:46 value came from a single unsegmented loop and
     // combined two different displayed destinations into one fictitious run;
-    // 06:39 -> 06:52 on the Sept 7 board. The "did not ride past the door"
-    // structural check below is what this test actually guards.
-    expect(formatHHMM(five!.arrive)).toBe("06:52");
+    // 06:39 -> 06:52 on the Sept 7 board, retimed to 06:56 when the Oct 1
+    // 2026 update shifted this run's printed times. The "did not ride past
+    // the door" structural check below is what this test actually guards.
+    expect(formatHHMM(five!.arrive)).toBe("06:56");
 
     const last = [...five!.legs].reverse().find((l) => l.kind === "ride") as RideLeg;
     const pattern = net.patterns.find((p) => p.id === last.patternId)!;

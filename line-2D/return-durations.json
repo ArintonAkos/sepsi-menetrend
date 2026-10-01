@@ -4,7 +4,7 @@
   "direction": "return",
   "profile": "osrm/driving",
   "note": "running time only; contains no waiting or timetable information; OSRM free-flow",
-  "total_seconds": 1118,
+  "total_seconds": 1184,
   "legs": [
     {
       "seconds": 121,
@@ -12,7 +12,11 @@
     },
     {
       "seconds": 221,
-      "metres": 2661
+      "metres": 2419
+    },
+    {
+      "seconds": 66,
+      "metres": 474
     },
     {
       "seconds": 44,

@@ -17,7 +17,10 @@ describe("sitemap", () => {
 
   it("emits one <loc> per language per inventory page", () => {
     expect(entries.length).toBe(allPages().length * 3);
-    expect(entries.length).toBe(537);
+    // Oct 1 2026: +1 page for the new stop (Str. Constructorilor 4 / Építők
+    // útja 4), and line 10B replaces line 5D (now fully serviceless, see
+    // test_build_gtfs.py) one-for-one in the line-page count.
+    expect(entries.length).toBe(540);
   });
 
   it("gives a page's HU, RO and EN URL each its own entry", () => {

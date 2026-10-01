@@ -44,16 +44,18 @@ describe("enrichLine", () => {
 
 describe("lineDirections", () => {
   it("collapses patterns that share a stop sequence, longest first", () => {
-    // multitrans.ro's Sept 15 jaratok/ pages give 1D a 15-stop outbound leg
-    // and a 14-stop return leg, so outbound sorts first.
+    // multitrans.ro's Sept 15 jaratok/ pages gave 1D a 15-stop outbound leg
+    // and a 14-stop return leg; the Oct 1 2026 update added one more real
+    // stop (Str. Constructorilor 4 / Építők útja 4) to both, so outbound
+    // still sorts first at 16 stops.
     const dirs = lineDirections(net, "1D");
-    expect(dirs.map((d) => d.patternId)).toEqual(["P5", "P10"]);
+    expect(dirs.map((d) => d.patternId)).toEqual(["P7", "P12"]);
     expect(Object.keys(dirs[0])).toEqual(["patternId", "headsign", "stopIds"]);
     expect(dirs[0].headsign).toEqual({
       hu: "Simeria (Str. Berzei) → Câmpul Frumos",
       ro: "Simeria (Str. Berzei) → Câmpul Frumos",
     });
-    expect(dirs[0].stopIds.length).toBe(15);
+    expect(dirs[0].stopIds.length).toBe(16);
   });
 
   it("orders the distinct sequences by length, descending", () => {
@@ -73,9 +75,14 @@ describe("boardFor", () => {
     expect(b!.weekday).toEqual([...b!.weekday].sort((a, z) => a - z));
   });
 
-  it("folds the marked D-extension departures into the sorted list without duplicating", () => {
-    const b = boardFor(net, "5", "P23")!;
-    expect(b.weekday).toContain(1371); // a departure the operator marks as a D extension
+  it("folds the marked extension departures into the sorted list without duplicating", () => {
+    // Line 5's own marked-5D departures (the original anchor for this test)
+    // vanished from the board on 2026-10-01 along with 5D's return service -
+    // see test_build_gtfs.py's test_real_feed_adds_1b_and_10b_keeps_5d_fully_serviceless.
+    // P31 line 10's marked departures (now serving 10B) are current live data
+    // for the same fold-without-duplicating behaviour.
+    const b = boardFor(net, "10", "P31")!;
+    expect(b.weekday).toContain(441); // a departure the operator also marks for 10B
     expect(b.weekday).toEqual([...b.weekday].sort((a, z) => a - z));
     expect(new Set(b.weekday).size).toBe(b.weekday.length);
   });
@@ -89,7 +96,7 @@ describe("boardFor", () => {
 describe("firstLast", () => {
   it("reports the first and last departure per service", () => {
     const fl = firstLast(boardFor(net, "5", "P20")!);
-    expect(fl.weekday).toEqual({ first: 420, last: 1330 });
+    expect(fl.weekday).toEqual({ first: 360, last: 1330 });
     expect(fl.weekend).toEqual({ first: 480, last: 1200 });
   });
 

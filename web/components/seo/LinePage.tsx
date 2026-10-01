@@ -42,10 +42,14 @@ const INDEX: Record<SeoLang, { name: string; path: string }> = {
   en: { name: "Lines", path: "/en/lines/" },
 };
 
-/** Lines whose Sept 7 route shape was reconstructed from the board + the
- *  operator's announcement rather than a published map. Flagged on the page
- *  while `network.routesProvisional` is set. */
-const PROVISIONAL_LINES = new Set(["2", "6", "1B", "10"]);
+/** Lines whose route shape is reconstructed rather than the operator's own
+ *  published map. Flagged on the page while `network.routesProvisional` is
+ *  set. Lines 2/6/1B/10 were here until multitrans.ro published their real
+ *  routeLine data on 2026-09-15; 10B is new (added 2026-10-01) - the
+ *  operator's board added it but their route-map pages (jarat-10.html etc.)
+ *  don't have it yet, so its geometry is stitched from line 10's own real
+ *  shape plus one OSRM-routed hop to Spitalul Județean. */
+const PROVISIONAL_LINES = new Set(["10B"]);
 
 const huPath = (id: string) => `/vonalak/${id}/`;
 const roPath = (id: string) => `/ro/linii/${id}/`;

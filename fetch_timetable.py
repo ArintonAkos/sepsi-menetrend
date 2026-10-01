@@ -33,7 +33,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent
 URL = "https://www.multitrans.ro/orarele/multitrans_menetrendek_web.html"
 OUTPUT = ROOT / "timetable.json"
-ORDER = ["1", "1B", "1D", "2", "2D", "3", "4", "5", "5D", "6", "7", "9", "10"]
+ORDER = ["1", "1B", "1D", "2", "2D", "3", "4", "5", "5D", "6", "7", "9", "10", "10B"]
 
 # Timetable spelling -> the name used on the line pages.
 ALIASES = {
@@ -185,11 +185,14 @@ def load_directions():
     return out
 
 
-def direction_for(destination, candidates):
+def direction_for(destination, candidates, at_stop=None):
     """Match a timetable headsign against our own, by shared words.
 
     On the loop lines the bus changes its displayed destination halfway round,
     so several destinations map onto the single direction we hold.
+
+    `at_stop` is the Romanian name of the station this reading came from, when
+    known - it disambiguates the stop-list fallback below.
     """
     if len(candidates) == 1:
         return candidates[0]["direction"], 1.0
@@ -200,6 +203,45 @@ def direction_for(destination, candidates):
         target = cand["headsign"]["hu"].split("→")[-1]
         target += " " + cand["headsign"]["ro"].split("→")[-1]
         overlap = len(wanted & set(fold(target)))
+        if overlap > score:
+            best, score = cand["direction"], overlap
+    if score > 0:
+        return best, score
+
+    # The headsign alone sometimes loses: the board occasionally names a major
+    # intermediate landmark instead of the final terminus (line 9's return
+    # columns print "Casa cu Arcade", an existing stop on that return leg, not
+    # its actual terminus "Gara CFR"). Fall back to every stop each candidate
+    # calls at - restricted to candidates that actually serve the reading's
+    # own station (it cannot belong to a direction that never stops there),
+    # and among those, to ones where the named destination still lies ahead
+    # of that station in travel order (a landmark already passed would not be
+    # printed as the destination). Either narrowing is skipped if it would
+    # leave nothing to choose from.
+    pool = candidates
+    if at_stop is not None:
+        serving = [cand for cand in candidates
+                   if any(stop["name"]["ro"] == at_stop for stop in cand["stops"])]
+        if serving:
+            pool = serving
+        if len(pool) > 1:
+            ahead = []
+            for cand in pool:
+                names = [stop["name"]["ro"] for stop in cand["stops"]]
+                if at_stop not in names:
+                    continue
+                later = names[names.index(at_stop) + 1:]
+                if wanted & set(fold(" ".join(later))):
+                    ahead.append(cand)
+            if ahead:
+                pool = ahead
+
+    best, score = None, 0
+    for cand in pool:
+        names = " ".join(
+            f"{stop['name']['ro']} {stop['name']['hu']}" for stop in cand["stops"]
+        )
+        overlap = len(wanted & set(fold(names)))
         if overlap > score:
             best, score = cand["direction"], overlap
     return best, score
@@ -229,7 +271,8 @@ def main():
 
         for line in station["lines"]:
             number = line["num"]
-            direction, score = direction_for(line["dest"], directions.get(number, []))
+            direction, score = direction_for(
+                line["dest"], directions.get(number, []), at_stop=romanian)
             if not direction:
                 ambiguous.append(f"line {number} -> {line['dest']!r}")
                 continue

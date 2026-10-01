@@ -107,9 +107,11 @@ export interface Network {
   version: string;
   generated: string;
   validFrom: string;
-  /** True while a line's drawn route is a reconstruction rather than the
-   *  operator's own published geometry. False now that every line's polyline
-   *  comes from multitrans.ro's own routeLine data (2026-09-15). */
+  /** True while at least one line's drawn route is a reconstruction rather
+   *  than the operator's own published geometry - see LinePage.tsx's
+   *  PROVISIONAL_LINES for which ones. Most lines got their real polyline
+   *  from multitrans.ro's own routeLine data on 2026-09-15; line 10B (added
+   *  2026-10-01) has no published route page yet, so this is true again. */
   routesProvisional?: boolean;
   /** The 2026-27 school year, baked from `school_calendar.py`. `serviceForDate`
    *  resolves a teaching weekday to the "school" service; on any other day these

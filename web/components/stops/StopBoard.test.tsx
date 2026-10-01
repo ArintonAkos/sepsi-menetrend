@@ -74,8 +74,8 @@ describe("a stop's board", () => {
                       onClose={() => {}} />);
 
     expect(screen.getAllByText("→ Str. Țigaretei 1 / Cigaretta utca 1").length).toBeGreaterThan(0);
-    // this kerb's first weekday departure on the Sept 7 board
-    expect(screen.getAllByText("04:47").length).toBeGreaterThan(0);
+    // this kerb's first weekday departure (04:46 on the Oct 1 2026 board)
+    expect(screen.getAllByText("04:46").length).toBeGreaterThan(0);
     expect(screen.queryByText("→ Câmpul Frumos / Szépmező")).toBeNull();
     expect(screen.queryByText("06:13")).toBeNull();
   });
@@ -103,12 +103,14 @@ describe("a stop's board", () => {
                       service="weekday" now={8 * 60} lang="hu" t={STRINGS.hu}
                       onClose={() => {}} />);
 
-    // On the Sept 7 board lines 2 and 6 are bidirectional and this return kerb
-    // runs both toward the Simeria terminus; line 10 heads to Arcuș. All three
-    // are official columns - no inferred rows, no interpolated-time note.
+    // On the Oct 1 2026 board lines 2, 2D and 6 are all bidirectional and
+    // this return kerb runs all three toward the Simeria terminus; line 10
+    // and its new 10B extension (added the same day) both head to Arcuș.
+    // All five are official columns - no inferred rows, no interpolated-time
+    // note.
     expect(screen.getAllByText(
-      "→ Simeria (Str. Berzei) / Szemerja Végállomás (via Cart. Ciucului)")).toHaveLength(2);
-    expect(screen.getByText("→ Arcuș / Árkos")).toBeInTheDocument();
+      "→ Simeria (Str. Berzei) / Szemerja Végállomás (via Cart. Ciucului)")).toHaveLength(3);
+    expect(screen.getAllByText("→ Arcuș / Árkos")).toHaveLength(2);
     expect(screen.queryByText(/csillaggal/i)).toBeNull();
   });
 
@@ -129,13 +131,15 @@ describe("a stop's board", () => {
     render(<StopBoard stop={returnKerb} ctx={ctx} lines={lines}
                       service="weekday" now={8 * 60} lang="hu" t={STRINGS.hu}
                       onClose={() => {}} />);
-    expect(screen.getByText("→ Arcuș / Árkos")).toBeInTheDocument();
-    // the return kerb: lines 2 and 6 back toward the Simeria terminus
+    // line 10 and the new 10B extension (added 2026-10-01) both head to Arcuș
+    expect(screen.getAllByText("→ Arcuș / Árkos")).toHaveLength(2);
+    // the return kerb: lines 2, 2D and 6 all run back toward the Simeria terminus
     expect(screen.getAllByText(
-      "→ Simeria (Str. Berzei) / Szemerja Végállomás (via Cart. Ciucului)")).toHaveLength(2);
-    // a marked (2D-extension) departure the operator folds into line 2's column
-    // appears once, not duplicated
-    expect(screen.getAllByText("05:37")).toHaveLength(1);
+      "→ Simeria (Str. Berzei) / Szemerja Végállomás (via Cart. Ciucului)")).toHaveLength(3);
+    // (the Oct 1 2026 board's marked-departure dedup is covered directly on
+    // boardFor() in lines.test.ts - at this stop lines 2 and 2D now run such
+    // an overlapping schedule that no single departure time is unique to
+    // either column any more, so it can't be asserted through rendered text)
     expect(screen.queryByText("→ Gara CFR / Vasútállomás (via Cart. Ciucului)")).toBeNull();
   });
 

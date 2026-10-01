@@ -87,22 +87,23 @@ P85,Str. Constructorilor 2,45.855700,25.814700,0,,,city,A vonaloldal koordinát�
 P86,Str. Constructorilor 2,45.855900,25.814800,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
 P87,Str. Constructorilor 3,45.857900,25.818000,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
 P88,Str. Constructorilor 3,45.858500,25.818300,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
-P89,Str. Dózsa György,45.856800,25.773300,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
-P90,Str. Fabricii 1,45.855700,25.793200,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
-P91,Str. Fabricii 2,45.859600,25.785800,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
-P92,Str. Gábor Áron,45.864800,25.785100,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
-P93,Str. Ghioceilor,45.863300,25.769900,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
-P94,Str. József Attila 1,45.854400,25.777100,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
-P95,Str. József Attila 2,45.854100,25.772200,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
-P96,Str. Kós Károly,45.857000,25.779500,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
-P97,Str. Lăcrămioarei 1,45.859800,25.799500,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
-P98,Str. Lăcrămioarei 1,45.860500,25.800100,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
-P99,Str. Lăcrămioarei 2,45.858000,25.798100,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
-P100,Str. Lăcrămioarei 2,45.858100,25.797900,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
-P101,Str. Țigaretei 1,45.856600,25.782100,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
-P102,Str. Țigaretei 2,45.855100,25.785100,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
-P103,Str. Țigaretei 3,45.854300,25.790300,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
-P104,Str. Vânătorilor 1,45.864500,25.775600,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
-P105,Str. Vânătorilor 2,45.864800,25.772500,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
-P106,Șugaș Băi,45.896700,25.707100,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
-P107,Terminal,45.856800,25.806600,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
+P89,Str. Constructorilor 4,45.861400,25.817300,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
+P90,Str. Dózsa György,45.856800,25.773300,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
+P91,Str. Fabricii 1,45.855700,25.793200,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
+P92,Str. Fabricii 2,45.859600,25.785800,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
+P93,Str. Gábor Áron,45.864800,25.785100,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
+P94,Str. Ghioceilor,45.863300,25.769900,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
+P95,Str. József Attila 1,45.854400,25.777100,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
+P96,Str. József Attila 2,45.854100,25.772200,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
+P97,Str. Kós Károly,45.857000,25.779500,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
+P98,Str. Lăcrămioarei 1,45.859800,25.799500,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
+P99,Str. Lăcrămioarei 1,45.860500,25.800100,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
+P100,Str. Lăcrămioarei 2,45.858000,25.798100,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
+P101,Str. Lăcrămioarei 2,45.858100,25.797900,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
+P102,Str. Țigaretei 1,45.856600,25.782100,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
+P103,Str. Țigaretei 2,45.855100,25.785100,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
+P104,Str. Țigaretei 3,45.854300,25.790300,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
+P105,Str. Vânătorilor 1,45.864500,25.775600,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
+P106,Str. Vânătorilor 2,45.864800,25.772500,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
+P107,Șugaș Băi,45.896700,25.707100,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.
+P108,Terminal,45.856800,25.806600,0,,,city,A vonaloldal koordinátája; OSM-peron nem volt egyértelmű.

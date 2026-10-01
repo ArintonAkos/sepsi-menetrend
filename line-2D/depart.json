@@ -21,7 +21,7 @@
       },
       "stop_lat": 45.868,
       "stop_lon": 25.7792,
-      "distance_to_next_m": 633
+      "distance_to_next_m": 604
     },
     {
       "stop_sequence": 2,
@@ -31,7 +31,7 @@
       },
       "stop_lat": 45.8645,
       "stop_lon": 25.7756,
-      "distance_to_next_m": 242
+      "distance_to_next_m": 243
     },
     {
       "stop_sequence": 3,
@@ -41,7 +41,7 @@
       },
       "stop_lat": 45.8648,
       "stop_lon": 25.7725,
-      "distance_to_next_m": 376
+      "distance_to_next_m": 371
     },
     {
       "stop_sequence": 4,
@@ -51,7 +51,7 @@
       },
       "stop_lat": 45.8633,
       "stop_lon": 25.7699,
-      "distance_to_next_m": 340
+      "distance_to_next_m": 341
     },
     {
       "stop_sequence": 5,
@@ -61,7 +61,7 @@
       },
       "stop_lat": 45.8609,
       "stop_lon": 25.7715,
-      "distance_to_next_m": 465
+      "distance_to_next_m": 469
     },
     {
       "stop_sequence": 6,
@@ -71,7 +71,7 @@
       },
       "stop_lat": 45.8589,
       "stop_lon": 25.7768,
-      "distance_to_next_m": 637
+      "distance_to_next_m": 564
     },
     {
       "stop_sequence": 7,
@@ -81,7 +81,7 @@
       },
       "stop_lat": 45.8616,
       "stop_lon": 25.7822,
-      "distance_to_next_m": 600
+      "distance_to_next_m": 581
     },
     {
       "stop_sequence": 8,
@@ -91,7 +91,7 @@
       },
       "stop_lat": 45.8636,
       "stop_lon": 25.7866,
-      "distance_to_next_m": 1020
+      "distance_to_next_m": 1029
     },
     {
       "stop_sequence": 9,
@@ -101,7 +101,7 @@
       },
       "stop_lat": 45.8681,
       "stop_lon": 25.7874,
-      "distance_to_next_m": 390
+      "distance_to_next_m": 384
     },
     {
       "stop_sequence": 10,
@@ -111,7 +111,7 @@
       },
       "stop_lat": 45.8709,
       "stop_lon": 25.7887,
-      "distance_to_next_m": 470
+      "distance_to_next_m": 480
     },
     {
       "stop_sequence": 11,
@@ -121,7 +121,7 @@
       },
       "stop_lat": 45.8739,
       "stop_lon": 25.792,
-      "distance_to_next_m": 458
+      "distance_to_next_m": 456
     },
     {
       "stop_sequence": 12,
@@ -131,7 +131,7 @@
       },
       "stop_lat": 45.8714,
       "stop_lon": 25.7951,
-      "distance_to_next_m": 279
+      "distance_to_next_m": 280
     },
     {
       "stop_sequence": 13,
@@ -141,7 +141,7 @@
       },
       "stop_lat": 45.8693,
       "stop_lon": 25.7931,
-      "distance_to_next_m": 397
+      "distance_to_next_m": 394
     },
     {
       "stop_sequence": 14,
@@ -151,7 +151,7 @@
       },
       "stop_lat": 45.8671,
       "stop_lon": 25.7958,
-      "distance_to_next_m": 507
+      "distance_to_next_m": 512
     },
     {
       "stop_sequence": 15,
@@ -161,7 +161,7 @@
       },
       "stop_lat": 45.864,
       "stop_lon": 25.7983,
-      "distance_to_next_m": 932
+      "distance_to_next_m": 933
     },
     {
       "stop_sequence": 16,
@@ -171,7 +171,7 @@
       },
       "stop_lat": 45.8631,
       "stop_lon": 25.8101,
-      "distance_to_next_m": 1092
+      "distance_to_next_m": 1021
     },
     {
       "stop_sequence": 17,
@@ -181,7 +181,7 @@
       },
       "stop_lat": 45.8568,
       "stop_lon": 25.8066,
-      "distance_to_next_m": 200
+      "distance_to_next_m": 205
     },
     {
       "stop_sequence": 18,
@@ -191,7 +191,7 @@
       },
       "stop_lat": 45.856,
       "stop_lon": 25.8085,
-      "distance_to_next_m": 480
+      "distance_to_next_m": 482
     },
     {
       "stop_sequence": 19,
@@ -201,7 +201,7 @@
       },
       "stop_lat": 45.8557,
       "stop_lon": 25.8147,
-      "distance_to_next_m": 525
+      "distance_to_next_m": 522
     },
     {
       "stop_sequence": 20,
@@ -211,20 +211,30 @@
       },
       "stop_lat": 45.8585,
       "stop_lon": 25.8183,
-      "distance_to_next_m": 2545
+      "distance_to_next_m": 405
     },
     {
       "stop_sequence": 21,
+      "name": {
+        "ro": "Str. Constructorilor 4",
+        "hu": "Építők útja 4"
+      },
+      "stop_lat": 45.8614,
+      "stop_lon": 25.8173,
+      "distance_to_next_m": 2418
+    },
+    {
+      "stop_sequence": 22,
       "name": {
         "ro": "Câmpul Frumos",
         "hu": "Szépmező"
       },
       "stop_lat": 45.8619,
       "stop_lon": 25.841,
-      "distance_to_next_m": 487
+      "distance_to_next_m": 482
     },
     {
-      "stop_sequence": 22,
+      "stop_sequence": 23,
       "name": {
         "ro": "Multi-Trans",
         "hu": "Multi-Trans"
@@ -233,5 +243,6 @@
       "stop_lon": 25.8389,
       "distance_to_next_m": null
     }
-  ]
+  ],
+  "_note": "Hand-inserted 2026-10-01: Multi-Trans announced a new stop near Dunapack on Str. Constructorilor / Építők útja, effective with the Oct 1 timetable, but their own jarat-*.html route pages (last modified 2026-09-15) still don't list it. Coordinates are an estimate anchored on the Dunapack building (OSM), not an official position. A future merge_lines.py re-run against an updated operator page will silently drop this stop - reconcile by hand when that page appears."
 }

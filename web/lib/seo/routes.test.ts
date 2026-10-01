@@ -87,15 +87,17 @@ describe("journeyBetween", () => {
     // multitrans.ro's own routeLine data (published 2026-09-15): the change
     // point is still Lábasház, but line 2D's real route no longer calls
     // directly at Autoliv on this leg, so the journey rides to Vasútállomás
-    // and finishes with a walk.
+    // and finishes with a walk. Re-pinned again after the Oct 1 2026 board
+    // update: the faster-of-the-two-second-leg pick shifted from 2D to
+    // line 2 itself.
     const summary = journeyBetween(net, pair!.a, pair!.b, "hu");
     expect(summary).toEqual({
       legs: [
         { lineLabel: "10-es busz", fromName: "Árkos Központ", toName: "Lábasház", rideMin: 20, stops: 12 },
-        { lineLabel: "2D-s busz", fromName: "Lábasház", toName: "Vasútállomás", rideMin: 11, stops: 8 },
+        { lineLabel: "2-es busz", fromName: "Lábasház", toName: "Vasútállomás", rideMin: 15, stops: 8 },
       ],
       walkMin: 9,
-      totalMin: 50,
+      totalMin: 54,
       transfers: 1,
       firstDep: 330,
       lastDep: 1415,

@@ -146,17 +146,12 @@
         {
           "line": "1D",
           "direction": "return",
-          "index": 7
+          "index": 8
         },
         {
           "line": "2",
           "direction": "return",
           "index": 1
-        },
-        {
-          "line": "2D",
-          "direction": "return",
-          "index": 7
         },
         {
           "line": "3",
@@ -166,7 +161,7 @@
         {
           "line": "4",
           "direction": "return",
-          "index": 7
+          "index": 8
         },
         {
           "line": "6",
@@ -216,7 +211,7 @@
         {
           "line": "1D",
           "direction": "return",
-          "index": 9
+          "index": 10
         },
         {
           "line": "3",
@@ -226,7 +221,7 @@
         {
           "line": "4",
           "direction": "return",
-          "index": 9
+          "index": 10
         }
       ]
     },
@@ -251,7 +246,7 @@
         {
           "line": "1D",
           "direction": "return",
-          "index": 8
+          "index": 9
         },
         {
           "line": "3",
@@ -261,7 +256,7 @@
         {
           "line": "4",
           "direction": "return",
-          "index": 8
+          "index": 9
         }
       ]
     },
@@ -331,12 +326,12 @@
         {
           "line": "1D",
           "direction": "return",
-          "index": 10
+          "index": 11
         },
         {
           "line": "2D",
           "direction": "return",
-          "index": 15
+          "index": 16
         },
         {
           "line": "5",
@@ -376,12 +371,12 @@
         {
           "line": "1D",
           "direction": "return",
-          "index": 12
+          "index": 13
         },
         {
           "line": "2D",
           "direction": "return",
-          "index": 17
+          "index": 18
         },
         {
           "line": "6",
@@ -457,6 +452,11 @@
           "line": "10",
           "direction": "depart",
           "index": 1
+        },
+        {
+          "line": "10B",
+          "direction": "depart",
+          "index": 2
         }
       ]
     },
@@ -602,6 +602,16 @@
           "line": "10",
           "direction": "return",
           "index": 12
+        },
+        {
+          "line": "10B",
+          "direction": "depart",
+          "index": 1
+        },
+        {
+          "line": "10B",
+          "direction": "return",
+          "index": 12
         }
       ]
     },
@@ -691,7 +701,7 @@
         {
           "line": "1D",
           "direction": "return",
-          "index": 11
+          "index": 12
         },
         {
           "line": "2",
@@ -701,7 +711,7 @@
         {
           "line": "2D",
           "direction": "return",
-          "index": 16
+          "index": 17
         },
         {
           "line": "5",
@@ -779,6 +789,11 @@
           "index": 8
         },
         {
+          "line": "2D",
+          "direction": "return",
+          "index": 9
+        },
+        {
           "line": "6",
           "direction": "return",
           "index": 4
@@ -787,6 +802,11 @@
           "line": "10",
           "direction": "depart",
           "index": 2
+        },
+        {
+          "line": "10B",
+          "direction": "depart",
+          "index": 3
         }
       ]
     },
@@ -1117,6 +1137,11 @@
           "line": "10",
           "direction": "return",
           "index": 1
+        },
+        {
+          "line": "10B",
+          "direction": "return",
+          "index": 1
         }
       ]
     },
@@ -1156,12 +1181,12 @@
         {
           "line": "1D",
           "direction": "return",
-          "index": 5
+          "index": 6
         },
         {
           "line": "2D",
           "direction": "return",
-          "index": 5
+          "index": 6
         },
         {
           "line": "3",
@@ -1171,7 +1196,7 @@
         {
           "line": "4",
           "direction": "return",
-          "index": 5
+          "index": 6
         },
         {
           "line": "5D",
@@ -1286,7 +1311,7 @@
         {
           "line": "1D",
           "direction": "depart",
-          "index": 13
+          "index": 14
         },
         {
           "line": "1D",
@@ -1296,7 +1321,7 @@
         {
           "line": "2D",
           "direction": "depart",
-          "index": 20
+          "index": 21
         },
         {
           "line": "2D",
@@ -1306,7 +1331,7 @@
         {
           "line": "4",
           "direction": "depart",
-          "index": 14
+          "index": 15
         },
         {
           "line": "4",
@@ -1374,11 +1399,6 @@
       "osm_id": null,
       "calls": [
         {
-          "line": "2D",
-          "direction": "return",
-          "index": 11
-        },
-        {
           "line": "6",
           "direction": "return",
           "index": 7
@@ -1402,6 +1422,11 @@
           "line": "10",
           "direction": "depart",
           "index": 8
+        },
+        {
+          "line": "10B",
+          "direction": "depart",
+          "index": 9
         }
       ]
     },
@@ -1420,6 +1445,11 @@
       "calls": [
         {
           "line": "10",
+          "direction": "return",
+          "index": 3
+        },
+        {
+          "line": "10B",
           "direction": "return",
           "index": 3
         }
@@ -1445,6 +1475,16 @@
         },
         {
           "line": "10",
+          "direction": "return",
+          "index": 0
+        },
+        {
+          "line": "10B",
+          "direction": "depart",
+          "index": 11
+        },
+        {
+          "line": "10B",
           "direction": "return",
           "index": 0
         }
@@ -1641,7 +1681,7 @@
         {
           "line": "4",
           "direction": "return",
-          "index": 11
+          "index": 12
         },
         {
           "line": "7",
@@ -1731,7 +1771,7 @@
         {
           "line": "1D",
           "direction": "return",
-          "index": 6
+          "index": 7
         },
         {
           "line": "2",
@@ -1751,7 +1791,7 @@
         {
           "line": "2D",
           "direction": "return",
-          "index": 6
+          "index": 7
         },
         {
           "line": "3",
@@ -1771,7 +1811,7 @@
         {
           "line": "4",
           "direction": "return",
-          "index": 6
+          "index": 7
         },
         {
           "line": "5",
@@ -1832,6 +1872,11 @@
           "line": "10",
           "direction": "depart",
           "index": 5
+        },
+        {
+          "line": "10B",
+          "direction": "depart",
+          "index": 6
         }
       ]
     },
@@ -1850,6 +1895,11 @@
       "calls": [
         {
           "line": "10",
+          "direction": "return",
+          "index": 6
+        },
+        {
+          "line": "10B",
           "direction": "return",
           "index": 6
         }
@@ -1897,6 +1947,11 @@
           "line": "10",
           "direction": "return",
           "index": 5
+        },
+        {
+          "line": "10B",
+          "direction": "return",
+          "index": 5
         }
       ]
     },
@@ -1917,6 +1972,11 @@
           "line": "10",
           "direction": "depart",
           "index": 6
+        },
+        {
+          "line": "10B",
+          "direction": "depart",
+          "index": 7
         }
       ]
     },
@@ -1935,6 +1995,11 @@
       "calls": [
         {
           "line": "10",
+          "direction": "return",
+          "index": 4
+        },
+        {
+          "line": "10B",
           "direction": "return",
           "index": 4
         }
@@ -1957,6 +2022,11 @@
           "line": "10",
           "direction": "depart",
           "index": 7
+        },
+        {
+          "line": "10B",
+          "direction": "depart",
+          "index": 8
         }
       ]
     },
@@ -1981,7 +2051,7 @@
         {
           "line": "4",
           "direction": "return",
-          "index": 10
+          "index": 11
         },
         {
           "line": "7",
@@ -2081,7 +2151,7 @@
         {
           "line": "2D",
           "direction": "return",
-          "index": 13
+          "index": 14
         },
         {
           "line": "6",
@@ -2095,6 +2165,11 @@
         },
         {
           "line": "10",
+          "direction": "return",
+          "index": 10
+        },
+        {
+          "line": "10B",
           "direction": "return",
           "index": 10
         }
@@ -2166,7 +2241,7 @@
         {
           "line": "1D",
           "direction": "depart",
-          "index": 14
+          "index": 15
         },
         {
           "line": "1D",
@@ -2176,7 +2251,7 @@
         {
           "line": "2D",
           "direction": "depart",
-          "index": 21
+          "index": 22
         },
         {
           "line": "2D",
@@ -2186,7 +2261,7 @@
         {
           "line": "4",
           "direction": "depart",
-          "index": 15
+          "index": 16
         },
         {
           "line": "4",
@@ -2224,6 +2299,11 @@
           "index": 12
         },
         {
+          "line": "2D",
+          "direction": "return",
+          "index": 13
+        },
+        {
           "line": "6",
           "direction": "return",
           "index": 8
@@ -2235,6 +2315,11 @@
         },
         {
           "line": "10",
+          "direction": "return",
+          "index": 9
+        },
+        {
+          "line": "10B",
           "direction": "return",
           "index": 9
         }
@@ -2297,6 +2382,11 @@
           "line": "10",
           "direction": "return",
           "index": 2
+        },
+        {
+          "line": "10B",
+          "direction": "return",
+          "index": 2
         }
       ]
     },
@@ -2317,6 +2407,11 @@
           "line": "10",
           "direction": "depart",
           "index": 9
+        },
+        {
+          "line": "10B",
+          "direction": "depart",
+          "index": 10
         }
       ]
     },
@@ -2346,7 +2441,7 @@
         {
           "line": "1D",
           "direction": "return",
-          "index": 13
+          "index": 14
         },
         {
           "line": "2",
@@ -2356,7 +2451,7 @@
         {
           "line": "2D",
           "direction": "return",
-          "index": 18
+          "index": 19
         },
         {
           "line": "6",
@@ -2462,6 +2557,16 @@
           "line": "7",
           "direction": "depart",
           "index": 1
+        },
+        {
+          "line": "10B",
+          "direction": "depart",
+          "index": 0
+        },
+        {
+          "line": "10B",
+          "direction": "return",
+          "index": 13
         }
       ]
     },
@@ -2551,7 +2656,7 @@
         {
           "line": "2D",
           "direction": "return",
-          "index": 9
+          "index": 10
         },
         {
           "line": "6",
@@ -2562,6 +2667,11 @@
           "line": "10",
           "direction": "depart",
           "index": 3
+        },
+        {
+          "line": "10B",
+          "direction": "depart",
+          "index": 4
         }
       ]
     },
@@ -2602,6 +2712,11 @@
           "line": "10",
           "direction": "return",
           "index": 8
+        },
+        {
+          "line": "10B",
+          "direction": "return",
+          "index": 8
         }
       ]
     },
@@ -2637,6 +2752,11 @@
           "line": "10",
           "direction": "return",
           "index": 7
+        },
+        {
+          "line": "10B",
+          "direction": "return",
+          "index": 7
         }
       ]
     },
@@ -2656,12 +2776,17 @@
         {
           "line": "2D",
           "direction": "return",
-          "index": 10
+          "index": 11
         },
         {
           "line": "10",
           "direction": "depart",
           "index": 4
+        },
+        {
+          "line": "10B",
+          "direction": "depart",
+          "index": 5
         }
       ]
     },
@@ -2716,17 +2841,17 @@
         {
           "line": "1D",
           "direction": "return",
-          "index": 4
+          "index": 5
         },
         {
           "line": "2D",
           "direction": "return",
-          "index": 4
+          "index": 5
         },
         {
           "line": "4",
           "direction": "return",
-          "index": 4
+          "index": 5
         },
         {
           "line": "5D",
@@ -2786,17 +2911,17 @@
         {
           "line": "1D",
           "direction": "return",
-          "index": 3
+          "index": 4
         },
         {
           "line": "2D",
           "direction": "return",
-          "index": 3
+          "index": 4
         },
         {
           "line": "4",
           "direction": "return",
-          "index": 3
+          "index": 4
         },
         {
           "line": "5D",
@@ -2821,17 +2946,17 @@
         {
           "line": "1D",
           "direction": "return",
-          "index": 2
+          "index": 3
         },
         {
           "line": "2D",
           "direction": "return",
-          "index": 2
+          "index": 3
         },
         {
           "line": "4",
           "direction": "return",
-          "index": 2
+          "index": 3
         },
         {
           "line": "5D",
@@ -2872,6 +2997,51 @@
           "line": "5D",
           "direction": "depart",
           "index": 17
+        }
+      ]
+    },
+    {
+      "id": "source-strconstructorilor4-45.861400-25.817300",
+      "name": {
+        "ro": "Str. Constructorilor 4",
+        "hu": "Építők útja 4"
+      },
+      "point": [
+        45.8614,
+        25.8173
+      ],
+      "source": "source-fallback",
+      "osm_id": null,
+      "calls": [
+        {
+          "line": "1D",
+          "direction": "depart",
+          "index": 13
+        },
+        {
+          "line": "1D",
+          "direction": "return",
+          "index": 2
+        },
+        {
+          "line": "2D",
+          "direction": "depart",
+          "index": 20
+        },
+        {
+          "line": "2D",
+          "direction": "return",
+          "index": 2
+        },
+        {
+          "line": "4",
+          "direction": "depart",
+          "index": 14
+        },
+        {
+          "line": "4",
+          "direction": "return",
+          "index": 2
         }
       ]
     },
@@ -2986,7 +3156,7 @@
         {
           "line": "2D",
           "direction": "return",
-          "index": 14
+          "index": 15
         },
         {
           "line": "6",
@@ -3000,6 +3170,11 @@
         },
         {
           "line": "10",
+          "direction": "return",
+          "index": 11
+        },
+        {
+          "line": "10B",
           "direction": "return",
           "index": 11
         }
@@ -3241,7 +3416,7 @@
         {
           "line": "4",
           "direction": "return",
-          "index": 12
+          "index": 13
         },
         {
           "line": "7",
@@ -3599,13 +3774,20 @@
       "line": "1D",
       "direction": "depart",
       "index": 13,
-      "name": "Câmpul Frumos",
+      "name": "Str. Constructorilor 4",
       "reason": "no matching OSM platform"
     },
     {
       "line": "1D",
       "direction": "depart",
       "index": 14,
+      "name": "Câmpul Frumos",
+      "reason": "no matching OSM platform"
+    },
+    {
+      "line": "1D",
+      "direction": "depart",
+      "index": 15,
       "name": "Multi-Trans",
       "reason": "no matching OSM platform"
     },
@@ -3627,41 +3809,48 @@
       "line": "1D",
       "direction": "return",
       "index": 2,
-      "name": "Str. Constructorilor 3",
+      "name": "Str. Constructorilor 4",
       "reason": "no matching OSM platform"
     },
     {
       "line": "1D",
       "direction": "return",
       "index": 3,
-      "name": "Str. Constructorilor 2",
+      "name": "Str. Constructorilor 3",
       "reason": "no matching OSM platform"
     },
     {
       "line": "1D",
       "direction": "return",
       "index": 4,
-      "name": "Str. Constructorilor 1",
+      "name": "Str. Constructorilor 2",
       "reason": "no matching OSM platform"
     },
     {
       "line": "1D",
       "direction": "return",
       "index": 5,
-      "name": "Calea Brașovului 1",
+      "name": "Str. Constructorilor 1",
       "reason": "no matching OSM platform"
     },
     {
       "line": "1D",
       "direction": "return",
       "index": 6,
+      "name": "Calea Brașovului 1",
+      "reason": "no matching OSM platform"
+    },
+    {
+      "line": "1D",
+      "direction": "return",
+      "index": 7,
       "name": "Gara CFR",
       "reason": "no matching OSM platform"
     },
     {
       "line": "1D",
       "direction": "return",
-      "index": 13,
+      "index": 14,
       "name": "Simeria (Str. Berzei)",
       "reason": "no matching OSM platform"
     },
@@ -3900,13 +4089,20 @@
       "line": "2D",
       "direction": "depart",
       "index": 20,
-      "name": "Câmpul Frumos",
+      "name": "Str. Constructorilor 4",
       "reason": "no matching OSM platform"
     },
     {
       "line": "2D",
       "direction": "depart",
       "index": 21,
+      "name": "Câmpul Frumos",
+      "reason": "no matching OSM platform"
+    },
+    {
+      "line": "2D",
+      "direction": "depart",
+      "index": 22,
       "name": "Multi-Trans",
       "reason": "no matching OSM platform"
     },
@@ -3928,76 +4124,83 @@
       "line": "2D",
       "direction": "return",
       "index": 2,
-      "name": "Str. Constructorilor 3",
+      "name": "Str. Constructorilor 4",
       "reason": "no matching OSM platform"
     },
     {
       "line": "2D",
       "direction": "return",
       "index": 3,
-      "name": "Str. Constructorilor 2",
+      "name": "Str. Constructorilor 3",
       "reason": "no matching OSM platform"
     },
     {
       "line": "2D",
       "direction": "return",
       "index": 4,
-      "name": "Str. Constructorilor 1",
+      "name": "Str. Constructorilor 2",
       "reason": "no matching OSM platform"
     },
     {
       "line": "2D",
       "direction": "return",
       "index": 5,
-      "name": "Calea Brașovului 1",
+      "name": "Str. Constructorilor 1",
       "reason": "no matching OSM platform"
     },
     {
       "line": "2D",
       "direction": "return",
       "index": 6,
+      "name": "Calea Brașovului 1",
+      "reason": "no matching OSM platform"
+    },
+    {
+      "line": "2D",
+      "direction": "return",
+      "index": 7,
       "name": "Gara CFR",
       "reason": "no matching OSM platform"
     },
     {
       "line": "2D",
       "direction": "return",
-      "index": 9,
+      "index": 10,
       "name": "Str. Ciucului 1",
       "reason": "no matching OSM platform"
     },
     {
       "line": "2D",
       "direction": "return",
-      "index": 10,
+      "index": 11,
       "name": "Str. Ciucului 2",
       "reason": "no matching OSM platform"
     },
     {
       "line": "2D",
       "direction": "return",
-      "index": 11,
-      "name": "Cart. Ciucului",
-      "reason": "no matching OSM platform"
-    },
-    {
-      "line": "2D",
-      "direction": "return",
       "index": 13,
-      "name": "Lic. Plugor Sándor",
+      "name": "Piața Kálvin",
       "reason": "no matching OSM platform"
     },
     {
       "line": "2D",
       "direction": "return",
       "index": 14,
+      "name": "Lic. Plugor Sándor",
+      "reason": "no matching OSM platform"
+    },
+    {
+      "line": "2D",
+      "direction": "return",
+      "index": 15,
       "name": "Str. Gábor Áron",
       "reason": "no matching OSM platform"
     },
     {
       "line": "2D",
       "direction": "return",
-      "index": 18,
+      "index": 19,
       "name": "Simeria (Str. Berzei)",
       "reason": "no matching OSM platform"
     },
@@ -4250,13 +4453,20 @@
       "line": "4",
       "direction": "depart",
       "index": 14,
-      "name": "Câmpul Frumos",
+      "name": "Str. Constructorilor 4",
       "reason": "no matching OSM platform"
     },
     {
       "line": "4",
       "direction": "depart",
       "index": 15,
+      "name": "Câmpul Frumos",
+      "reason": "no matching OSM platform"
+    },
+    {
+      "line": "4",
+      "direction": "depart",
+      "index": 16,
       "name": "Multi-Trans",
       "reason": "no matching OSM platform"
     },
@@ -4278,55 +4488,62 @@
       "line": "4",
       "direction": "return",
       "index": 2,
-      "name": "Str. Constructorilor 3",
+      "name": "Str. Constructorilor 4",
       "reason": "no matching OSM platform"
     },
     {
       "line": "4",
       "direction": "return",
       "index": 3,
-      "name": "Str. Constructorilor 2",
+      "name": "Str. Constructorilor 3",
       "reason": "no matching OSM platform"
     },
     {
       "line": "4",
       "direction": "return",
       "index": 4,
-      "name": "Str. Constructorilor 1",
+      "name": "Str. Constructorilor 2",
       "reason": "no matching OSM platform"
     },
     {
       "line": "4",
       "direction": "return",
       "index": 5,
-      "name": "Calea Brașovului 1",
+      "name": "Str. Constructorilor 1",
       "reason": "no matching OSM platform"
     },
     {
       "line": "4",
       "direction": "return",
       "index": 6,
+      "name": "Calea Brașovului 1",
+      "reason": "no matching OSM platform"
+    },
+    {
+      "line": "4",
+      "direction": "return",
+      "index": 7,
       "name": "Gara CFR",
       "reason": "no matching OSM platform"
     },
     {
       "line": "4",
       "direction": "return",
-      "index": 10,
+      "index": 11,
       "name": "Liceul M. Viteazul",
       "reason": "no matching OSM platform"
     },
     {
       "line": "4",
       "direction": "return",
-      "index": 11,
+      "index": 12,
       "name": "Fabrica de Țigarete",
       "reason": "no matching OSM platform"
     },
     {
       "line": "4",
       "direction": "return",
-      "index": 12,
+      "index": 13,
       "name": "Str. Țigaretei 1",
       "reason": "no matching OSM platform"
     },
@@ -5196,6 +5413,160 @@
       "direction": "return",
       "index": 11,
       "name": "Str. Gábor Áron",
+      "reason": "no matching OSM platform"
+    },
+    {
+      "line": "10B",
+      "direction": "depart",
+      "index": 0,
+      "name": "Spitalul Județean",
+      "reason": "no matching OSM platform"
+    },
+    {
+      "line": "10B",
+      "direction": "depart",
+      "index": 4,
+      "name": "Str. Ciucului 1",
+      "reason": "no matching OSM platform"
+    },
+    {
+      "line": "10B",
+      "direction": "depart",
+      "index": 5,
+      "name": "Str. Ciucului 2",
+      "reason": "no matching OSM platform"
+    },
+    {
+      "line": "10B",
+      "direction": "depart",
+      "index": 6,
+      "name": "Grădinărie",
+      "reason": "no matching OSM platform"
+    },
+    {
+      "line": "10B",
+      "direction": "depart",
+      "index": 7,
+      "name": "Kossuth Lajos 1",
+      "reason": "no matching OSM platform"
+    },
+    {
+      "line": "10B",
+      "direction": "depart",
+      "index": 8,
+      "name": "Kossuth Lajos 2",
+      "reason": "no matching OSM platform"
+    },
+    {
+      "line": "10B",
+      "direction": "depart",
+      "index": 9,
+      "name": "Castelul Szentkereszty",
+      "reason": "no matching OSM platform"
+    },
+    {
+      "line": "10B",
+      "direction": "depart",
+      "index": 10,
+      "name": "Primăria Arcuș",
+      "reason": "no matching OSM platform"
+    },
+    {
+      "line": "10B",
+      "direction": "depart",
+      "index": 11,
+      "name": "Centru Arcuș",
+      "reason": "no matching OSM platform"
+    },
+    {
+      "line": "10B",
+      "direction": "return",
+      "index": 0,
+      "name": "Centru Arcuș",
+      "reason": "no matching OSM platform"
+    },
+    {
+      "line": "10B",
+      "direction": "return",
+      "index": 1,
+      "name": "Bis. Reformată Arcuș",
+      "reason": "no matching OSM platform"
+    },
+    {
+      "line": "10B",
+      "direction": "return",
+      "index": 2,
+      "name": "Primăria Arcuș",
+      "reason": "no matching OSM platform"
+    },
+    {
+      "line": "10B",
+      "direction": "return",
+      "index": 3,
+      "name": "Castelul Szentkereszty",
+      "reason": "no matching OSM platform"
+    },
+    {
+      "line": "10B",
+      "direction": "return",
+      "index": 4,
+      "name": "Kossuth Lajos 2",
+      "reason": "no matching OSM platform"
+    },
+    {
+      "line": "10B",
+      "direction": "return",
+      "index": 5,
+      "name": "Kossuth Lajos 1",
+      "reason": "no matching OSM platform"
+    },
+    {
+      "line": "10B",
+      "direction": "return",
+      "index": 6,
+      "name": "Grădinărie",
+      "reason": "no matching OSM platform"
+    },
+    {
+      "line": "10B",
+      "direction": "return",
+      "index": 7,
+      "name": "Str. Ciucului 2",
+      "reason": "no matching OSM platform"
+    },
+    {
+      "line": "10B",
+      "direction": "return",
+      "index": 8,
+      "name": "Str. Ciucului 1",
+      "reason": "no matching OSM platform"
+    },
+    {
+      "line": "10B",
+      "direction": "return",
+      "index": 9,
+      "name": "Piața Kálvin",
+      "reason": "no matching OSM platform"
+    },
+    {
+      "line": "10B",
+      "direction": "return",
+      "index": 10,
+      "name": "Lic. Plugor Sándor",
+      "reason": "no matching OSM platform"
+    },
+    {
+      "line": "10B",
+      "direction": "return",
+      "index": 11,
+      "name": "Str. Gábor Áron",
+      "reason": "no matching OSM platform"
+    },
+    {
+      "line": "10B",
+      "direction": "return",
+      "index": 13,
+      "name": "Spitalul Județean",
       "reason": "no matching OSM platform"
     }
   ]

@@ -24,7 +24,7 @@ ROOT = Path(__file__).resolve().parent
 OUTPUT = ROOT / "trips.json"
 SCHOOL_ONLY = ROOT / "school_only_trips.json"
 DWELL_SECONDS = 25
-ORDER = ["1", "1B", "1D", "2", "2D", "3", "4", "5", "5D", "6", "7", "9", "10"]
+ORDER = ["1", "1B", "1D", "2", "2D", "3", "4", "5", "5D", "6", "7", "9", "10", "10B"]
 
 
 def minutes(text):

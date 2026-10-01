@@ -782,7 +782,7 @@ def main():
         "version": feed.get("feed_version", "dev"),
         "generated": feed.get("feed_start_date", ""),
         "validFrom": feed.get("feed_start_date", ""),
-        "routesProvisional": False,  # every line's geometry now comes from Multi-Trans's own published routeLine polyline (2026-09-15 jaratok/ pages)
+        "routesProvisional": True,  # line 10B (added 2026-10-01) has no published jarat-10b.html yet; every other line's geometry is Multi-Trans's own routeLine polyline (2026-09-15)
         "schoolTerms": [list(t) for t in SCHOOL_TERMS],
         "schoolExceptions": SCHOOL_EXCEPTIONS,
         "publicHolidays": PUBLIC_HOLIDAYS,

@@ -104,43 +104,48 @@ class GtfsTopologyTests(unittest.TestCase):
         names = {row["stop_name"] for row in rows}
         self.assertIn("Calea Brașovului 1", names)
 
-    def test_real_feed_adds_1b_and_keeps_5d_to_its_two_marked_runs(self):
+    def test_real_feed_adds_1b_and_10b_keeps_5d_fully_serviceless(self):
         """1B joined ORDER with weekday trips. The Sept 7 board dropped every
-        dedicated 5D-depart column (that direction's destination gate keeps it
-        at zero trips, unchanged), but line 5's own return-direction board
-        columns carry 2 weekday runs marked as also serving the 5D extension
-        (06:2x and 14:2x, "Str. Dózsa György (Arena Sepsi felől)" destination)
-        - genuine printed board data, so 5D is not fully serviceless: it gets
-        a routes.txt row for those 2 return runs, none for depart."""
+        dedicated 5D-depart column; line 5's own return-direction board used
+        to carry 2 weekday runs marked as also serving the 5D extension
+        (06:2x and 14:2x, "Str. Dózsa György (Arena Sepsi felől)"
+        destination), so 5D kept a routes.txt row for those. The Oct 1 2026
+        board simplified that destination text to plain "Str. Dózsa György"
+        and dropped the marked events entirely - verified directly against
+        the raw board, not a matching bug - so 5D is now fully serviceless
+        and gets no routes.txt row at all. 10B (new that same day) does get
+        one, service_id="school" only - see the school-service test."""
         self.build_in_temporary_directory()
         with (build_gtfs.OUT / "routes.txt").open(encoding="utf-8", newline="") as handle:
             route_ids = {row["route_id"] for row in csv.DictReader(handle)}
         self.assertIn("1B", route_ids)
-        self.assertIn("5D", route_ids)
+        self.assertIn("10B", route_ids)
+        self.assertNotIn("5D", route_ids)
         with (build_gtfs.OUT / "trips.txt").open(encoding="utf-8", newline="") as handle:
             rows = list(csv.DictReader(handle))
-        fivd_d_directions = {row["trip_headsign"] for row in rows if row["route_id"] == "5D"}
-        self.assertTrue(fivd_d_directions, "5D must keep at least its 2 marked return runs")
-        with (build_gtfs.OUT / "translations.txt").open(encoding="utf-8", newline="") as handle:
-            route_records = {row["record_id"] for row in csv.DictReader(handle)
-                             if row["table_name"] == "routes"}
-        self.assertIn("5D", route_records)
+        self.assertFalse(any(row["route_id"] == "5D" for row in rows))
 
     def test_school_service_mirrors_every_weekday_trip_with_dated_calendar(self):
         """The school service is a weekday superset: build_gtfs emits a
         service_id="school" copy of every weekday trip, and calendar_dates.txt
         lists each teaching day as an exception_type=1 addition. On top of the
-        mirror it also emits the board-less school-only runs (the áthúzott-6,
-        Task 22), which have no weekday counterpart."""
+        mirror it also emits trips with no weekday counterpart at all: the
+        board-less school-only runs (the áthúzott-6, Task 22), and line 10B
+        (added 2026-10-01), whose hospital-extended pattern only actually
+        runs during the school term - see build_gtfs.py's trip-emission loop."""
         self.build_in_temporary_directory()
 
         with (build_gtfs.OUT / "trips.txt").open(encoding="utf-8", newline="") as handle:
             rows = list(csv.DictReader(handle))
         services = [row["service_id"] for row in rows]
         school_only = sum(1 for row in rows if row["trip_id"].startswith("6S-"))
+        line_10b_school = sum(1 for row in rows if row["route_id"] == "10B")
         self.assertEqual(school_only, 1)
+        self.assertGreater(line_10b_school, 0)
+        self.assertTrue(all(row["service_id"] == "school" for row in rows
+                             if row["route_id"] == "10B"))
         self.assertEqual(services.count("school"),
-                         services.count("weekday") + school_only)
+                         services.count("weekday") + school_only + line_10b_school)
         self.assertGreater(services.count("school"), 0)
 
         with (build_gtfs.OUT / "calendar.txt").open(encoding="utf-8", newline="") as handle:
