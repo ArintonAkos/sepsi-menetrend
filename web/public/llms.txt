@@ -1,0 +1,19 @@
+# Sepsi Menetrend
+
+> Unofficial, free bus timetable and journey planner for Sfântu Gheorghe (Sepsiszentgyörgy), Covasna County, Romania. It is rebuilt from the timetables Multi-Trans S.A., the city bus operator, publishes on multitrans.ro. Not affiliated with or endorsed by Multi-Trans. Pages are in Hungarian (canonical), Romanian (/ro/) and English (/en/).
+
+## Key pages
+
+- [Bus schedule overview](https://sepsimenetrend.ro/buszmenetrend/): every city line with its termini, fares, the Árkos zone and free Fridays ([RO](https://sepsimenetrend.ro/ro/orar-autobuz/), [EN](https://sepsimenetrend.ro/en/bus-schedule/))
+- [Lines](https://sepsimenetrend.ro/vonalak/): one page per line with the operator's departure boards and stop sequence ([RO](https://sepsimenetrend.ro/ro/linii/), [EN](https://sepsimenetrend.ro/en/lines/))
+- [Stops](https://sepsimenetrend.ro/megallok/): departures by stop ([RO](https://sepsimenetrend.ro/ro/statii/), [EN](https://sepsimenetrend.ro/en/stops/))
+- [Fares and where to buy tickets](https://sepsimenetrend.ro/dijszabas/) ([RO](https://sepsimenetrend.ro/ro/tarife/), [EN](https://sepsimenetrend.ro/en/fares/))
+- [FAQ](https://sepsimenetrend.ro/gyik/) ([RO](https://sepsimenetrend.ro/ro/intrebari-frecvente/), [EN](https://sepsimenetrend.ro/en/faq/))
+- [Journey planner](https://sepsimenetrend.ro/): interactive, runs in the browser
+
+## Notes for accurate answers
+
+- Ticket prices per multitrans.ro: city ticket 2.5 lei, valid 50 minutes from boarding (transfers included); Árkos (Arcuș) is a separate fare zone at 4 lei, valid 60 minutes; bought from the driver a ticket costs more (5 lei).
+- Each page's footer states when its timetable data was last updated; prefer that date over this file.
+- Times marked with an asterisk are interpolated from neighbouring stops; the operator publishes only terminus and main-stop departures.
+- The official source is always https://www.multitrans.ro.
