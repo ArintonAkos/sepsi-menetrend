@@ -6,39 +6,19 @@
  *  Prices are quoted "per multitrans.ro". */
 import type { GuideCopy, GuideKey } from "./content";
 
-/** The twelve city lines with their end-to-end termini, primary direction.
- *  Stop names are pinned to the Hungarian feed name (no EN display-name table
- *  this phase), so this list never contradicts the feed-rendered `PillarLines`
- *  block right below it on `/en/bus-schedule/`. Mirrors `LINES_HU`. */
-const LINES_EN: string[] = [
-  "1 · Szemerja Végállomás – Vasútállomás",
-  "1B · Szemerja Végállomás – Szépmező",
-  "1D · Szemerja Végállomás – Multi-Trans",
-  "2 · Szemerja Végállomás – Vasútállomás",
-  "2D · Multi-Trans – Bartók Béla utca",
-  "3 · Cigaretta utca 1 – Szotyor 2",
-  "4 · Cigaretta utca 1 – Multi-Trans",
-  "5 · Dózsa György utca – Sepsi Aréna",
-  "6 · Szemerja Végállomás – Sepsi Aréna",
-  "7 · Szemerja Végállomás – Vasútállomás",
-  "9 · Sugásfürdő – Vasútállomás",
-  "10 · Árkos központ – Lábasház",
-];
-
 export const EN: Record<GuideKey, GuideCopy> = {
   pillar: {
     slug: "bus-schedule",
     title: "Sfântu Gheorghe bus schedule – Multi-Trans lines",
     description:
-      "An overview of the Sfântu Gheorghe city bus network: the twelve Multi-Trans lines with their termini, ticket prices, the Arcuș zone and the free Friday travel.",
+      "An overview of the Sfântu Gheorghe city bus network: the thirteen Multi-Trans lines with their termini, ticket prices, the Arcuș zone and the free Friday travel.",
     body: [
       { h2: "What is this page?" },
       { p: "This page is a complete overview of the Sfântu Gheorghe bus schedule. It is an independent project that rebuilds the timetable published on multitrans.ro into a searchable, map-based, route-planning form. It is not the official Multi-Trans site." },
       { h2: "Multi-Trans and the city bus network" },
-      { p: "The city bus network of Sfântu Gheorghe (Sepsiszentgyörgy, Covasna County) is operated by Multi-Trans S.A. The company runs twelve city lines in and around the town, including one to the neighbouring commune of Arcuș. The Multi-Trans timetable is available here by line and by stop." },
+      { p: "The city bus network of Sfântu Gheorghe (Sepsiszentgyörgy, Covasna County) is operated by Multi-Trans S.A. The company runs thirteen city lines in and around the town, including two to the neighbouring commune of Arcuș. The Multi-Trans timetable is available here by line and by stop." },
       { h2: "Lines and termini" },
-      { p: "The twelve lines and the two end points of the main direction. The \"D\" services are supplementary departures the operator numbers separately. Line 1B, added on 7 September 2026, runs line 1's route to the railway station and then continues to Autoliv and Szépmező." },
-      { ul: LINES_EN },
+      { p: "All thirteen lines, with the two end points of the main direction, are listed at the bottom of this page, straight from the timetable data. The \"D\" services are supplementary departures the operator numbers separately. Line 1B, added on 7 September 2026, runs line 1's route to the railway station and then continues to Autoliv and Szépmező. Line 10B, added on 1 October 2026, runs on school days only, between Árkos and the County Hospital." },
       { h2: "Tickets and the Arcuș zone" },
       { p: "The city ticket is 2.5 lei per multitrans.ro, valid for 50 minutes from boarding, transfers included. Buy it in the 24pay app, from a ticket machine, at a Multi-Trans kiosk or in one of several shops; also from the driver, but at 5 lei. Line 10 crosses into Arcuș, a separate commune and a separate fare zone: that ticket is 4 lei and valid for 60 minutes. A city ticket does not let you board the Arcuș bus; an Arcuș ticket does let you transfer onto the city buses." },
       { h2: "Free Fridays" },
@@ -91,7 +71,7 @@ export const EN: Record<GuideKey, GuideCopy> = {
       { h2: "The operator" },
       { p: "The Sfântu Gheorghe city bus network is operated by Multi-Trans S.A. Its official site is multitrans.ro, where timetables and official notices are published." },
       { h2: "The lines" },
-      { p: "Multi-Trans runs twelve city lines in Sfântu Gheorghe. Line 10 crosses into Arcuș, a separate commune and a separate fare zone. The full line list with termini is on the schedule overview page." },
+      { p: "Multi-Trans runs thirteen city lines in Sfântu Gheorghe. Lines 10 and 10B cross into Arcuș, a separate commune and a separate fare zone. The full line list with termini is on the schedule overview page." },
       { h2: "This site is not official" },
       { p: "This website is an independent project. It processes the timetable published on multitrans.ro and rebuilds it in a searchable, route-planning form. It is not official: it is not affiliated with Multi-Trans S.A., and the company has not endorsed it." },
       { h2: "Why it was built" },
@@ -135,8 +115,8 @@ export const EN: Record<GuideKey, GuideCopy> = {
       { q: "How do I buy a bus ticket?", a: "Buy it in the 24pay app (with a bank card), from a ticket machine, at a Multi-Trans kiosk – at the Simeria terminus, the railway station and Casa cu Arcade – or in one of several shops, or from the driver, where it is dearer (5 lei). In 24pay you buy the ticket as you board." },
       { q: "Do I need a bank card to buy a ticket?", a: "No. A bank card is only needed for the 24pay app. At the machine, the kiosks, the shops and the driver you can also pay cash." },
       { q: "Is the bus free on Fridays?", a: "Per Multi-Trans, travel is free on Fridays on every city line, the Arcuș service included. It is a recurring, municipality-funded arrangement, not a permanent guarantee." },
-      { q: "Which bus goes to the railway station?", a: "The Railway Station (Vasútállomás) is a terminus of lines 1, 2, 7 and 9. The exact departure times are on each line's schedule page." },
-      { q: "Which bus goes to the County Hospital?", a: "The County Hospital (Megyei Kórház) stop is served by several lines on the stretch between Szemerja and the centre, among them lines 1, 2, 6 and 7. Exact times are on each line's page." },
+      { q: "Which bus goes to the railway station?", a: "Every city line except 10 and 10B stops at the Railway Station (Vasútállomás): lines 1, 1B, 1D, 2, 2D, 3, 4, 5, 6, 7 and 9. It is the terminus of lines 1, 2, 7 and 9. The exact departure times are on each line's schedule page." },
+      { q: "Which bus goes to the County Hospital?", a: "The County Hospital (Megyei Kórház) stop is served by lines 1, 1B, 1D, 2, 2D, 6 and 7 on the stretch between Szemerja and the centre, and on school days by line 10B, which terminates there. Exact times are on each line's page." },
       { q: "Is there a night service?", a: "There is no separate night service. The last departures are typically in the evening; check the last departure on the line's own page." },
       { q: "Can I bring a bicycle on the bus?", a: "Yes, on line 9 (Gara CFR – Șugaș Băi), but only in the warmer months: per Multi-Trans, bicycle transport is suspended from October 1 until spring. The bus itself still runs four times a day; only bicycles aren't carried during that time." },
       { q: "Is this the official Multi-Trans site?", a: "No. This is an independent project that rebuilds the timetable published on multitrans.ro. The site is not affiliated with Multi-Trans S.A." },

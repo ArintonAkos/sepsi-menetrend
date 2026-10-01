@@ -79,9 +79,9 @@ function FaqSection({ items }: { items: { q: string; a: string }[] }) {
   );
 }
 
-/** Index/guide links for the pillar page, alongside the 12 line links: the
+/** Index/guide links for the pillar page, alongside the line links: the
  *  stop index, the route index and the other guides. The pillar is the crawl
- *  hub for the whole subsystem (spec: "all 12 lines, the stop index, fares,
+ *  hub for the whole subsystem (spec: "all lines, the stop index, fares,
  *  bike, FAQ, Multi-Trans"), so every guide and index hangs off it or it is
  *  stranded - the route index in particular is what keeps the ~91 route pages
  *  in reach. Paths differ per language and must match `lib/seo/urls.ts`. */

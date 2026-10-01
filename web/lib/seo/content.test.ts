@@ -1,6 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { GUIDES } from "./content";
 import { EN } from "./content.en";
+import { loadNetwork } from "./network";
 
 /** Flatten a block list to one lowercase string so a test can ask "is this
  *  phrase anywhere in the prose" without walking the union type. */
@@ -90,5 +91,51 @@ describe("English guide copy", () => {
     expect(EN.pillar.slug).toBe("bus-schedule");
     expect(EN.faq.slug).toBe("faq");
     expect(EN.fares.slug).toBe("fares");
+  });
+});
+
+/** The prose is hand-written, the network is not - these pin the two together
+ *  so a timetable revision that adds a line (10B, Oct 2026) or reroutes one
+ *  fails here instead of leaving the guides contradicting the line pages. */
+describe("guide facts agree with the built feed", () => {
+  const net = loadNetwork();
+  const COUNT_WORD: Record<number, { hu: string; ro: string; en: string }> = {
+    13: { hu: "tizenhárom", ro: "treisprezece", en: "thirteen" },
+  };
+
+  it("states the feed's line count in every language", () => {
+    const word = COUNT_WORD[net.lines.length];
+    expect(word, `add the number words for ${net.lines.length} lines`).toBeDefined();
+    for (const lang of ["hu", "ro", "en"] as const) {
+      expect(flat(GUIDES.pillar.body[lang])).toContain(word[lang]);
+      expect(flat(GUIDES.multiTrans.body[lang])).toContain(word[lang]);
+    }
+  });
+
+  it("names every line that stops at the station and at the hospital", () => {
+    const servedAt = (hu: string) => {
+      const ids = new Set(net.stops.filter((st) => st.name.hu === hu).map((st) => st.id));
+      return net.lines
+        .filter((l) => net.patterns.some((p) => p.lineId === l.id && p.stopIds.some((id) => ids.has(id))))
+        .map((l) => l.id);
+    };
+    const cases = [
+      { stop: "Vasútállomás", q: { hu: /vasútállomás/i, ro: /gară/i, en: /railway station/i } },
+      { stop: "Megyei Kórház", q: { hu: /kórház/i, ro: /spital/i, en: /hospital/i } },
+    ];
+    for (const { stop, q } of cases) {
+      const lines = servedAt(stop);
+      expect(lines.length).toBeGreaterThan(0);
+      for (const lang of ["hu", "ro", "en"] as const) {
+        const faq = GUIDES.faq.faq![lang].find((f) => q[lang].test(f.q));
+        expect(faq, `${lang} FAQ about ${stop}`).toBeDefined();
+        for (const id of lines) {
+          // "1" must not be satisfied by "10" or "1B"
+          expect(faq!.a, `${lang} ${stop} answer misses line ${id}`).toMatch(
+            new RegExp(`(?<![0-9A-Z])${id}(?![0-9A-Z])`),
+          );
+        }
+      }
+    }
   });
 });

@@ -7,29 +7,12 @@
  *  Prices are quoted "a multitrans.ro szerint" because the card may still drift. */
 import type { GuideCopy, GuideKey } from "./content";
 
-/** The twelve city lines with their end-to-end termini, primary direction.
- *  Shared by the pillar and Multi-Trans pages so the list never drifts. */
-const LINES_HU: string[] = [
-  "1 · Szemerja Végállomás – Vasútállomás",
-  "1B · Szemerja Végállomás – Szépmező",
-  "1D · Szemerja Végállomás – Multi-Trans",
-  "2 · Szemerja Végállomás – Vasútállomás",
-  "2D · Multi-Trans – Bartók Béla utca",
-  "3 · Cigaretta utca 1 – Szotyor 2",
-  "4 · Cigaretta utca 1 – Multi-Trans",
-  "5 · Dózsa György utca – Sepsi Aréna",
-  "6 · Szemerja Végállomás – Sepsi Aréna",
-  "7 · Szemerja Végállomás – Vasútállomás",
-  "9 · Sugásfürdő – Vasútállomás",
-  "10 · Árkos központ – Lábasház",
-];
-
 export const HU: Record<GuideKey, GuideCopy> = {
   pillar: {
     slug: "buszmenetrend",
     title: "Sepsiszentgyörgyi buszmenetrend – Multi-Trans vonalak",
     description:
-      "A sepsiszentgyörgyi városi buszhálózat áttekintése: a Multi-Trans tizenkét vonala végállomásokkal, a jegyárak, az árkosi zóna és a pénteki ingyenes utazás.",
+      "A sepsiszentgyörgyi városi buszhálózat áttekintése: a Multi-Trans tizenhárom vonala végállomásokkal, a jegyárak, az árkosi zóna és a pénteki ingyenes utazás.",
     body: [
       { h2: "Miről szól ez az oldal?" },
       {
@@ -37,13 +20,12 @@ export const HU: Record<GuideKey, GuideCopy> = {
       },
       { h2: "A Multi-Trans és a városi buszhálózat" },
       {
-        p: "Sepsiszentgyörgy (Kovászna megye) városi autóbusz-hálózatát a Multi-Trans S.A. üzemelteti. A cég tizenkét városi vonalat közlekedtet a városban és a szomszédos Árkos felé. A Multi-Trans menetrend vonalanként és megállónként is elérhető ezen az oldalon.",
+        p: "Sepsiszentgyörgy (Kovászna megye) városi autóbusz-hálózatát a Multi-Trans S.A. üzemelteti. A cég tizenhárom városi vonalat közlekedtet a városban és a szomszédos Árkos felé. A Multi-Trans menetrend vonalanként és megállónként is elérhető ezen az oldalon.",
       },
       { h2: "Vonalak és végállomások" },
       {
-        p: "A tizenkét vonal és a fő irány két végállomása. A „D” jelzésű járatok kiegészítő indulások, amelyeket az üzemeltető külön számoz. A 2026. szeptember 7-én indult 1B-s busz az 1-es útvonalán közlekedik a vasútállomásig, majd Autoliv és Szépmező felé halad tovább.",
+        p: "A tizenhárom vonal a fő irány két végállomásával az oldal alján található, a menetrendi adatokból. A „D” jelzésű járatok kiegészítő indulások, amelyeket az üzemeltető külön számoz. A 2026. szeptember 7-én indult 1B-s busz az 1-es útvonalán közlekedik a vasútállomásig, majd Autoliv és Szépmező felé halad tovább. A 2026. október 1-jén indult 10B-s busz csak tanítási napokon jár, Árkos és a Megyei Kórház között.",
       },
-      { ul: LINES_HU },
       { h2: "Jegyek és az árkosi zóna" },
       {
         p: "A városi jegy a multitrans.ro szerint 2.5 lej, és felszállástól számítva 50 percig érvényes. Jegyet a 24pay mobilalkalmazásban, jegyautomatából, a Multi-Trans jegypénztáraiban és több boltban lehet venni; a sofőrnél is, de drágábban (5 lej). A 10-es vonal átmegy Árkosra, amely külön község és külön díjzóna: oda a jegy 4 lej, és 60 percig érvényes. Városi jeggyel nem lehet felszállni az árkosi buszra; árkosi jeggyel viszont át lehet szállni a városi buszokra.",
@@ -125,7 +107,7 @@ export const HU: Record<GuideKey, GuideCopy> = {
       },
       { h2: "A vonalak" },
       {
-        p: "A Multi-Trans tizenkét városi vonalat közlekedtet Sepsiszentgyörgyön. A 10-es vonal átmegy Árkosra, amely külön község és külön díjzóna. A teljes vonallista végállomásokkal a menetrend áttekintő oldalán található.",
+        p: "A Multi-Trans tizenhárom városi vonalat közlekedtet Sepsiszentgyörgyön. A 10-es és a 10B-s vonal átmegy Árkosra, amely külön község és külön díjzóna. A teljes vonallista végállomásokkal a menetrend áttekintő oldalán található.",
       },
       { h2: "Ez az oldal nem hivatalos" },
       {
@@ -204,11 +186,11 @@ export const HU: Record<GuideKey, GuideCopy> = {
       },
       {
         q: "Melyik busz megy a vasútállomáshoz?",
-        a: "A vasútállomás az 1-es, a 2-es, a 7-es és a 9-es vonal egyik végállomása. A pontos indulási időket az adott vonal menetrend-oldalán találod.",
+        a: "A vasútállomásnál a 10-es és a 10B-s kivételével minden városi vonal megáll: az 1-es, az 1B-s, az 1D-s, a 2-es, a 2D-s, a 3-as, a 4-es, az 5-ös, a 6-os, a 7-es és a 9-es. Az 1-es, a 2-es, a 7-es és a 9-es vonalnak itt van a végállomása. A pontos indulási időket az adott vonal menetrend-oldalán találod.",
       },
       {
         q: "Melyik busz megy a Megyei Kórházhoz?",
-        a: "A Megyei Kórház megállót a Szemerja és a belváros közötti szakaszon több vonal érinti, többek között az 1-es, a 2-es, a 6-os és a 7-es. A pontos időpontok az adott vonal oldalán olvashatók.",
+        a: "A Megyei Kórház megállót az 1-es, az 1B-s, az 1D-s, a 2-es, a 2D-s, a 6-os és a 7-es busz érinti a Szemerja és a belváros közötti szakaszon, valamint tanítási napokon a 10B-s, amelynek ez a végállomása. A pontos időpontok az adott vonal oldalán olvashatók.",
       },
       {
         q: "Van-e éjszakai járat?",

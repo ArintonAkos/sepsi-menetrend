@@ -10,6 +10,10 @@ import { notablePairs } from "@/lib/seo/routes";
 import { lineSlug, slugify } from "@/lib/seo/slug";
 import styles from "./IndexShell.module.css";
 
+// Read off the feed, not typed in: the copy said "12" for a month after 10B
+// made it 13, contradicting the list right under it.
+const LINE_COUNT = loadNetwork().lines.length;
+
 /** The three index pages - `/vonalak/` (every line), `/megallok/` (every place)
  *  and `/utvonal/` (every notable route pair) - and their `/ro/` twins. They are
  *  the internal-linking backbone: every generated line, stop and route page
@@ -53,12 +57,12 @@ const COPY: Record<Kind, Record<Lang, {
       crumb: "Vonalak",
       metaTitle: "Sepsiszentgyörgyi buszvonalak · Multi-Trans",
       metaDescription:
-        "Sepsiszentgyörgy mind a 12 Multi-Trans buszvonala egy listában: "
+        `Sepsiszentgyörgy mind a ${LINE_COUNT} Multi-Trans buszvonala egy listában: `
         + "minden járat végállomásaival és külön menetrendi oldalával a városi "
         + "buszközlekedéshez.",
       h1: "Buszvonalak Sepsiszentgyörgyön",
       intro:
-        "A Multi-Trans 12 városi buszvonala Sepsiszentgyörgyön. Válassz "
+        `A Multi-Trans ${LINE_COUNT} városi buszvonala Sepsiszentgyörgyön. Válassz `
         + "vonalat a végállomásokért, a megállók sorrendjéért és a hivatalos "
         + "indulási időkért.",
     },
@@ -66,12 +70,12 @@ const COPY: Record<Kind, Record<Lang, {
       crumb: "Linii",
       metaTitle: "Liniile de autobuz din Sfântu Gheorghe · Multi-Trans",
       metaDescription:
-        "Toate cele 12 linii de autobuz Multi-Trans din Sfântu Gheorghe: "
+        `Toate cele ${LINE_COUNT} linii de autobuz Multi-Trans din Sfântu Gheorghe: `
         + "capetele de linie și pagina de orar proprie a fiecărei linii din "
         + "transportul urban.",
       h1: "Liniile de autobuz din Sfântu Gheorghe",
       intro:
-        "Cele 12 linii de autobuz urbane Multi-Trans din Sfântu Gheorghe. "
+        `Cele ${LINE_COUNT} linii de autobuz urbane Multi-Trans din Sfântu Gheorghe. `
         + "Alege o linie pentru capetele de linie, ordinea stațiilor și orele "
         + "oficiale de plecare.",
     },
@@ -79,12 +83,12 @@ const COPY: Record<Kind, Record<Lang, {
       crumb: "Lines",
       metaTitle: "Sfântu Gheorghe bus lines · Multi-Trans",
       metaDescription:
-        "All 12 Multi-Trans bus lines in Sfântu Gheorghe in one list: "
+        `All ${LINE_COUNT} Multi-Trans bus lines in Sfântu Gheorghe in one list: `
         + "every line with its termini and its own timetable page for the "
         + "city bus network.",
       h1: "Bus lines in Sfântu Gheorghe",
       intro:
-        "The 12 Multi-Trans city bus lines in Sfântu Gheorghe. Pick a line "
+        `The ${LINE_COUNT} Multi-Trans city bus lines in Sfântu Gheorghe. Pick a line `
         + "for its termini, the order of stops and the official departure times.",
     },
   },

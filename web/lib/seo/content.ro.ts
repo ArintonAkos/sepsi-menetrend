@@ -7,29 +7,12 @@
  *  multitrans.ro" pentru că pagina de tarife poate fi neactualizată. */
 import type { GuideCopy, GuideKey } from "./content";
 
-/** Cele douăsprezece linii urbane cu capetele de traseu, direcția principală.
- *  Aceleași linii ca în varianta maghiară, cu denumirile românești ale stațiilor. */
-const LINES_RO: string[] = [
-  "1 · Cap Linie Simeria – Gara CFR",
-  "1B · Cap Linie Simeria – Câmpul Frumos",
-  "1D · Cap Linie Simeria – Multi-Trans",
-  "2 · Cap Linie Simeria – Gara CFR",
-  "2D · Multi-Trans – Str. Bartók Béla",
-  "3 · Str. Țigaretei 1 – Coșeni 2",
-  "4 · Str. Țigaretei 1 – Multi-Trans",
-  "5 · Str. Dózsa György – Arena Sepsi",
-  "6 · Cap Linie Simeria – Arena Sepsi",
-  "7 · Cap Linie Simeria – Gara CFR",
-  "9 · Șugaș Băi – Gara CFR",
-  "10 · Centru Arcuș – Casa cu Arcade",
-];
-
 export const RO: Record<GuideKey, GuideCopy> = {
   pillar: {
     slug: "orar-autobuz",
     title: "Orar autobuz Sfântu Gheorghe – liniile Multi-Trans",
     description:
-      "Prezentare a rețelei de autobuz din Sfântu Gheorghe: cele douăsprezece linii Multi-Trans cu capete de traseu, tarifele, zona Arcuș și vinerea gratuită.",
+      "Prezentare a rețelei de autobuz din Sfântu Gheorghe: cele treisprezece linii Multi-Trans cu capete de traseu, tarifele, zona Arcuș și vinerea gratuită.",
     body: [
       { h2: "Despre acest site" },
       {
@@ -37,13 +20,12 @@ export const RO: Record<GuideKey, GuideCopy> = {
       },
       { h2: "Multi-Trans și rețeaua urbană" },
       {
-        p: "Rețeaua de autobuz urban din Sfântu Gheorghe (Sepsiszentgyörgy), reședința județului Covasna, este operată de Multi-Trans S.A. Compania are douăsprezece linii de autobuz, în oraș și spre comuna vecină Arcuș. Aici găsești mersul autobuzelor Multi-Trans pe fiecare linie și stație.",
+        p: "Rețeaua de autobuz urban din Sfântu Gheorghe (Sepsiszentgyörgy), reședința județului Covasna, este operată de Multi-Trans S.A. Compania are treisprezece linii de autobuz, în oraș și spre comuna vecină Arcuș. Aici găsești mersul autobuzelor Multi-Trans pe fiecare linie și stație.",
       },
       { h2: "Liniile și capetele de traseu" },
       {
-        p: "Cele douăsprezece linii și cele două capete ale direcției principale. Cursele marcate cu „D” sunt curse suplimentare, numerotate separat de operator. Linia 1B, introdusă la 7 septembrie 2026, circulă pe traseul liniei 1 până la gară, apoi continuă spre Autoliv și Câmpul Frumos.",
+        p: "Cele treisprezece linii, cu cele două capete ale direcției principale, sunt în partea de jos a paginii, din datele de orar. Cursele marcate cu „D” sunt curse suplimentare, numerotate separat de operator. Linia 1B, introdusă la 7 septembrie 2026, circulă pe traseul liniei 1 până la gară, apoi continuă spre Autoliv și Câmpul Frumos. Linia 10B, introdusă la 1 octombrie 2026, circulă doar în zilele de școală, între Arcuș și Spitalul Județean.",
       },
-      { ul: LINES_RO },
       { h2: "Bilete și zona Arcuș" },
       {
         p: "Biletul urban costă 2,5 lei conform multitrans.ro și este valabil 50 de minute de la urcare, inclusiv dacă schimbi autobuzul. Se cumpără prin aplicația 24pay, de la automatele de bilete, din chioșcurile Multi-Trans și din mai multe magazine; și de la șofer, dar mai scump (5 lei). Linia 10 trece în comuna Arcuș, o zonă tarifară separată: acolo biletul este 4 lei și este valabil 60 de minute. Cu biletul urban nu poți urca în autobuzul spre Arcuș; cu biletul de Arcuș, în schimb, poți schimba pe autobuzele urbane.",
@@ -125,7 +107,7 @@ export const RO: Record<GuideKey, GuideCopy> = {
       },
       { h2: "Liniile" },
       {
-        p: "Multi-Trans operează douăsprezece linii de autobuz urbane în Sfântu Gheorghe. Linia 10 trece în Arcuș, care este o comună separată și o zonă tarifară separată. Lista completă a liniilor cu capete de traseu se află pe pagina de prezentare a orarului.",
+        p: "Multi-Trans operează treisprezece linii de autobuz urbane în Sfântu Gheorghe. Liniile 10 și 10B trec în Arcuș, care este o comună separată și o zonă tarifară separată. Lista completă a liniilor cu capete de traseu se află pe pagina de prezentare a orarului.",
       },
       { h2: "Acest site este neoficial" },
       {
@@ -204,11 +186,11 @@ export const RO: Record<GuideKey, GuideCopy> = {
       },
       {
         q: "Ce autobuz merge la gară?",
-        a: "Gara CFR este cap de linie pentru liniile 1, 2, 7 și 9. Orele exacte de plecare sunt pe pagina fiecărei linii.",
+        a: "La Gara CFR opresc toate liniile urbane, cu excepția liniilor 10 și 10B: 1, 1B, 1D, 2, 2D, 3, 4, 5, 6, 7 și 9. Pentru liniile 1, 2, 7 și 9 gara este cap de linie. Orele exacte de plecare sunt pe pagina fiecărei linii.",
       },
       {
         q: "Ce autobuz merge la Spitalul Județean?",
-        a: "Stația Spitalul Județean este deservită de mai multe linii pe traseul dintre capătul de linie Simeria și centru, printre care liniile 1, 2, 6 și 7. Orele exacte sunt pe pagina liniei respective.",
+        a: "Stația Spitalul Județean este deservită de liniile 1, 1B, 1D, 2, 2D, 6 și 7 pe traseul dintre capătul de linie Simeria și centru, iar în zilele de școală și de linia 10B, pentru care este cap de linie. Orele exacte sunt pe pagina liniei respective.",
       },
       {
         q: "Există curse de noapte?",
