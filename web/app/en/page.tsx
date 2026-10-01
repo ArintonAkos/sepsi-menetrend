@@ -20,5 +20,6 @@ export async function generateMetadata(): Promise<Metadata> {
     description:
       "Route planner and bus schedule for Sfântu Gheorghe, based on data published "
       + "by Multi-Trans. Unofficial, free, no account.",
+    ownOgImage: true,
   });
 }

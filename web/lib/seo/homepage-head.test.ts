@@ -21,9 +21,11 @@ describe("homepage head", () => {
         /<h1 class="srOnly">Sepsiszentgyörgyi buszmenetrend és járattervező<\/h1>/,
       );
       expect(html).toMatch(/<html lang="hu"/);
-      // the planner is not `ownOgImage`, so `/` still points at the shared card
-      expect(html).toContain(
-        '<meta property="og:image" content="https://sepsimenetrend.ro/og.png"/>',
+      // `/` carries its own opengraph-image route (homeOg) now, not the old
+      // hand-made shared /og.png - the hash suffix is content-addressed and
+      // changes whenever the card's content changes, so match the path only.
+      expect(html).toMatch(
+        /<meta property="og:image" content="https:\/\/sepsimenetrend\.ro\/opengraph-image\.png\?[0-9a-f]+"\/>/,
       );
       // `/` now emits its own reciprocal hreflang set (its `/ro/` twin always
       // did) - Google ignores a one-way pairing. `en` joined the map in C15.
@@ -56,6 +58,10 @@ describe("homepage head", () => {
       );
       expect(html).toContain(
         '<link rel="canonical" href="https://sepsimenetrend.ro/en/"/>',
+      );
+      // the EN homepage now carries its own opengraph-image route too
+      expect(html).toMatch(
+        /<meta property="og:image" content="https:\/\/sepsimenetrend\.ro\/en\/opengraph-image\.png\?[0-9a-f]+"\/>/,
       );
       // the same reciprocal set the HU and RO twins carry
       expect(html).toContain(

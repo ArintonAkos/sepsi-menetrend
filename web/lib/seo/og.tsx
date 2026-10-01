@@ -273,3 +273,145 @@ export function guideOg(key: keyof typeof GUIDES, lang: SeoLang): Promise<ImageR
     sub: lang === "hu" ? "Sepsiszentgyörgy" : "Sfântu Gheorghe",
   });
 }
+
+const HOME_COPY: Record<SeoLang, {
+  eyebrow: string;
+  heading: string;
+  sub: (lineCount: number) => string;
+}> = {
+  hu: {
+    eyebrow: "SEPSISZENTGYÖRGY",
+    heading: "Mikor jön a busz?",
+    sub: (n) => `Járattervező és menetrend a város ${n} autóbuszvonalára.`,
+  },
+  ro: {
+    eyebrow: "SFÂNTU GHEORGHE",
+    heading: "Când vine autobuzul?",
+    sub: (n) => `Planificator de călătorie și orar pentru cele ${n} linii de autobuz ale orașului.`,
+  },
+  en: {
+    eyebrow: "SFÂNTU GHEORGHE",
+    heading: "When's my bus?",
+    sub: (n) => `Journey planner and timetable for the city's ${n} bus lines.`,
+  },
+};
+
+/** The homepage's own share card - the one every bare-link preview falls back
+ *  to, since `/` carries no single line/stop/route to build a card around.
+ *
+ *  Bespoke rather than `renderOg()`: the dark panel + the app's own bus mark
+ *  read as the product itself, not just another content page. The line count
+ *  and the pill row are read live from the feed (`line.dark`/`darkText` - the
+ *  pair `palette()` tunes to stay legible on a dark background, the same one
+ *  the planner's own dark theme uses) specifically so this never goes stale
+ *  again the way the old hand-made `/og.png` did (it still showed 9 lines and
+ *  "12" long after 1B/1D/2D/10B existed and the count had moved past 12). */
+export async function homeOg(lang: SeoLang): Promise<ImageResponse> {
+  const data = await ogFont();
+  const net = loadNetwork();
+  const copy = HOME_COPY[lang];
+
+  const tree = (
+    <div
+      style={{
+        width: "100%",
+        height: "100%",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-between",
+        padding: 72,
+        background: "radial-gradient(circle at 80% 44%, #3C5019 0%, #2E3D14 60%)",
+        fontFamily: "og",
+      }}
+    >
+      <div style={{ display: "flex", flexDirection: "column" }}>
+        <div style={{ display: "flex", alignItems: "center" }}>
+          <div
+            style={{
+              display: "flex",
+              width: 52,
+              height: 52,
+              borderRadius: 14,
+              background: "#EFC913",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <svg width={32} height={34} viewBox="0 0 75 79">
+              <g fill="#2E3D14">
+                <rect x="0" y="0" width="21" height="27" rx="8" />
+                <rect x="27" y="0" width="21" height="27" rx="8" />
+                <rect x="54" y="0" width="21" height="27" rx="8" />
+              </g>
+              <circle cx="12" cy="66" r="13" fill="#FBFAF7" />
+              <circle cx="64" cy="66" r="13" fill="#FBFAF7" />
+            </svg>
+          </div>
+          <div
+            style={{
+              display: "flex",
+              marginLeft: 16,
+              fontSize: 24,
+              letterSpacing: 2,
+              color: "#EFC913",
+            }}
+          >
+            {copy.eyebrow}
+          </div>
+        </div>
+
+        <div
+          style={{
+            display: "flex",
+            marginTop: 30,
+            fontSize: 68,
+            lineHeight: 1.08,
+            letterSpacing: -1,
+            color: "#FBFAF7",
+          }}
+        >
+          {copy.heading}
+        </div>
+        <div
+          style={{
+            display: "flex",
+            marginTop: 22,
+            fontSize: 28,
+            lineHeight: 1.35,
+            maxWidth: 820,
+            color: "rgba(251,250,247,0.78)",
+          }}
+        >
+          {copy.sub(net.lines.length)}
+        </div>
+      </div>
+
+      <div style={{ display: "flex", gap: 12 }}>
+        {net.lines.map((line) => (
+          <div
+            key={line.id}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              minWidth: 56,
+              height: 56,
+              padding: "0 12px",
+              borderRadius: 14,
+              background: line.dark,
+              color: line.darkText,
+              fontSize: 26,
+            }}
+          >
+            {line.id}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+
+  return new ImageResponse(tree, {
+    ...OG_SIZE,
+    fonts: [{ name: "og", data, style: "normal", weight: 400 }],
+  });
+}

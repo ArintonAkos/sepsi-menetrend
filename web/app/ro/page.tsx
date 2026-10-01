@@ -20,5 +20,6 @@ export async function generateMetadata(): Promise<Metadata> {
     description:
       "Planificator de rute și orar autobuz în Sfântu Gheorghe, pe baza datelor "
       + "publicate de Multi-Trans. Site neoficial, gratuit și fără cont.",
+    ownOgImage: true,
   });
 }
