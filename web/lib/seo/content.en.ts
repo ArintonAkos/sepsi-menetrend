@@ -138,6 +138,7 @@ export const EN: Record<GuideKey, GuideCopy> = {
       { q: "Which bus goes to the railway station?", a: "The Railway Station (Vasútállomás) is a terminus of lines 1, 2, 7 and 9. The exact departure times are on each line's schedule page." },
       { q: "Which bus goes to the County Hospital?", a: "The County Hospital (Megyei Kórház) stop is served by several lines on the stretch between Szemerja and the centre, among them lines 1, 2, 6 and 7. Exact times are on each line's page." },
       { q: "Is there a night service?", a: "There is no separate night service. The last departures are typically in the evening; check the last departure on the line's own page." },
+      { q: "Can I bring a bicycle on the bus?", a: "Yes, on line 9 (Gara CFR – Șugaș Băi), but only in the warmer months: per Multi-Trans, bicycle transport is suspended from October 1 until spring. The bus itself still runs four times a day; only bicycles aren't carried during that time." },
       { q: "Is this the official Multi-Trans site?", a: "No. This is an independent project that rebuilds the timetable published on multitrans.ro. The site is not affiliated with Multi-Trans S.A." },
       { q: "Why is there an asterisk next to some times?", a: "Times marked with an asterisk are interpolated from the neighbouring stops. The operator only publishes departures from the termini and the main stops, not the intermediate ones." },
     ],

@@ -51,6 +51,13 @@ const INDEX: Record<SeoLang, { name: string; path: string }> = {
  *  shape plus one OSRM-routed hop to Spitalul Județean. */
 const PROVISIONAL_LINES = new Set(["10B"]);
 
+/** Multi-Trans carries bicycles on line 9 (Vasútállomás - Sugásfürdő) in the
+ *  warmer months only; suspended 2026-10-01, resuming in spring. The bus
+ *  itself keeps its normal four-times-daily schedule either way - only the
+ *  bike racks stop. Remove this once the service resumes and starts/ends
+ *  getting announced as a recurring thing worth baking into the data instead. */
+const BIKE_SUSPENDED_LINES = new Set(["9"]);
+
 const huPath = (id: string) => `/vonalak/${id}/`;
 const roPath = (id: string) => `/ro/linii/${id}/`;
 const enPathFn = (id: string) => `/en/lines/${id}/`;
@@ -110,6 +117,7 @@ const T = {
     freeFriday: "Pénteken a városi járatok ingyenesek (a Multi-Trans közlése szerint).",
     cta: "Nyisd meg a menetrendben",
     routeProvisional: "Ez az útvonal ideiglenes rekonstrukció, amíg a Multi-Trans közzé nem teszi a hivatalos térképet.",
+    bikeSuspended: "A kerékpárszállítás október 1-től tavaszig szünetel ezen a járaton (a Multi-Trans közlése szerint). A busz maga a téli időszakban is naponta négyszer közlekedik.",
     weekday: "hétköznap",
     weekend: "hétvégén",
     span: (svc: string, first: string, last: string) =>
@@ -123,6 +131,7 @@ const T = {
     freeFriday: "Vinerea, cursele urbane sunt gratuite (conform anunțurilor Multi-Trans).",
     cta: "Deschide în planificator",
     routeProvisional: "Acest traseu este o reconstrucție provizorie, până când Multi-Trans publică harta oficială.",
+    bikeSuspended: "Transportul bicicletelor se suspendă din 1 octombrie până primăvara pe această linie (conform anunțurilor Multi-Trans). Autobuzul în sine circulă în continuare de patru ori pe zi și iarna.",
     weekday: "în zilele lucrătoare",
     weekend: "în weekend",
     span: (svc: string, first: string, last: string) =>
@@ -136,6 +145,7 @@ const T = {
     freeFriday: "City services are free on Fridays (per Multi-Trans announcements).",
     cta: "Open in the planner",
     routeProvisional: "This route is a provisional reconstruction until Multi-Trans publishes the official map.",
+    bikeSuspended: "Bicycle transport is suspended on this line from October 1 until spring (per Multi-Trans announcements). The bus itself still runs four times a day through the winter.",
     weekday: "on weekdays",
     weekend: "at weekends",
     span: (svc: string, first: string, last: string) =>
@@ -241,6 +251,10 @@ export default async function LinePage({ lang, id }: { lang: SeoLang; id: string
 
       {net.routesProvisional && PROVISIONAL_LINES.has(id) ? (
         <p className={styles.provisional}>{T[lang].routeProvisional}</p>
+      ) : null}
+
+      {BIKE_SUSPENDED_LINES.has(id) ? (
+        <p className={styles.provisional}>{T[lang].bikeSuspended}</p>
       ) : null}
 
       {dirs.map((dir, i) => {

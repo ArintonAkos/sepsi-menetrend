@@ -215,6 +215,10 @@ export const RO: Record<GuideKey, GuideCopy> = {
         a: "Nu există curse de noapte separate. Ultimele plecări sunt de obicei seara; verifică ora ultimei curse pe pagina liniei respective.",
       },
       {
+        q: "Se pot transporta biciclete în autobuz?",
+        a: "Da, pe linia 9 (Gara CFR – Șugaș Băi), dar doar în lunile mai calde: conform Multi-Trans, transportul bicicletelor se suspendă din 1 octombrie până primăvara. Autobuzul în sine circulă în continuare de patru ori pe zi, doar bicicletele nu mai sunt acceptate la bord.",
+      },
+      {
         q: "Acesta este site-ul oficial Multi-Trans?",
         a: "Nu. Este un proiect independent care reconstruiește orarul publicat pe multitrans.ro. Site-ul nu este afiliat cu Multi-Trans S.A.",
       },

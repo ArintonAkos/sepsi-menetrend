@@ -215,6 +215,10 @@ export const HU: Record<GuideKey, GuideCopy> = {
         a: "Nincs külön éjszakai járat. Az utolsó járatok jellemzően este indulnak; az adott vonal utolsó indulását a vonaloldalon nézd meg.",
       },
       {
+        q: "Lehet-e kerékpárt vinni a buszra?",
+        a: "Igen, a 9-es vonalon (Vasútállomás – Sugásfürdő), de csak a melegebb hónapokban: a Multi-Trans közlése szerint a kerékpárszállítás október 1-től tavaszig szünetel. A busz maga ilyenkor is naponta négyszer közlekedik, csak a kerékpárt nem lehet felvinni rá.",
+      },
+      {
         q: "Ez a Multi-Trans hivatalos oldala?",
         a: "Nem. Ez egy független projekt, amely a multitrans.ro-n közzétett menetrendet építi újra. Az oldal nem áll kapcsolatban a Multi-Trans S.A.-val.",
       },
