@@ -15,6 +15,19 @@
     certFile = "certificates/dev.pem"
     keyFile = "certificates/dev-key.pem"
 
+# The site first went live on the Netlify subdomain, and Google still ranks
+# those URLs. Every page there already carries a canonical pointing here, but a
+# canonical is only a hint; a 301 is what actually moves the ranking over.
+# `force` because the files do exist on that host - without it Netlify would
+# serve them rather than redirect. It lives in this file, not the root one:
+# with base = "web" this is the file Netlify reads, and the root copy of
+# this rule was silently ignored. First, so no path rule shadows it.
+[[redirects]]
+  from = "https://sepsi-menetrend.netlify.app/*"
+  to = "https://sepsimenetrend.ro/:splat"
+  status = 301
+  force = true
+
 # Old path shapes kept alive with a 301 so external links and search results
 # survive the rename: `/hu/*` was the Hungarian prefix before it moved to the
 # bare root, and `/lines` `/stops` were the English segment names.
