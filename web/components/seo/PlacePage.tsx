@@ -8,6 +8,7 @@ import { enrichLine, type Board, type SeoLang } from "@/lib/seo/lines";
 import { pickName } from "@/lib/seo/lang";
 import { buildPlaces, placeOf, type Place } from "@/lib/seo/places";
 import type { LngLat, Network } from "@/lib/engine/types";
+import { lineSlug } from "@/lib/seo/slug";
 import styles from "./PlacePage.module.css";
 
 /** One physical place's page (`/megallok/[slug]/` + `/ro/statii/[slug]/`),
@@ -39,7 +40,7 @@ const huPath = (slug: string) => `/megallok/${slug}/`;
 const roPath = (slug: string) => `/ro/statii/${slug}/`;
 const enPath = (slug: string) => `/en/stops/${slug}/`;
 const lineHref = (lang: SeoLang, id: string) =>
-  lang === "hu" ? `/vonalak/${id}/` : lang === "ro" ? `/ro/linii/${id}/` : `/en/lines/${id}/`;
+  lang === "hu" ? `/vonalak/${lineSlug(id)}/` : lang === "ro" ? `/ro/linii/${lineSlug(id)}/` : `/en/lines/${lineSlug(id)}/`;
 const placeHref = (lang: SeoLang, p: Place) =>
   lang === "hu" ? huPath(p.slug) : lang === "ro" ? roPath(p.slugRo) : enPath(p.slug);
 

@@ -18,6 +18,7 @@ import {
 import { buildPlaces, placeOf, type Place } from "@/lib/seo/places";
 import { mapImage } from "@/lib/seo/line-maps";
 import { formatHHMM } from "@/lib/engine/time";
+import { lineSlug } from "@/lib/seo/slug";
 import styles from "./LinePage.module.css";
 
 /** One line's page (`/vonalak/[id]/` + `/ro/linii/[id]/`), content first: the
@@ -58,9 +59,9 @@ const PROVISIONAL_LINES = new Set(["10B"]);
  *  getting announced as a recurring thing worth baking into the data instead. */
 const BIKE_SUSPENDED_LINES = new Set(["9"]);
 
-const huPath = (id: string) => `/vonalak/${id}/`;
-const roPath = (id: string) => `/ro/linii/${id}/`;
-const enPathFn = (id: string) => `/en/lines/${id}/`;
+const huPath = (id: string) => `/vonalak/${lineSlug(id)}/`;
+const roPath = (id: string) => `/ro/linii/${lineSlug(id)}/`;
+const enPathFn = (id: string) => `/en/lines/${lineSlug(id)}/`;
 
 /** Hungarian definite article for the spoken line name: "egyes"/"ötös" and the
  *  "egy…"/"öt…" D-lines open on a vowel and take "az", every other line "a".

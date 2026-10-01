@@ -29,7 +29,7 @@ describe("GuidePageShell", () => {
     const list = screen.getByRole("navigation", { name: "Vonalak" });
     const hrefs = within(list).getAllByRole("link").map((a) => a.getAttribute("href"));
     expect(hrefs).toEqual(
-      expect.arrayContaining(["/vonalak/1/", "/vonalak/1D/", "/vonalak/10/", "/megallok/", "/dijszabas/"]),
+      expect.arrayContaining(["/vonalak/1/", "/vonalak/1d/", "/vonalak/10/", "/megallok/", "/dijszabas/"]),
     );
   });
 

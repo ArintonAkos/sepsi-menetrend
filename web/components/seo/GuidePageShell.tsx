@@ -9,6 +9,7 @@ import { pageMetadata } from "@/lib/seo/metadata";
 import { loadNetwork } from "@/lib/seo/network";
 import { enrichLine } from "@/lib/seo/lines";
 import type { SeoLang } from "@/lib/seo/lang";
+import { lineSlug } from "@/lib/seo/slug";
 import styles from "./GuidePageShell.module.css";
 
 /** The shared body of every guide page (HU + RO). Each `page.tsx` is then a
@@ -130,7 +131,7 @@ function PillarLines({ lang }: { lang: Lang }) {
       <ul>
         {lines.map((l) => (
           <li key={l.id}>
-            <a href={`${base}${l.id}/`}>{l.label}</a>
+            <a href={`${base}${lineSlug(l.id)}/`}>{l.label}</a>
             <span className={styles.termini}>
               {" "}
               · {l.termini[0]} – {l.termini[1]}

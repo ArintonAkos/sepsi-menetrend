@@ -7,7 +7,7 @@ import { enrichLine, sentenceCase } from "@/lib/seo/lines";
 import { pickName, type SeoLang } from "@/lib/seo/lang";
 import { buildPlaces, type Place } from "@/lib/seo/places";
 import { notablePairs } from "@/lib/seo/routes";
-import { slugify } from "@/lib/seo/slug";
+import { lineSlug, slugify } from "@/lib/seo/slug";
 import styles from "./IndexShell.module.css";
 
 /** The three index pages - `/vonalak/` (every line), `/megallok/` (every place)
@@ -226,7 +226,7 @@ export function LineIndex({ lang }: { lang: Lang }) {
       <ul className={styles.lineList}>
         {lines.map((l) => (
           <li key={l.id}>
-            <a href={`${base}${l.id}/`} className={styles.lineLink}>
+            <a href={`${base}${lineSlug(l.id)}/`} className={styles.lineLink}>
               {/* the operator's published colour; decorative, so hidden from AT */}
               <span
                 className={styles.swatch}

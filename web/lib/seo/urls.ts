@@ -10,6 +10,7 @@ import type { Network } from "@/lib/engine/types";
 import { loadNetwork } from "./network";
 import { buildPlaces } from "./places";
 import { notablePairs } from "./routes";
+import { lineSlug } from "./slug";
 
 export interface PageEntry {
   /** Canonical HU path; always equal to `hu`, kept separate so a caller asking
@@ -71,9 +72,9 @@ export function allPages(net: Network = loadNetwork()): PageEntry[] {
 
   return [
     ...STATIC.map((s) => entry(s.hu, s.ro, s.en, s.priority)),
-    // line id is used verbatim in every language ("1D" stays "1D")
+    // the line segment is the lowercased id in every language ("1D" -> "1d")
     ...net.lines.map((l) =>
-      entry(`/vonalak/${l.id}/`, `/ro/linii/${l.id}/`, `/en/lines/${l.id}/`, 0.7),
+      entry(`/vonalak/${lineSlug(l.id)}/`, `/ro/linii/${lineSlug(l.id)}/`, `/en/lines/${lineSlug(l.id)}/`, 0.7),
     ),
     // the RO path carries the place's own RO slug; the EN path keeps the HU
     // slug (a place name is a proper noun and doesn't translate)

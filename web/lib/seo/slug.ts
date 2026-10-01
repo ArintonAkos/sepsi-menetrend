@@ -37,3 +37,19 @@ export function disambiguate<T>(items: T[], key: (t: T) => string): Map<T, strin
   }
   return slugs;
 }
+
+/** A line's URL segment: its id, lowercased ("1B" -> "1b"). Netlify answers a
+ *  mixed-case path with a 301 to the lowercase one, so a "/vonalak/1B/"
+ *  canonical pointed every crawler at a redirect whose target named the
+ *  redirect as canonical - a loop that kept 1B/1D/2D/10B out of the index.
+ *  The id itself (and every label shown) keeps the operator's casing. */
+export function lineSlug(id: string): string {
+  return id.toLowerCase();
+}
+
+/** The line id behind a URL segment - the inverse of `lineSlug` over the
+ *  feed's ids. An unknown segment comes back unchanged, so the page's own
+ *  not-found handling still sees it. */
+export function lineIdForSlug(ids: readonly string[], slug: string): string {
+  return ids.find((id) => lineSlug(id) === slug) ?? slug;
+}
