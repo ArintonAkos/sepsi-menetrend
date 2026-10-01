@@ -9,9 +9,14 @@
  *  `public/fonts/og.ttf`. SIL Open Font License 1.1 - full text and copyright
  *  in `public/fonts/OFL.txt`. Geist covers Latin Extended-A + Latin Extended
  *  Additional, so the Hungarian and Romanian diacritics all resolve - verified
- *  by rendering a probe card and eyeballing it for tofu. */
+ *  by rendering a probe card and eyeballing it for tofu.
+ *
+ *  `public/fonts/og-bold.ttf` is Geist-Bold from the same family (vercel/
+ *  geist-font v1.7.2 release, same OFL), used only by `homeOg()`'s heading and
+ *  pills - every other card here stays Regular-only, matching the original. */
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
+import type { CSSProperties } from "react";
 import { ImageResponse } from "next/og";
 import { GUIDES } from "./content";
 import { pickName } from "./lang";
@@ -36,6 +41,14 @@ export function ogFont(): Promise<ArrayBuffer> {
     (b) => b.buffer.slice(b.byteOffset, b.byteOffset + b.byteLength) as ArrayBuffer,
   );
   return fontCache;
+}
+
+let fontBoldCache: Promise<ArrayBuffer> | undefined;
+export function ogFontBold(): Promise<ArrayBuffer> {
+  fontBoldCache ??= readFile(join(process.cwd(), "public/fonts/og-bold.ttf")).then(
+    (b) => b.buffer.slice(b.byteOffset, b.byteOffset + b.byteLength) as ArrayBuffer,
+  );
+  return fontBoldCache;
 }
 
 export type OgProps = {
@@ -274,25 +287,51 @@ export function guideOg(key: keyof typeof GUIDES, lang: SeoLang): Promise<ImageR
   });
 }
 
+/** Each line is its own flex row of words, spaced by `gap` rather than by the
+ *  text run's own inter-word spaces - Satori's text layout inserts a stray
+ *  extra space around certain word breaks in this renderer (reproducible on
+ *  the already-shipped guide cards too, e.g. "Gyakori kérdések  a"), and
+ *  giving it no multi-word string to lay out at all sidesteps the bug instead
+ *  of chasing it inside Satori/resvg. Line breaks are chosen by the caller,
+ *  not left to auto-wrap, so the balance of each line is deliberate. */
+function TextLines(
+  { lines, gap, lineGap = 6, wrapperStyle, style }: {
+    lines: string[]; gap: number; lineGap?: number;
+    wrapperStyle?: CSSProperties; style: CSSProperties;
+  },
+) {
+  return (
+    <div style={{ display: "flex", flexDirection: "column", rowGap: lineGap, ...wrapperStyle }}>
+      {lines.map((line, li) => (
+        <div key={li} style={{ display: "flex", columnGap: gap }}>
+          {line.split(" ").map((word, wi) => (
+            <div key={wi} style={{ whiteSpace: "nowrap", ...style }}>{word}</div>
+          ))}
+        </div>
+      ))}
+    </div>
+  );
+}
+
 const HOME_COPY: Record<SeoLang, {
   eyebrow: string;
-  heading: string;
-  sub: (lineCount: number) => string;
+  heading: string[];
+  sub: (lineCount: number) => string[];
 }> = {
   hu: {
     eyebrow: "SEPSISZENTGYÖRGY",
-    heading: "Mikor jön a busz?",
-    sub: (n) => `Járattervező és menetrend a város ${n} autóbuszvonalára.`,
+    heading: ["Mikor jön a busz?"],
+    sub: (n) => ["Járattervező és menetrend", `a város ${n} autóbuszvonalára.`],
   },
   ro: {
     eyebrow: "SFÂNTU GHEORGHE",
-    heading: "Când vine autobuzul?",
-    sub: (n) => `Planificator de călătorie și orar pentru cele ${n} linii de autobuz ale orașului.`,
+    heading: ["Când vine autobuzul?"],
+    sub: (n) => ["Planificator de călătorie și orar", `pentru cele ${n} linii de autobuz ale orașului.`],
   },
   en: {
     eyebrow: "SFÂNTU GHEORGHE",
-    heading: "When's my bus?",
-    sub: (n) => `Journey planner and timetable for the city's ${n} bus lines.`,
+    heading: ["When's my bus?"],
+    sub: (n) => ["Journey planner and timetable", `for the city's ${n} bus lines.`],
   },
 };
 
@@ -311,7 +350,7 @@ const HOME_COPY: Record<SeoLang, {
  *  from its base line when both are drawn as overlapping map polylines; a
  *  row of number badges has no such overlap to resolve. */
 export async function homeOg(lang: SeoLang): Promise<ImageResponse> {
-  const data = await ogFont();
+  const [data, bold] = await Promise.all([ogFont(), ogFontBold()]);
   const net = loadNetwork();
   const copy = HOME_COPY[lang];
 
@@ -330,25 +369,20 @@ export async function homeOg(lang: SeoLang): Promise<ImageResponse> {
     >
       <div style={{ display: "flex", flexDirection: "column" }}>
         <div style={{ display: "flex", alignItems: "center" }}>
-          <div
-            style={{
-              display: "flex",
-              width: 52,
-              height: 52,
-              borderRadius: 14,
-              background: "#EFC913",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <svg width={32} height={34} viewBox="0 0 75 79">
+          {/* Verbatim public/icons/icon.svg - "the same mark the installed
+              app carries" (that file's own words) - not a redrawn approximation,
+              so this can never drift from the real app icon again. */}
+          <div style={{ display: "flex", width: 60, height: 60, borderRadius: 16, overflow: "hidden" }}>
+            <svg width={60} height={60} viewBox="0 0 192 192">
+              <rect width="192" height="192" fill="#2E3D14" />
+              <rect x="40" y="44" width="112" height="80" rx="22" fill="#EFC913" />
               <g fill="#2E3D14">
-                <rect x="0" y="0" width="21" height="27" rx="8" />
-                <rect x="27" y="0" width="21" height="27" rx="8" />
-                <rect x="54" y="0" width="21" height="27" rx="8" />
+                <rect x="58" y="62" width="21" height="27" rx="8" />
+                <rect x="85" y="62" width="21" height="27" rx="8" />
+                <rect x="112" y="62" width="21" height="27" rx="8" />
               </g>
-              <circle cx="12" cy="66" r="13" fill="#FBFAF7" />
-              <circle cx="64" cy="66" r="13" fill="#FBFAF7" />
+              <circle cx="70" cy="128" r="13" fill="#FBFAF7" />
+              <circle cx="122" cy="128" r="13" fill="#FBFAF7" />
             </svg>
           </div>
           <div
@@ -358,36 +392,39 @@ export async function homeOg(lang: SeoLang): Promise<ImageResponse> {
               fontSize: 24,
               letterSpacing: 2,
               color: "#EFC913",
+              fontFamily: "og-bold",
             }}
           >
             {copy.eyebrow}
           </div>
         </div>
 
-        <div
+        <TextLines
+          lines={copy.heading}
+          gap={11}
+          lineGap={2}
+          wrapperStyle={{ marginTop: 36 }}
           style={{
             display: "flex",
-            marginTop: 30,
-            fontSize: 68,
-            lineHeight: 1.08,
+            fontSize: 84,
+            lineHeight: 1.04,
             letterSpacing: -1,
             color: "#FBFAF7",
+            fontFamily: "og-bold",
           }}
-        >
-          {copy.heading}
-        </div>
-        <div
+        />
+        <TextLines
+          lines={copy.sub(net.lines.length)}
+          gap={7}
+          lineGap={6}
+          wrapperStyle={{ marginTop: 28, maxWidth: 860 }}
           style={{
             display: "flex",
-            marginTop: 22,
-            fontSize: 28,
-            lineHeight: 1.35,
-            maxWidth: 820,
-            color: "rgba(251,250,247,0.78)",
+            fontSize: 31,
+            lineHeight: 1.4,
+            color: "rgba(251,250,247,0.72)",
           }}
-        >
-          {copy.sub(net.lines.length)}
-        </div>
+        />
       </div>
 
       <div style={{ display: "flex", gap: 12 }}>
@@ -405,6 +442,7 @@ export async function homeOg(lang: SeoLang): Promise<ImageResponse> {
               background: line.colour,
               color: line.textColour,
               fontSize: 26,
+              fontFamily: "og-bold",
             }}
           >
             {line.id}
@@ -416,6 +454,9 @@ export async function homeOg(lang: SeoLang): Promise<ImageResponse> {
 
   return new ImageResponse(tree, {
     ...OG_SIZE,
-    fonts: [{ name: "og", data, style: "normal", weight: 400 }],
+    fonts: [
+      { name: "og", data, style: "normal", weight: 400 },
+      { name: "og-bold", data: bold, style: "normal", weight: 700 },
+    ],
   });
 }
