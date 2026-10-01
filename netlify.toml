@@ -72,3 +72,14 @@
     Referrer-Policy = "strict-origin-when-cross-origin"
     X-Frame-Options = "SAMEORIGIN"
     Permissions-Policy = "geolocation=(self), camera=(), microphone=(), payment=()"
+
+# The site first went live on the Netlify subdomain, and Google still ranks
+# those URLs. Every page there already carries a canonical pointing here, but a
+# canonical is only a hint; a 301 is what actually moves the ranking over.
+# `force` because the files do exist on that host - without it Netlify would
+# serve them rather than redirect.
+[[redirects]]
+  from = "https://sepsi-menetrend.netlify.app/*"
+  to = "https://sepsimenetrend.ro/:splat"
+  status = 301
+  force = true
