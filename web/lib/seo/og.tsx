@@ -301,11 +301,15 @@ const HOME_COPY: Record<SeoLang, {
  *
  *  Bespoke rather than `renderOg()`: the dark panel + the app's own bus mark
  *  read as the product itself, not just another content page. The line count
- *  and the pill row are read live from the feed (`line.dark`/`darkText` - the
- *  pair `palette()` tunes to stay legible on a dark background, the same one
- *  the planner's own dark theme uses) specifically so this never goes stale
- *  again the way the old hand-made `/og.png` did (it still showed 9 lines and
- *  "12" long after 1B/1D/2D/10B existed and the count had moved past 12). */
+ *  and the pill row are read live from the feed specifically so this never
+ *  goes stale again the way the old hand-made `/og.png` did (it still showed
+ *  9 lines and "12" long after 1B/1D/2D/10B existed and the count had moved
+ *  past 12). Pills use each line's own raw `colour`/`textColour` - exactly
+ *  what the operator publishes (multitrans.ro/jaratok/ gives 1B and 1D the
+ *  identical gradient as line 1, not a shifted one) - not `dark`/`darkText`,
+ *  which `palette()` only shifts to keep a D/B variant visually distinct
+ *  from its base line when both are drawn as overlapping map polylines; a
+ *  row of number badges has no such overlap to resolve. */
 export async function homeOg(lang: SeoLang): Promise<ImageResponse> {
   const data = await ogFont();
   const net = loadNetwork();
@@ -398,8 +402,8 @@ export async function homeOg(lang: SeoLang): Promise<ImageResponse> {
               height: 56,
               padding: "0 12px",
               borderRadius: 14,
-              background: line.dark,
-              color: line.darkText,
+              background: line.colour,
+              color: line.textColour,
               fontSize: 26,
             }}
           >
