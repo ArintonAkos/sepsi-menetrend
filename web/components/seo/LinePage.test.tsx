@@ -156,4 +156,15 @@ describe("LinePage", () => {
     expect(en).toContain("Csíki negyed → Vasútállomás (school run)");
     expect(en.join(" ")).not.toMatch(/iskolajárat/);
   });
+
+  it("quotes the Árkos fare on every line that reaches Árkos, 10B included", async () => {
+    for (const id of ["10", "10B"]) {
+      const { unmount } = await renderLine({ lang: "hu", id });
+      expect(document.body.textContent).toContain("4 lej / 60 perc");
+      expect(document.body.textContent).not.toContain("2.5 lej / 50 perc");
+      unmount();
+    }
+    await renderLine({ lang: "hu", id: "1" });
+    expect(document.body.textContent).toContain("2.5 lej / 50 perc");
+  });
 });

@@ -1,7 +1,7 @@
 /** Romanian prose for the guide pages. Additive translation served under `/ro/`.
  *
  *  Same pinned facts as the Hungarian file: bilet urban 2,5 lei / 50 min,
- *  Arcuș (linia 10) 4 lei / 60 min, de la șofer 5 lei, vinerea gratuit. Modul
+ *  Arcuș (liniile 10 și 10B) 4 lei / 60 min, de la șofer 5 lei, vinerea gratuit. Modul
  *  de cumpărare și lista punctelor de vânzare vin de pe
  *  multitrans.ro/puncte_de_vanzare_a_biletelor; prețurile sunt citate "conform
  *  multitrans.ro" pentru că pagina de tarife poate fi neactualizată. */
@@ -28,7 +28,7 @@ export const RO: Record<GuideKey, GuideCopy> = {
       },
       { h2: "Bilete și zona Arcuș" },
       {
-        p: "Biletul urban costă 2,5 lei conform multitrans.ro și este valabil 50 de minute de la urcare, inclusiv dacă schimbi autobuzul. Se cumpără prin aplicația 24pay, de la automatele de bilete, din chioșcurile Multi-Trans și din mai multe magazine; și de la șofer, dar mai scump (5 lei). Linia 10 trece în comuna Arcuș, o zonă tarifară separată: acolo biletul este 4 lei și este valabil 60 de minute. Cu biletul urban nu poți urca în autobuzul spre Arcuș; cu biletul de Arcuș, în schimb, poți schimba pe autobuzele urbane.",
+        p: "Biletul urban costă 2,5 lei conform multitrans.ro și este valabil 50 de minute de la urcare, inclusiv dacă schimbi autobuzul. Se cumpără prin aplicația 24pay, de la automatele de bilete, din chioșcurile Multi-Trans și din mai multe magazine; și de la șofer, dar mai scump (5 lei). Liniile 10 și 10B trec în comuna Arcuș, o zonă tarifară separată: acolo biletul este 4 lei și este valabil 60 de minute. Cu biletul urban nu poți urca în autobuzul spre Arcuș; cu biletul de Arcuș, în schimb, poți schimba pe autobuzele urbane.",
       },
       { h2: "Vinerea gratuită" },
       {
@@ -66,9 +66,9 @@ export const RO: Record<GuideKey, GuideCopy> = {
       {
         p: "Pentru 24pay: instalează aplicația, adaugă un card bancar, alege Sfântu Gheorghe și cumpără biletul la urcare – valabilitatea începe în acel moment.",
       },
-      { h2: "Cursa spre Arcuș (linia 10)" },
+      { h2: "Cursele spre Arcuș (liniile 10 și 10B)" },
       {
-        p: "Arcuș este o comună separată, deci linia 10 traversează o graniță tarifară. Biletul spre Arcuș costă 4 lei conform multitrans.ro și este valabil 60 de minute. Cu biletul urban de 2,5 lei nu se poate urca în autobuzul spre Arcuș. Invers însă da: cu un bilet de Arcuș valabil se poate schimba pe autobuzele urbane fără să cumperi un bilet nou.",
+        p: "Arcuș este o comună separată, deci liniile 10 și 10B traversează o graniță tarifară. Biletul spre Arcuș este același pe ambele linii: costă 4 lei conform multitrans.ro și este valabil 60 de minute. Cu biletul urban de 2,5 lei nu se poate urca în autobuzul spre Arcuș. Invers însă da: cu un bilet de Arcuș valabil se poate schimba pe autobuzele urbane fără să cumperi un bilet nou.",
       },
       { h2: "Abonamente" },
       {
@@ -170,7 +170,7 @@ export const RO: Record<GuideKey, GuideCopy> = {
     faq: [
       {
         q: "Cât costă biletul de autobuz în Sfântu Gheorghe?",
-        a: "Biletul urban costă 2,5 lei conform multitrans.ro (5 lei de la șofer) și este valabil 50 de minute de la urcare. Pe linia 10, spre Arcuș, biletul este 4 lei și este valabil 60 de minute.",
+        a: "Biletul urban costă 2,5 lei conform multitrans.ro (5 lei de la șofer) și este valabil 50 de minute de la urcare. Pe liniile 10 și 10B, spre Arcuș, biletul este 4 lei și este valabil 60 de minute.",
       },
       {
         q: "Cum cumpăr biletul de autobuz?",

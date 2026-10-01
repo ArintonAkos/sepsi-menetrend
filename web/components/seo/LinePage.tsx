@@ -4,6 +4,7 @@ import BoardTable from "@/components/seo/BoardTable";
 import StopList from "@/components/seo/StopList";
 import RouteShape from "@/components/seo/RouteShape";
 import { pageMetadata } from "@/lib/seo/metadata";
+import type { Network } from "@/lib/engine/types";
 import { loadNetwork } from "@/lib/seo/network";
 import { pickName } from "@/lib/seo/lang";
 import {
@@ -181,11 +182,18 @@ function spanLine(lang: SeoLang, board: Board): string {
   return parts.join(" ");
 }
 
-/** The single-ride fare for this line's zone. Line 10 runs out to Arcuș (Árkos);
- *  every other line is city tariff. The operator hedge is printed once per page
- *  (`hedge` is true only on the first direction). */
-function fareChip(lang: SeoLang, id: string, hedge: boolean): string {
-  const arcus = id === "10";
+/** Whether the line reaches the Arcuș (Árkos) fare zone - read off the stops'
+ *  own zones, as the planner's fare engine does, not off the line id: keyed to
+ *  "10", the 10B page quoted the city fare for a bus that runs to Árkos. */
+function reachesArcus(net: Network, id: string): boolean {
+  const arcusStops = new Set(net.stops.filter((s) => s.zone === "arcus").map((s) => s.id));
+  return net.patterns.some((p) => p.lineId === id && p.stopIds.some((sid) => arcusStops.has(sid)));
+}
+
+/** The single-ride fare for this line's zone: Árkos tariff for a line that
+ *  reaches Arcuș, city tariff otherwise. The operator hedge is printed once per
+ *  page (`hedge` is true only on the first direction). */
+function fareChip(lang: SeoLang, arcus: boolean, hedge: boolean): string {
   const amount =
     lang === "hu"
       ? arcus ? "4 lej / 60 perc" : "2.5 lej / 50 perc"
@@ -245,6 +253,7 @@ export default async function LinePage({ lang, id }: { lang: SeoLang; id: string
   const line = net.lines.find((l) => l.id === id);
   const { label, title, termini } = enrichLine(net, id, lang);
   const dirs = lineDirections(net, id);
+  const arcus = reachesArcus(net, id);
 
   const selfPath =
     lang === "hu" ? huPath(id) : lang === "ro" ? roPath(id) : enPathFn(id);
@@ -291,7 +300,7 @@ export default async function LinePage({ lang, id }: { lang: SeoLang; id: string
             ) : null}
             {board ? <p className={styles.meta}>{spanLine(lang, board)}</p> : null}
 
-            <p className={styles.note}>{fareChip(lang, id, i === 0)}</p>
+            <p className={styles.note}>{fareChip(lang, arcus, i === 0)}</p>
             <p className={styles.note}>{T[lang].freeFriday}</p>
 
             <p className={styles.cta}>
