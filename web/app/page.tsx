@@ -2,6 +2,7 @@ import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 import { Planner } from "@/components";
 import HomeFooter from "@/components/seo/HomeFooter";
+import { jsonLdScript, websiteLd } from "@/lib/seo/jsonld";
 import type { FareTable } from "@/lib/engine/fares";
 import type { Place } from "@/lib/engine/search";
 import type { Network } from "@/lib/engine/types";
@@ -67,6 +68,11 @@ export async function HomePage({ lang }: { lang: SeoLang }) {
                bikeStations={bikeSnapshot.stations} bikeSnapshotAt={bikeSnapshot.snapshotAt}
                ticketPoints={ticketPoints.points} holidays={holidays.dates} />
       <HomeFooter lang={lang} />
+      {/* the site name Google shows in results is read from this node */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: jsonLdScript(websiteLd(lang)) }}
+      />
     </>
   );
 }

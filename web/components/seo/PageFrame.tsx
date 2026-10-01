@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { breadcrumbLd, jsonLdScript } from "@/lib/seo/jsonld";
+import { breadcrumbLd, jsonLdScript, webPageLd } from "@/lib/seo/jsonld";
 import { Back } from "@/components/common/icons";
 import type { SeoLang } from "@/lib/seo/lang";
 import { formatRevised, revisedOn } from "@/lib/seo/freshness";
@@ -163,6 +163,19 @@ export default function PageFrame({ lang, kind, crumbs, paths, children }: PageF
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: jsonLdScript(breadcrumbLd(crumbs)) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: jsonLdScript(
+              webPageLd({
+                path: paths[lang],
+                name: crumbs.at(-1)?.name ?? "Sepsi Menetrend",
+                lang,
+                dateModified: revised,
+              }),
+            ),
+          }}
         />
       </div>
     </div>

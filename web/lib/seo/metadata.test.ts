@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { pageMetadata } from "./metadata";
-import { breadcrumbLd, faqLd, websiteLd, jsonLdScript } from "./jsonld";
+import { breadcrumbLd, faqLd, websiteLd, webPageLd, jsonLdScript } from "./jsonld";
 
 /** The metadata sub-objects are discriminated unions in `next`; the tests only
  *  care about a few string fields, so read them through a plain record view
@@ -109,6 +109,7 @@ describe("breadcrumbLd", () => {
     ).toEqual({
       "@context": "https://schema.org",
       "@type": "BreadcrumbList",
+      "@id": "https://sepsimenetrend.ro/vonalak/#breadcrumb",
       itemListElement: [
         { "@type": "ListItem", position: 1, name: "Sepsi Menetrend", item: "https://sepsimenetrend.ro/" },
         { "@type": "ListItem", position: 2, name: "Vonalak", item: "https://sepsimenetrend.ro/vonalak/" },
@@ -148,14 +149,18 @@ describe("websiteLd", () => {
     expect(websiteLd("hu")).toEqual({
       "@context": "https://schema.org",
       "@type": "WebSite",
+      "@id": "https://sepsimenetrend.ro/#website",
       name: "Sepsi Menetrend",
+      alternateName: "sepsimenetrend.ro",
       url: "https://sepsimenetrend.ro/",
       inLanguage: "hu",
     });
     expect(websiteLd("ro")).toEqual({
       "@context": "https://schema.org",
       "@type": "WebSite",
+      "@id": "https://sepsimenetrend.ro/ro/#website",
       name: "Sepsi Menetrend",
+      alternateName: "sepsimenetrend.ro",
       url: "https://sepsimenetrend.ro/ro/",
       inLanguage: "ro",
     });
@@ -180,5 +185,23 @@ describe("jsonLdScript", () => {
     const s = jsonLdScript({ a: "x</script><script>alert(1)</script>" });
     expect(s).not.toMatch(/<\/script/i);
     expect(JSON.parse(jsonLdScript({ a: "1 < 2" }))).toEqual({ a: "1 < 2" });
+  });
+});
+
+describe("webPageLd", () => {
+  it("dates the page and links it to its language's site and breadcrumb", () => {
+    expect(
+      webPageLd({ path: "/ro/linii/1b/", name: "Linia 1B", lang: "ro", dateModified: "2026-10-01" }),
+    ).toEqual({
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "@id": "https://sepsimenetrend.ro/ro/linii/1b/#webpage",
+      url: "https://sepsimenetrend.ro/ro/linii/1b/",
+      name: "Linia 1B",
+      inLanguage: "ro",
+      dateModified: "2026-10-01",
+      isPartOf: { "@id": "https://sepsimenetrend.ro/ro/#website" },
+      breadcrumb: { "@id": "https://sepsimenetrend.ro/ro/linii/1b/#breadcrumb" },
+    });
   });
 });
