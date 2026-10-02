@@ -28,6 +28,11 @@ export function labelAnchor(map: MapboxMap): string | undefined {
 export const casingColour = (dark: boolean) => (dark ? "#AFB79B" : "#FFFFFF");
 export const networkColour = (dark: boolean) => (dark ? "#4A5340" : "#B9B6A6");
 
+/** Top padding of a fitted route on a phone: the back and locate buttons. */
+export const FIT_TOP_NARROW = 60;
+/** The least height a route is ever squeezed into above the drawer. */
+const MIN_ROUTE_STRIP = 90;
+
 /** How much of the map's bottom edge to keep clear when fitting a route.
  *
  *  While a journey is open the map runs the full height of the screen with the
@@ -41,7 +46,12 @@ export const networkColour = (dark: boolean) => (dark ? "#4A5340" : "#B9B6A6");
  *  `undefined` into a NaN that takes the fit down with it.
  */
 export function bottomInset(covered: number, containerHeight: number): number {
-  const room = Number.isFinite(containerHeight) ? Math.max(0, containerHeight) * 0.62 : 0;
+  const height = Number.isFinite(containerHeight) ? Math.max(0, containerHeight) : 0;
   const hidden = Number.isFinite(covered) ? Math.max(0, covered) : 0;
-  return Math.max(40, Math.min(hidden, room) + 24);
+  /* The cap used to be a flat 62% of the map, below the drawer's own resting
+     72% - so even a correct fit ran the route's lower part under the drawer.
+     Now the drawer is cleared in full, and only a drawer pulled so high that
+     nothing would be left gives way, to a strip under the top controls. */
+  const room = Math.max(0, height - FIT_TOP_NARROW - MIN_ROUTE_STRIP);
+  return Math.max(40, Math.min(hidden + 24, room));
 }

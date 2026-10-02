@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import mapboxgl, { type Map as MapboxMap, type LngLatBoundsLike } from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
-import { MAPBOX_TOKEN, STYLES, bottomInset, labelAnchor, casingColour, networkColour }
+import { MAPBOX_TOKEN, STYLES, FIT_TOP_NARROW, bottomInset, labelAnchor, casingColour, networkColour }
   from "@/lib/mapbox";
 import type { Area } from "@/lib/geocode";
 import { shadeOf } from "@/lib/engine/types";
@@ -110,6 +110,12 @@ export default function TransitMap({
   const ticketData = useRef({ points: ticketPoints, holidays });
   useEffect(() => { ticketData.current = { points: ticketPoints, holidays }; }, [ticketPoints, holidays]);
   const ticketPick = useRef(onTicketPointPick);
+  /* What a fit needs, as of the last render - read by the resize handlers,
+     which outlive any one render. `pendingFit` marks a fit that was skipped
+     because the map had no size (the phone's journey list hides it). */
+  const latest = useRef({ journey, patterns, picking, covered });
+  useEffect(() => { latest.current = { journey, patterns, picking, covered }; });
+  const pendingFit = useRef(false);
   useEffect(() => { ticketPick.current = onTicketPointPick; }, [onTicketPointPick]);
   const onMove = useRef(onCentreChange);
   // keeping the callback in a ref means the map is built once, not on every
@@ -153,7 +159,7 @@ export default function TransitMap({
       paint(m, journey, patterns, lines, dark);
       paintBikes(m, bikeStations);
       paintTicketPoints(m, ticketData.current.points, ticketData.current.holidays);
-      if (journey) fit(m, journey, patterns, picking, covered);
+      if (journey) pendingFit.current = !fit(m, journey, patterns, picking, covered);
     });
     m.on("move", () => onMove.current?.(m.getCenter().toArray() as LngLat));
     attachStopPopups(m, () => stopPick.current,
@@ -191,7 +197,7 @@ export default function TransitMap({
       paint(m, journey, patterns, lines, dark);
       paintBikes(m, bikeStations);
       paintTicketPoints(m, ticketData.current.points, ticketData.current.holidays);
-      if (journey) fit(m, journey, patterns, picking, covered);
+      if (journey) pendingFit.current = !fit(m, journey, patterns, picking, covered);
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dark]);
@@ -200,7 +206,7 @@ export default function TransitMap({
     const m = map.current;
     if (!m || !ready.current) return;
     paint(m, journey, patterns, lines, dark);
-    if (journey) fit(m, journey, patterns, picking, covered);
+    if (journey) pendingFit.current = !fit(m, journey, patterns, picking, covered);
     // `covered` deliberately absent: the drawer settling re-fits through
     // resizeKey, and re-fitting on every dragged pixel would fight the finger
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -224,7 +230,14 @@ export default function TransitMap({
     applyNetFilter(m, Boolean(journey || routeLoading), visibleLines);
   }, [visibleLines, journey, routeLoading]);
 
-  useEffect(() => { map.current?.resize(); }, [picking, resizeKey]);
+  // the drawer settled at a new height: resize, and centre the route in what
+  // is now left of the map
+  useEffect(() => {
+    const m = map.current;
+    if (!m) return;
+    m.resize();
+    if (ready.current) pendingFit.current = !refit(m, latest.current);
+  }, [picking, resizeKey]);
 
   /* Mapbox sizes its canvas once and caches the number. Every layout this app
      has - the drawer, the search screen taking over, a phone turning sideways,
@@ -236,7 +249,15 @@ export default function TransitMap({
   useEffect(() => {
     const node = host.current;
     if (!node || typeof ResizeObserver === "undefined") return;
-    const watch = new ResizeObserver(() => map.current?.resize());
+    const watch = new ResizeObserver(() => {
+      const m = map.current;
+      if (!m) return;
+      m.resize();
+      /* A journey picked while the map was hidden was never fitted, and
+         showing the map changes nothing the fit effect watches - so the route
+         stayed wherever the camera last was, often under the drawer. */
+      if (pendingFit.current && ready.current) pendingFit.current = !refit(m, latest.current);
+    });
     watch.observe(node);
     return () => watch.disconnect();
   }, []);
@@ -621,9 +642,17 @@ function attachBikeStations(m: MapboxMap,
   });
 }
 
+/** Fit with whatever the component last rendered; see `fit`. */
+function refit(m: MapboxMap, l: { journey: Journey | null; patterns: Map<string, Pattern>;
+                                  picking: boolean; covered: number }): boolean {
+  return l.journey ? fit(m, l.journey, l.patterns, l.picking, l.covered) : true;
+}
+
+/** Frame the journey. Returns false only when the map has no size to frame it
+ *  in, so the caller can try again once it has. */
 function fit(m: MapboxMap, journey: Journey, patterns: Map<string, Pattern>,
-             picking: boolean, covered: number) {
-  if (picking) return;
+             picking: boolean, covered: number): boolean {
+  if (picking) return true;
   const pts: LngLat[] = [];
   for (const leg of journey.legs) {
     if (leg.kind === "ride") {
@@ -633,27 +662,28 @@ function fit(m: MapboxMap, journey: Journey, patterns: Map<string, Pattern>,
         Math.max(p.shapeIndex[leg.fromIndex], p.shapeIndex[leg.toIndex]) + 1));
     } else pts.push(...leg.path);
   }
-  if (pts.length < 2) return;
+  if (pts.length < 2) return true;
   /* A hidden map is a map with no size, and there is no transform that fits a
      bounding box into nothing - Mapbox reports it as "failed to invert matrix".
      The search screen takes the map off screen entirely while a journey is
      being chosen, which is exactly when the route it should show changes. */
   const box = m.getContainer();
-  if (!box.clientWidth || !box.clientHeight) return;
+  if (!box.clientWidth || !box.clientHeight) return false;
   const bounds = pts.reduce((b, p) => b.extend(p), new mapboxgl.LngLatBounds(pts[0], pts[0]));
   const narrow = window.innerWidth <= 860;
   const bottom = narrow ? bottomInset(covered, box.clientHeight) : 90;
-  const top = narrow ? 60 : 70;
+  const top = narrow ? FIT_TOP_NARROW : 70;
   const left = narrow ? 30 : 70;
   const right = narrow ? 30 : 70;
   if (top + bottom >= box.clientHeight || left + right >= box.clientWidth) {
     m.fitBounds(bounds, { padding: 20, duration: 600, maxZoom: 15.5 });
-    return;
+    return true;
   }
   m.fitBounds(bounds, {
     padding: { top, bottom, left, right },
     duration: 600, maxZoom: 15.5,
   });
+  return true;
 }
 
 /** Tapping a stop says what it is and which lines call there. The old map had
