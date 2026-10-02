@@ -370,6 +370,9 @@ export default function Planner({
   useDismiss(openPanel === "settings", closePanel, gearRef, settingsRef);
 
   const [locating, setLocating] = useState<null | "busy" | string>(null);
+  /* Any fix at all - even one too vague or too far to use - proves the
+     browser lets us locate; the map's own locate button is told so. */
+  const [locationGranted, setLocationGranted] = useState(false);
 
   /* Optional, and never in the way. A rival app blocks behind a modal that
      several riders reported failing on them, and one pointed out the obvious:
@@ -446,6 +449,7 @@ export default function Planner({
     setLocating("busy");
     navigator.geolocation.getCurrentPosition(
       ({ coords }) => {
+        setLocationGranted(true);
         const at: LngLat = [coords.longitude, coords.latitude];
         const km = (m: number) => m >= 1000
           ? `${(m / 1000).toFixed(m < 10_000 ? 1 : 0)} km` : `${Math.round(m)} m`;
@@ -1128,6 +1132,7 @@ export default function Planner({
             shell through hydration, then mount the map in the next render. */}
         {mounted ? <TransitMap network={network} patterns={patterns} lines={lineMap} lang={lang}
                                area={area} resizeKey={mapNudge}
+                               locationGranted={locationGranted}
                                covered={narrow && detail !== null ? drawer.height : 0}
                                onStopPick={(stopId, anchor, dismiss) =>
                                  setBoard(stopId ? { stopId, anchor, dismiss } : null)}

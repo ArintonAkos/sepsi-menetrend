@@ -12,6 +12,7 @@ import type { Lang } from "@/lib/i18n";
 import type { BikeStation } from "@/lib/sepsibike";
 import { openStateAt, type TicketPoint } from "@/lib/ticket-points";
 import { stopAt } from "../stops/stopLookup";
+import { reviveGeolocate, reviveOnPermissionChange } from "./geolocate";
 import styles from "./TransitMap.module.css";
 
 const CENTRE: LngLat = [25.7876, 45.8636];
@@ -65,6 +66,9 @@ export interface TransitMapProps {
   dark: boolean;
   picking: boolean;
   onCentreChange?: (at: LngLat) => void;
+  /** The planner got a position fix - proof that location is allowed, whatever
+   *  the geolocate control concluded when the map was built. */
+  locationGranted?: boolean;
 }
 
 /** Named for what it draws, not for the library. Calling it `Map` shadows the
@@ -88,7 +92,7 @@ function hasWebGL(): boolean {
 export default function TransitMap({
   network, patterns, lines, journey, routeLoading = false, visibleLines, dark, picking, lang, area, covered,
   resizeKey, onCentreChange, onStopPick, bikeStations = [], onBikeStationPick,
-  ticketPoints = [], holidays = [], onTicketPointPick,
+  ticketPoints = [], holidays = [], onTicketPointPick, locationGranted = false,
 }: TransitMapProps) {
   const host = useRef<HTMLDivElement>(null);
   const map = useRef<MapboxMap | null>(null);
@@ -138,6 +142,9 @@ export default function TransitMap({
       }),
       "bottom-right"
     );
+    // the control never re-checks a "denied" it saw once - see ./geolocate
+    const stopRevive = reviveOnPermissionChange(
+      host.current, m._getUIString("GeolocateControl.FindMyLocation"));
     m.addControl(new mapboxgl.NavigationControl({ showCompass: false }), "bottom-right");
     m.on("load", () => {
       ready.current = true;
@@ -155,9 +162,22 @@ export default function TransitMap({
                        () => window.innerWidth > 860);
     attachTicketPoints(m, () => ticketPick.current, () => window.innerWidth > 860);
     map.current = m;
-    return () => { m.remove(); map.current = null; ready.current = false; };
+    return () => { stopRevive(); m.remove(); map.current = null; ready.current = false; };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  /* A fix the planner obtained itself overrules a "denied" the geolocate
+     control saw at build time. The control builds its button only once its own
+     permission query answers, so if the fix came first, try again when the map
+     next settles. */
+  useEffect(() => {
+    const m = map.current;
+    if (!locationGranted || !m || !host.current) return;
+    const title = m._getUIString("GeolocateControl.FindMyLocation");
+    if (!reviveGeolocate(host.current, title)) {
+      m.once("idle", () => { if (host.current) reviveGeolocate(host.current, title); });
+    }
+  }, [locationGranted]);
 
   useEffect(() => {
     const m = map.current;
