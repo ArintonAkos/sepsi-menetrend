@@ -4,7 +4,7 @@ import PageFrame from "@/components/seo/PageFrame";
 import BoardTable from "@/components/seo/BoardTable";
 import { pageMetadata } from "@/lib/seo/metadata";
 import { loadNetwork } from "@/lib/seo/network";
-import { enrichLine, type Board, type SeoLang } from "@/lib/seo/lines";
+import { enrichLine, lineDirections, type Board, type SeoLang } from "@/lib/seo/lines";
 import { pickName } from "@/lib/seo/lang";
 import { buildPlaces, placeOf, type Place } from "@/lib/seo/places";
 import type { LngLat, Network } from "@/lib/engine/types";
@@ -52,6 +52,7 @@ const T = {
     minutes: "perc",
     approx: "kb.",
     cta: "Nyisd meg a megállót a tervezőben",
+    fullGrid: "Mikor ér a többi megállóba? Teljes menetrend →",
     intro: (name: string, labels: string) =>
       `${name} egyike Sepsiszentgyörgy Multi-Trans buszmegállóinak.`
       + (labels ? ` Itt a következő vonalak állnak meg: ${labels}.` : "")
@@ -65,6 +66,7 @@ const T = {
     minutes: "min",
     approx: "aprox.",
     cta: "Deschide stația în planificator",
+    fullGrid: "Când ajunge în celelalte stații? Orarul complet →",
     intro: (name: string, labels: string) =>
       `Stația ${name} este una dintre stațiile de autobuz Multi-Trans din Sfântu Gheorghe.`
       + (labels ? ` Aici opresc următoarele linii: ${labels}.` : "")
@@ -78,6 +80,7 @@ const T = {
     minutes: "min",
     approx: "approx.",
     cta: "Open the stop in the planner",
+    fullGrid: "When does it reach the other stops? Full timetable →",
     intro: (name: string, labels: string) =>
       `${name} is one of the Multi-Trans bus stops in Sfântu Gheorghe.`
       + (labels ? ` The following lines call here: ${labels}.` : "")
@@ -142,6 +145,7 @@ function servingLineIds(net: Network, place: Place): string[] {
 
 interface BoardColumn {
   lineId: string;
+  stopId: string;
   destination: string;
   board: Board;
 }
@@ -159,6 +163,13 @@ const mergeCol = (base: number[] = [], marked?: number[]): number[] =>
  *  destination) row in `officialBoards`, in feed order. A kerb the feed binds
  *  two opposite-direction rows to (hub stops - Vasútállomás, Autoliv, Lábasház)
  *  yields a board for each direction, not just the first. Empty columns skipped. */
+/** Whether the line page's every-stop grid anchors a row at this kerb - it
+ *  does for any stop a direction departs from (every row but the last), see
+ *  `StopGridTable`. */
+const hasGridRow = (net: Network, lineId: string, stopId: string): boolean =>
+  lineDirections(net, lineId).some((d) => d.stopIds.indexOf(stopId) > -1
+    && d.stopIds.indexOf(stopId) < d.stopIds.length - 1);
+
 function boardColumns(net: Network, place: Place): BoardColumn[] {
   const mine = new Set(place.stopIds);
   const seen = new Set<string>();
@@ -171,7 +182,7 @@ function boardColumns(net: Network, place: Place): BoardColumn[] {
     const weekday = mergeCol(b.weekday, b.markedWeekday);
     const weekend = mergeCol(b.weekend, b.markedWeekend);
     if (weekday.length === 0 && weekend.length === 0) continue;
-    cols.push({ lineId: b.lineId, destination: b.destination, board: { weekday, weekend } });
+    cols.push({ lineId: b.lineId, stopId: b.stopId, destination: b.destination, board: { weekday, weekend } });
   }
   return cols;
 }
@@ -318,6 +329,11 @@ export default async function PlacePage({ lang, slug }: { lang: SeoLang; slug: s
             {enrichLine(net, col.lineId, lang).label} → {headsign(col.destination, lang)}
           </h2>
           <BoardTable lang={lang} weekday={col.board.weekday} weekend={col.board.weekend} />
+          {hasGridRow(net, col.lineId, col.stopId) ? (
+            <p className={styles.gridLink}>
+              <a href={`${lineHref(lang, col.lineId)}#at-${col.stopId}`}>{t.fullGrid}</a>
+            </p>
+          ) : null}
         </section>
       ))}
 

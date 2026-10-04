@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { loadNetwork } from "./network";
-import { enrichLine, lineDirections, boardFor, firstLast, headway } from "./lines";
+import { enrichLine, lineDirections, boardFor, firstLast, headway, stopGrid } from "./lines";
 
 const net = loadNetwork();
 
@@ -121,5 +121,47 @@ describe("headway", () => {
   it("returns null without at least one gap", () => {
     expect(headway([])).toBeNull();
     expect(headway([420])).toBeNull();
+  });
+});
+
+describe("stopGrid", () => {
+  const net = loadNetwork();
+  const dirs = lineDirections(net, "1");
+
+  it("gives every run a time at every stop of the line's own sequence", () => {
+    const { stopIds } = dirs[0]!;
+    const own = stopGrid(net, "1", stopIds).weekday.filter((r) => r.lineId === "1");
+    expect(own.length).toBeGreaterThan(20);
+    for (const r of own) {
+      expect(r.times).toHaveLength(stopIds.length);
+      expect(r.times.every((m) => m !== null)).toBe(true);
+      // a bus never reaches a later stop before an earlier one
+      for (let i = 1; i < r.times.length; i++) expect(r.times[i]!).toBeGreaterThanOrEqual(r.times[i - 1]!);
+    }
+  });
+
+  it("starts from exactly the departures printed on the terminus board", () => {
+    for (const d of dirs) {
+      const board = boardFor(net, "1", d.stopIds[0]!);
+      if (!board) continue;
+      const grid = stopGrid(net, "1", d.stopIds);
+      for (const svc of ["weekday", "weekend"] as const) {
+        const starts = [...new Set(grid[svc].map((r) => r.times[0]))].sort((a, b) => a! - b!);
+        expect(starts).toEqual(board[svc]);
+      }
+    }
+  });
+
+  it("takes the lettered variants the board prints, tagged with their own id", () => {
+    const grid = stopGrid(net, "1", dirs[0]!.stopIds);
+    const ids = new Set(grid.weekday.map((r) => r.lineId));
+    expect(ids.has("1D")).toBe(true);
+  });
+
+  it("flags school-term-only runs instead of dropping them", () => {
+    const d = lineDirections(net, "10B")[0]!;
+    const grid = stopGrid(net, "10B", d.stopIds);
+    expect(grid.weekday.length).toBeGreaterThan(0);
+    expect(grid.weekday.every((r) => r.schoolOnly)).toBe(true);
   });
 });

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import PageFrame from "@/components/seo/PageFrame";
 import BoardTable from "@/components/seo/BoardTable";
 import StopList from "@/components/seo/StopList";
+import StopGridTable from "@/components/seo/StopGridTable";
 import RouteShape from "@/components/seo/RouteShape";
 import { pageMetadata } from "@/lib/seo/metadata";
 import type { Network } from "@/lib/engine/types";
@@ -13,6 +14,7 @@ import {
   boardFor,
   firstLast,
   headway,
+  stopGrid,
   type Board,
   type SeoLang,
 } from "@/lib/seo/lines";
@@ -254,6 +256,8 @@ export default async function LinePage({ lang, id }: { lang: SeoLang; id: string
   const { label, title, termini } = enrichLine(net, id, lang);
   const dirs = lineDirections(net, id);
   const arcus = reachesArcus(net, id);
+  // shared across directions so each stop's `at-` anchor lands once per page
+  const anchored = new Set<string>();
 
   const selfPath =
     lang === "hu" ? huPath(id) : lang === "ro" ? roPath(id) : enPathFn(id);
@@ -299,6 +303,17 @@ export default async function LinePage({ lang, id }: { lang: SeoLang; id: string
               <BoardTable lang={lang} weekday={board.weekday} weekend={board.weekend} />
             ) : null}
             {board ? <p className={styles.meta}>{spanLine(lang, board)}</p> : null}
+
+            <StopGridTable
+              lang={lang}
+              lineId={id}
+              stops={dir.stopIds.map((sid) => {
+                const p = placeOf(places, sid);
+                return { id: sid, name: p ? pickName(p.name, lang) : sid };
+              })}
+              grid={stopGrid(net, id, dir.stopIds)}
+              anchored={anchored}
+            />
 
             <p className={styles.note}>{fareChip(lang, arcus, i === 0)}</p>
             <p className={styles.note}>{T[lang].freeFriday}</p>

@@ -112,3 +112,13 @@
   line-height: 1.6;
   color: var(--ink-2);
 }
+
+.gridLink {
+  margin: 10px 0 0;
+  font-size: 13px;
+}
+
+.gridLink a {
+  font-weight: 700;
+  color: var(--ink-2);
+}

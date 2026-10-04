@@ -167,4 +167,19 @@ describe("LinePage", () => {
     await renderLine({ lang: "hu", id: "1" });
     expect(document.body.textContent).toContain("2.5 lej / 50 perc");
   });
+
+  it("shows each bus's time at every stop, not just at the terminus", async () => {
+    await renderLine({ lang: "hu", id: "1" });
+    expect(screen.getAllByText("Mikor ér a busz az egyes megállókba").length).toBe(2);
+    // Szemerja 4:25 reaches Domb utca at 4:30 - the stop page's own first time
+    const row = document.getElementById("at-P9")!;
+    expect(row).toBeTruthy();
+    expect(row.textContent).toContain("4:30");
+  });
+
+  it("anchors each stop at most once across both directions", async () => {
+    const { container } = await renderLine({ lang: "hu", id: "1" });
+    const ids = [...container.querySelectorAll("[id^='at-']")].map((e) => e.id);
+    expect(new Set(ids).size).toBe(ids.length);
+  });
 });

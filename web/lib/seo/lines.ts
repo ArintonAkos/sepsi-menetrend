@@ -7,6 +7,7 @@
  *  page links to the live planner for that. */
 import type { Network } from "@/lib/engine/types";
 import { pickName } from "./lang";
+import { buildPlaces } from "./places";
 import type { SeoLang } from "./lang";
 
 export type { SeoLang };
@@ -188,4 +189,88 @@ export function headway(times: number[]): number | null {
 
   const near = gaps.filter((g) => Math.abs(g - mode) <= 2).length;
   return near / gaps.length >= 0.6 ? mode : null;
+}
+
+/** One bus in a line page's every-stop grid: its time at each of the
+ *  direction's stops, in the direction's stop order. */
+export interface GridRun {
+  /** The trip's own line - the page's line, or a lettered variant (1D, 10B)
+   *  whose buses cover this same stretch and sit on the same printed board. */
+  lineId: string;
+  /** `null` where this run does not call at the stop. */
+  times: (number | null)[];
+  /** Per stop: we worked the time out rather than the operator printing it. */
+  estimated: boolean[];
+  /** Runs only on school-term weekdays. */
+  schoolOnly: boolean;
+}
+
+export interface StopGrid {
+  weekday: GridRun[];
+  weekend: GridRun[];
+}
+
+/** Where each of `stopIds` falls in `pattern`, matched in order from the
+ *  direction's first stop; `null` for a stop the pattern skips. `null` overall
+ *  when the pattern never calls at the first stop - its buses don't leave from
+ *  where this direction's board is printed. Stops match by place, not kerb id:
+ *  some variant patterns are bound to the opposite kerb of a stop the base line
+ *  uses, and the stop page already treats both kerbs as one stop. */
+function alignTo(stopIds: string[], pattern: string[], place: (sid: string) => string):
+    (number | null)[] | null {
+  const keys = pattern.map(place);
+  let at = keys.indexOf(place(stopIds[0]!));
+  if (at === -1) return null;
+  return stopIds.map((sid, i) => {
+    if (i === 0) return at;
+    const next = keys.indexOf(place(sid), at + 1);
+    if (next === -1) return null;
+    at = next;
+    return next;
+  });
+}
+
+/** Every bus in one direction of a line with its time at every stop - what
+ *  the operator's single-stop board leaves the rider to work out.
+ *
+ *  It mirrors that board's contents, so it takes the lettered variants too:
+ *  line 1's board at Szemerja prints the 1B/1D departures as marked extras,
+ *  and a grid without them would quietly disagree with the board above it.
+ *  "Weekday" is the school-term weekday (a superset), with the school-only
+ *  runs flagged rather than split into a third table. */
+export function stopGrid(net: Network, lineId: string, stopIds: string[]): StopGrid {
+  const variant = new RegExp(`^${lineId}[A-Z]$`);
+  const runs = { weekday: new Map<string, GridRun>(), weekend: new Map<string, GridRun>() };
+  const plainWeekday = new Set<string>();
+  const patterns = new Map(net.patterns.map((p) => [p.id, p]));
+  const placeKey = new Map<string, string>();
+  for (const pl of buildPlaces(net)) for (const sid of pl.stopIds) placeKey.set(sid, pl.slug);
+  const place = (sid: string) => placeKey.get(sid) ?? sid;
+
+  for (const trip of net.trips) {
+    const p = patterns.get(trip.patternId);
+    if (!p || (p.lineId !== lineId && !variant.test(p.lineId))) continue;
+    const idx = alignTo(stopIds, p.stopIds, place);
+    if (!idx) continue;
+    // the page's own line runs exactly this sequence; a variant only needs to
+    // share the start and most of the stretch
+    if (p.lineId === lineId && idx.some((i) => i === null)) continue;
+    if (idx.filter((i) => i !== null).length < Math.min(2, stopIds.length)) continue;
+
+    const key = `${p.id}@${trip.start}`;
+    if (trip.service === "weekday") plainWeekday.add(key);
+    const bucket = trip.service === "weekend" ? runs.weekend : runs.weekday;
+    if (bucket.has(key)) continue;
+    bucket.set(key, {
+      lineId: p.lineId,
+      times: idx.map((i) => (i === null ? null : trip.start + p.offsets[i]!)),
+      estimated: idx.map((i) => i !== null && !p.published[i]),
+      schoolOnly: false,
+    });
+  }
+
+  for (const [key, run] of runs.weekday) run.schoolOnly = !plainWeekday.has(key);
+  const ordered = (m: Map<string, GridRun>) =>
+    [...m.values()].sort((a, b) => a.times[0]! - b.times[0]!);
+  return { weekday: ordered(runs.weekday), weekend: ordered(runs.weekend) };
 }

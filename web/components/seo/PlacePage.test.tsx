@@ -93,4 +93,10 @@ describe("PlacePage", () => {
     const m = placeMetadata("vasutallomas", "en");
     expect(m.alternates?.canonical).toBe("https://sepsimenetrend.ro/en/stops/vasutallomas/");
   });
+
+  it("links each line's board to that stop's row in the line's full grid", async () => {
+    const dombUtca = buildPlaces(loadNetwork()).find((p) => p.stopIds.includes("P9"))!;
+    const { container } = await renderPlace({ lang: "hu", slug: dombUtca.slug });
+    expect(container.querySelector('a[href="/vonalak/1/#at-P9"]')).toBeTruthy();
+  });
 });

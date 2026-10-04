@@ -1,0 +1,104 @@
+/* Same chrome tokens as BoardTable. The table scrolls inside its own box so a
+   sixty-bus day never widens the page; the stop column stays pinned. */
+
+.wrap {
+  margin-top: 22px;
+  display: grid;
+  /* minmax(0, ...) or the table's min-content width becomes the track's, and
+     the whole page scrolls sideways instead of just the table */
+  grid-template-columns: minmax(0, 1fr);
+  gap: 14px;
+}
+
+.title {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.hint {
+  margin: -10px 0 0;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.heading {
+  margin: 0 0 8px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.scroll {
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+
+.grid {
+  border-collapse: separate;
+  border-spacing: 0;
+  font-variant-numeric: tabular-nums;
+  font-size: 13px;
+}
+
+.grid td,
+.grid th {
+  padding: 6px 8px;
+  white-space: nowrap;
+  text-align: center;
+}
+
+.grid tbody tr + tr td,
+.grid tbody tr + tr th {
+  border-top: 1px solid var(--hair);
+}
+
+.stop {
+  position: sticky;
+  left: 0;
+  z-index: 1;
+  max-width: 11em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: left !important;
+  font-weight: 600;
+  color: var(--ink);
+  background: var(--paper);
+  border-right: 1px solid var(--border);
+}
+
+.tag {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--muted);
+}
+
+.grid td {
+  color: var(--ink-2);
+}
+
+.first {
+  font-weight: 800;
+  color: var(--ink) !important;
+}
+
+.guess {
+  color: var(--muted) !important;
+}
+
+.grid tr:target th,
+.grid tr:target td {
+  background: var(--signal);
+  color: var(--signal-ink) !important;
+}
+
+.empty,
+.note {
+  margin: 0;
+  font-size: 13px;
+  color: var(--muted);
+}
