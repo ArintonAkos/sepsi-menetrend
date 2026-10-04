@@ -19,7 +19,7 @@ import type { RoHolidaysFile, TicketPointsFile } from "@/lib/ticket-points";
  *  keyword) - the RO/EN twins already carry a descriptive title, this brings
  *  the HU homepage in line. `absolute` bypasses the layout's `%s ·` template. */
 export const metadata: import("next").Metadata = {
-  title: { absolute: "Sepsiszentgyörgyi buszmenetrend és járattervező" },
+  title: { absolute: "Sepsi busz menetrend és járattervező – Sepsiszentgyörgy" },
   alternates: {
     canonical: "/",
     languages: { hu: "/", ro: "/ro/", en: "/en/", "x-default": "/" },

@@ -16,9 +16,9 @@ export async function generateMetadata(): Promise<Metadata> {
     roPath: "/ro/",
     enPath: "/en/",
     lang: "en",
-    title: "Sfântu Gheorghe bus planner · Multi-Trans schedule",
+    title: "Sfântu Gheorghe bus timetable & route planner · Multi-Trans",
     description:
-      "Route planner and bus schedule for Sfântu Gheorghe, based on data published "
+      "Bus timetable and route planner for Sfântu Gheorghe (Sepsiszentgyörgy), Romania, based on data published "
       + "by Multi-Trans. Unofficial, free, no account.",
     ownOgImage: true,
   });

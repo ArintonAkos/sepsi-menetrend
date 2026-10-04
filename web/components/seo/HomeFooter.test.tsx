@@ -14,7 +14,7 @@ describe("HomeFooter", () => {
     expect(hrefs).toContain("/ro/");                 // language switch
     expect(hrefs.some((h) => h?.startsWith("/ro/orar"))).toBe(false);
     expect(screen.getByText(/Nem a Multi-Trans SA hivatalos/)).toBeInTheDocument();
-    expect(screen.getByText(/Sepsiszentgyörgy városi buszmenetrendje/)).toBeInTheDocument();
+    expect(screen.getByText(/városi buszmenetrendje és járattervezője/)).toBeInTheDocument();
   });
 
   it("links the Romanian content pages on the /ro/ homepage", () => {

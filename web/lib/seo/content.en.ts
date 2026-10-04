@@ -14,7 +14,7 @@ export const EN: Record<GuideKey, GuideCopy> = {
       "An overview of the Sfântu Gheorghe city bus network: the thirteen Multi-Trans lines with their termini, ticket prices, the Arcuș zone and the free Friday travel.",
     body: [
       { h2: "What is this page?" },
-      { p: "This page is a complete overview of the Sfântu Gheorghe bus schedule. It is an independent project that rebuilds the timetable published on multitrans.ro into a searchable, map-based, route-planning form. It is not the official Multi-Trans site." },
+      { p: "This page is a complete overview of the bus timetable of Sfântu Gheorghe, Romania (Sepsiszentgyörgy in Hungarian). It is an independent project that rebuilds the timetable published on multitrans.ro into a searchable, map-based, route-planning form. It is not the official Multi-Trans site." },
       { h2: "Multi-Trans and the city bus network" },
       { p: "The city bus network of Sfântu Gheorghe (Sepsiszentgyörgy, Covasna County) is operated by Multi-Trans S.A. The company runs thirteen city lines in and around the town, including two to the neighbouring commune of Arcuș. The Multi-Trans timetable is available here by line and by stop." },
       { h2: "Lines and termini" },

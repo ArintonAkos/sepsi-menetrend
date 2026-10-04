@@ -12,8 +12,8 @@ const SITE = process.env.NEXT_PUBLIC_SITE_URL ?? "https://sepsimenetrend.ro";
 
 const TITLE = "Sepsi Menetrend";
 const DESCRIPTION =
-  "Sepsiszentgyörgyi autóbusz-járattervező és menetrend a Multi-Trans közzétett "
-  + "adatai alapján. Nem hivatalos oldal.";
+  "Sepsi busz menetrend és járattervező: Sepsiszentgyörgy minden buszjárata és "
+  + "megállója a Multi-Trans közzétett adatai alapján. Ingyenes, nem hivatalos oldal.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE),

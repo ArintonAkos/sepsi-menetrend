@@ -16,7 +16,7 @@ export const RO: Record<GuideKey, GuideCopy> = {
     body: [
       { h2: "Despre acest site" },
       {
-        p: "Acest site este o prezentare completă a orarului de autobuz din Sfântu Gheorghe. Este un proiect independent care reconstruiește orarul publicat pe multitrans.ro într-o formă căutabilă, cu hartă și planificator de traseu. Nu este site-ul oficial Multi-Trans.",
+        p: "Acest site este o prezentare completă a orarului de autobuz din Sfântu Gheorghe (în maghiară Sepsiszentgyörgy) – mersul autobuzelor pe fiecare linie și stație. Este un proiect independent care reconstruiește orarul publicat pe multitrans.ro într-o formă căutabilă, cu hartă și planificator de traseu. Nu este site-ul oficial Multi-Trans.",
       },
       { h2: "Multi-Trans și rețeaua urbană" },
       {

@@ -124,6 +124,12 @@ function haversine(a: LngLat, b: LngLat): number {
   return 2 * R * Math.asin(Math.sqrt(h));
 }
 
+/** An English page names a stop the way both of its signs do - "Árkos
+ *  Központ (Centru Arcuș)" - so either name finds it; one name when they match. */
+function enStopName(place: Place): string {
+  return place.name.hu === place.name.ro ? place.name.hu : `${place.name.hu} (${place.name.ro})`;
+}
+
 function resolvePlace(net: Network, lang: SeoLang, slug: string): Place | undefined {
   return buildPlaces(net).find((p) => (lang === "ro" ? p.slugRo : p.slug) === slug);
 }
@@ -267,22 +273,23 @@ export function placeMetadata(slug: string, lang: SeoLang): Metadata {
   const { title, description } =
     lang === "hu"
       ? {
-          title: `${place.name.hu} megálló – buszindulások`,
+          title: `${place.name.hu} megálló – busz menetrend, Sepsiszentgyörgy`,
           description:
-            `${place.name.hu} buszmegálló Sepsiszentgyörgyön: az itt közlekedő `
-            + `Multi-Trans vonalak (${list}) hivatalos indulási idői hétköznap és hétvégén.`,
+            `${place.name.hu} buszmegálló Sepsiszentgyörgyön (Sepsi): az itt közlekedő `
+            + `Multi-Trans buszjáratok (${list}) indulási ideje hétköznap és hétvégén.`,
         }
       : lang === "ro"
       ? {
-          title: `Stația ${place.name.ro} – plecări autobuz`,
+          title: `Stația ${place.name.ro} – orar autobuz Sfântu Gheorghe`,
           description:
-            `Stația ${place.name.ro} din Sfântu Gheorghe: orele oficiale de plecare `
+            `Stația ${place.name.ro} din Sfântu Gheorghe (Sepsiszentgyörgy): orele de plecare `
             + `ale liniilor Multi-Trans (${list}) care opresc aici, zi lucrătoare și weekend.`,
         }
       : {
-          title: `${place.name.hu} stop – bus departures`,
+          // the Romanian name too: an English speaker reads it off the street sign
+          title: `${enStopName(place)} bus stop – Sfântu Gheorghe`,
           description:
-            `${place.name.hu} bus stop in Sfântu Gheorghe: official departure times of the `
+            `${enStopName(place)} bus stop in Sfântu Gheorghe (Sepsiszentgyörgy), Romania: departure times of the `
             + `Multi-Trans lines (${list}) that call here, weekday and weekend.`,
         };
 

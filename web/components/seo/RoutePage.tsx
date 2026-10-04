@@ -242,20 +242,20 @@ export function routeMetadata(pairSlug: string, lang: SeoLang): Metadata {
         title: `${routeTitle(A, B, "hu")} – Sepsiszentgyörgy`,
         description:
           `Hogyan juss el ${huRoutePhrase(A, B)} Multi-Trans busszal `
-          + "Sepsiszentgyörgyön: járatok, átszállások, menetidő és az első/utolsó indulás.",
+          + "Sepsiszentgyörgyön (Sepsi): buszjáratok, átszállások, menetidő és az első/utolsó indulás.",
       }
     : lang === "en"
     ? {
         title: `Getting from ${pickName(A.name, "en")} to ${pickName(B.name, "en")} by bus – Sfântu Gheorghe`,
         description:
           `How to get from ${pickName(A.name, "en")} to ${pickName(B.name, "en")} by Multi-Trans bus in `
-          + "Sfântu Gheorghe: services, transfers, travel time and the first/last departure.",
+          + "Sfântu Gheorghe (Sepsiszentgyörgy), Romania: services, transfers, travel time and the first/last departure.",
       }
     : {
         title: `De la ${A.name.ro} la ${B.name.ro} cu autobuzul – Sfântu Gheorghe`,
         description:
           `Cum ajungi de la ${A.name.ro} la ${B.name.ro} cu autobuzul Multi-Trans în `
-          + "Sfântu Gheorghe: linii, schimbări, durată și prima/ultima plecare.",
+          + "Sfântu Gheorghe (Sepsiszentgyörgy): linii, schimbări, durată și prima/ultima plecare.",
       };
 
   return pageMetadata({

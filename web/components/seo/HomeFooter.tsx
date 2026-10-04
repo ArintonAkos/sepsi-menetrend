@@ -51,10 +51,10 @@ export default function HomeFooter({ lang }: { lang: SeoLang }) {
   // moves.
   const intro =
     lang === "ro"
-      ? "Orarul autobuzelor urbane din Sfântu Gheorghe și un planificator de rute, pe baza datelor publicate de Multi-Trans."
+      ? "Orarul autobuzelor urbane din Sfântu Gheorghe (Sepsiszentgyörgy) și un planificator de rute, pe baza datelor publicate de Multi-Trans: toate liniile, cursele și stațiile într-un singur loc."
       : lang === "en"
-        ? "The city bus timetable and route planner for Sfântu Gheorghe, built from the schedule data Multi-Trans publishes."
-        : "Sepsiszentgyörgy városi buszmenetrendje és járattervezője a Multi-Trans által közzétett menetrendi adatok alapján.";
+        ? "The city bus timetable and route planner for Sfântu Gheorghe (Hungarian: Sepsiszentgyörgy), Romania, built from the schedule data Multi-Trans publishes: every bus line, service and stop in one place."
+        : "Sepsiszentgyörgy (Sepsi, Szentgyörgy, románul Sfântu Gheorghe) városi buszmenetrendje és járattervezője a Multi-Trans által közzétett menetrendi adatok alapján: minden busz, járat és megálló egy helyen.";
 
   const disclaimer =
     lang === "ro"

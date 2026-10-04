@@ -94,23 +94,26 @@ export function lineMetadata(id: string, lang: SeoLang): Metadata {
   const { title, description } =
     lang === "hu"
       ? {
-          title: `${label} menetrendje – Sepsiszentgyörgy`,
+          // "sepsi busz menetrend 6" is how people search: the bare noun, not
+          // "menetrendje", and the brand carries the short city name
+          title: `${label} menetrend – Sepsiszentgyörgy · Sepsi Menetrend`,
           description:
-            `${huArticle(id, true)} ${label} (${a} – ${b}) hivatalos buszmenetrendje: `
-            + `indulási idők és megállók, hétköznap és hétvégén. Sepsiszentgyörgy, Multi-Trans.`,
+            `${huArticle(id, true)} ${label} (${a} – ${b}) menetrendje Sepsiszentgyörgyön `
+            + `(Sepsi): indulási idők és megállók hétköznap és hétvégén, a Multi-Trans `
+            + `hivatalos menetrendje alapján.`,
         }
       : lang === "ro"
       ? {
-          title: `Linia ${id} – orar autobuz Sfântu Gheorghe`,
+          title: `Orar autobuz linia ${id} – Sfântu Gheorghe`,
           description:
-            `Orarul oficial al liniei ${id} (${a} – ${b}): ore de plecare și `
-            + `stații, zi lucrătoare și weekend. Sfântu Gheorghe, Multi-Trans.`,
+            `Mersul autobuzului ${id} (${a} – ${b}) în Sfântu Gheorghe (Sepsiszentgyörgy): `
+            + `ore de plecare și stații, zi lucrătoare și weekend, după orarul oficial Multi-Trans.`,
         }
       : {
-          title: `Line ${id} – bus schedule Sfântu Gheorghe`,
+          title: `Bus ${id} timetable – Sfântu Gheorghe, Romania`,
           description:
-            `Official schedule for line ${id} (${a} – ${b}): departure times and stops, `
-            + `weekday and weekend. Sfântu Gheorghe, Multi-Trans.`,
+            `Bus line ${id} (${a} – ${b}) in Sfântu Gheorghe (Sepsiszentgyörgy), Romania: `
+            + `departure times and stops, weekday and weekend, from the official Multi-Trans timetable.`,
         };
 
   return pageMetadata({

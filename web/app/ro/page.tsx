@@ -16,9 +16,9 @@ export async function generateMetadata(): Promise<Metadata> {
     roPath: "/ro/",
     enPath: "/en/",
     lang: "ro",
-    title: "Planificator autobuz Sfântu Gheorghe · orar Multi-Trans",
+    title: "Orar autobuz Sfântu Gheorghe – mersul autobuzelor Multi-Trans",
     description:
-      "Planificator de rute și orar autobuz în Sfântu Gheorghe, pe baza datelor "
+      "Orar autobuz și planificator de rute în Sfântu Gheorghe (Sepsiszentgyörgy), pe baza datelor "
       + "publicate de Multi-Trans. Site neoficial, gratuit și fără cont.",
     ownOgImage: true,
   });
