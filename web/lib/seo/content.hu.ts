@@ -16,7 +16,7 @@ export const HU: Record<GuideKey, GuideCopy> = {
     body: [
       { h2: "Miről szól ez az oldal?" },
       {
-        p: "Ez az oldal Sepsiszentgyörgy – röviden Sepsi vagy Szentgyörgy, románul Sfântu Gheorghe – teljes busz menetrendjének áttekintése. Független projekt, amely a multitrans.ro-n közzétett menetrendet építi újra kereshető, térképes, útvonaltervezős formában. Nem a Multi-Trans hivatalos oldala.",
+        p: "Ez az oldal Sepsiszentgyörgy – röviden Szentgyörgy vagy Sepsi, románul Sfântu Gheorghe – teljes busz menetrendjének áttekintése. Független projekt, amely a multitrans.ro-n közzétett menetrendet építi újra kereshető, térképes, útvonaltervezős formában. Nem a Multi-Trans hivatalos oldala.",
       },
       { h2: "A Multi-Trans és a városi buszhálózat" },
       {

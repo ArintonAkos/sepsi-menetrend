@@ -13,7 +13,7 @@ describe("homepage head", () => {
       const html = readFileSync(built, "utf8");
       expect(html).toContain('<link rel="canonical" href="https://sepsimenetrend.ro/"/>');
       expect(html).toContain(
-        "<title>Sepsiszentgyörgyi buszmenetrend és járattervező</title>",
+        "<title>Sepsi busz menetrend és járattervező – Sepsiszentgyörgy</title>",
       );
       // off-screen <h1> from app/page.tsx - a real title in the outline for
       // crawlers that don't run the planner's client JS
@@ -51,7 +51,7 @@ describe("homepage head", () => {
       // localize-html.mjs stamps the built page after `next build`
       expect(html).toMatch(/<html lang="en"/);
       expect(html).toContain(
-        "<title>Sfântu Gheorghe bus planner · Multi-Trans schedule</title>",
+        "<title>Sfântu Gheorghe bus timetable &amp; route planner · Multi-Trans</title>",
       );
       expect(html).toMatch(
         /<h1 class="srOnly">Sfântu Gheorghe bus schedule and route planner<\/h1>/,

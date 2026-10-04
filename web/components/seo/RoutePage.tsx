@@ -242,7 +242,7 @@ export function routeMetadata(pairSlug: string, lang: SeoLang): Metadata {
         title: `${routeTitle(A, B, "hu")} – Sepsiszentgyörgy`,
         description:
           `Hogyan juss el ${huRoutePhrase(A, B)} Multi-Trans busszal `
-          + "Sepsiszentgyörgyön (Sepsi): buszjáratok, átszállások, menetidő és az első/utolsó indulás.",
+          + "Sepsiszentgyörgyön (Szentgyörgy): buszjáratok, átszállások, menetidő és az első/utolsó indulás.",
       }
     : lang === "en"
     ? {

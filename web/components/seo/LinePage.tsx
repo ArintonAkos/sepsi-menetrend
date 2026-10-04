@@ -99,7 +99,7 @@ export function lineMetadata(id: string, lang: SeoLang): Metadata {
           title: `${label} menetrend – Sepsiszentgyörgy · Sepsi Menetrend`,
           description:
             `${huArticle(id, true)} ${label} (${a} – ${b}) menetrendje Sepsiszentgyörgyön `
-            + `(Sepsi): indulási idők és megállók hétköznap és hétvégén, a Multi-Trans `
+            + `(Szentgyörgy): indulási idők és megállók hétköznap és hétvégén, a Multi-Trans `
             + `hivatalos menetrendje alapján.`,
         }
       : lang === "ro"

@@ -275,7 +275,7 @@ export function placeMetadata(slug: string, lang: SeoLang): Metadata {
       ? {
           title: `${place.name.hu} megálló – busz menetrend, Sepsiszentgyörgy`,
           description:
-            `${place.name.hu} buszmegálló Sepsiszentgyörgyön (Sepsi): az itt közlekedő `
+            `${place.name.hu} buszmegálló Sepsiszentgyörgyön (Szentgyörgy): az itt közlekedő `
             + `Multi-Trans buszjáratok (${list}) indulási ideje hétköznap és hétvégén.`,
         }
       : lang === "ro"
