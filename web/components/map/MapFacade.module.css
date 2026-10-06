@@ -1,0 +1,29 @@
+/* Shown at the size it was baked at (lib/home-view.mjs), centred on the map's
+   opening centre exactly as the live map centres it - so the picture and the
+   live map line up when one replaces the other. */
+.facade {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: var(--surface);
+}
+.image {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 640px;
+  height: 1000px;
+  max-width: none;
+  transform: translate(-50%, -50%);
+}
+@media (min-width: 861px) {
+  .image { width: 1280px; height: 900px; }
+}
+.attribution {
+  position: absolute;
+  left: 8px;
+  bottom: 6px;
+  font-size: 9px;
+  line-height: 1.2;
+  color: var(--muted);
+}

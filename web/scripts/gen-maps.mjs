@@ -23,10 +23,18 @@ import { createHash } from "node:crypto";
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import {
+  encodePolyline,
   lineMapName,
   lineMapHash,
   staticMapUrl,
 } from "../lib/seo/line-maps-core.mjs";
+import {
+  HOME_CENTRE,
+  HOME_ZOOM,
+  HOME_FACADE_SIZES,
+  homeFacadePath,
+} from "../lib/home-view.mjs";
+import sharp from "sharp";
 
 /* ---- ticket sales-point overview map ----
  *
@@ -73,6 +81,60 @@ function ticketMapUrl(points, token) {
     `https://api.mapbox.com/styles/v1/${TICKET_MAP.style}/static/${ticketMapPins(points)}` +
     `/auto/${TICKET_MAP.w}x${TICKET_MAP.h}?access_token=${token}&padding=${TICKET_MAP.padding}`
   );
+}
+
+/* ---- the homepage map's stand-in ----
+ *
+ *  Mapbox GL is 1.8 MB of JavaScript, and evaluating it plus building the map
+ *  froze a slow phone for over a second right after load - most of the
+ *  homepage's blocking time - while the screen stayed grey for five or more.
+ *  The planner now shows this baked picture of the same opening view first and
+ *  only loads GL when the reader starts using the page (`MapFacade`). It draws
+ *  the network the way the live map does at that zoom: every line in its own
+ *  colour, thin. One image per theme and size, WebP, same manifest gate. */
+const HOME_STYLES = { light: "mapbox/streets-v12", dark: "mapbox/dark-v11" };
+const HOME_STROKE = 2;
+// a Static Images URL may not exceed 8192 characters; simplify until it fits
+const URL_LIMIT = 8000;
+
+/** Douglas-Peucker on `[lng, lat]`, tolerance in degrees. */
+function simplify(points, tolerance) {
+  if (points.length < 3) return points;
+  const [ax, ay] = points[0];
+  const [bx, by] = points.at(-1);
+  const dx = bx - ax, dy = by - ay;
+  const len = Math.hypot(dx, dy) || 1e-12;
+  let worst = 0, at = 0;
+  for (let i = 1; i < points.length - 1; i++) {
+    const [px, py] = points[i];
+    const d = Math.abs(dy * px - dx * py + bx * ay - by * ax) / len;
+    if (d > worst) { worst = d; at = i; }
+  }
+  if (worst <= tolerance) return [points[0], points.at(-1)];
+  return [...simplify(points.slice(0, at + 1), tolerance).slice(0, -1),
+          ...simplify(points.slice(at), tolerance)];
+}
+
+/** The URL for one stand-in, without the token (also what the hash covers). */
+function homeFacadeUrl(net, theme, size, tolerance) {
+  // Every distinct route of every line. GL leaves the feed's first lines on
+  // top where routes share a street, and a Static Images overlay paints its
+  // last path on top - so the list is reversed to match the live map.
+  const lines = new Map(net.lines.map((l) => [l.id, l]));
+  const seen = new Set();
+  const paths = net.patterns.map((pattern) => {
+    const key = `${pattern.lineId}:${pattern.stopIds.join(",")}`;
+    const line = lines.get(pattern.lineId);
+    if (seen.has(key) || !line) return null;
+    seen.add(key);
+    const hex = (line[theme] ?? line.colour).toLowerCase().replace("#", "");
+    const poly = encodeURIComponent(encodePolyline(simplify(pattern.shape, tolerance)));
+    return `path-${HOME_STROKE}+${hex}-0.8(${poly})`;
+  }).filter(Boolean).reverse().join(",");
+  const [w, h] = HOME_FACADE_SIZES[size];
+  return `https://api.mapbox.com/styles/v1/${HOME_STYLES[theme]}/static/${paths}` +
+    `/${HOME_CENTRE[0]},${HOME_CENTRE[1]},${HOME_ZOOM}/${w}x${h}@2x` +
+    "?attribution=false&logo=false";
 }
 
 /* ---- lineDirections (mirrors lib/seo/lines.ts, which is `.ts` and cannot be
@@ -220,6 +282,45 @@ try {
   } catch (e) {
     console.warn(`gen-maps: ${TICKET_MAP.name} failed — ${e.message}; keeping fallback`);
     failed += 1;
+  }
+
+  // The homepage stand-ins: two themes x two sizes, WebP.
+  for (const theme of ["light", "dark"]) {
+    for (const size of Object.keys(HOME_FACADE_SIZES)) {
+      const name = `home-${theme}-${size}`;
+      try {
+        let tolerance = 0.00008;
+        let url = homeFacadeUrl(net, theme, size, tolerance);
+        while (url.length + token.length + 14 > URL_LIMIT && tolerance < 0.01) {
+          tolerance *= 1.5;
+          url = homeFacadeUrl(net, theme, size, tolerance);
+        }
+        const hash = createHash("sha256").update(url).digest("hex");
+        const file = join(process.cwd(), "public", homeFacadePath(theme, size));
+        if (existsSync(file) && manifest[name] === hash) {
+          cached += 1;
+          continue;
+        }
+        const res = await fetch(`${url}&access_token=${token}`, {
+          signal: AbortSignal.timeout(30_000),
+        });
+        if (!res.ok) {
+          throw new Error(`${res.status} ${(await res.text()).slice(0, 200)}`);
+        }
+        const buf = Buffer.from(await res.arrayBuffer());
+        if (buf.length < 1024 || !buf.subarray(0, 8).equals(PNG_MAGIC)) {
+          throw new Error(
+            `not a PNG (${res.headers.get("content-type")}, ${buf.length} bytes)`,
+          );
+        }
+        writeFileSync(file, await sharp(buf).webp({ quality: 72 }).toBuffer());
+        manifest[name] = hash;
+        generated += 1;
+      } catch (e) {
+        console.warn(`gen-maps: ${name} failed — ${e.message}; the map loads live instead`);
+        failed += 1;
+      }
+    }
   }
 
   const sorted = {};

@@ -82,8 +82,13 @@ const mount = () => {
    which made a different handful of tests fail on every run. Waiting for it
    here settles that boundary before anything is clicked. Everything except the
    two tests specifically about load order goes through this. */
+/** The live map waits for the first touch, click or key (MapFacade stands in
+ *  until then); tests that need it give that first touch. */
+const wakeMap = () => fireEvent.pointerDown(document.body);
+
 const setup = async () => {
   const user = mount();
+  wakeMap();
   await screen.findByText(/Nincs Mapbox token/);
   return user;
 };
@@ -140,6 +145,19 @@ describe("Planner", () => {
   it("says the token is missing instead of rendering a blank map", async () => {
     // the map module is loaded lazily, so this arrives after the panel
     mount();
+    wakeMap();
+    expect(await screen.findByText(/Nincs Mapbox token/)).toBeInTheDocument();
+  });
+
+  it("shows the baked map picture and loads the live map only once the page is used", async () => {
+    /* Mapbox GL froze a slow phone for over a second on arrival. Until the
+       reader touches anything, a picture of the same view stands in. */
+    mount();
+    expect(document.querySelector("picture img")?.getAttribute("src"))
+      .toMatch(/\/maps\/home-light-s\.webp$/);
+    await new Promise((r) => setTimeout(r, 50));
+    expect(screen.queryByText(/Nincs Mapbox token/)).not.toBeInTheDocument();
+    wakeMap();
     expect(await screen.findByText(/Nincs Mapbox token/)).toBeInTheDocument();
   });
 
@@ -320,6 +338,7 @@ describe("Planner", () => {
     const user = userEvent.setup();
     render(<Planner network={network} places={places} reach={reach} box={box} fares={fares}
                     bikeStations={bikeStations} bikeSnapshotAt="2026-08-23T12:53:56.000Z" />);
+    wakeMap();
     await screen.findByText(/Nincs Mapbox token/);
     await startPlanning(user, "Nicolae Iorga", "Sepsi Aréna");
     await user.click(screen.getByRole("button", { name: /Indulás|Érkezés/ }));
@@ -337,6 +356,7 @@ describe("Planner", () => {
     const user = userEvent.setup();
     render(<Planner network={network} places={places} reach={reach} box={box} fares={fares}
                     bikeStations={bikeStations} bikeSnapshotAt="2026-08-23T12:53:56.000Z" />);
+    wakeMap();
     await screen.findByText(/Nincs Mapbox token/);
     await startPlanning(user, "Nicolae Iorga", "Sepsi Aréna");
     await user.click(screen.getByRole("button", { name: /Indulás|Érkezés/ }));
@@ -356,6 +376,7 @@ describe("Planner", () => {
     const user = userEvent.setup();
     render(<Planner network={network} places={places} reach={reach} box={box} fares={fares}
                     bikeStations={bikeStations} bikeSnapshotAt="2026-08-23T12:53:56.000Z" />);
+    wakeMap();
     await screen.findByText(/Nincs Mapbox token/);
     await startPlanning(user, "Nicolae Iorga", "Sepsi Aréna");
     await user.click(screen.getByRole("button", { name: /Indulás|Érkezés/ }));

@@ -13,9 +13,9 @@ import type { BikeStation } from "@/lib/sepsibike";
 import { openStateAt, type TicketPoint } from "@/lib/ticket-points";
 import { stopAt } from "../stops/stopLookup";
 import { reviveGeolocate, reviveOnPermissionChange } from "./geolocate";
+import { HOME_CENTRE, HOME_ZOOM } from "@/lib/home-view.mjs";
 import styles from "./TransitMap.module.css";
 
-const CENTRE: LngLat = [25.7876, 45.8636];
 /** The same area the search is limited to, with a little room at the edge so a
  *  stop on the boundary can still be centred. Nobody needs to pan to Brașov. */
 const limitsFor = (area: Area): LngLatBoundsLike => [
@@ -133,7 +133,7 @@ export default function TransitMap({
     try {
       m = new mapboxgl.Map({
         container: host.current, style: STYLES[dark ? "dark" : "light"],
-        center: CENTRE, zoom: 12.4, maxBounds: limitsFor(area), attributionControl: false,
+        center: HOME_CENTRE, zoom: HOME_ZOOM, maxBounds: limitsFor(area), attributionControl: false,
       });
     } catch {
       return;               // the note below is already on screen

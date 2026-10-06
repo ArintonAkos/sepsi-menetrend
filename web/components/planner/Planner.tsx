@@ -6,13 +6,15 @@ import { createPortal } from "react-dom";
 import dynamic from "next/dynamic";
 import { primeStops, stopAt } from "../stops/stopLookup";
 
-/* Mapbox GL is by far the heaviest thing here and the panel does not need it.
-   Loading it after hydration lets the planner answer before the map arrives -
-   and it never runs on the server, where there is no WebGL. */
+/* Mapbox GL is by far the heaviest thing here and the panel does not need it,
+   so it loads only when the map is woken (`mapAwake`) - and never on the
+   server, where there is no WebGL. The MapFacade picture underneath covers
+   the wait, so there is no loading state of its own. */
 const TransitMap = dynamic(() => import("../map/TransitMap"), {
   ssr: false,
-  loading: () => <div className="mapLoading" />,
+  loading: () => null,
 });
+import MapFacade from "../map/MapFacade";
 import PlaceInput, { type Chosen } from "./PlaceInput";
 import JourneyList from "../journey/JourneyList";
 import JourneyDetail from "../journey/JourneyDetail";
@@ -520,6 +522,20 @@ export default function Planner({
       .catch(() => {});
   }, [locate]);
 
+  /* The live map waits. Mapbox GL costs a slow phone over a second of frozen
+     main thread, and on arrival nobody needs it: the MapFacade picture shows
+     the same view. It wakes on the first touch, click, key or wheel anywhere -
+     by the time a journey is typed in it has loaded - or at once when a link
+     arrives with something to draw. Once awake it stays. */
+  const [mapAwake, setMapAwake] = useState(false);
+  useEffect(() => {
+    if (mapAwake) return;
+    const wake = () => setMapAwake(true);
+    const events = ["pointerdown", "keydown", "wheel", "touchstart"] as const;
+    events.forEach((e) => window.addEventListener(e, wake, { once: true, passive: true, capture: true }));
+    return () => events.forEach((e) => window.removeEventListener(e, wake, { capture: true }));
+  }, [mapAwake]);
+
   /* Until both ends are known there is nothing to filter and nothing to rank,
      so the entry screen is the two fields and nothing else. */
   const planning = from !== null && to !== null;
@@ -836,6 +852,9 @@ export default function Planner({
     setPicking(null);
   };
 
+  // a shared journey or stop, or picking a point, has nothing to show without it
+  if (!mapAwake && (planning || picking !== null || boardStop !== null)) setMapAwake(true);
+
   const picked = options[detail ?? chosen] ?? options[0] ?? null;
   const shown = useRoutedWalks(picked?.journey ?? null);
 
@@ -1134,7 +1153,8 @@ export default function Planner({
         {/* The lazy map chunk can be ready before the first client render even
             though it was absent from the static HTML.  Keep the same loading
             shell through hydration, then mount the map in the next render. */}
-        {mounted ? <TransitMap network={network} patterns={patterns} lines={lineMap} lang={lang}
+        <MapFacade theme={theme} />
+        {mounted && mapAwake ? <TransitMap network={network} patterns={patterns} lines={lineMap} lang={lang}
                                area={area} resizeKey={mapNudge}
                                locationGranted={locationGranted}
                                covered={narrow && detail !== null ? drawer.height : 0}
@@ -1150,7 +1170,7 @@ export default function Planner({
                                journey={shown} visibleLines={visibleLines} dark={dark}
                                routeLoading={routeLoading}
                                picking={picking !== null} onCentreChange={onCentreChange} />
-                 : <div className="mapLoading" />}
+                 : null}
 
         {picking && (
           <>
