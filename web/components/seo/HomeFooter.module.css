@@ -30,6 +30,11 @@
 .meta a:hover {
   text-decoration: underline;
 }
+/* inside a sentence a link needs more than colour to stand out */
+.meta a {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
 .meta {
   margin: 10px auto 0;
   max-width: 640px;

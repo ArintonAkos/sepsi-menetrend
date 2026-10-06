@@ -38,6 +38,8 @@
 }
 
 .cta a {
+  display: inline-block;
+  padding: 4px 0;   /* a 24 px touch target, not a 21 px line of text */
   font-weight: 700;
   color: var(--ink-2);
 }

@@ -70,7 +70,9 @@
   font-weight: 600;
   padding: 6px 12px;
   border-radius: 9px;
-  color: var(--muted);
+  /* --muted on --sunk was 4.46:1, just under 4.5 - the current language is
+     told apart by its raised chip, not by the others being faint */
+  color: var(--ink-2);
   text-decoration: none;
   transition: background var(--tap) var(--ease), color var(--tap) var(--ease);
 }
