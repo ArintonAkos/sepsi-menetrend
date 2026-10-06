@@ -1119,7 +1119,11 @@ describe("on a phone", () => {
 });
 
 describe("the origin fills itself in", () => {
-  it("asks for your position on arrival, without a button to press", async () => {
+  /* On arrival the planner may fill "Honnan" from the device's position - but
+     only when the browser already lets it. Asking on load is a prompt nobody
+     requested (Lighthouse flags it), and Safari, which keeps no "allow" unless
+     told to in Settings, would ask again on every visit. */
+  const located = () => {
     const stop = network.stops.find((s) => s.name.ro === "Gara CFR")!;
     Object.defineProperty(window, "isSecureContext", {
       value: true, configurable: true, writable: true,
@@ -1131,10 +1135,38 @@ describe("the origin fills itself in", () => {
       value: { getCurrentPosition: ask, watchPosition: vi.fn(), clearWatch: vi.fn() },
       configurable: true, writable: true,
     });
+    return ask;
+  };
+  const permission = (state: PermissionState | null) =>
+    Object.defineProperty(navigator, "permissions", {
+      value: state === null ? undefined : { query: vi.fn(async () => ({ state })) },
+      configurable: true, writable: true,
+    });
+  afterEach(() => permission(null));
+
+  it("fills in your position on arrival when location is already allowed", async () => {
+    const ask = located();
+    permission("granted");
     mount();
+    expect((await screen.findByDisplayValue("Vasútállomás"))).toBeInTheDocument();
     expect(ask).toHaveBeenCalledTimes(1);
-    expect((await screen.findByLabelText("Honnan") as HTMLInputElement).value)
-      .toBe("Vasútállomás");
+  });
+
+  it("does not prompt on arrival when location is not yet allowed", async () => {
+    const ask = located();
+    permission("prompt");
+    mount();
+    await new Promise((r) => setTimeout(r, 20));
+    expect(ask).not.toHaveBeenCalled();
+    expect((screen.getByLabelText("Honnan") as HTMLInputElement).value).toBe("");
+  });
+
+  it("does not prompt when the browser cannot say whether it is allowed", async () => {
+    const ask = located();
+    permission(null);
+    mount();
+    await new Promise((r) => setTimeout(r, 20));
+    expect(ask).not.toHaveBeenCalled();
   });
 
   it("stays quiet when it is refused on arrival", async () => {

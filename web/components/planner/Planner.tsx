@@ -507,13 +507,17 @@ export default function Planner({
   }, [chooseTo, lang]);
 
   /* A journey starts where you are far more often than not, so the first field
-     fills itself on arrival. Quietly: a refusal should leave an empty box to
-     type into, not an error nobody asked for. */
+     fills itself on arrival - but only when the browser already allows it.
+     Prompting on load is a request nobody made (Lighthouse marks it down), and
+     Safari, which keeps no "allow" unless set in Settings, asked again on every
+     visit. Without a granted permission the locate button does the asking. */
   const asked = useRef(false);
   useEffect(() => {
     if (asked.current) return;
     asked.current = true;
-    locate(true);
+    navigator.permissions?.query({ name: "geolocation" })
+      .then((status) => { if (status.state === "granted") locate(true); })
+      .catch(() => {});
   }, [locate]);
 
   /* Until both ends are known there is nothing to filter and nothing to rank,
