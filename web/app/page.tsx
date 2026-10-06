@@ -1,6 +1,6 @@
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
-import { Planner } from "@/components";
+import Planner from "@/components/planner/Planner";
 import HomeFooter from "@/components/seo/HomeFooter";
 import { jsonLdScript, websiteLd } from "@/lib/seo/jsonld";
 import type { FareTable } from "@/lib/engine/fares";

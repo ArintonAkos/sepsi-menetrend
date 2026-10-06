@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { LegalPage } from "@/components";
+import LegalPage from "@/components/legal/LegalPage";
 import { pageMetadata } from "@/lib/seo/metadata";
 
 /** English twin of `/felhasznalasi-feltetelek/`. `LegalPage` is forced to `en` so
