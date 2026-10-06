@@ -17,7 +17,8 @@ export const HOME_FACADE_SIZES = {
   l: [1280, 900],
 };
 
-/** Public path of one baked image: `/maps/home-light-s.webp`, … */
-export function homeFacadePath(theme, size) {
-  return `/maps/home-${theme}-${size}.webp`;
+/** Public path of one baked image: `/maps/home-light-s.webp` (2x), or with
+ *  `density` 1 the half-size copy for 1x screens, `/maps/home-light-s-1x.webp`. */
+export function homeFacadePath(theme, size, density = 2) {
+  return `/maps/home-${theme}-${size}${density === 1 ? "-1x" : ""}.webp`;
 }

@@ -105,3 +105,10 @@
     Referrer-Policy = "strict-origin-when-cross-origin"
     X-Frame-Options = "SAMEORIGIN"
     Permissions-Policy = "geolocation=(self), camera=(), microphone=(), payment=()"
+    # Every link out is rel="noopener" and nothing reads window.opener, so the
+    # page can keep its window to itself (Lighthouse's COOP check).
+    Cross-Origin-Opener-Policy = "same-origin"
+    # Netlify's default HSTS covers only the bare host; www and any future
+    # subdomain are HTTPS-only too. Deliberately no `preload`: getting onto
+    # the browsers' preload list is slow to undo.
+    Strict-Transport-Security = "max-age=31536000; includeSubDomains"

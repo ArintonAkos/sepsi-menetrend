@@ -312,7 +312,15 @@ try {
         }
         const hash = createHash("sha256").update(url).digest("hex");
         const file = join(process.cwd(), "public", homeFacadePath(theme, size));
+        // a half-size copy for 1x screens - a desktop display was downloading
+        // the 2560 px image to show it at 1280
+        const half = join(process.cwd(), "public", homeFacadePath(theme, size, 1));
+        const shrink = async () => {
+          const [w, h] = HOME_FACADE_SIZES[size];
+          writeFileSync(half, await sharp(file).resize(w, h).webp({ quality: 72 }).toBuffer());
+        };
         if (existsSync(file) && manifest[name] === hash) {
+          if (!existsSync(half) || statSync(half).mtimeMs < statSync(file).mtimeMs) await shrink();
           cached += 1;
           continue;
         }
@@ -329,6 +337,7 @@ try {
           );
         }
         writeFileSync(file, await sharp(buf).webp({ quality: 72 }).toBuffer());
+        await shrink();
         manifest[name] = hash;
         generated += 1;
       } catch (e) {

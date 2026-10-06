@@ -16,21 +16,26 @@ import styles from "./MapFacade.module.css";
 export default function MapFacade({ theme }: { theme: "auto" | "light" | "dark" }) {
   const wide = "(min-width: 861px)";
   const dark = "(prefers-color-scheme: dark)";
+  // each picture at 1x and 2x, so a plain desktop screen is not sent the
+  // double-size one
+  const set = (th: "light" | "dark", size: "s" | "l") =>
+    `${homeFacadePath(th, size, 1)} 1x, ${homeFacadePath(th, size)} 2x`;
   const sources = theme === "auto"
     ? [
-        [`${wide} and ${dark}`, homeFacadePath("dark", "l")],
-        [wide, homeFacadePath("light", "l")],
-        [dark, homeFacadePath("dark", "s")],
+        [`${wide} and ${dark}`, set("dark", "l")],
+        [wide, set("light", "l")],
+        [dark, set("dark", "s")],
       ]
-    : [[wide, homeFacadePath(theme, "l")]];
-  const fallback = homeFacadePath(theme === "dark" ? "dark" : "light", "s");
+    : [[wide, set(theme, "l")]];
+  const fallbackTheme = theme === "dark" ? "dark" : "light";
 
   return (
     <div className={styles.facade} aria-hidden="true">
       <picture>
         {sources.map(([media, src]) => <source key={src} media={media} srcSet={src} />)}
         {/* decorative: the planner beside it carries everything this shows */}
-        <img className={styles.image} src={fallback} alt="" fetchPriority="high" decoding="async" />
+        <img className={styles.image} src={homeFacadePath(fallbackTheme, "s")}
+             srcSet={set(fallbackTheme, "s")} alt="" fetchPriority="high" decoding="async" />
       </picture>
       <span className={styles.attribution}>© Mapbox © OpenStreetMap</span>
     </div>
