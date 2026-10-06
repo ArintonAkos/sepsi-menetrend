@@ -70,8 +70,10 @@ describe("staticMapUrl", () => {
 describe("mapImage", () => {
   const net = loadNetwork();
   it("returns the public path when the baked file exists, else null", () => {
-    const has = existsSync(join(process.cwd(), "public", "maps", "line-1-0.png"));
-    expect(mapImage("1", 0)).toBe(has ? "/maps/line-1-0.png" : null);
+    const dir = join(process.cwd(), "public", "maps");
+    const expected = existsSync(join(dir, "line-1-0.webp")) ? "/maps/line-1-0.webp"
+      : existsSync(join(dir, "line-1-0.png")) ? "/maps/line-1-0.png" : null;
+    expect(mapImage("1", 0)).toBe(expected);
   });
 });
 

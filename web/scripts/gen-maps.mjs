@@ -20,7 +20,7 @@
  */
 
 import { createHash } from "node:crypto";
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readdirSync, readFileSync, statSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import {
   encodePolyline,
@@ -282,6 +282,21 @@ try {
   } catch (e) {
     console.warn(`gen-maps: ${TICKET_MAP.name} failed — ${e.message}; keeping fallback`);
     failed += 1;
+  }
+
+  // A WebP beside every baked PNG: the pages serve it (40-60% smaller, which
+  // Lighthouse's "next-gen formats" flags); the PNG stays as the manifest's
+  // cached source, so no Mapbox request is repeated to make it.
+  for (const png of readdirSync(MAPS_DIR).filter((f) => f.endsWith(".png"))) {
+    const src = join(MAPS_DIR, png);
+    const webp = src.replace(/\.png$/, ".webp");
+    try {
+      if (!existsSync(webp) || statSync(webp).mtimeMs < statSync(src).mtimeMs) {
+        writeFileSync(webp, await sharp(src).webp({ quality: 80 }).toBuffer());
+      }
+    } catch (e) {
+      console.warn(`gen-maps: ${png} -> webp failed — ${e.message}; the PNG is served`);
+    }
   }
 
   // The homepage stand-ins: two themes x two sizes, WebP.

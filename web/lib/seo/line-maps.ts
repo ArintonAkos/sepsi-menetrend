@@ -29,8 +29,15 @@ import { lineMapName } from "./line-maps-core.mjs";
  *  `null` when it was not generated (no token, a failed request, a brand-new
  *  line). `public/maps/` does not exist until the `gen-maps` script has run. */
 export function mapImage(lineId: string, dirIndex: number): string | null {
-  const name = `${lineMapName(lineId, dirIndex)}.png`;
-  return existsSync(join(process.cwd(), "public", "maps", name))
-    ? `/maps/${name}`
-    : null;
+  return bakedMap(lineMapName(lineId, dirIndex));
+}
+
+/** `/maps/<name>.webp` if gen-maps made one, else the `.png`, else null. */
+export function bakedMap(name: string): string | null {
+  for (const ext of ["webp", "png"]) {
+    if (existsSync(join(process.cwd(), "public", "maps", `${name}.${ext}`))) {
+      return `/maps/${name}.${ext}`;
+    }
+  }
+  return null;
 }

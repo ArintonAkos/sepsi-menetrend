@@ -4,7 +4,7 @@ import { existsSync } from "node:fs";
 import { join } from "node:path";
 import TicketPoints from "./TicketPoints";
 
-const hasMap = existsSync(join(process.cwd(), "public/maps/ticket-points.png"));
+const hasMap = existsSync(join(process.cwd(), "public/maps/ticket-points.webp"));
 
 describe("TicketPoints", () => {
   it("lists the whole sales network, grouped by kind", () => {
@@ -45,7 +45,7 @@ describe("TicketPoints", () => {
   it.skipIf(!hasMap)("embeds the baked overview map when it exists", () => {
     const { container } = render(<TicketPoints lang="hu" />);
     const img = container.querySelector("img");
-    expect(img?.getAttribute("src")).toBe("/maps/ticket-points.png");
+    expect(img?.getAttribute("src")).toBe("/maps/ticket-points.webp");
     expect(img?.getAttribute("alt")).toBeTruthy();
   });
 
