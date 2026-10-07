@@ -149,16 +149,15 @@ describe("Planner", () => {
     expect(await screen.findByText(/Nincs Mapbox token/)).toBeInTheDocument();
   });
 
-  it("shows the baked map picture and loads the live map only once the page is used", async () => {
-    /* Mapbox GL froze a slow phone for over a second on arrival. Until the
-       reader touches anything, a picture of the same view stands in. */
+  it("shows the baked map picture at once and loads the live map by itself", async () => {
+    /* The picture covers the moment before Mapbox GL is ready; the live map
+       must not wait for a tap - waiting for one left riders staring at a map
+       that would not pan or zoom. */
     mount();
     expect(document.querySelector("picture img")?.getAttribute("src"))
       .toMatch(/\/maps\/home-light-s\.webp$/);
-    await new Promise((r) => setTimeout(r, 50));
-    expect(screen.queryByText(/Nincs Mapbox token/)).not.toBeInTheDocument();
-    wakeMap();
-    expect(await screen.findByText(/Nincs Mapbox token/)).toBeInTheDocument();
+    expect(await screen.findByText(/Nincs Mapbox token/, {}, { timeout: 3000 }))
+      .toBeInTheDocument();
   });
 
   it("renders the panel synchronously, without waiting for the map", () => {

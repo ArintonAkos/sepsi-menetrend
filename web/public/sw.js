@@ -127,6 +127,6 @@ self.addEventListener("fetch", (event) => {
         );
       }
       return response;
-    })),
+    }).catch(() => Response.error())),   // an aborted or offline fetch is a plain network error, not an uncaught one
   );
 });

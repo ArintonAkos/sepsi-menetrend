@@ -522,18 +522,29 @@ export default function Planner({
       .catch(() => {});
   }, [locate]);
 
-  /* The live map waits. Mapbox GL costs a slow phone over a second of frozen
-     main thread, and on arrival nobody needs it: the MapFacade picture shows
-     the same view. It wakes on the first touch, click, key or wheel anywhere -
-     by the time a journey is typed in it has loaded - or at once when a link
-     arrives with something to draw. Once awake it stays. */
+  /* The live map loads straight after the page has painted: the MapFacade
+     picture fills the gap so the screen is never an empty grey, and the
+     planner panel is usable before Mapbox GL arrives. It used to wait for the
+     first tap - good for Lighthouse, but riders were left with a map that would
+     not pan or zoom until they poked it. Now it starts when the browser first
+     goes idle (at most 1.5 s in), or sooner on a touch, click, key or wheel, or
+     at once when a link arrives with something to draw. Once awake it stays. */
   const [mapAwake, setMapAwake] = useState(false);
   useEffect(() => {
     if (mapAwake) return;
     const wake = () => setMapAwake(true);
     const events = ["pointerdown", "keydown", "wheel", "touchstart"] as const;
     events.forEach((e) => window.addEventListener(e, wake, { once: true, passive: true, capture: true }));
-    return () => events.forEach((e) => window.removeEventListener(e, wake, { capture: true }));
+    // Safari has no requestIdleCallback; a short timeout does the same job there
+    const idle = typeof window.requestIdleCallback === "function"
+      ? window.requestIdleCallback(wake, { timeout: 1500 })
+      : null;
+    const timer = idle === null ? window.setTimeout(wake, 300) : null;
+    return () => {
+      events.forEach((e) => window.removeEventListener(e, wake, { capture: true }));
+      if (idle !== null) window.cancelIdleCallback(idle);
+      if (timer !== null) window.clearTimeout(timer);
+    };
   }, [mapAwake]);
 
   /* Until both ends are known there is nothing to filter and nothing to rank,
