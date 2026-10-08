@@ -6,18 +6,27 @@
   inset: 0;
   overflow: hidden;
   background: var(--surface);
+  container-type: size;   /* lets the image size itself against this box */
 }
+/* At its baked size unless the map is bigger than the picture - a tablet, a
+   wide monitor - and then scaled up just enough to cover it, so no grey edge
+   is ever left; scaled, it lines up with the live map less exactly, which
+   matters far less than an empty strip. */
 .image {
   position: absolute;
   left: 50%;
   top: 50%;
-  width: 640px;
-  height: 1000px;
+  width: max(640px, 100cqw, 64cqh);          /* 64 = 100 x 640 / 1000 */
+  height: auto;
+  aspect-ratio: 640 / 1000;
   max-width: none;
   transform: translate(-50%, -50%);
 }
 @media (min-width: 861px) {
-  .image { width: 1280px; height: 900px; }
+  .image {
+    width: max(1280px, 100cqw, 142.23cqh);   /* 142.23 = 100 x 1280 / 900 */
+    aspect-ratio: 1280 / 900;
+  }
 }
 .attribution {
   position: absolute;
